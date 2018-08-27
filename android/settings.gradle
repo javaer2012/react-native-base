@@ -1,0 +1,3 @@
+rootProject.name = 'creditRents'
+
+include ':app'
