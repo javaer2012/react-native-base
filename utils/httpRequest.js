@@ -76,35 +76,33 @@ axios.defaults.headers = {
 }
 axios.defaults.timeout = 10000
 
-export default {
-  //get请求
-  get(url, param) {
-    return new Promise((resolve, reject) => {
-      axios({
-        method: 'get',
-        url,
-        params: param,
-        cancelToken: new CancelToken(c => {
-          cancel = c
-        })
-      }).then(res => {
-        resolve(res)
+export const get = (url, param) => {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'get',
+      url,
+      params: param,
+      cancelToken: new CancelToken(c => {
+        cancel = c
       })
+    }).then(res => {
+      resolve(res)
     })
-  },
-  //post请求
-  post(url, param) {
-    return new Promise((resolve, reject) => {
-      axios({
-        method: 'post',
-        url,
-        data: param,
-        cancelToken: new CancelToken(c => {
-          cancel = c
-        })
-      }).then(res => {
-        resolve(res)
+  })
+}
+
+
+export const post = (url, param) => {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: 'post',
+      url,
+      data: param,
+      cancelToken: new CancelToken(c => {
+        cancel = c
       })
+    }).then(res => {
+      resolve(res)
     })
-  }
+  })
 }

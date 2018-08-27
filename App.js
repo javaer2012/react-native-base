@@ -10,7 +10,7 @@
 import React, { Component } from 'react';
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
-import store from './src/redux/store';
+import store from './src/store/store';
 // import AppNavigator from './routerConfigs/index'
 import AppNavigator from './src/router'
 
