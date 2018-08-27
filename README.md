@@ -1,0 +1,2 @@
+- antd 配置好了分部加载
+- 请求封装在httprequest文件中

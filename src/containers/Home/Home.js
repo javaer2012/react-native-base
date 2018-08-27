@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
+import { Button } from 'antd-mobile-rn';
+
 export default class Home extends Component {
   render() {
     return (
-      <Text>
-        22222
-      </Text>
+      <View> 
+        <Button>
+          Start
+        </Button>
+      </View>
     )
   }
 }
