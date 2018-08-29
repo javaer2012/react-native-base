@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
-import { ScrollView, Text,TouchableOpacity } from 'react-native';
-import {List,InputItem,Button,WingBlank,WhiteSpace,Flex} from 'antd-mobile-rn';
+import {Image, ScrollView, StyleSheet, Text} from 'react-native';
+import {List,InputItem,Button,WingBlank,WhiteSpace} from 'antd-mobile-rn';
 
 
 export default class Register extends Component{
@@ -29,16 +29,28 @@ export default class Register extends Component{
                         <InputItem type="text" value={username}
                                    onChange={(username)=>this.setState({username})}
                                    placeholder={"请输入账号或用户名"}>
-                            用户名
+                            <Image
+                                style={styles.icon}
+                                source={username?
+                                    require('../assets/copyUser.png'):
+                                    require('../assets/defaultUser.png')}/>
                         </InputItem>
                         <InputItem type="password" value={password}
                                    onChange={(password)=>this.setState({password})}>
-                            密码
+                            <Image
+                                style={styles.icon}
+                                source={password?
+                                    require('../assets/selectPsw.png'):
+                                    require('../assets/defaultPsw.png')}/>
                         </InputItem>
                         <InputItem type="number" value={code}
                                    onChange={(code)=>this.setState({code})} placeholder={"请输入验证码"}
-                                   extra={<Text>获取验证码</Text>}>
-                            验证码
+                                   extra={<Text style={styles.sms}>获取验证码</Text>}>
+                            <Image
+                                style={styles.icon}
+                                source={code?
+                                    require('../assets/codeSelect.png'):
+                                    require('../assets/codeDefault.png')}/>
                         </InputItem>
 
                     </List>
@@ -51,3 +63,23 @@ export default class Register extends Component{
         )
     }
 }
+
+
+const styles = StyleSheet.create({
+
+    icon:{
+        width:18,
+        height:18,
+        resizeMode: 'stretch'
+    },
+    input:{
+        height:53,
+    },
+    btn:{
+        backgroundColor: '#06C1AE',
+        borderColor:'#06C1AE'
+    },
+    sms:{
+        color:'#F5475F'
+    }
+})
