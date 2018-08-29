@@ -1,34 +1,26 @@
-// import React, { Component } from 'react'
-// import { Text, View } from 'react-native'
-// import { Button } from 'antd-mobile-rn';
-
-// export default class Home extends Component {
-//   render() {
-//     return (
-//       <View> 
-//         <Button>
-//           Start
-//         </Button>
-//       </View>
-//     )
-//   }
-// }
-
-
 import React, { Component } from 'react'
-import { Text, View, StyleSheet } from 'react-native'
+import { Text, View, StyleSheet, Image } from 'react-native'
 import { Button, Carousel } from 'antd-mobile-rn';
+import { bannerNav_mock } from '../../mock/home'
 
 
 export default class Home extends Component {
   state = {
-    list: [1,2,3]
+    bannerList: [1,2,3]
+  }
+
+  componentDidMount(){
+    const { bannerList, navList } = bannerNav_mock
+    this.setState({
+      bannerList,
+      navList
+    })
   }
 
   render() {
-    const { list } = this.state
+    const { bannerList, navList } = this.state
     return (
-      <View>
+      <View stlye={{marginTop: 50}}>
         <Carousel
           style={styles.wrapper}
           selectedIndex={2}
@@ -36,35 +28,48 @@ export default class Home extends Component {
           infinite
           afterChange={this.onHorizontalSelectedIndexChange}
         >
-          {this.renderBanner(list)}
-          {/* <View style={[styles.containerHorizontal, { backgroundColor: 'red' }]}>
-            <Text>Carousel 1</Text>
-          </View>
-          <View style={[styles.containerHorizontal, { backgroundColor: 'blue' }]}>
-            <Text>Carousel 2</Text>
-          </View>
-          <View style={[styles.containerHorizontal, { backgroundColor: 'yellow' }]}>
-            <Text>Carousel 3</Text>
-          </View>
-          <View style={[styles.containerHorizontal, { backgroundColor: 'aqua' }]}>
-            <Text>Carousel 4</Text>
-          </View>
-          <View style={[styles.containerHorizontal, { backgroundColor: 'fuchsia' }]}>
-            <Text>Carousel 5</Text>
-          </View> */}
+          {bannerList && this.renderBanner(bannerList)}
         </Carousel>
+        <View style={[styles.navBox]}>
+          {navList && this.renderNavList(navList)}
+        </View>
       </View>
     )
   }
 
   renderBanner = (list) => {
-    return list.map((item, index) => (
+    // if (!list || list.length) {
+    //   return <View></View>
+    // }
+  return list.map((item, index) => (
     <View 
-      key={index} 
+      key={item.id} 
       style={[styles.containerHorizontal, { backgroundColor: 'yellow' }]}
     >
-      <Text>item</Text>
+        {/* <Image
+          source={item.imgPath}
+        /> */}
+        <Text>
+          11
+        </Text>
     </View>))
+  }
+  renderNavList = (list) => {
+    const { navigate } = this.props.navigation;
+    return list.map((item, index) => (
+      <View
+        key={item.id}
+        style={[styles.navItem]}
+      >
+        <Image
+          source={item.iconPath}
+        />
+        <Text onPress={() =>
+          navigate( linkUrl , { name: 'Jane' })
+        }>
+          {item.navTitle}
+        </Text>
+      </View>))
   }
 }
 
@@ -89,4 +94,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 36,
   },
+  navBox: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  navItem: {
+    width: 120,
+    height: 120
+  }
 });

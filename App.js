@@ -11,19 +11,9 @@ import React, { Component } from 'react';
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import store from './src/store/store';
-// import AppNavigator from './routerConfigs/index'
 import AppNavigator from './src/router'
 
 import { StackNavigator } from 'react-navigation';
-// export default class App extends Component<Props> {
-//   render() {
-//     return (
-//       <Provider store={store}>
-//         <Root {...this.props} />
-//       </Provider>
-//     );
-//   }
-// }
 
 
 export default class App extends Component {
