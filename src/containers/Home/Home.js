@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image } from 'react-native'
 import { Button, Carousel } from 'antd-mobile-rn';
 import { bannerNav_mock } from '../../mock/home'
+import { ProductList } from '../../components/ProductList'
 
 
 export default class Home extends Component {
@@ -33,6 +34,12 @@ export default class Home extends Component {
         <View style={[styles.navBox]}>
           {navList && this.renderNavList(navList)}
         </View>
+        <View style={styles.recommendBox}>
+          <Text>推荐商品</Text>
+          <View>
+            <ProductList />
+          </View>
+        </View>
       </View>
     )
   }
@@ -50,7 +57,7 @@ export default class Home extends Component {
           source={item.imgPath}
         /> */}
         <Text>
-          11
+          112
         </Text>
     </View>))
   }
@@ -62,9 +69,10 @@ export default class Home extends Component {
         style={[styles.navItem]}
       >
         <Image
-          source={item.iconPath}
+          // source={item.iconPath}
+          style={{width: 50, height:50,backgroundColor: 'red'}}
         />
-        <Text onPress={() =>
+        <Text style={styles.navText} onPress={() =>
           navigate( linkUrl , { name: 'Jane' })
         }>
           {item.navTitle}
@@ -96,10 +104,19 @@ const styles = StyleSheet.create({
   },
   navBox: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    paddingVertical: 10
   },
   navItem: {
-    width: 120,
-    height: 120
+    // width: 120,
+    // height: 120
+  },
+  navText: {
+    textAlign: 'center',
+    marginTop: 5
+  },
+  recommendBox: {
+
   }
 });
