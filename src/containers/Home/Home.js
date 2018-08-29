@@ -50,7 +50,7 @@ export default class Home extends Component {
           source={item.imgPath}
         /> */}
         <Text>
-          11
+          1122
         </Text>
     </View>))
   }
