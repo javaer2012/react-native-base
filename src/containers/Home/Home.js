@@ -1,24 +1,31 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image } from 'react-native'
 import { Button, Carousel } from 'antd-mobile-rn';
-import { bannerNav_mock } from '../../mock/home'
+import { bannerNav_mock, productList_mock } from '../../mock/home'
+import ProductList from '../../components/ProductList/'
+import { flexRow } from '../../styles/common'
+
 
 
 export default class Home extends Component {
   state = {
-    bannerList: [1,2,3]
+    bannerList: [1,2,3],
+    products:[]
   }
 
   componentDidMount(){
     const { bannerList, navList } = bannerNav_mock
+    const { hotPhoneList } = productList_mock
+
     this.setState({
       bannerList,
-      navList
+      navList,
+      products: hotPhoneList
     })
   }
 
   render() {
-    const { bannerList, navList } = this.state
+    const { bannerList, navList, products } = this.state
     return (
       <View stlye={{marginTop: 50}}>
         <Carousel
@@ -33,6 +40,12 @@ export default class Home extends Component {
         <View style={[styles.navBox]}>
           {navList && this.renderNavList(navList)}
         </View>
+        <View style={styles.productListBox}>
+          <Text style={styles.listTitle}>推荐产品</Text>
+          <ProductList 
+            data={products}
+          />
+        </View>
       </View>
     )
   }
@@ -43,7 +56,7 @@ export default class Home extends Component {
     // }
   return list.map((item, index) => (
     <View 
-      key={item.id} 
+      key={index} 
       style={[styles.containerHorizontal, { backgroundColor: 'yellow' }]}
     >
         {/* <Image
@@ -58,13 +71,15 @@ export default class Home extends Component {
     const { navigate } = this.props.navigation;
     return list.map((item, index) => (
       <View
-        key={item.id}
+        key={index}
         style={[styles.navItem]}
       >
         <Image
-          source={item.iconPath}
+          style={{ width: 50, height: 50 }}
+          source={require('../../images/find.png')}
+        //  || data.imgPath
         />
-        <Text onPress={() =>
+        <Text style={{textAlign: 'center'}} onPress={() =>
           navigate( linkUrl , { name: 'Jane' })
         }>
           {item.navTitle}
@@ -95,11 +110,25 @@ const styles = StyleSheet.create({
     fontSize: 36,
   },
   navBox: {
-    display: 'flex',
-    flexDirection: 'row'
+    ...flexRow,
+    justifyContent: 'space-around',
+    paddingVertical: 10,
+    backgroundColor: '#fff'
   },
   navItem: {
-    width: 120,
-    height: 120
+
+    // width: 120,
+    // height: 120
+  },
+  productListBox: {
+    marginTop: 12
+    // ...flexRow,
+    // justifyContent: 'center'
+  },
+  listTitle:{
+    textAlign: 'center',
+    fontSize: 15,
+    padding: 20,
+    backgroundColor: '#fff'
   }
 });
