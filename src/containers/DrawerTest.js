@@ -7,11 +7,20 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    listContainer:{
+        minHeight: 603
+    },
     opContainer:{
         display: 'flex',
         flexDirection: 'row',
         flexWrap:'wrap',
         justifyContent: 'flex-start',
+    },
+    opContainerLong:{
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap:'wrap',
+        justifyContent: 'space-evenly',
     },
     option:{
         width:88,
@@ -20,6 +29,15 @@ const styles = StyleSheet.create({
         borderRadius:3,
         marginTop: 11,
         marginRight: 11
+    },
+    longOption:{
+        width:115,
+        height:33,
+        backgroundColor:'#EAEEEF',
+        borderRadius:3,
+        marginTop: 11,
+
+
     }
 });
 
@@ -71,7 +89,8 @@ export default class DrawerTest extends React.Component {
         const cateContent = cateList.map((category,index)=>{
             const subContent = category.subCateList.map((subCate,subIndex)=>{
                 return (
-                    <Button key={subIndex + subCate.subCateId} style={styles.option}>
+                    <Button key={subIndex + subCate.subCateId}
+                            style={category.cateId === "8044413bbd154e7e89522c8cca0262ea"?styles.longOption:styles.option}>
                         <Text style={{fontSize:14}}>{
                         subCate.subCateName
                         }</Text>
@@ -85,7 +104,8 @@ export default class DrawerTest extends React.Component {
                     </List.Item>
                     <List>
                         <List.Item>
-                           <View style={styles.opContainer}>
+                           <View
+                               style={category.cateId === "8044413bbd154e7e89522c8cca0262ea"?styles.opContainerLong:styles.opContainer}>
                                {subContent}
                            </View>
                         </List.Item>
@@ -112,6 +132,14 @@ export default class DrawerTest extends React.Component {
         const sidebar = (
             <ScrollView style={[styles.container]}>
                 <List>{cateContent}</List>
+                <View style={{display:'flex',flexDirection:'row',justifyContent:'flex-start'}}>
+                    <Button style={{width:166,height:50,backgroundColor:'#FFE4E4'}}>
+                        <Text style={{color:'#F5475F',fontSize: 15}}>重置</Text>
+                    </Button>
+                    <Button style={{width:164,height:50,backgroundColor:'#F5475F'}}>
+                        <Text style={{color:'white',fontSize:15}}>完成</Text>
+                    </Button>
+                </View>
             </ScrollView>
         );
 
@@ -126,7 +154,7 @@ export default class DrawerTest extends React.Component {
                 drawerBackgroundColor="#ccc"
                 drawerWidth={328}
             >
-                <View style={{ flex: 1, marginTop: 114, padding: 8 }}>
+                <View style={{ flex: 1, marginTop: 114, padding: 8,minHeight: 603 }}>
                     <Button onClick={() => this.drawer && this.drawer.openDrawer()}>
                         Open drawer
                     </Button>
