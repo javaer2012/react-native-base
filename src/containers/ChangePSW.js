@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, Text,TouchableOpacity } from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {List,InputItem,Button,WingBlank,WhiteSpace,Flex} from 'antd-mobile-rn';
 
 
@@ -28,17 +28,43 @@ export default class ChangePSW extends Component{
                     <List renderHeader={()=>""} >
                         <InputItem type="text" value={oPSW}
                                    onChange={(oPSW)=>this.setState({oPSW})}
-                                   placeholder={"请输入旧密码"}> 旧密码 </InputItem>
+                                   placeholder={"请输入旧密码"}>
+                            <Image
+                                style={styles.icon}
+                                source={oPSW?
+                                    require('../assets/selectPsw.png'):
+                                    require('../assets/defaultPsw.png')}/>
+                        </InputItem>
                         <InputItem type="password" value={nPSW}
                                    onChange={(nPSW)=>this.setState({nPSW})}
-                                   placeholder={"请输入新密码"}> 新密码 </InputItem>
+                                   placeholder={"请输入新密码"}>
+                            <Image
+                                style={styles.icon}
+                                source={nPSW?
+                                    require('../assets/confirmSelect.png'):
+                                    require('../assets/confirmDefault.png')}/>
+                        </InputItem>
 
                     </List>
                     <WhiteSpace size={"xl"}/>
-                    <Button onClick={()=>navigation.navigate("LoginPage")}>完成</Button>
+                    <Button style={styles.btn} onClick={()=>navigation.navigate("LoginPage")}>完成</Button>
 
                 </WingBlank>
             </ScrollView>
         )
     }
 }
+
+const styles = StyleSheet.create({
+
+    icon:{
+        width:18,
+        height:18,
+        resizeMode: 'stretch'
+    },
+
+    btn:{
+        backgroundColor: '#06C1AE',
+        borderColor:'#06C1AE'
+    }
+})

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View,ScrollView, Text,TouchableOpacity,StyleSheet,Image,TextInput } from 'react-native';
 import {List,InputItem,Button,WingBlank,WhiteSpace,Flex} from 'antd-mobile-rn';
 import logo from '../assets/logo.png';
+import api from '../service/api';
 
 
 export default class Login extends Component{
@@ -15,6 +16,19 @@ export default class Login extends Component{
 
     constructor(props){
         super(props)
+    }
+
+    async getCrmDict(){
+        try{
+            console.log("Call api")
+            const dictRsp = await api.getBannerAndNav({
+                "provinceCode":"324523",
+                "cityCode": "156440100"
+            });
+            console.log(dictRsp);
+        } catch (e){
+            console.log(e)
+        }
     }
 
 
@@ -57,7 +71,7 @@ export default class Login extends Component{
 
                   </List>
                   <WhiteSpace size={"xl"}/>
-                  <Button type="primary" style={styles.btn} onClick={()=>{console.log(this.state)}}>
+                  <Button type="primary" style={styles.btn} onClick={this.getCrmDict}>
                       <Text style={{color:'white',fontSize:20}}>登录</Text>
                   </Button>
                   <WhiteSpace size={"xl"}/>
