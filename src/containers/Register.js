@@ -55,7 +55,7 @@ export default class Register extends Component{
 
                     </List>
                     <WhiteSpace size={"xl"}/>
-                    <Button onClick={()=>navigation.navigate("LoginPage")}>注册</Button>
+                    <Button onClick={()=>navigation.navigate("DrawerPage")}>注册</Button>
                     <WhiteSpace size={"xl"}/>
 
                 </WingBlank>
