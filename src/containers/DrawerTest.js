@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button, Drawer, List, WhiteSpace } from 'antd-mobile-rn';
 import api from "../service/api";
+import Sidebar from "../components/common/FilterContent";
 
 const styles = StyleSheet.create({
     container: {
@@ -85,68 +86,12 @@ export default class DrawerTest extends React.Component {
 
         const {cateList} = this.state;
         if(!cateList) return null
-
-        const cateContent = cateList.map((category,index)=>{
-            const subContent = category.subCateList.map((subCate,subIndex)=>{
-                return (
-                    <Button key={subIndex + subCate.subCateId}
-                            style={category.cateId === "8044413bbd154e7e89522c8cca0262ea"?styles.longOption:styles.option}>
-                        <Text style={{fontSize:14}}>{
-                        subCate.subCateName
-                        }</Text>
-                    </Button>
-                )
-            })
-            return (
-                <View>
-                    <List.Item key={index}>
-                        <Text>{category.cateName}</Text>
-                    </List.Item>
-                    <List>
-                        <List.Item>
-                           <View
-                               style={category.cateId === "8044413bbd154e7e89522c8cca0262ea"?styles.opContainerLong:styles.opContainer}>
-                               {subContent}
-                           </View>
-                        </List.Item>
-                    </List>
-                </View>
-            )
-        })
-        const itemArr = Array.apply(null, Array(20))
-            .map(function(_,i) {
-                return i;
-            })
-            .map((_i, index) => {
-                return (
-                    <List.Item
-                        key={index}
-                        thumb="https://zos.alipayobjects.com/rmsportal/eOZidTabPoEbPeU.png"
-                    >
-                        <Text>Categories - {index}</Text>
-                    </List.Item>
-                );
-            });
-
-        // Todo: https://github.com/DefinitelyTyped/DefinitelyTyped
-        const sidebar = (
-            <ScrollView style={[styles.container]}>
-                <List>{cateContent}</List>
-                <View style={{display:'flex',flexDirection:'row',justifyContent:'flex-start'}}>
-                    <Button style={{width:166,height:50,backgroundColor:'#FFE4E4'}}>
-                        <Text style={{color:'#F5475F',fontSize: 15}}>重置</Text>
-                    </Button>
-                    <Button style={{width:164,height:50,backgroundColor:'#F5475F'}}>
-                        <Text style={{color:'white',fontSize:15}}>完成</Text>
-                    </Button>
-                </View>
-            </ScrollView>
-        );
+        const sidebar = ()=> <Sidebar source={cateList}/>
 
         return (
 
             <Drawer
-                sidebar={sidebar}
+                sidebar={sidebar()}
                 position="right"
                 open={false}
                 drawerRef={(el) => (this.drawer = el)}
