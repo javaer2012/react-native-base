@@ -10,3 +10,9 @@ export const flexRow = {
 export const contentPadding = {
   paddingHorizontal: 14,
 }
+export const mainPink = {
+  color: 'pink'
+}
+export const mainGray = {
+  color: '#ccc'
+}

@@ -1,11 +1,14 @@
-import { Text, View, StyleSheet, Image } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { flexRowBet, flexRow, contentPadding } from '../styles/common'
 import color from '../styles/var'
 
 export default ({ data, children }) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigate('ProductListPage', {})}
+    >
       <Image
         style={{ width: 50, height: 80, marginRight: 10 }}
         source={require('../images/find.png')}
@@ -21,14 +24,14 @@ export default ({ data, children }) => {
         </View>
       </View>
        
-    </View>
+    </TouchableOpacity>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     ...flexRow,
-    alignItems: 'center',
+    alignItems: 'stretch',
     backgroundColor: '#fff',
     ...contentPadding,
     paddingVertical: 10,
@@ -39,7 +42,8 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     flexGrow: 1,
     alignItems: 'stretch',
-    justifyContent: 'space-between'
+    paddingVertical: 8,
+    justifyContent: 'space-between',
   },
   btnBox: {
     alignItems: 'center',

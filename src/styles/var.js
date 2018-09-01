@@ -1,4 +1,4 @@
-const color =  {
+const Color =  {
   mainPink: 'pink'
 }
-export default color
+export default Color

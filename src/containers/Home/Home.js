@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Button, Carousel } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/home'
-import ProductList from '../../components/ProductList/'
+import ProductList from '../../components/ProductList'
 import { flexRow } from '../../styles/common'
 
 
@@ -70,21 +70,20 @@ export default class Home extends Component {
   renderNavList = (list) => {
     const { navigate } = this.props.navigation;
     return list.map((item, index) => (
-      <View
+      <TouchableOpacity
         key={index}
         style={[styles.navItem]}
+        onPress={ () => navigate('ProductListPage', {}) }
       >
         <Image
           style={{ width: 50, height: 50 }}
           source={require('../../images/find.png')}
         //  || data.imgPath
         />
-        <Text style={{textAlign: 'center'}} onPress={() =>
-          navigate( linkUrl , { name: 'Jane' })
-        }>
+        <Text style={{textAlign: 'center'}}>
           {item.navTitle}
         </Text>
-      </View>))
+      </TouchableOpacity>))
   }
 }
 

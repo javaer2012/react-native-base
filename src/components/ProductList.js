@@ -6,23 +6,17 @@ import color from '../styles/var'
 
 export default ({data}) => {
   if (data instanceof Array === false) return false
-  return (
-    <View>
-      {
-        data.map((item, index) => {
-          return (
-            <View key={index}>
-              <ProudcuItem data={item}>
-                <Button style={{ width: 80, backgroundColor: color.mainPink}} size='small'>
-                  <Text style={{color: '#fff'}}>去购买</Text>
-                </Button>
-              </ProudcuItem>
-            </View>
-          )
-        })
-      }
-    </View>
-  )
+  return data.map((item, index) => {
+      return (
+        <View key={index}>
+          {/* <ProudcuItem data={item}>
+            <Button style={{ width: 80, backgroundColor: color.mainPink}} size='small'>
+              <Text style={{color: '#fff'}}>去购买</Text>
+            </Button>
+          </ProudcuItem> */}
+        </View>
+      )
+    })
   
 }
 
