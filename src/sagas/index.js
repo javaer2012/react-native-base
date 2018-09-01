@@ -1,4 +1,4 @@
-import * as homeSagas from './Home'
+import * as homeSagas from './home'
 import { takeEvery } from 'redux-saga'
 
 export default function* rootSagas() {

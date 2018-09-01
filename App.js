@@ -11,18 +11,31 @@ import React, { Component } from 'react';
 import { applyMiddleware, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import store from './src/store/store';
-import AppNavigator from './src/router'
-
-import { StackNavigator } from 'react-navigation';
+import AppNavigator from './src/router';
+import {AsyncStorage} from 'react-native';
+import axios from 'axios';
+import {setData,getData} from './src/utils/storage'
+import {getToken} from "./src/service/api";
+import http from './src/utils/httpRequest';
 
 
 export default class App extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <AppNavigator></AppNavigator>
-      </Provider>
-      
-    );
+
+  constructor(props){
+    super(props)
+      console.log('App start')
+
+      /**
+       * App initialize
+       */
+  }
+
+    render() {
+        return (
+          <Provider store={store}>
+            <AppNavigator></AppNavigator>
+          </Provider>
+
+        );
   }
 }
