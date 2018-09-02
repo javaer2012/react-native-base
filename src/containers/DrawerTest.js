@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button, Drawer, List, WhiteSpace } from 'antd-mobile-rn';
 import api from "../service/api";
-import Sidebar from "../components/common/FilterContent";
+import Sidebar from "../components/common/SlideBar";
 
 const styles = StyleSheet.create({
     container: {
@@ -46,10 +46,13 @@ export default class DrawerTest extends React.Component {
     drawer;
     state = {
         cateList:null,
+        selected:[]
     }
 
     constructor(props){
         super(props)
+
+        this.onSelect = this.onSelect.bind(this)
     }
 
     onOpenChange = (isOpen) => {
@@ -81,12 +84,26 @@ export default class DrawerTest extends React.Component {
         }
     }
 
+    onSelect(id){
+        const idIndex = this.state.selected.indexOf(id),
+            selected = Array.from(this.state.selected);
+        if(idIndex !== -1){
+            selected.splice(idIndex,1);
+        } else {
+            selected.push(id)
+        }
+        this.setState({
+            ...this.state,
+            selected
+        })
+    }
+
 
     render() {
 
-        const {cateList} = this.state;
+        const {cateList,selected} = this.state;
         if(!cateList) return null
-        const sidebar = ()=> <Sidebar source={cateList}/>
+        const sidebar = ()=> <Sidebar source={cateList} selected={selected} onSelect={this.onSelect}/>
 
         return (
 
