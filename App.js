@@ -17,6 +17,7 @@ import axios from 'axios';
 import {setData,getData} from './src/utils/storage'
 import {getToken} from "./src/service/api";
 import http from './src/utils/httpRequest';
+import { StackNavigator } from 'react-navigation';
 
 
 export default class App extends Component {
