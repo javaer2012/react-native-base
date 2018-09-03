@@ -23,6 +23,24 @@ export default class Home extends Component {
       products: hotPhoneList
     })
   }
+  renderList = (data) => {
+    const { navigate } = this.props.navigation;
+    if (!data || !(data instanceof Array)) return false
+    return data.map((item, index) => {
+      return (
+        <TouchableOpacity
+          key={index}
+          onPress={() => navigate('ProductDetailPage', {})}
+        >
+          <ProudcuItem data={item}>
+            <Button style={{ width: 80, backgroundColor: color.mainPink }} size='small'>
+              <Text style={{ color: '#fff' }}>去购买</Text>
+            </Button>
+          </ProudcuItem>
+        </TouchableOpacity>
+      )
+    })
+  }
 
   render() {
     const { bannerList, navList, products } = this.state
@@ -42,9 +60,10 @@ export default class Home extends Component {
         </View>
         <View style={styles.productListBox}>
           <Text style={styles.listTitle}>推荐产品</Text>
-          <ProductList 
+          {this.renderList(products)}
+          {/* <ProductList 
             data={products}
-          />
+          /> */}
         </View>
       </View>
     )

@@ -8,6 +8,9 @@ import ChangePSW from "../containers/ChangePSW";
 import DrawerTest from "../containers/DrawerTest";
 import { ProductListPage } from '../containers/ProductListPage'
 import { ProductDetailPage } from '../containers/ProductDetailPage'
+import ProductParameterPage from '../containers/ProductParameterPage/ProductParameterPage'
+import OrderInfo from '../containers/OrderInfo/OrderInfo'
+
 
 const AppNavigator = StackNavigator({
     HomePage: Home,
@@ -17,9 +20,11 @@ const AppNavigator = StackNavigator({
     ChangePSWPage:ChangePSW,
     DrawerPage:DrawerTest,
     ProductDetailPage: ProductDetailPage,
-    ProductListPage: ProductListPage
+    ProductParameterPage: ProductParameterPage,
+    ProductListPage: ProductListPage,
+    OrderInfo: OrderInfo
 },{
-    initialRouteName: 'LoginPage',
+    initialRouteName: 'HomePage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

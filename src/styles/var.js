@@ -1,4 +1,4 @@
 const Color =  {
-  mainPink: 'pink'
+  mainPink: '#E4213F'
 }
 export default Color

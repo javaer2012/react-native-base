@@ -1,22 +1,25 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Image } from 'react-native'
 import React from 'react'
-import { flexRowBet, flexRow, contentPadding } from '../styles/common'
+import { flexRowBet, flexRow, contentPadding, contentMargin } from '../styles/common'
 import color from '../styles/var'
 
 export default ({ data, children }) => {
   return (
-    <TouchableOpacity
-      style={styles.container}
-      onPress={() => navigate('ProductListPage', {})}
-    >
-      <Image
-        style={{ width: 50, height: 80, marginRight: 10 }}
-        source={require('../images/find.png')}
+    <View style={styles.container}>
+      
+      <View style={{ width: 67}}>
+        <Image
+          style={{ width: 50, height: 80 }}
+          source={require('../images/find.png')}
         //  || data.imgPath
-      />
+        />
+      </View>
       <View style={styles.contentBox}>
-        <Text style={styles.phoneName}>{data.phoneName} <Text>{data.phoneDesc}</Text></Text>
-        <View style={[flexRowBet, styles.btnBox]}>
+        {/* <Text>2</Text> */}
+        <Text style={styles.phoneNameStyle}>
+          {data.phoneName}  {data.phoneDesc}
+        </Text>
+         <View style={[flexRowBet, styles.btnBox]}>
           <Text style={styles.priceStyle}>￥ {data.price}</Text>
           <View>
             {children}
@@ -24,26 +27,31 @@ export default ({ data, children }) => {
         </View>
       </View>
        
-    </TouchableOpacity>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
     ...flexRow,
+
+    // flexWrap: 'wrap',
     alignItems: 'stretch',
     backgroundColor: '#fff',
     ...contentPadding,
-    paddingVertical: 10,
-    marginBottom: 1
+    paddingVertical: 20,
+    marginBottom: 1,
   },
   contentBox:{
     display: 'flex',
-    flexWrap: 'wrap',
-    flexGrow: 1,
-    alignItems: 'stretch',
-    paddingVertical: 8,
+    // flexDirection: 'row',
     justifyContent: 'space-between',
+    flexGrow: 1,
+    width: 200,
+    flexWrap: 'wrap',
+  },
+  phoneNameStyle: {
+    // backgroundColor: 'red'
   },
   btnBox: {
     alignItems: 'center',

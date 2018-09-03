@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { Button } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/ProductDetailPage'
-import { flexRow } from '../../styles/common'
+import { flexRow, mainGray } from '../../styles/common'
 
 
 

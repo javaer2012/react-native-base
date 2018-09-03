@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { Button } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/home'
 import { flexRow } from '../../styles/common'
@@ -27,6 +27,7 @@ export default class ProductListPage extends Component {
     return data.map((item, index) => {
       return (
         <TouchableOpacity
+          key={index}
           onPress={() => navigate('ProductDetailPage', {})}
         >
           <ProudcuItem data={item}>

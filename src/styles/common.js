@@ -8,7 +8,10 @@ export const flexRow = {
   flexDirection: 'row',
 }
 export const contentPadding = {
-  paddingHorizontal: 14,
+  paddingHorizontal: 17,
+}
+export const contentMargin = {
+  marginHorizontal: 17,
 }
 export const mainPink = {
   color: 'pink'
