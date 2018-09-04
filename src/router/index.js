@@ -10,9 +10,15 @@ import { ProductListPage } from '../containers/ProductListPage'
 import { ProductDetailPage } from '../containers/ProductDetailPage'
 import ProductParameterPage from '../containers/ProductParameterPage/ProductParameterPage'
 import OrderInfo from '../containers/OrderInfo/OrderInfo'
+import Test from '../containers/Test'
+import MyInstallmentPage from '../containers/MyInstallmentPage/MyInstallmentPage'
+import PayResult from '../containers/PayResult/PayResult'
+
+
 
 
 const AppNavigator = StackNavigator({
+    Test: Test,
     HomePage: Home,
     LoginPage:Login,
     RegisterPage:Register,
@@ -22,9 +28,12 @@ const AppNavigator = StackNavigator({
     ProductDetailPage: ProductDetailPage,
     ProductParameterPage: ProductParameterPage,
     ProductListPage: ProductListPage,
-    OrderInfo: OrderInfo
+    OrderInfo: OrderInfo,
+    MyInstallmentPage: MyInstallmentPage,
+    PayResult: PayResult
+
 },{
-    initialRouteName: 'HomePage',
+        initialRouteName: 'PayResult',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

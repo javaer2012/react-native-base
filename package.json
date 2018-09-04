@@ -9,6 +9,7 @@
     "devA": "react-native run-android"
   },
   "dependencies": {
+    "antd-mobile-demo-data": "^0.2.0",
     "antd-mobile-rn": "^2.2.1",
     "axios": "^0.18.0",
     "moment": "^2.22.2",

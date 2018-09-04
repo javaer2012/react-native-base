@@ -665,7 +665,8 @@ export default {
 	},
 	// 逆编码
 	AmapRegeo(lat, lon) {
-	  return axios.get(`https://restapi.amap.com/v3/geocode/regeo?key=${amapKey}&location=${lon},${lat}&output=json`);
+		// debugger
+		return axios.get(`https://restapi.amap.com/v3/geocode/regeo?key=${amapKey}&location=${lon},${lat}&output=json`);
 	},
 	//授权接口；
 	oAuth2 () {
