@@ -64,7 +64,7 @@ export default class Accept extends Component {
           </Text>
         </Flex>
         <Button>返回首页</Button>
-        <Button>营业员受理</Button>
+        <Button></Button>
       </Flex>
       // <ScrollView style={{ backgroundColor: '#fff', flex: 1 }}>
       // </ScrollView>

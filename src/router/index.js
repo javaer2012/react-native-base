@@ -15,6 +15,13 @@ import MyInstallmentPage from '../containers/MyInstallmentPage/MyInstallmentPage
 import MyOrder from '../containers/MyOrder/MyOrder'
 import WorkerEnter from '../containers/WorkerEnter/WorkerEnter'
 import Accept from '../containers/Accept/Accept'
+import DoIt from '../containers/DoIt/DoIt'
+import UploadImg from '../containers/UploadImg/UploadImg'
+import Pay from '../containers/Pay/Pay'
+import PayResult from '../containers/PayResult/PayResult'
+
+
+
 
 
 
@@ -36,10 +43,13 @@ const AppNavigator = StackNavigator({
     MyInstallmentPage: MyInstallmentPage,
     MyOrder: MyOrder,
     WorkerEnter: WorkerEnter,
-    Accept: Accept
-
+    Accept: Accept,
+    DoIt: DoIt,
+    UploadImg: UploadImg,
+    Pay,
+    PayResult
 },{
-        initialRouteName: 'Accept',
+        initialRouteName: 'PayResult',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
