@@ -22,7 +22,7 @@ const storageItem = ({ data, itemData, onPress, subSkuId}) => {
     boxStyle.push({
       backgroundColor: Color.mainPink
     })
-    textStyle.push({
+    textStyle.push({ 
       color: '#fff'
     })
   }
