@@ -1,0 +1,39 @@
+{
+  "name": "myboy",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest",
+    "devI": "node scripts/custom-rn-theme && react-native run-ios",
+    "devA": "react-native run-android"
+  },
+  "dependencies": {
+    "react": "16.4.1",
+    "react-native-camera": "^0.10.0",
+    "antd-mobile-rn": "^2.2.1",
+    "axios": "^0.18.0",
+    "moment": "^2.22.2",
+    "qs": "^6.5.2",
+    "react-native": "0.56.0",
+    "react-native-canvas": "^0.1.23",
+    "react-native-css": "^2.1.2",
+    "react-native-linear-gradient": "^2.4.2",
+    "react-navigation": "^2.12.1",
+    "react-redux": "^5.0.7",
+    "react-router": "^4.3.1",
+    "react-router-native": "^4.3.0",
+    "redux": "^4.0.0",
+    "redux-saga": "^0.16.0"
+  },
+  "devDependencies": {
+    "babel-jest": "23.4.2",
+    "babel-plugin-import": "^1.8.0",
+    "babel-preset-react-native": "^5",
+    "jest": "23.5.0",
+    "react-test-renderer": "16.4.1"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
