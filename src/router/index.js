@@ -23,26 +23,21 @@ import Find from "../containers/Find";
 import Score from "../containers/Score";
 import KnowScore from "../containers/KnowScore";
 
+import ProductParameterPage from '../containers/ProductParameterPage/ProductParameterPage'
+import OrderInfo from '../containers/OrderInfo/OrderInfo'
+import Test from '../containers/Test'
+import MyInstallmentPage from '../containers/MyInstallmentPage/MyInstallmentPage'
+import MyOrder from '../containers/MyOrder/MyOrder'
+import WorkerEnter from '../containers/WorkerEnter/WorkerEnter'
+import Accept from '../containers/Accept/Accept'
+import DoIt from '../containers/DoIt/DoIt'
+import UploadImg from '../containers/UploadImg/UploadImg'
+import Pay from '../containers/Pay/Pay'
+import PayResult from '../containers/PayResult/PayResult'
+
 
 const AppNavigator = StackNavigator({
-    ProductDetailPage: {
-        screen: ProductDetailPage,
-        navigationOptions: {
-            header: null
-        }
-    },
-    ProductListPage: {
-        screen: ProductListPage,
-        navigationOptions: {
-            header: null
-        }
-    },
-    HomePage: {
-        screen: Home,
-        navigationOptions: {
-            header: null
-        }
-    },
+    HomePage: Home,
     LoginPage: Login,
     RegisterPage: Register,
     ForgetPSWPage: ForgetPSW,
@@ -60,7 +55,19 @@ const AppNavigator = StackNavigator({
     SearchPage:Search,
     FindPage:Find,
     ScorePage:Score,
-    KnowScorePage:KnowScore
+    KnowScorePage:KnowScore,
+    ProductDetailPage: ProductDetailPage,
+    ProductParameterPage: ProductParameterPage,
+    ProductListPage: ProductListPage,
+    OrderInfo: OrderInfo,
+    MyInstallmentPage: MyInstallmentPage,
+    MyOrder: MyOrder,
+    WorkerEnter: WorkerEnter,
+    Accept: Accept,
+    DoIt: DoIt,
+    UploadImg: UploadImg,
+    Pay,
+    PayResult
 }, {
     initialRouteName: 'MyPage',
     /* The header config from HomeScreen is now here */
