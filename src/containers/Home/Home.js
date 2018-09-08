@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import { Button, Carousel } from 'antd-mobile-rn';
+import { Button, Carousel, TabBar, SearchBar } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/home'
 import ProductList from '../../components/ProductList'
 import { flexRow } from '../../styles/common'
+
 
 
 
@@ -28,6 +29,7 @@ export default class Home extends Component {
     const { bannerList, navList, products } = this.state
     return (
       <View stlye={{marginTop: 50}}>
+        {/* <TabBarCom />
         <Carousel
           style={styles.wrapper}
           selectedIndex={2}
@@ -36,7 +38,7 @@ export default class Home extends Component {
           afterChange={this.onHorizontalSelectedIndexChange}
         >
           {bannerList && this.renderBanner(bannerList)}
-        </Carousel>
+        </Carousel> */}
         <View style={[styles.navBox]}>
           {navList && this.renderNavList(navList)}
         </View>

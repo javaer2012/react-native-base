@@ -49,7 +49,7 @@ const AppNavigator = StackNavigator({
     Pay,
     PayResult
 },{
-        initialRouteName: 'PayResult',
+        initialRouteName: 'HomePage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

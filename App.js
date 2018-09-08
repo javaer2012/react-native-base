@@ -37,9 +37,25 @@ export default class App extends Component {
   getCityFun = async (lat, lon) => {
     try {
       const { data } = await AmapRegeo(lat, lon)
-      const { status, infocode, regeocode } = data
-      await AsyncStorage.setItem('addressInfos', JSON.stringify(regeocode));
-      // console.log("=====>cityMsg!!!!!!", JSON.stringify(cityMsg))
+      const { 
+        status, 
+        infocode, 
+        regeocode: { 
+          addressComponent: { 
+            district, city, citycode, adcode 
+          } 
+        } 
+      } = data
+      const addressObj = {
+        district,
+        citycode: citycode,
+        provinceCode: adcode
+      }
+
+      await AsyncStorage.setItem('addressInfos', JSON.stringify(addressObj));
+
+
+      // console.log("=====>cityMsg!!!!!!", JSON.stringify(regeocode))
     } catch (error) {
       console.error(error)
     }

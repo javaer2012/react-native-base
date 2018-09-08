@@ -1,47 +1,59 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, ScrollView, AsyncStorage } from 'react-native'
-import { Button, Carousel, Picker, List } from 'antd-mobile-rn';
+import { Button, Carousel, List } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/home'
 import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
 import Color from '../../styles/var'
-import { district, provinceLite } from 'antd-mobile-demo-data';
+import TabBarCom from '../../components/TabBarCom'
+import Location from '../../components/Location'
+import api from '../.././service/api'
 
-const CustomChildren = (props) => (
-  <TouchableOpacity onPress={props.onClick}>
-    <View
-      style={{ height: 36, paddingLeft: 15, flexDirection: 'row', alignItems: 'center' }}
-    >
-      <Text style={{ flex: 1 }}>{props.children}</Text>
-      <Text style={{ textAlign: 'right', color: '#888', marginRight: 15 }}>{props.extra}</Text>
-    </View>
-  </TouchableOpacity>
-);
+const { isCityOpen, getBannerAndNav, hotProducts } = api
+
+
 
 export default class Home extends Component {
   state = {
     bannerList: [1, 2, 3],
     products: [],
     addressMsg:{},
-    data: [],
     value: [],
     pickerValue: [],
   }
 
-  getAddressMsg = async () =>{
+  // 从缓存中取出位置信息对象
+  getAddressMsg = async () => {
     try {
-    const value = await AsyncStorage.getItem('addressInfos');
-    if (value !== null) {
-      // We have data!!
-      return JSON.parse(value);
+      const value = await AsyncStorage.getItem('addressInfos');
+      if (value !== null) {
+        // We have data!!
+        return JSON.parse(value);
+      }
+    } catch (error) {
+      // Error retrieving data
     }
-   } catch (error) {
-     // Error retrieving data
-   }
   }
+
+  checkIsCityOpen = async () => {
+    const { addressMsg: citycode, provinceCode } = this.state
+    try {
+        const res = await isCityOpen({
+          data: {
+            citycode,
+            provinceCode
+          }
+        })
+      console.log(res,"22222222")
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
 
   async componentWillMount(){
     const addressMsg = await this.getAddressMsg()
+    const isCityOpen = this.checkIsCityOpen()
     this.setState({
       addressMsg
     })
@@ -57,6 +69,8 @@ export default class Home extends Component {
       products: hotPhoneList
     })
   }
+
+  // 渲染热销商品
   renderList = (data) => {
     const { navigate } = this.props.navigation;
     if (!data || !(data instanceof Array)) return false
@@ -73,75 +87,66 @@ export default class Home extends Component {
     })
   }
 
-  onClick = () => {
-    // console.log('start loading data');
-    setTimeout(() => {
-      this.setState({
-        data: district,
-      });
-    }, 500);
-  }
-  onChange = (value: any) => {
-    // console.log(value);
-    this.setState({ value });
+  // 手动选择地址后，重新获取地址信息
+  uploadAddress = async () => {
+    const addressMsg = await this.getAddressMsg()
+    this.setState({
+      addressMsg
+    })
   }
 
   render() {
     const { bannerList, navList, products, addressMsg } = this.state
-    const { navigate } = this.props.navigation;
+    // const { navigate } = this.props.navigation;
+    // return (
+    //   <View>
+    //     <TabBarCom />
+    //     <Text>11</Text>
+    //   </View>
+    // )
     return (
-      <ScrollView
-        automaticallyAdjustContentInsets={false}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
-      >
-        <View>
-          <Text numberOfLines={10} ellipsizeMode="tail">{addressMsg.formatted_address}</Text>
+      <View style={{ position: 'relative', height: '100%' }}>
+        <View style={{ marginTop: 0 }}>
+          <Location 
+            addressMsg={addressMsg}
+            uploadAddress={this.uploadAddress}
+            />
         </View>
-        <Carousel
-          style={styles.wrapper}
-          selectedIndex={2}
-          autoplay
-          infinite
-          afterChange={this.onHorizontalSelectedIndexChange}
+        <ScrollView
+          automaticallyAdjustContentInsets={false}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
         >
-          {bannerList && this.renderBanner(bannerList)}
-        </Carousel>
-        <View style={[styles.navBox]}>
-          {navList && this.renderNavList(navList)}
+          {/* <View>
+            <Text onClick={this.onClick} numberOfLines={10} ellipsizeMode="tail">{addressMsg.formatted_address}</Text>
+          </View> */}
+        
+          <Carousel
+            style={styles.wrapper}
+            selectedIndex={2}
+            autoplay
+            infinite
+            afterChange={this.onHorizontalSelectedIndexChange}
+          >
+            {bannerList && this.renderBanner(bannerList)}
+          </Carousel>
+          
+          <View style={[styles.navBox]}>
+            {navList && this.renderNavList(navList)}
+          </View>
+          <View style={styles.productListBox}>
+            <Text style={styles.listTitle}>推荐产品</Text>
+            {this.renderList(products)}
+            {/* <ProductList 
+              data={products}
+            /> */}
+          </View>
+          
+        </ScrollView>
+        <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+          <TabBarCom />
         </View>
-        <View style={styles.productListBox}>
-          <Text style={styles.listTitle}>推荐产品</Text>
-          {this.renderList(products)}
-          {/* <ProductList 
-            data={products}
-          /> */}
-        </View>
-        <View style={{ marginTop: 30 }}>
-          <List>
-            <Picker
-              data={this.state.data}
-              cols={2}
-              value={this.state.value}
-              onChange={this.onChange}
-            >
-              <List.Item arrow="horizontal" last onClick={this.onClick}>
-                省市选择(异步加载)
-            </List.Item>
-            </Picker>
-            <Picker
-              title="选择地区"
-              data={district}
-              cols={2}
-              value={this.state.pickerValue}
-              onChange={(v) => this.setState({ pickerValue: v })}
-              onOk={(v) => this.setState({ pickerValue: v })}
-            >
-              <CustomChildren>Customized children</CustomChildren>
-            </Picker>
-          </List>
-        </View>
-      </ScrollView>
+      </View>
     )
   }
 
