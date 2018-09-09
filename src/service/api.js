@@ -700,7 +700,7 @@ export default {
 		});
 	},
 
-	//用户注册；
+	//用户登记，获取userId；
 	registerUser (params) {
 		params["sourceType"] = 3;
 		return new Promise((resolve,reject) => {

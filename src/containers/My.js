@@ -211,7 +211,7 @@ export default class My extends Component {
                     <Flex direction={"row"}>
                         <Flex.Item>
                             <ImageBackground style={styles.topBackground} source={require('../images/my/background.png')}>
-                                {this.state.isLogin ?
+                                {!this.state.isLogin ?
                                     <View style={styles.content}>
                                         <Image style={styles.userIcon} source={require('../images/imageNew/one/userIcon.png')}/>
                                         <WhiteSpace size={"xl"}/>

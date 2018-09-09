@@ -34,6 +34,7 @@ import DoIt from '../containers/DoIt/DoIt'
 import UploadImg from '../containers/UploadImg/UploadImg'
 import Pay from '../containers/Pay/Pay'
 import PayResult from '../containers/PayResult/PayResult'
+import TakePicture from "../containers/TakePicture";
 
 
 const AppNavigator = StackNavigator({
@@ -67,9 +68,10 @@ const AppNavigator = StackNavigator({
     DoIt: DoIt,
     UploadImg: UploadImg,
     Pay,
-    PayResult
+    PayResult,
+    TakePicturePage:TakePicture
 }, {
-    initialRouteName: 'MyPage',
+    initialRouteName: 'HomePage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

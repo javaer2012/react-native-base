@@ -49,6 +49,8 @@ export default class App extends Component {
                 provinceCode: adcode
             }
 
+            console.log(addressObj)
+
             await AsyncStorage.setItem('addressInfos', JSON.stringify(addressObj));
 
 

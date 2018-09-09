@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
-import {View, ScrollView, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
-import {List, InputItem, WingBlank, WhiteSpace, Flex} from 'antd-mobile-rn';
+import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import { WhiteSpace, Flex} from 'antd-mobile-rn';
 import Button from '../components/common/Button'
-import {RNCamera} from 'react-native-camera';
 
 
 const styles = StyleSheet.create({
@@ -41,24 +40,15 @@ export default class DrivingLicense extends Component {
     };
 
     render() {
+        const {navigation} = this.props
         return (
             <View>
-                <RNCamera
-                    ref={ref => {
-                        this.camera = ref;
-                    }}
-                    style = {styles.preview}
-                    type={RNCamera.Constants.Type.back}
-                    flashMode={RNCamera.Constants.FlashMode.on}
-                    
-                    permissionDialogTitle={'Permission to use camera'}
-                    permissionDialogMessage={'We need your permission to use your camera phone'}
-                />
+
                 <Flex direction={"column"} align={"center"}>
                     <WhiteSpace size={"xl"}/>
                     <Text style={{textAlign:'center'}}>请拍摄驾驶证主页与副页，并录入信息</Text>
                     <WhiteSpace size={"xl"}/>
-                    <TouchableOpacity onPress={this.takePicture.bind(this)}>
+                    <TouchableOpacity onPress={()=>navigation.navigate("TakePicturePage")}>
                         <Image style={{width:300,height:200}} source={require('../images/imageNew/one/card1.png')}/>
 
                     </TouchableOpacity>
