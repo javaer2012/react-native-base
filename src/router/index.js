@@ -1,5 +1,6 @@
-import {StackNavigator, TabNavigator} from 'react-navigation';
-
+// import {StackNavigator} from 'react-navigation';
+import React from 'react';
+import { StackNavigator } from 'react-navigation';
 import Home from '../containers/Home'
 import Login from "../containers/Login";
 import Register from "../containers/Register";
@@ -35,11 +36,62 @@ import UploadImg from '../containers/UploadImg/UploadImg'
 import Pay from '../containers/Pay/Pay'
 import PayResult from '../containers/PayResult/PayResult'
 import TakePicture from "../containers/TakePicture";
+import TabNavigator from '../components/TabNavigator'
+
+// const AppNavigator = StackNavigator({
+//     Tab: TabNavigator,
+    // HomePage: Home,
+    // LoginPage: Login,
+//     RegisterPage: Register,
+//     ForgetPSWPage: ForgetPSW,
+//     ChangePSWPage: ChangePSW,
+//     DrawerPage: DrawerTest,
+//     MyPage: My,
+//     BadRecordPage:BadRecords,
+//     AuthRecordPage:AuthRecords,
+//     MyOrderPage:MyOrders,
+//     PersonalInfoPage:PersonalInfo,
+//     AuthApplyPage:AuthApply,
+//     TermPage:Term,
+//     DrivingPage:DrivingLicense,
+//     EducationPage:Education,
+//     SearchPage:Search,
+//     FindPage:Find,
+//     ScorePage:Score,
+//     KnowScorePage:KnowScore,
+//     ProductDetailPage: ProductDetailPage,
+//     ProductParameterPage: ProductParameterPage,
+//     ProductListPage: ProductListPage,
+//     OrderInfo: OrderInfo,
+//     MyInstallmentPage: MyInstallmentPage,
+//     MyOrder: MyOrder,
+//     WorkerEnter: WorkerEnter,
+//     Accept: Accept,
+//     DoIt: DoIt,
+//     UploadImg: UploadImg,
+//     Pay,
+//     PayResult
+// }, {
+//     initialRouteName: 'HomePage',
+//     /* The header config from HomeScreen is now here */
+//     navigationOptions: {
+//         headerStyle: {
+//             backgroundColor: '#06C1AE',
+//         },
+//         headerTintColor: '#fff',
+//         headerTitleStyle: {
+//             fontWeight: 'bold',
+//         },
+//     }
+// });
+// export default AppNavigator;
 
 
-const AppNavigator = StackNavigator({
-    HomePage: Home,
+
+export default StackNavigator({
+    tab: TabNavigator,
     LoginPage: Login,
+    Home: Home,
     RegisterPage: Register,
     ForgetPSWPage: ForgetPSW,
     ChangePSWPage: ChangePSW,
@@ -71,7 +123,7 @@ const AppNavigator = StackNavigator({
     PayResult,
     TakePicturePage:TakePicture
 }, {
-    initialRouteName: 'HomePage',
+    initialRouteName: 'Home',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
@@ -82,5 +134,4 @@ const AppNavigator = StackNavigator({
             fontWeight: 'bold',
         },
     }
-});
-export default AppNavigator;
+})

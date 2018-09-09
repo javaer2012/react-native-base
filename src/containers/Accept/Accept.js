@@ -22,7 +22,7 @@ export default class Accept extends Component {
           onPress={() => navigate('ProductDetailPage', {})}
         >
           <ProudcuItem data={item}>
-            {/* <Button style={{ width: 80, backgroundColor: color.mainPink }} size='small'>
+            {/* <Button style={{ width: 80, backgroundColor: Color.mainPink }} size='small'>
               <Text style={{ color: '#fff' }}>去购买</Text>
             </Button> */}
           </ProudcuItem>

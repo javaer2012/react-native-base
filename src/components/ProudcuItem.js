@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { flexRowBet, flexRow, contentPadding } from '../styles/common'
-import color from '../styles/var'
+import Color from '../styles/var'
 
 export default ({ data, children }) => {
   return (
@@ -49,6 +49,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   priceStyle:{
-    color: color.mainPink,
+    color: Color.mainPink,
   }
 })
