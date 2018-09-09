@@ -123,7 +123,7 @@ export default StackNavigator({
     PayResult,
     TakePicturePage:TakePicture
 }, {
-    initialRouteName: 'Home',
+    //initialRouteName: 'KnowScorePage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

@@ -199,9 +199,7 @@ export default class My extends Component {
 
         const {navigation} = this.props
         return (
-            <View>
                 <ScrollView
-                    style={{marginBottom:49}}
                     refreshControl={
                         <RefreshControl
                             refreshing={this.state.refreshing}
@@ -392,32 +390,6 @@ export default class My extends Component {
 
 
                 </ScrollView>
-
-
-                {Platform.OS === 'android'?
-                    <TabBar style={{height:60}}>
-                        <TabItem iconStyle={{width:17,height:17 }} icon={require('../images/my/home1.png')} selectedIcon={require('../images/my/home.png')}>
-                            <Text>首页</Text>
-                        </TabItem>
-                        <TabItem icon={require('../images/my/find.png')} selectedIcon={require('../images/my/home.png')}>
-                            <Text>发现</Text>
-                        </TabItem>
-                        <TabItem icon={require('../images/my/my1.png')} selectedIcon={require('../images/my/my.png')}>
-                            <Text>我的</Text>
-                        </TabItem>
-                    </TabBar> :
-                    <TabBarIOS style={{height:49}} >
-                        <IOSItem title={"首页"} style={{width:17,height:17 ,fontSize:10}} icon={require('../images/my/home.png')} selectedIcon={require('../images/my/home1.png')}>
-                        </IOSItem>
-                        <IOSItem title={"发现"} selected={true} icon={require('../images/my/find.png')} selectedIcon={require('../images/my/home.png')}>
-                            <Text>发现</Text>
-                        </IOSItem>
-                        <IOSItem title={"我的"} icon={require('../images/my/my1.png')} selectedIcon={require('../images/my/my.png')}>
-                            <Text>我的</Text>
-                        </IOSItem>
-                    </TabBarIOS>
-                }
-            </View>
 
         )
     }
