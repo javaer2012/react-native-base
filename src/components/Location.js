@@ -5,6 +5,7 @@ import { List, Picker } from 'antd-mobile-rn';
 import { district } from 'antd-mobile-demo-data';
 import api from '../../src/service/api'
 import { cityJSON } from '../utils/cityJSON'
+console.log(cityJSON,";;;;")
 
 const { setCrmCode } = api
 
@@ -48,7 +49,10 @@ export default class PopupExample extends React.Component {
   }
   selectedAddress = async (v) => {
     try {
-      const admCityName = cityJSON[v[0]].admCityName;
+      // debugger
+      let admCityName = cityJSON[v[0]] && cityJSON[v[0]].admCityName;
+      admCityName = cityJSON[v[1]] && cityJSON[v[1]].admCityName;
+
       const addressObj = {
         district: admCityName,
         citycode: v[0],
@@ -56,6 +60,8 @@ export default class PopupExample extends React.Component {
       }
       await AsyncStorage.setItem('addressInfos', JSON.stringify(addressObj));
       this.props.uploadAddress(addressObj)
+
+      console.log(addressObj,"jjjj")
     } catch (error) {
       console.error(error,"!!!")
     }
