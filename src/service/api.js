@@ -112,7 +112,8 @@ export default {
     	params["sourceType"] = 3;
     	return new Promise((resolve,reject) => {
     		getToken( token => {
-    			axios.post(`${url}/index/isCityOpen`, qs.stringify(params), {
+					debugger
+    			axios.post(`${url}/index/isCityOpen`, params, {
     				headers: {
     	            	'Content-Type': 'application/x-www-form-urlencoded',
     	            	'Authorization': 'Bearer ' + token

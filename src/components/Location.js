@@ -61,7 +61,6 @@ export default class PopupExample extends React.Component {
       await AsyncStorage.setItem('addressInfos', JSON.stringify(addressObj));
       this.props.uploadAddress(addressObj)
 
-      console.log(addressObj,"jjjj")
     } catch (error) {
       console.error(error,"!!!")
     }

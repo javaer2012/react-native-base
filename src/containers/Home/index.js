@@ -36,14 +36,12 @@ export default class Home extends Component {
   }
 
   checkIsCityOpen = async () => {
-    const { addressMsg: citycode, provinceCode } = this.state
+    const { addressMsg: {citycode, provinceCode} } = this.state
     try {
-        const res = await isCityOpen({
-          data: {
-            citycode,
-            provinceCode
-          }
-        })
+      const res = await isCityOpen({
+        citycode,
+        provinceCode
+      })
       console.log(res,"22222222")
     } catch (error) {
       console.error(error)
@@ -53,10 +51,10 @@ export default class Home extends Component {
 
   async componentWillMount(){
     const addressMsg = await this.getAddressMsg()
-    const isCityOpen = this.checkIsCityOpen()
-    this.setState({
+    await this.setState({
       addressMsg
     })
+    const isCityOpen = this.checkIsCityOpen()
   }
 
   componentDidMount() {
