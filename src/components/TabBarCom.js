@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import { TabBar, SearchBar, Flex } from 'antd-mobile-rn';
-import color from '../styles/var'
+import Color from '../styles/var'
 
 const styles = StyleSheet.create({
   box:{
     backgroundColor: '#fff',
     borderTopWidth: 1,
-    borderColor: color.mainGreen,
+    borderColor: Color.mainGreen,
     paddingVertical: 6
   },
   tabbatItem:{
@@ -58,32 +58,35 @@ export default class TabBarCom extends React.Component {
   //   })
   // }
   selecteBar = (type) => {
+    const { navigate } = this.props
     this.setState({
       selected: type
     })
+    navigate(type, {})
   } 
 
   render(){
     const { selected, tabBarData } = this.state
+    console.log(selected,"~~~selected")
     return (
       <Flex justify='around' style={styles.box}>
-        <TouchableOpacity onPress={this.selecteBar.bind(this, 'home')}>
+        <TouchableOpacity onPress={this.selecteBar.bind(this, 'HomePage')}>
           <Flex direction="column" style={styles.tabbatItem}>
-            <Image style={styles.tabbarImg} source={selected === 'home' ? require('../images/homeActive.png') : require('../images/home.png')} />
-            <Text style={[styles.tabbarText, { color: selected === 'home' ? color.mainGreen : '#333' }]} >首页</Text>
+            <Image style={styles.tabbarImg} source={selected === 'HomePage' ? require('../images/homeActive.png') : require('../images/home.png')} />
+            <Text style={[styles.tabbarText, { color: selected === 'HomePage' ? Color.mainGreen : '#333' }]} >首页</Text>
           </Flex>
         </TouchableOpacity>
         
-        <TouchableOpacity onPress={this.selecteBar.bind(this, 'find')}>
+        <TouchableOpacity onPress={this.selecteBar.bind(this, 'FindPage')}>
           <Flex direction="column" style={styles.tabbatItem}>
-            <Image style={styles.tabbarImg} source={selected === 'find' ? require('../images/findActive.png') : require('../images/find.png')} />
-            <Text style={[styles.tabbarText, { color: selected === 'find' ? color.mainGreen : '#333' }]} >发现</Text>
+            <Image style={styles.tabbarImg} source={selected === 'FindPage' ? require('../images/findActive.png') : require('../images/find.png')} />
+            <Text style={[styles.tabbarText, { color: selected === 'FindPage' ? Color.mainGreen : '#333' }]} >发现</Text>
           </Flex>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.selecteBar.bind(this, 'my')}>
+        <TouchableOpacity onPress={this.selecteBar.bind(this, 'MyPage')}>
           <Flex direction="column" style={styles.tabbatItem}>
-            <Image style={styles.tabbarImg} source={selected === 'my' ? require('../images/myActive.png') : require('../images/my.png')} />
-            <Text style={[styles.tabbarText, { color: selected === 'my' ? color.mainGreen : '#333' }]} >我的</Text>
+            <Image style={styles.tabbarImg} source={selected === 'MyPage' ? require('../images/myActive.png') : require('../images/my.png')} />
+            <Text style={[styles.tabbarText, { color: selected === 'MyPage' ? Color.mainGreen : '#333' }]} >我的</Text>
           </Flex>
         </TouchableOpacity>
         {/* <Flex direction="column">
