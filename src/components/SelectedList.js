@@ -25,7 +25,7 @@ export default (WrappedComponent) => {
       })
       this.props.onPress(subSkuId)
     }
-    
+
     renderList = (data) => {
       const { selectedObj, subSkuId } = this.state
       return data.map((item, index) => {

@@ -37,8 +37,10 @@ export default class NumberSelect extends Component {
     if (number < 1 && num < 0) return false
     this.setState({
       number: number + num
+    }, () => {
+      this.props._onPress(number + num)
     })
-    this.props._onPress(number + num)
+    
   }
 
   render() {

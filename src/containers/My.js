@@ -23,6 +23,11 @@ const styles = StyleSheet.create({
         height: 300,
         resizeMode: 'contain'
     },
+    topBackground1:{
+        width:null,
+        height:220,
+        resizeMode:'contain'
+    },
     image: {
         width: null,
         height: 140,
@@ -263,7 +268,7 @@ export default class My extends Component {
                 }>
                 <Flex direction={"row"}>
                     <Flex.Item>
-                        <ImageBackground style={styles.topBackground} source={require('../images/my/background.png')}>
+                        <ImageBackground style={this.state.isLogin === '1'?styles.topBackground:styles.topBackground1} source={require('../images/my/background.png')}>
                             {this.state.isLogin !== '1' ?
                                 <View style={styles.content}>
                                     <Image style={styles.userIcon}

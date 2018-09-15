@@ -57,7 +57,7 @@ export default class App extends Component {
 
     registerUser = async ()=>{
         try{
-            await AsyncStorage.clear()
+
             const openId = await AsyncStorage.multiGet(['openId','userId']);
 
             if(!openId[0][1] || !openId[1][1]){
@@ -126,7 +126,6 @@ export default class App extends Component {
 
     }
 
-
     render() {
         return (
             <Provider store={store}>
@@ -135,4 +134,6 @@ export default class App extends Component {
 
         );
     }
+       
 }
+

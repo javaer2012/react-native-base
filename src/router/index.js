@@ -109,10 +109,10 @@ export default StackNavigator({
     FindPage:Find,
     ScorePage:Score,
     KnowScorePage:KnowScore,
-    ProductDetailPage: ProductDetailPage,
+    ProductDetail: ProductDetailPage,
     ProductParameterPage: ProductParameterPage,
     ProductListPage: ProductListPage,
-    OrderInfo: OrderInfo,
+    OrderInfo: OrderInfo,  // 租机信息
     MyInstallmentPage: MyInstallmentPage,
     MyOrder: MyOrder,
     WorkerEnter: WorkerEnter,
@@ -123,7 +123,6 @@ export default StackNavigator({
     PayResult,
     TakePicturePage:TakePicture
 }, {
-    initialRouteName: 'MyPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
