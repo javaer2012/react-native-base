@@ -15,7 +15,7 @@ export default class RentApp extends Component{
             console.log(ids)
             this.openId = ids[0][1]
             this.userId = ids[1][1]
-            this.cityCode = JSON.parse(ids[2][1]).citycode
+            this.cityCode = JSON.parse(ids[2][1]).cityCode
             this.provinceCode = JSON.parse(ids[2][1]).provinceCode
         } catch (e) {
 
