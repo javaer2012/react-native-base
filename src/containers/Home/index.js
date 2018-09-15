@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, ScrollView, AsyncStorage } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, ScrollView, AsyncStorage, Dimensions } from 'react-native'
 import { Button, Carousel, List } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/home'
 import ProudcuItem from '../../components/ProudcuItem'
@@ -9,23 +9,63 @@ import TabBarCom from '../../components/TabBarCom'
 import Location from '../../components/Location'
 import api from '../.././service/api'
 
-const { isCityOpen, getBannerAndNav, hotProducts } = api
+const { isCityOpen, getBannerAndNav, hotProducts, AmapRegeo, HTTP_IMG } = api
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
+
+const BANNER_HEIGHT = WIDTH / 75 * 42
 
 
 
 export default class Home extends Component {
   state = {
     bannerList: [1, 2, 3],
-    products: [],
+    hotPhoneList: [],
     addressMsg:{},
     value: [],
     pickerValue: [],
+  }
+  // 地址相关
+  getCityFun = async (lat, lon) => {
+    try {
+      const { data } = await AmapRegeo(lat, lon)
+      const {
+                status,
+        infocode,
+        regeocode: {
+                    addressComponent: {
+                        district, city, citycode, adcode
+                    }
+                }
+            } = data
+      const addressObj = {
+        district,
+        cityCode: adcode,
+        provinceCode: citycode
+      }
+
+      await AsyncStorage.setItem('addressInfos', JSON.stringify(addressObj));
+      // console.log("=====>cityMsg!!!!!!", JSON.stringify(regeocode))
+    } catch (error) {
+      console.error(error)
+    }
+  }
+  // 地址相关
+  beginWatch = () => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => {
+        const { latitude, longitude } = coords
+        this.getCityFun(latitude, longitude)
+      },
+      (error) => alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    )
   }
 
   // 从缓存中取出位置信息对象
   getAddressMsg = async () => {
     try {
       const value = await AsyncStorage.getItem('addressInfos');
+      // console.log(value,"~~~~~~~33")
       if (value !== null) {
         // We have data!!
         return JSON.parse(value);
@@ -36,13 +76,13 @@ export default class Home extends Component {
   }
 
   checkIsCityOpen = async () => {
-    const { addressMsg: {citycode, provinceCode} } = this.state
+    const { addressMsg: { cityCode, provinceCode} } = this.state
     try {
       const res = await isCityOpen({
-        citycode,
+        cityCode,
         provinceCode
       })
-      console.log(res,"22222222")
+      // console.log(res,"22222222")
     } catch (error) {
       console.error(error)
     }
@@ -50,6 +90,7 @@ export default class Home extends Component {
 
 
   async componentWillMount(){
+    await this.beginWatch()
     const addressMsg = await this.getAddressMsg()
     await this.setState({
       addressMsg
@@ -57,15 +98,23 @@ export default class Home extends Component {
     const isCityOpen = this.checkIsCityOpen()
   }
 
-  componentDidMount() {
-    const { bannerList, navList } = bannerNav_mock
-    const { hotPhoneList } = productList_mock
+  async componentDidMount() {
+    try {
+      const { data: getBannerAndNavData , data: { bannerList, navList } } = await getBannerAndNav({})
+      const { data: hotProductsData, data:{ hotMealList, hotPhoneList }} = await hotProducts({
+        provinceCode: "844",
+        cityCode: "84401"
+      })
 
-    this.setState({
-      bannerList,
-      navList,
-      products: hotPhoneList
-    })
+      this.setState({
+        bannerList,
+        navList,
+        hotPhoneList,
+        hotMealList: hotMealList
+      })
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   // 渲染热销商品
@@ -74,9 +123,11 @@ export default class Home extends Component {
     if (!data || !(data instanceof Array)) return false
     return data.map((item, index) => {
       return (
-        <View key={index}>
+        <View key={item.id || index}>
           <ProudcuItem data={item}>
-            <Button onClick={() => navigate('ProductDetailPage', {})} style={{ width: 66, backgroundColor: Color.mainPink }} size='small'>
+            <Button 
+              onClick={() => navigate('ProductDetail', {productId: item.id})} 
+              style={{ width: 66, backgroundColor: Color.mainPink }} size='small'>
               <Text style={{ color: '#fff' }}>去购买</Text>
             </Button>
           </ProudcuItem>
@@ -94,7 +145,8 @@ export default class Home extends Component {
   }
 
   render() {
-    const { bannerList, navList, products, addressMsg } = this.state
+    const { bannerList, navList, hotPhoneList, addressMsg } = this.state
+    console.log(hotPhoneList,"hotPhoneListhotPhoneList")
     const { navigate } = this.props.navigation;
     // return (
     //   <View>
@@ -134,9 +186,9 @@ export default class Home extends Component {
           </View>
           <View style={styles.productListBox}>
             <Text style={styles.listTitle}>推荐产品</Text>
-            {this.renderList(products)}
+            {this.renderList(hotPhoneList)}
             {/* <ProductList 
-              data={products}
+              data={hotPhoneList}
             /> */}
           </View>
           
@@ -150,18 +202,17 @@ export default class Home extends Component {
   }
 
   renderBanner = (list) => {
-    return list.map((item, index) => (
-      <View
-        key={index}
-        style={[styles.containerHorizontal, { backgroundColor: 'yellow' }]}
-      >
-        {/* <Image
-          source={item.imgPath}
-        /> */}
-        <Text>
-          1122
-        </Text>
-      </View>))
+    return list.map((item, index) =>{ 
+      return (
+        <View
+          key={item.id || index}
+          style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
+        > 
+          <Image resizeMode="stretch" style={{ width: WIDTH, height: BANNER_HEIGHT }} source={{ uri: `${HTTP_IMG}${item.imgPath}`}}/>
+        </View>
+      )
+    }
+    )
   }
   renderNavList = (list) => {
     const { navigate } = this.props.navigation;
@@ -171,10 +222,10 @@ export default class Home extends Component {
         style={[styles.navItem]}
         onPress={() => navigate('ProductListPage', {})}
       >
-        <Image
-          style={{ width: 49, height: 49 }}
-          source={require('../../images/find.png')}
-        //  || data.imgPath
+        <Image 
+          style={{ width: 49, height: 49 }} 
+          resizeMode="stretch" 
+          source={{ uri: `${HTTP_IMG}${item.imgPath}` }} 
         />
         <Text style={{ textAlign: 'center' }}>
           {item.navTitle}

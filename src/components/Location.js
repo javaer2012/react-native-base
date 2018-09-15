@@ -5,7 +5,6 @@ import { List, Picker } from 'antd-mobile-rn';
 import { district } from 'antd-mobile-demo-data';
 import api from '../../src/service/api'
 import { cityJSON } from '../utils/cityJSON'
-console.log(cityJSON,";;;;")
 
 const { setCrmCode } = api
 
@@ -31,6 +30,7 @@ const CustomChildren = (props) => (
 export default class PopupExample extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       data: [],
       value: [],
@@ -55,7 +55,7 @@ export default class PopupExample extends React.Component {
 
       const addressObj = {
         district: admCityName,
-        citycode: v[0],
+        cityCode: v[0],
         provinceCode: v[1]
       }
       await AsyncStorage.setItem('addressInfos', JSON.stringify(addressObj));

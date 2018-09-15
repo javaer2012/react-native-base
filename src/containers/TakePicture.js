@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     AppRegistry,
     Dimensions,
@@ -8,8 +8,14 @@ import {
     View
 } from 'react-native';
 import Camera from 'react-native-camera';
+import {Flex} from 'antd-mobile-rn'
 
 export default class TakePicture extends Component {
+
+    state = {
+        type: Camera.constants.Type.back
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -19,12 +25,28 @@ export default class TakePicture extends Component {
                     }}
                     cropToPreview={true}
                     onBarCodeRead={this.onBarCodeRead.bind(this)}
+                    captureTarget={Camera.constants.CaptureTarget.temp}
                     style={styles.preview}
-                    aspect={Camera.constants.Aspect.fill}>
-                    <Text style={styles.capture} onPress={this.takePicture.bind(this)}>[CAPTURE]</Text>
+                    aspect={Camera.constants.Aspect.fill}
+                    type={this.state.type}
+                >
+                    <Flex direction={"row"} justify={"around"}>
+                        <Text style={styles.capture} onPress={this.takePicture.bind(this)}>拍照</Text>
+                        <Text style={styles.capture} onPress={this.changeCamera.bind(this)}>切换</Text>
+                    </Flex>
                 </Camera>
             </View>
         );
+    }
+
+    changeCamera() {
+        let type = Camera.constants.Type.back;
+        if (this.state.type === Camera.constants.Type.back) {
+            type = Camera.constants.Type.front
+        }
+        this.setState({
+            type
+        })
     }
 
     onBarCodeRead(e) {

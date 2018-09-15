@@ -14,8 +14,10 @@ import {AsyncStorage} from 'react-native';
 import {setData,getData} from './src/utils/storage'
 import {getToken} from "./src/service/api";
 import api from './src/service/api'
+import config from './src/config';
+import {ActivityIndicator} from 'antd-mobile-rn'
 
-const { AmapRegeo } = api
+const { AmapRegeo,registerUser,isCityOpen } = api
 
 export default class App extends Component {
 
@@ -26,9 +28,55 @@ export default class App extends Component {
         /**
          * App initialize
          */
+        this.registerUser();
+        this.isOpen()
     }
     componentWillMount(){
         this.beginWatch()
+    }
+
+    isOpen = async ()=>{
+        try{
+
+            const params = {
+                provinceCode:844,
+                cityCode:84402,
+                openId:config.authAppId,
+            }
+
+            const rsp = await isCityOpen(params);
+            if(rsp.data.errmsg === 'ok'){
+                await AsyncStorage.setItem('isCityOpen',rsp.data.isOpen)
+            }
+            console.log(rsp)
+
+        } catch (e) {
+
+        }
+    }
+
+    registerUser = async ()=>{
+        try{
+            const openId = await AsyncStorage.multiGet(['openId','userId']);
+
+            if(!openId[0][1] || !openId[1][1]){
+                const params = {
+                    provinceCode:844,
+                    cityCode:84401,
+                    openId:config.authAppId
+                }
+                const register = await registerUser(params);
+                const {data} = register;
+                if(data.errcode === 1){
+                    const {openId,userId} = data;
+                    await AsyncStorage.multiSet([['openId',openId],['userId',userId]])
+                }
+                console.log(register)
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     getCityFun = async (lat, lon) => {
@@ -74,20 +122,8 @@ export default class App extends Component {
             (error) => alert(error.message),
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
         )
-        //  Geolocation.watchPosition(
-        //    ({ coords }) => {
-        //      debugger
-        //       // return location
-        //      const { latitude, longitude } = coords
 
-        //      this.getCityFun( latitude, longitude )
-        //     },
-        //     error => {
-        //       alert("获取位置失败：" + error)
-        //     }
-        //   )
     }
-
 
     render() {
         return (
@@ -97,4 +133,6 @@ export default class App extends Component {
 
         );
     }
+       
 }
+
