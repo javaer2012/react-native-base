@@ -30,6 +30,7 @@ const CustomChildren = (props) => (
 export default class PopupExample extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       data: [],
       value: [],

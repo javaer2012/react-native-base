@@ -57,7 +57,6 @@ export default class App extends Component {
 
     registerUser = async ()=>{
         try{
-
             const openId = await AsyncStorage.multiGet(['openId','userId']);
 
             if(!openId[0][1] || !openId[1][1]){

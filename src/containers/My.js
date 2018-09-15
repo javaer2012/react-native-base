@@ -15,6 +15,7 @@ import {List, WingBlank, WhiteSpace, Flex} from 'antd-mobile-rn';
 import Button from "../components/common/Button";
 import Canvas from 'react-native-canvas';
 import api from "../service/api";
+import RentApp from "../components/RentApp";
 
 
 const styles = StyleSheet.create({
@@ -173,7 +174,7 @@ function canvasScore(ctx, getScore, getTime) {
 };
 //canvasScore('Canvas', 200, '2018-08-09');
 
-export default class My extends Component {
+export default class My extends RentApp {
     static navigationOptions = {
         title: "我的"
     }
@@ -201,12 +202,11 @@ export default class My extends Component {
         try {
             const user = await AsyncStorage.multiGet(['userId', 'openId', 'isLogin', 'addressInfos'])
             console.log(user)
-            const userId = user[0][1] || null,
-                openId = user[1][1] || null,
+            const userId = this.userId,
+                openId = this.openId,
                 isLogin = user[2][1] || false,
-                addressInfo = JSON.parse(user[3][1]) || {},
-                cityCode = addressInfo.citycode,
-                provinceCode = addressInfo.provinceCode;
+                cityCode = this.cityCode,
+                provinceCode = this.provinceCode;
 
             const params = {
                 userId,
@@ -226,7 +226,10 @@ export default class My extends Component {
                     ...data.userInfo
                 }
 
+                console.log(newState)
+
                 this.setState(newState, async () => {
+                    console.log("setState")
                     await AsyncStorage.multiSet([['openId', openId], ['userId', userId],['userInfo',JSON.stringify(newState)]])
                 })
             }

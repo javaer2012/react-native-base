@@ -47,7 +47,7 @@ export default class Login extends RentApp {
                 if(data.errcode === 1){
                     const {userInfo} = data
                     await AsyncStorage.multiSet([['userId',userInfo.userId],['isLogin','1']])
-                    this.props.navigation.navigate('MyPage')
+                    this.props.navigation.push('MyPage')
                 } else {
                     Toast.info(data.errmsg,2)
                 }
