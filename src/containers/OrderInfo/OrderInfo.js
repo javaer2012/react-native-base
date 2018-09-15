@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, Button } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, Button, Dimensions } from 'react-native'
 import { Flex } from 'antd-mobile-rn';
 // import { orderInfo_mock } from '../../mock/ProductDetailPage'
 import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow, contentPadding } from '../../styles/common'
 import Color from '../../styles/var'
+import api from '../.././service/api'
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
+const { queryOrderDetail, HTTP_IMG } = api
 
 const bgf = {
   backgroundColor: '#fff'
@@ -16,7 +19,20 @@ export default class OrderInfo extends Component {
     completePay: false
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const { data } = await queryOrderDetail({
+      provinceCode: "844",
+      cityCode: "84401",
+      orderId: '13432445'
+    })
+    if (data.errcode === 1) {
+      
+    } else{
+      // data.errcode
+      console.error(data.errmsg|| '网络有误')
+    }
+
+    // debugger
   }
 
   render() {

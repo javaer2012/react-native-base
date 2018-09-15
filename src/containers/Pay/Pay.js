@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator, TextInput, Dimensions } from 'react-native'
 import { Flex, List, ImagePicker, Button, WhiteSpace } from 'antd-mobile-rn';
 // import { orderInfo_mock } from '../../mock/ProductDetailPage'
 import Color from '../../styles/var'
 import Progress from '../../components/Progress'
+import api from '../.././service/api'
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
+const { payment, HTTP_IMG } = api
 
 const bgf = {
   backgroundColor: '#fff'
@@ -17,6 +20,15 @@ export default class Pay extends Component {
 
   componentDidMount() {
 
+  }
+
+  goToPay = async () => {
+    try {
+      const { data } = await payment()
+      console.log(data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   render() {
@@ -39,7 +51,7 @@ export default class Pay extends Component {
           </Text>
         </Flex>
         <Flex style={{marginTop: 0, width: '100%', padding: 20}}>
-          <Button style={{flexGrow: 1}}>立即支付</Button>
+          <Button onClick={this.goToPay} style={{flexGrow: 1}}>立即支付</Button>
         </Flex>
         
         {/* <ActivityIndicator /> */}

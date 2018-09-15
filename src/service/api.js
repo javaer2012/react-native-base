@@ -8,6 +8,8 @@ axios.defaults.timeout =  6000;
 
 var url = 'https://mobile2.lychee-info.cn/cps-rest'
 
+export const HTTP_IMG = 'https://mobile2.lychee-info.cn/cps-rest/showImg?fileName='
+
 var sourceType = { sourceType: 3};
 	
 // 高德地图web服务 key
@@ -112,8 +114,10 @@ export default {
     	params["sourceType"] = 3;
     	return new Promise((resolve,reject) => {
     		getToken( token => {
-					debugger
-    			axios.post(`${url}/index/isCityOpen`, params, {
+    			axios.post(`${url}/index/isCityOpen`, qs.stringify({
+						provinceCode: "610103",
+						cityCode: "029"
+					}), {
     				headers: {
     	            	'Content-Type': 'application/x-www-form-urlencoded',
     	            	'Authorization': 'Bearer ' + token
@@ -751,5 +755,24 @@ export default {
 				});
 			});
 		});
-	}
+	},
+	HTTP_IMG: 'https://mobile2.lychee-info.cn/cps-rest/showImg?fileName='
+
+	//营业员提交订单接口
+	// HTTP_IMG (params) {
+	// 	params["sourceType"] = 3;
+	// 	return new Promise((resolve, reject) => {
+	// 		getToken(token => {
+	// 			axios.get(`https://mobile2.lychee-info.cn/showImg?fileName=${params}`, {
+	// 				headers: {
+	// 					'Content-Type': 'application/json;charset=UTF-8',
+	// 					'Authorization': 'Bearer ' + token
+	// 				}
+	// 			}).then(res => {
+	// 				resolve(res);
+	// 			});
+	// 		});
+	// 	});
+	// }
+
 }

@@ -1,11 +1,15 @@
-import { Text, View, StyleSheet, Image } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { flexRow, mainPink } from '../styles/common'
 // , contentPadding, mainPink
 const HEIGHT_LINE = 20
-export default ({ collectStatus }) => {
+export default ({ collectStatus, onTollectCollect }) => {
+  const tollectCollect = () => {
+    const newCollectStatus = collectStatus === 1 ? 0 : 1
+    onTollectCollect(newCollectStatus)
+  }
   return (
-    <View style={[flexRow, {alignItems: 'center'}]}>
+    <TouchableOpacity onPress={tollectCollect} style={[flexRow, {alignItems: 'center'}]}>
       <Image
         style={{ width: HEIGHT_LINE - 4, height: HEIGHT_LINE -4 }}
         source={
@@ -16,7 +20,7 @@ export default ({ collectStatus }) => {
           { color: collectStatus !== 1 ? '#ccc' : mainPink.color },
           { lineHeight: HEIGHT_LINE, height: HEIGHT_LINE, marginLeft: 4 } 
         ]}>收藏</Text>
-    </View>
+    </TouchableOpacity>
   )
   // return class CollectHoc extends React.Component {
   //   collectFun = () => {
