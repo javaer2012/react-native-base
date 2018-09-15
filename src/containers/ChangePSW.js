@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import {Image, ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {List,InputItem,Button,WingBlank,WhiteSpace,Flex} from 'antd-mobile-rn';
+import {AsyncStorage, Image, ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {List,InputItem,Button,WingBlank,WhiteSpace,Toast} from 'antd-mobile-rn';
+import api from "../service/api";
+import RentApp from "../components/RentApp";
 
 
-export default class ChangePSW extends Component{
+export default class ChangePSW extends RentApp{
     static navigationOptions = {
         title:"修改密码"
     }
@@ -16,6 +18,30 @@ export default class ChangePSW extends Component{
         super(props)
     }
 
+    async changePsw(){
+        try{
+
+            const params = {
+                openId:this.openId,
+                userId : this.userId,
+                password:this.state.oPSW,
+                newPassword:this.state.nPSW
+            }
+
+            const rsp = await api.appModifyPSW(params);
+            console.log(rsp)
+            const {data} = rsp
+            if(data.errcode === 1){
+                Toast.info("修改密码成功",2)
+                setTimeout(()=>this.props.navigation.navigate("LoginPage"),2000)
+            } else {
+                Toast.info(data.errmsg)
+            }
+        } catch (e) {
+
+        }
+    }
+
 
     render(){
 
@@ -26,7 +52,7 @@ export default class ChangePSW extends Component{
             <ScrollView>
                 <WingBlank size="md">
                     <List renderHeader={()=>""} >
-                        <InputItem type="text" value={oPSW}
+                        <InputItem type="password" value={oPSW}
                                    onChange={(oPSW)=>this.setState({oPSW})}
                                    placeholder={"请输入旧密码"}>
                             <Image
@@ -47,7 +73,7 @@ export default class ChangePSW extends Component{
 
                     </List>
                     <WhiteSpace size={"xl"}/>
-                    <Button style={styles.btn} onClick={()=>navigation.navigate("LoginPage")}>完成</Button>
+                    <Button style={styles.btn} onClick={this.changePsw.bind(this)}>完成</Button>
 
                 </WingBlank>
             </ScrollView>

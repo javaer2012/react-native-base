@@ -5,8 +5,16 @@ import {AsyncStorage} from 'react-native';
 import config from '../config';
 axios.defaults.timeout =  6000;
 
+axios.interceptors.response.use(function (response) {
+    // 对响应数据做点什么
+    return response;
+}, function (error) {
+    // 对响应错误做点什么
+    return Promise.reject(error);
+});
 
-var url = 'https://mobile2.lychee-info.cn/cps-rest'
+const url = 'https://mobile2.lychee-info.cn/cps-rest';
+const appUrl = 'https://mobile2.lychee-info.cn/app'
 
 var sourceType = { sourceType: 3};
 	
@@ -439,7 +447,7 @@ export default {
     	        	}
     			}).then(res => {
     				resolve(res); //这里调resolve方法，则then方法会被调用
-    			});
+    			}).catch(err=>reject(err));
     		});
     	});
 	},
@@ -698,6 +706,72 @@ export default {
 				});
 			});
 		});
+	},
+
+	appLogin(params){
+        params['sourceType'] = 3
+		return new Promise((resolve,reject)=>{
+			getToken(token=>{
+				axios.post(`${url}/app/login`,JSON.stringify(params),{
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8',
+                        'Authorization': 'Bearer ' + token
+                    }
+                }).then(res=>resolve(res))
+					.catch(err=>reject(err))
+			})
+		})
+    },
+
+	appCheckSMSCode(params){
+		params['sourceType'] = 3
+		return new Promise((resolve,reject)=>{
+			getToken(token=>{
+				axios.post(`${url}/app/checkVerifyCode`,JSON.stringify(params),{
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8',
+                        'Authorization': 'Bearer ' + token
+                    }
+                }).then(res=>{
+                    resolve(res)
+                })
+                    .catch(err=>reject(err))
+			})
+		})
+	},
+
+    appModifyPSW(params){
+        params['sourceType'] = 3
+        return new Promise((resolve,reject)=>{
+            getToken(token=>{
+                axios.post(`${url}/app/modifyPassword`,JSON.stringify(params),{
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8',
+                        'Authorization': 'Bearer ' + token
+                    }
+                }).then(res=>{
+                    resolve(res)
+                })
+                    .catch(err=>reject(err))
+            })
+        })
+    },
+
+	registerAndBind(params){
+		params['sourceType'] = 3
+		return new Promise((resolve,reject)=>{
+			getToken(token=>{
+				axios.post(`${url}/app/registerAndBind`,JSON.stringify(params),{
+                    headers: {
+                        'Content-Type': 'application/json;charset=UTF-8',
+                        'Authorization': 'Bearer ' + token
+                    }
+                })
+					.then(res=>{
+						resolve(res)
+					})
+			})
+		})
 	},
 
 	//用户登记，获取userId；

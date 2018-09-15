@@ -9,25 +9,24 @@ import {
     RefreshControl,
     ImageBackground,
     Platform,
-    TabBarIOS
+    AsyncStorage
 } from 'react-native';
-import {List, InputItem, WingBlank, WhiteSpace, Flex,TabBar} from 'antd-mobile-rn';
+import {List, WingBlank, WhiteSpace, Flex} from 'antd-mobile-rn';
 import Button from "../components/common/Button";
 import Canvas from 'react-native-canvas';
+import api from "../service/api";
 
-const TabItem = TabBar.Item;
-const IOSItem = TabBarIOS.Item;
 
 const styles = StyleSheet.create({
     topBackground: {
         width: null,
         height: 300,
-        resizeMode:'contain'
+        resizeMode: 'contain'
     },
-    image:{
+    image: {
         width: null,
         height: 140,
-        resizeMode:'stretch'
+        resizeMode: 'stretch'
     },
     content: {
         display: "flex",
@@ -35,10 +34,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignContent: 'center'
     },
-    canvasContent:{
-        paddingTop:10,
-        paddingLeft:Platform.OS === 'android'? 55 :35,
-        width:375
+    canvasContent: {
+        paddingTop: 10,
+        paddingLeft: Platform.OS === 'android' ? 55 : 35,
+        width: 375
     },
     userIcon: {
         width: 126,
@@ -170,7 +169,9 @@ function canvasScore(ctx, getScore, getTime) {
 //canvasScore('Canvas', 200, '2018-08-09');
 
 export default class My extends Component {
-
+    static navigationOptions = {
+        title: "我的"
+    }
     state = {
         refreshing: false,
         isLogin: false,
@@ -178,6 +179,10 @@ export default class My extends Component {
 
     constructor(props) {
         super(props)
+
+        console.log("Page My")
+
+        this.initalState()
 
         this.onRefresh = this.onRefresh.bind(this)
     }
@@ -187,197 +192,252 @@ export default class My extends Component {
         setTimeout(() => this.setState({refreshing: false}), 2000)
     }
 
+    async initalState() {
+        try {
+            const user = await AsyncStorage.multiGet(['userId', 'openId', 'isLogin', 'addressInfos'])
+            console.log(user)
+            const userId = user[0][1] || null,
+                openId = user[1][1] || null,
+                isLogin = user[2][1] || false,
+                addressInfo = JSON.parse(user[3][1]) || {},
+                cityCode = addressInfo.citycode,
+                provinceCode = addressInfo.provinceCode;
+
+            const params = {
+                userId,
+                openId,
+                cityCode,
+                provinceCode,
+            }
+
+            const rsp = await api.getUserInfo(params)
+
+            const {data} = rsp
+
+            if (data.errcode === 1) {
+
+                const newState = {
+                    isLogin,
+                    ...data.userInfo
+                }
+
+                this.setState(newState, async () => {
+                    await AsyncStorage.multiSet([['openId', openId], ['userId', userId],['userInfo',JSON.stringify(newState)]])
+                })
+            }
+
+            console.log(rsp)
+        } catch (e) {
+
+        }
+    }
+
+    componentDidMount(){
+        console.log("Mount Again")
+    }
+
+    componentWillUnmount(){
+        console.log("UnMount")
+    }
+
     handleCanvas(canvas) {
         if (canvas) {
             canvas.height = 230;
         }
         const ctx = canvas.getContext('2d');
-        canvasScore(ctx, 600, '2018-09-12')
+        canvasScore(ctx, this.state.userScore = 0, '2018-09-12')
     }
 
     render() {
 
+        console.log(this.state)
+
         const {navigation} = this.props
         return (
-                <ScrollView
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this.onRefresh}
-                        />
-                    }>
-                    <Flex direction={"row"}>
-                        <Flex.Item>
-                            <ImageBackground style={styles.topBackground} source={require('../images/my/background.png')}>
-                                {!this.state.isLogin ?
-                                    <View style={styles.content}>
-                                        <Image style={styles.userIcon} source={require('../images/imageNew/one/userIcon.png')}/>
-                                        <WhiteSpace size={"xl"}/>
-                                        <Flex direction={"row"} justify={"around"}>
-                                            <Button onClick={() => navigation.navigate('LoginPage')}>登录</Button>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}
+                    />
+                }>
+                <Flex direction={"row"}>
+                    <Flex.Item>
+                        <ImageBackground style={styles.topBackground} source={require('../images/my/background.png')}>
+                            {this.state.isLogin !== '1' ?
+                                <View style={styles.content}>
+                                    <Image style={styles.userIcon}
+                                           source={require('../images/imageNew/one/userIcon.png')}/>
+                                    <WhiteSpace size={"xl"}/>
+                                    <Flex direction={"row"} justify={"around"}>
+                                        <Button onClick={() => navigation.navigate('LoginPage')}>登录</Button>
 
-                                            <Button onClick={() => navigation.navigate('LoginPage')}>立即激活</Button>
-
-
-                                        </Flex>
-                                    </View> :
-                                    <Flex direction={"column"} align={"center"} justify={"center"} >
-                                        <Canvas ref={this.handleCanvas}/>
-                                        <Flex direction={"row"} >
-                                            <Flex.Item>
-                                               <Flex direction={"row"} justify={"center"} align={"center"}>
-                                                   <Button style={{height:27,lineHeight:27,fontSize:12}}
-                                                           onClick={()=>navigation.navigate('ScorePage')}>晒晒我的信用分</Button>
-                                               </Flex>
-                                            </Flex.Item>
-
-                                            <Flex.Item>
-                                                <Flex direction={"row"} justify={"center"} align={"center"}>
-                                                <Button style={{height:27,lineHeight:27,fontSize:12}}
-                                                        onClick={()=>navigation.navigate('KnowScorePage')}>了解我的信用分</Button>
-                                                </Flex>
-                                            </Flex.Item>
-                                        </Flex>
-                                    </Flex>}
-                            </ImageBackground>
-                        </Flex.Item>
-                    </Flex>
+                                        <Button onClick={() => navigation.navigate('LoginPage')}>立即激活</Button>
 
 
+                                    </Flex>
+                                </View> :
+                                <Flex direction={"column"} align={"center"} justify={"center"}>
+                                    <Canvas ref={this.handleCanvas.bind(this)}/>
+                                    <Flex direction={"row"}>
+                                        <Flex.Item>
+                                            <Flex direction={"row"} justify={"center"} align={"center"}>
+                                                <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
+                                                        onClick={() => navigation.navigate('ScorePage')}>晒晒我的信用分</Button>
+                                            </Flex>
+                                        </Flex.Item>
+
+                                        <Flex.Item>
+                                            <Flex direction={"row"} justify={"center"} align={"center"}>
+                                                <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
+                                                        onClick={() => navigation.navigate('KnowScorePage', {
+                                                            score: this.state.userScore ? this.state.userScore : 0
+                                                        })}>了解我的信用分</Button>
+                                            </Flex>
+                                        </Flex.Item>
+                                    </Flex>
+                                </Flex>}
+                        </ImageBackground>
+                    </Flex.Item>
+                </Flex>
 
 
-                    <Flex direction={'row'} style={{backgroundColor: 'white'}}>
+                <Flex direction={'row'} style={{backgroundColor: 'white'}}>
 
-                        <Flex.Item style={{width: 128, height: 65,paddingTop:15}}>
-                            <Flex direction={'row'} justify={"center"} align={"center"}>
-                                <WingBlank size={"sm"}>
-                                    <Image style={{height: 40, width: 40}}
-                                           source={require('../images/my/favorite.png')}/>
+                    <Flex.Item style={{width: 128, height: 65, paddingTop: 15}}>
+                        <Flex direction={'row'} justify={"center"} align={"center"}>
+                            <WingBlank size={"sm"}>
+                                <Image style={{height: 40, width: 40}}
+                                       source={require('../images/my/favorite.png')}/>
 
-                                </WingBlank>
-                                <View>
-                                    <Text style={{fontSize:12,marginBottom:5}}>我的收藏</Text>
-                                    <Text style={{fontSize:10,color:'#989898'}}>点击查看您收藏的宝贝</Text>
-                                </View>
-                            </Flex>
-                        </Flex.Item>
-                        <Flex.Item style={{width: 127, height: 65,paddingTop:15, borderLeftWidth: 1, borderLeftColor: 'black'}}>
-                            <Flex direction={'row'} justify={"center"}>
-                                <WingBlank size={"sm"}>
-                                    <Image
-                                        style={{height: 40, width: 40}}
-                                        source={require('../images/my/authHistory.png')}/>
-                                </WingBlank>
-
-                                <View>
-                                    <WhiteSpace size={"xs"}/>
-                                    <Text style={{fontSize:12,marginBottom: 5}}>收藏历史</Text>
-                                    <Text style={{fontSize:10,color:'#989898'}}>点击查看您的收藏历史</Text>
-                                </View>
-                            </Flex>
-                        </Flex.Item>
-                    </Flex>
-
-                    <WhiteSpace size={'lg'}/>
-
-                    <View style={{backgroundColor: 'white'}}>
-                        <WingBlank size={"sm"}>
-                            <WhiteSpace size={'lg'}/>
-                            <Flex direction={'row'}>
-                                <View style={{width:2,height:12,backgroundColor:'#06C1AE',marginRight:5}}></View>
-                                <Text style={{color:'#989898',fontSize:14}}>信用管理</Text>
-                            </Flex>
-                            <WhiteSpace size={'sm'}/>
-                            <Flex direction={'row'} justify={"end"}>
-                                <Flex.Item>
-                                    <TouchableOpacity onPress={() => navigation.navigate("PersonalInfoPage")}>
-                                        <Flex direction={"column"}>
-                                            <WhiteSpace size={"sm"}/>
-                                            <Image style={{width: 30, height: 30}}
-                                                   source={require('../images/my/personalInfo.png')}/>
-                                            <WhiteSpace size={"sm"}/>
-                                            <Text>个人信息</Text>
-                                            <WhiteSpace size={"sm"}/>
-                                        </Flex>
-                                    </TouchableOpacity>
-                                </Flex.Item>
-
-                                <Flex.Item>
-                                    <TouchableOpacity onPress={() => navigation.navigate("BadRecordPage")}>
-                                        <Flex direction={"column"}>
-                                            <WhiteSpace size={"sm"}/>
-                                            <Image style={{width: 30, height: 30}}
-                                                   source={require('../images/my/bad.png')}/>
-                                            <WhiteSpace size={"sm"}/>
-                                            <Text>负面记录</Text>
-                                            <WhiteSpace size={"sm"}/>
-                                        </Flex>
-                                    </TouchableOpacity>
-                                </Flex.Item>
-
-                                <Flex.Item>
-                                    <TouchableOpacity onPress={() => navigation.navigate("AuthRecordPage")}>
-                                        <Flex direction={"column"}>
-                                            <WhiteSpace size={"sm"}/>
-                                            <Image style={{width: 30, height: 30}}
-                                                   source={require('../images/my/authCheck.png')}/>
-                                            <WhiteSpace size={"sm"}/>
-                                            <Text>信用互查</Text>
-                                            <WhiteSpace size={"sm"}/>
-                                        </Flex>
-                                    </TouchableOpacity>
-                                </Flex.Item>
-
-                                <Flex.Item>
-                                    <TouchableOpacity onPress={() => navigation.navigate("MyOrderPage")}>
-                                        <Flex direction={"column"}>
-                                            <WhiteSpace size={"sm"}/>
-                                            <Image style={{width: 30, height: 30}}
-                                                   source={require('../images/my/order.png')}/>
-                                            <WhiteSpace size={"sm"}/>
-                                            <Text>我的订单</Text>
-                                            <WhiteSpace size={"sm"}/>
-                                        </Flex>
-                                    </TouchableOpacity>
-                                </Flex.Item>
-                            </Flex>
-                            <WhiteSpace size={"sm"}/>
-
-                        </WingBlank>
-                    </View>
-                    <WhiteSpace size={"sm"}/>
-
-                    <List style={{backgroundColor:'white'}} renderHeader={
-                        <View>
-                            <WhiteSpace size={"sm"}/>
-                            <Flex direction={"row"}>
-                                <View style={{width:2,height:12,backgroundColor:'#06C1AE',marginRight:5}}/>
-                                <Text style={{color:'#989898',fontSize:14}}>信用生活</Text>
-                            </Flex>
-                            <WhiteSpace size={"sm"}/>
-                            <WingBlank size={"md"}>
-                                <Image style={styles.image} source={require('../images/my/takePhone.png')}/>
+                            </WingBlank>
+                            <View>
+                                <Text style={{fontSize: 12, marginBottom: 5}}>我的收藏</Text>
+                                <Text style={{fontSize: 10, color: '#989898'}}>点击查看您收藏的宝贝</Text>
+                            </View>
+                        </Flex>
+                    </Flex.Item>
+                    <Flex.Item
+                        style={{width: 127, height: 65, paddingTop: 15, borderLeftWidth: 1,borderTop:5,borderBottom:5, borderLeftColor: '#989898'}}>
+                        <Flex direction={'row'} justify={"center"}>
+                            <WingBlank size={"sm"}>
+                                <Image
+                                    style={{height: 40, width: 40}}
+                                    source={require('../images/my/authHistory.png')}/>
                             </WingBlank>
 
-                            <WhiteSpace size={"md"}/>
-                            <TouchableOpacity>
-                                <Flex direction={"row"} justify={"center"}>
-                                    <Text style={{color:'#06C1AE',fontSize:14,textAlign:'center'}}>立即查看</Text>
-                                </Flex>
-                            </TouchableOpacity>
-                            <WhiteSpace size={"md"}/>
+                            <View>
+                                <WhiteSpace size={"xs"}/>
+                                <Text style={{fontSize: 12, marginBottom: 5}}>收藏历史</Text>
+                                <Text style={{fontSize: 10, color: '#989898'}}>点击查看您的收藏历史</Text>
+                            </View>
+                        </Flex>
+                    </Flex.Item>
+                </Flex>
 
-                        </View>
-                    }></List>
+                <WhiteSpace size={'lg'}/>
 
-                    <WhiteSpace size={"sm"}/>
+                <View style={{backgroundColor: 'white'}}>
+                    <WingBlank size={"sm"}>
+                        <WhiteSpace size={'lg'}/>
+                        <Flex direction={'row'}>
+                            <View style={{width: 2, height: 12, backgroundColor: '#06C1AE', marginRight: 5}}></View>
+                            <Text style={{color: '#989898', fontSize: 14}}>信用管理</Text>
+                        </Flex>
+                        <WhiteSpace size={'sm'}/>
+                        <Flex direction={'row'} justify={"end"} align={"start"}>
+                            <Flex.Item>
+                                <TouchableOpacity onPress={() => navigation.navigate("PersonalInfoPage")}>
+                                    <Flex direction={"column"} justify={"start"} >
+                                        <WhiteSpace size={"sm"}/>
+                                        <Image style={{width: 30, height: 30}}
+                                               source={require('../images/my/personalInfo.png')}/>
+                                        <WhiteSpace size={"sm"}/>
+                                        <Text>个人信息</Text>
+                                        <WhiteSpace size={"sm"}/>
+                                    </Flex>
+                                </TouchableOpacity>
+                            </Flex.Item>
 
-                    <List style={{backgroundColor:'white'}} renderHeader={
+                            <Flex.Item>
+                                <TouchableOpacity onPress={() => navigation.navigate("BadRecordPage")}>
+                                    <Flex direction={"column"} justify={"start"} >
+                                        <WhiteSpace size={"sm"}/>
+                                        <Image style={{width: 30, height: 30}}
+                                               source={require('../images/my/bad.png')}/>
+                                        <WhiteSpace size={"sm"}/>
+                                        <Text>负面记录</Text>
+                                        <WhiteSpace size={"sm"}/>
+                                        {
+                                            this.state.negativeCount !== undefined && <Text style={{color:'#07C1AE'}}>{`(${this.state.negativeCount }个)`}</Text>
+                                        }
+                                        </Flex>
+                                </TouchableOpacity>
+                            </Flex.Item>
+
+                            <Flex.Item>
+                                <TouchableOpacity onPress={() => navigation.navigate("AuthRecordPage")}>
+                                    <Flex direction={"column"}>
+                                        <WhiteSpace size={"sm"}/>
+                                        <Image style={{width: 30, height: 30}}
+                                               source={require('../images/my/authCheck.png')}/>
+                                        <WhiteSpace size={"sm"}/>
+                                        <Text>信用互查</Text>
+                                        <WhiteSpace size={"sm"}/>
+                                    </Flex>
+                                </TouchableOpacity>
+                            </Flex.Item>
+
+                            <Flex.Item>
+                                <TouchableOpacity onPress={() => navigation.navigate("MyOrderPage")}>
+                                    <Flex direction={"column"}>
+                                        <WhiteSpace size={"sm"}/>
+                                        <Image style={{width: 30, height: 30}}
+                                               source={require('../images/my/order.png')}/>
+                                        <WhiteSpace size={"sm"}/>
+                                        <Text>我的订单</Text>
+                                        <WhiteSpace size={"sm"}/>
+                                    </Flex>
+                                </TouchableOpacity>
+                            </Flex.Item>
+                        </Flex>
+                        <WhiteSpace size={"sm"}/>
+
+                    </WingBlank>
+                </View>
+                <WhiteSpace size={"sm"}/>
+
+                <List style={{backgroundColor: 'white'}} renderHeader={
+                    <View>
+                        <WhiteSpace size={"sm"}/>
+                        <Flex direction={"row"}>
+                            <View style={{width: 2, height: 12, backgroundColor: '#06C1AE', marginRight: 5}}/>
+                            <Text style={{color: '#989898', fontSize: 14}}>信用生活</Text>
+                        </Flex>
+                        <WhiteSpace size={"sm"}/>
+                        <WingBlank size={"md"}>
+                            <Image style={styles.image} source={require('../images/my/takePhone.png')}/>
+                        </WingBlank>
+
+                        <WhiteSpace size={"md"}/>
+                        <TouchableOpacity>
+                            <Flex direction={"row"} justify={"center"}>
+                                <Text style={{color: '#06C1AE', fontSize: 14, textAlign: 'center'}}>立即查看</Text>
+                            </Flex>
+                        </TouchableOpacity>
+                        <WhiteSpace size={"md"}/>
+
+                    </View>
+                }></List>
+
+                <WhiteSpace size={"sm"}/>
+
+                {this.state.isStaff ? <List style={{backgroundColor: 'white'}} renderHeader={
                         <View>
                             <WhiteSpace size={"sm"}/>
                             <Flex direction={"row"}>
-                                <View style={{width:2,height:12,backgroundColor:'#06C1AE',marginRight:5}}/>
-                                <Text style={{color:'#989898',fontSize:14}}>营业员入口</Text>
+                                <View style={{width: 2, height: 12, backgroundColor: '#06C1AE', marginRight: 5}}/>
+                                <Text style={{color: '#989898', fontSize: 14}}>营业员入口</Text>
                             </Flex>
                             <WhiteSpace size={"sm"}/>
                             <WingBlank size={"md"}>
@@ -386,10 +446,12 @@ export default class My extends Component {
                             <WhiteSpace size={"md"}/>
 
                         </View>
-                    }></List>
+                    }></List> :
+                    null
+                }
 
 
-                </ScrollView>
+            </ScrollView>
 
         )
     }

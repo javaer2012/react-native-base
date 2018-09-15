@@ -1,22 +1,56 @@
 import React,{Component} from 'react';
-import {View, Text, ScrollView, StyleSheet, Image} from 'react-native';
-import {Button, InputItem, List, WhiteSpace, WingBlank} from "antd-mobile-rn";
+import {View, Text, ScrollView, StyleSheet, Image, AsyncStorage} from 'react-native';
+import {Button, InputItem, List, Toast, WhiteSpace, WingBlank} from "antd-mobile-rn";
 import {Flex} from "antd-mobile-rn/lib/flex/index.native";
+import api from '../service/api';
+import config from "../config";
+import Count from "../components/Count";
+import RentApp from "../components/RentApp";
+
+const {appLogin,appCheckSMSCode} = api
 
 
-export default class ForgetPSW extends Component{
+
+export default class ForgetPSW extends RentApp{
     static navigationOptions = {
         title:"忘记密码"
     }
     state={
         username:"",
-        code:""
+        code:"",
+        loading:false
     }
 
     constructor(props){
         super(props)
     }
 
+
+    async checkSmsCode(){
+        try {
+
+            const params = {
+                openId:this.openId,
+                userId:this.userId,
+                verifyCode:this.state.code,
+                phoneNo:this.state.username
+            }
+
+            const rsp = await appCheckSMSCode(params)
+            console.log(rsp)
+            const {data} = rsp;
+            if(data.errcode === 1){
+                this.props.navigation.navigate("ChangePSWPage",{
+                    phoneNp:this.state.username
+                })
+            } else {
+                Toast.info(data.errmsg,2)
+            }
+
+        } catch (e) {
+
+        }
+    }
 
     render(){
 
@@ -30,7 +64,7 @@ export default class ForgetPSW extends Component{
                         <InputItem type="text" value={username}
                                    onChange={(username)=>this.setState({username})}
                                    placeholder={"请输入手机号"}
-                                   extra={<Text style={styles.sms}>获取验证码</Text>}>
+                                   extra={<Count username={this.state.username}/>}>
                             <Image
                                 style={styles.icon}
                                 source={username?
@@ -38,8 +72,7 @@ export default class ForgetPSW extends Component{
                                     require('../assets/defaultUser.png')}/>
                         </InputItem>
                         <InputItem type="password" value={code}
-                                   onChange={(code)=>this.setState({code})}
-                                   extra={<Text style={styles.timer}>倒计时60秒</Text>}>
+                                   onChange={(code)=>this.setState({code})}>
                             <Image
                                 style={styles.icon}
                                 source={code?
@@ -49,7 +82,7 @@ export default class ForgetPSW extends Component{
 
                     </List>
                     <WhiteSpace size={"xl"}/>
-                    <Button onClick={()=>navigation.navigate("ChangePSWPage")}>下一步</Button>
+                    <Button onClick={this.checkSmsCode.bind(this)}>下一步</Button>
                 </WingBlank>
             </ScrollView>
         )
