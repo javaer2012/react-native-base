@@ -27,7 +27,7 @@ const getToken = async (cb)=> {
    try{
        const lycheeToken = await AsyncStorage.getItem('token');
        const exp = await AsyncStorage.getItem('exp');
-       console.log("TOKEN",lycheeToken)
+       //console.log("TOKEN",lycheeToken)
        if (lycheeToken) {
            //是否过期；
            // 获取时间戳 :
@@ -46,7 +46,7 @@ const getToken = async (cb)=> {
                })
 
                if (authRsp.data.errcode) {
-               	console.log(authRsp);
+               	//console.log(authRsp);
                		const auth = authRsp.data.auth,
 						token = [['token',auth.token],['exp',auth.expireDate]]
                    const rsp = await AsyncStorage.multiSet(token);

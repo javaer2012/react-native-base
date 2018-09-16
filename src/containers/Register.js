@@ -7,7 +7,7 @@ import config from '../config';
 import Count from "../components/Count";
 import RentApp from "../components/RentApp";
 
-const {sendMsg,registerAndBind} = api;
+const {registerAndBind} = api;
 
 
 export default class Register extends RentApp{

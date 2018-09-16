@@ -34,20 +34,22 @@ export default class Login extends RentApp {
             Toast.info("用户名和密码不能为空",2)
         } else {
             try{
-                const {username,password} = this.state;
+                const {username,password,code} = this.state;
                 const params = {
                     openId:this.openId,
                     password,
                     phoneNo:username,
-                    verifyCode:324333
+                    verifyCode:code
                 }
                 const login = await appLogin(params);
                 console.log(login)
                 const {data} = login;
                 if(data.errcode === 1){
                     const {userInfo} = data
-                    await AsyncStorage.multiSet([['userId',userInfo.userId],['isLogin','1']])
-                    this.props.navigation.push('MyPage')
+                    await AsyncStorage.multiSet([['userId',userInfo.userId],['isBinding',1]])
+                    this.props.navigation.navigate("MyPage",{
+                        isBinding:"1"
+                    })
                 } else {
                     Toast.info(data.errmsg,2)
                 }

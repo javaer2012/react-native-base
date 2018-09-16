@@ -12,12 +12,13 @@ export default createBottomTabNavigator(
   {
     "首页": { screen: Home },
     "发现": { screen: Find },
-    "我的": { screen: My },
+    "MyPage": { screen: My },
   },
   {
     navigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused, tintColor }) => {
         const { routeName } = navigation.state;
+        //console.log("Haha, I'm back")
         let iconName;
         if (routeName === '首页') {
           // iconName = `ios-information-circle${focused ? '' : '-outline'}`;
@@ -29,7 +30,7 @@ export default createBottomTabNavigator(
           iconName =( !focused 
             ? <Image style={{ width: 22, height: 22 }} source={require('../images/find.png')} />
             : <Image style={{ width: 22, height: 22 }} source={require('../images/findActive.png')} />)
-        } else if (routeName === '我的') {
+        } else if (routeName === 'MyPage') {
           iconName =( !focused 
             ? <Image style={{ width: 20, height: 20 }} source={require('../images/my.png')} />
             : <Image style={{ width: 20, height: 20 }} source={require('../images/myActive.png')} />)
@@ -47,44 +48,3 @@ export default createBottomTabNavigator(
     },
   }
 );
-
-
-// // export default TabNavigator(
-// //   {
-// //     // Home: { screen: Home },
-// //     My: { screen: My },
-// //     Find: { screen: Find },
-// //   },
-// //   {
-// //     navigationOptions: ({ navigation }) => ({
-// //       tabBarIcon: ({ focused, tintColor }) => {
-// //         const { routeName } = navigation.state;
-// //         let iconName;
-// //         if (routeName === 'Home') {
-// //           iconName = `ios-information-circle${focused ? '' : '-outline'}`;
-// //         } else if (routeName === 'My') {
-// //           iconName = `ios-options${focused ? '' : '-outline'}`;
-// //         }
-
-// //         // You can return any component that you like here! We usually use an
-// //         // icon component from react-native-vector-icons
-// //         return <View></View>
-// //           // <Ionicons name={iconName} size={25} color={tintColor} />;
-// //       },
-// //     }),
-// //     tabBarComponent: TabBarBottom,
-// //     tabBarPosition: 'bottom',
-// //     tabBarOptions: {
-// //       activeTintColor: 'tomato',
-// //       inactiveTintColor: 'gray',
-// //     },
-// //     animationEnabled: false,
-// //     swipeEnabled: false,
-// //   }
-// // );
-
-
-// export default  createBottomTabNavigator({
-//   Home: Home,
-//   Settings: Login,
-// });

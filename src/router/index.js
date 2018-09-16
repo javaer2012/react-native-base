@@ -37,6 +37,8 @@ import Pay from '../containers/Pay/Pay'
 import PayResult from '../containers/PayResult/PayResult'
 import TakePicture from "../containers/TakePicture";
 import TabNavigator from '../components/TabNavigator'
+import Wait from "../containers/Wait";
+import AuthSuccess from "../containers/AuthSuccess";
 
 // const AppNavigator = StackNavigator({
 //     Tab: TabNavigator,
@@ -121,7 +123,9 @@ export default StackNavigator({
     UploadImg: UploadImg,
     Pay,
     PayResult,
-    TakePicturePage:TakePicture
+    TakePicturePage:TakePicture,
+    WaitPage:Wait,
+    AuthSuccessPage:AuthSuccess
 }, {
     /* The header config from HomeScreen is now here */
     navigationOptions: {

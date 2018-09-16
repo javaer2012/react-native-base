@@ -42,10 +42,10 @@ export default class Count extends React.Component {
 
             const address = await AsyncStorage.getItem('addressInfos')
             const addressData = JSON.parse(address),
-                {district, citycode, provinceCode} = addressData
+                {district, cityCode, provinceCode} = addressData
             const params = {
                 sourceType: 3,
-                cityCode: citycode,
+                cityCode,
                 provinceCode,
                 openId: config.authAppId,
                 phoneNo: this.props.username

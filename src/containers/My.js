@@ -180,7 +180,7 @@ export default class My extends RentApp {
     }
     state = {
         refreshing: false,
-        isLogin: false,
+        isBinding: '0',
     }
 
     constructor(props) {
@@ -200,11 +200,10 @@ export default class My extends RentApp {
 
     async initalState() {
         try {
-            const user = await AsyncStorage.multiGet(['userId', 'openId', 'isLogin', 'addressInfos'])
+            const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
             console.log(user)
             const userId = this.userId,
                 openId = this.openId,
-                isLogin = user[2][1] || false,
                 cityCode = this.cityCode,
                 provinceCode = this.provinceCode;
 
@@ -222,7 +221,6 @@ export default class My extends RentApp {
             if (data.errcode === 1) {
 
                 const newState = {
-                    isLogin,
                     ...data.userInfo
                 }
 
@@ -249,11 +247,12 @@ export default class My extends RentApp {
     }
 
     handleCanvas(canvas) {
+        if(!canvas) return
         if (canvas) {
             canvas.height = 230;
         }
         const ctx = canvas.getContext('2d');
-        canvasScore(ctx, this.state.userScore = 0, '2018-09-12')
+        canvasScore(ctx, parseInt(this.state.userScore), this.state.lastScoreTime)
     }
 
     render() {
@@ -261,50 +260,58 @@ export default class My extends RentApp {
         console.log(this.state)
 
         const {navigation} = this.props
+
+        const paramsFromLogin = navigation.getParam('isBinding',this.state.isBinding)
         return (
-            <ScrollView
-                refreshControl={
-                    <RefreshControl
-                        refreshing={this.state.refreshing}
-                        onRefresh={this.onRefresh}
-                    />
-                }>
+            <ScrollView>
                 <Flex direction={"row"}>
                     <Flex.Item>
-                        <ImageBackground style={this.state.isLogin === '1'?styles.topBackground:styles.topBackground1} source={require('../images/my/background.png')}>
-                            {this.state.isLogin !== '1' ?
+                        <ImageBackground style={  paramsFromLogin !== '0' && this.state.isCredited !== '0'?styles.topBackground:styles.topBackground1} source={require('../images/my/background.png')}>
+                            {paramsFromLogin !== 1 ?
                                 <View style={styles.content}>
                                     <Image style={styles.userIcon}
                                            source={require('../images/imageNew/one/userIcon.png')}/>
                                     <WhiteSpace size={"xl"}/>
                                     <Flex direction={"row"} justify={"around"}>
                                         <Button onClick={() => navigation.navigate('LoginPage')}>登录</Button>
-
-                                        <Button onClick={() => navigation.navigate('LoginPage')}>立即激活</Button>
-
-
                                     </Flex>
                                 </View> :
-                                <Flex direction={"column"} align={"center"} justify={"center"}>
-                                    <Canvas ref={this.handleCanvas.bind(this)}/>
-                                    <Flex direction={"row"}>
-                                        <Flex.Item>
-                                            <Flex direction={"row"} justify={"center"} align={"center"}>
-                                                <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
-                                                        onClick={() => navigation.navigate('ScorePage')}>晒晒我的信用分</Button>
-                                            </Flex>
-                                        </Flex.Item>
+                                <React.Fragment>
+                                    {this.state.isCredited === 1?
+                                        <Flex direction={"column"} align={"center"} justify={"center"}>
+                                        <Canvas ref={this.handleCanvas.bind(this)}/>
+                                        <Flex direction={"row"}>
+                                            <Flex.Item>
+                                                <Flex direction={"row"} justify={"center"} align={"center"}>
+                                                    <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
+                                                            onClick={() => navigation.navigate('ScorePage')}>晒晒我的信用分</Button>
+                                                </Flex>
+                                            </Flex.Item>
 
-                                        <Flex.Item>
-                                            <Flex direction={"row"} justify={"center"} align={"center"}>
-                                                <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
-                                                        onClick={() => navigation.navigate('KnowScorePage', {
-                                                            score: this.state.userScore ? this.state.userScore : 0
-                                                        })}>了解我的信用分</Button>
+                                            <Flex.Item>
+                                                <Flex direction={"row"} justify={"center"} align={"center"}>
+                                                    <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
+                                                            onClick={() => navigation.navigate('KnowScorePage', {
+                                                                score: this.state.userScore ? this.state.userScore : 0
+                                                            })}>了解我的信用分</Button>
+                                                </Flex>
+                                            </Flex.Item>
+                                        </Flex>
+                                    </Flex>:
+                                        <View style={styles.content}>
+                                            <Image style={styles.userIcon}
+                                                   source={require('../images/imageNew/one/userIcon.png')}/>
+                                            <WhiteSpace size={"xl"}/>
+                                            <Flex direction={"row"} justify={"around"}>
+                                                <Button onClick={() => navigation.navigate('AuthApplyPage')}>立即激活</Button>
+
+
                                             </Flex>
-                                        </Flex.Item>
-                                    </Flex>
-                                </Flex>}
+                                        </View>
+                                    }
+                                </React.Fragment>
+
+                            }
                         </ImageBackground>
                     </Flex.Item>
                 </Flex>
@@ -377,7 +384,7 @@ export default class My extends RentApp {
                                         <Text>负面记录</Text>
                                         <WhiteSpace size={"sm"}/>
                                         {
-                                            this.state.negativeCount !== undefined && <Text style={{color:'#07C1AE'}}>{`(${this.state.negativeCount }个)`}</Text>
+                                            this.state.negativeCount !== undefined && this.state.isCredited === 1 && <Text style={{color:'#07C1AE'}}>{`(${this.state.negativeCount }个)`}</Text>
                                         }
                                         </Flex>
                                 </TouchableOpacity>
@@ -440,7 +447,7 @@ export default class My extends RentApp {
 
                 <WhiteSpace size={"sm"}/>
 
-                {this.state.isStaff ? <List style={{backgroundColor: 'white'}} renderHeader={
+                {this.state.isStaff === 1 ? <List style={{backgroundColor: 'white'}} renderHeader={
                         <View>
                             <WhiteSpace size={"sm"}/>
                             <Flex direction={"row"}>

@@ -15,6 +15,9 @@ import {setData,getData} from './src/utils/storage'
 import {getToken} from "./src/service/api";
 import api from './src/service/api'
 import config from './src/config';
+import DeviceInfo from 'react-native-device-info'
+
+
 import {ActivityIndicator} from 'antd-mobile-rn'
 
 const { AmapRegeo,registerUser,isCityOpen } = api
@@ -30,6 +33,7 @@ export default class App extends Component {
          */
         this.registerUser();
         this.isOpen()
+        console.log(DeviceInfo.getUniqueID())
     }
     componentWillMount(){
         this.beginWatch()
@@ -57,15 +61,21 @@ export default class App extends Component {
 
     registerUser = async ()=>{
         try{
+
+            await AsyncStorage.multiRemove(['openId','userId'])
             const openId = await AsyncStorage.multiGet(['openId','userId']);
+
+            console.log(openId)
 
             if(!openId[0][1] || !openId[1][1]){
                 const params = {
                     provinceCode:844,
                     cityCode:84401,
-                    openId:config.authAppId
+                    openId:DeviceInfo.getUniqueID()
                 }
                 const register = await registerUser(params);
+
+                console.log(register)
                 const {data} = register;
                 if(data.errcode === 1){
                     const {openId,userId} = data;
@@ -93,7 +103,7 @@ export default class App extends Component {
             } = data
             const addressObj = {
                 district,
-                citycode: citycode,
+                cityCode: citycode,
                 provinceCode: adcode
             }
 
@@ -111,7 +121,12 @@ export default class App extends Component {
 
     }
 
-    beginWatch = () => {
+    beginWatch =async () => {
+       //await AsyncStorage.clear()
+        const value1 = await AsyncStorage.getItem('Test')
+        console.log("Test1",value1)
+
+
         navigator.geolocation.getCurrentPosition(
             ({ coords }) => {
                 const { latitude, longitude } = coords
