@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, TouchableHighlight, Dimensions } from 'react-native'
-import { Button, Carousel, List, Flex, Tabs } from 'antd-mobile-rn';
+import { Button, Carousel, List, Flex, Tabs, Modal } from 'antd-mobile-rn';
 import { ProductDetailPage_mock } from '../../mock/ProductDetailPage'
 import { flexRow, contentPadding, mainGray } from '../../styles/common'
 import Color from '../../styles/var'
@@ -57,7 +57,8 @@ export default class ProductDetailPage extends Component {
     mixList:[],
     count: 0,
     capacityId:'',
-    colorId:''
+    colorId:'',
+    selectMealId:''
   }
 
   async componentDidMount() {
@@ -100,7 +101,6 @@ export default class ProductDetailPage extends Component {
         // 1 - 单产品套餐；2 - 融合套餐
       });
     
-      console.log(queryGoodsDetailData, "mmnnns")
       this.setState({
         photoList,
         goodsBaseInfo,
@@ -150,18 +150,36 @@ export default class ProductDetailPage extends Component {
   renderMealList = (data) => {
     // debugger
     if (!data || !(data instanceof Array)) return false
+    const selectMeal = (id) => {
+      this.setState({
+        selectMealId: id
+      })
+    }
+    const { selectMealId } = this.state
+    const selectMealStyle={
+      borderWidth: 1,
+      borderColor: Color.mainPink
+    }
+    
     return data.map((item, index) => {
+      const boxStyle = [styles.mealItemStyle, { marginTop: 10 }]
+      if (item.mealId === selectMealId) {
+        boxStyle.push(selectMealStyle)
+      }
       return (
-        <Flex key={item.photoId || index} style={[styles.mealItemStyle, { marginTop: 10 }]}>
-          <Flex.Item>
-            <Text>
-              {item.mealName}
-            </Text>
-            <Text>
-              {item.mealDesc}
-            </Text>
-          </Flex.Item>
-        </Flex>
+        <TouchableOpacity style={boxStyle} key={item.photoId || index} onPress={selectMeal.bind(this, item.mealId)}>
+          <Flex>
+            <Flex.Item>
+              <Text>
+                {item.mealName}
+              </Text>
+              <Text>
+                {item.mealDesc}
+              </Text>
+            </Flex.Item>
+          </Flex>
+        </TouchableOpacity>
+        
       )
     })
   }
@@ -200,14 +218,22 @@ export default class ProductDetailPage extends Component {
   }
 
   goToPayFun = async () => {
-    const res = await commitOrder({
-      provinceCode: "844",
-      cityCode: "84401",
-      goodsId: productId,
-      userId: "12389",
-      orderType:''
-    })
-    console.log(res,"!11")
+    const params = {
+      "openId": "otp3cjjLq6cQ7oPHIINRef8cFruA",
+      "provinceCode": "844",
+      "cityCode": "84401",
+      "orderType": "1",
+      "userInfoJson": "{\"userId\":\"201808241044425400117198\",\"phoneNo\":\"18316579205\",\"userName\":\"邓夏宁\",\"idCardNo\":\"440883199305105071\",\"creditScore\":\"700\",\"maxAvailAmount\":3000}",
+      "goodsInfoJson": "{\"goodsFirstAmount\":0,\"totalStageAmount\":0,\"monthRate\":0.005,\"periods\":24,\"teleFirstAmount\":0,\"poundgeRate\":0,\"goodsSkuId\":\"201809071024544610527721\",\"goodsId\":\"201807191523324900507633\"}",
+      "mealInfoJson": "{\"mealId\":\"201808301508165440336042\"}",
+      "capitalInfoJson": "{\"prodId\":\"87f667ff3f274fd1918885c966169c0d\"}",
+      "insureJson": "[]",
+      "activeId": "524eaa42bfec4d00b77f50d56fd82fe5",
+      "paymentId": "201806210950040190225842",
+      "sourceType": 2
+    }
+
+    const res = await commitOrder(params)
   }
   
   tollectCollectFun = async (status) => {
@@ -302,56 +328,39 @@ export default class ProductDetailPage extends Component {
                   }, () => { console.log(count, "ffff") })
                 }}
               ></NumberSelect>
-              <Text style={[{ ...mainGray }]}>
-                库存 {"###"}
-              </Text>
             </Flex>
-            {/* <TouchableHighlight onPress={this.togglePackageFun.bind(this, true)}>
+            <TouchableOpacity onPress={this.togglePackageFun.bind(this, true)}>
               <Flex style={[contentPadding, { backgroundColor: '#fff', marginBottom: 1 }]} direction='row' justify='between' align='center' >
                 <Flex.Item style={{ flex: 0, paddingVertical: 14, paddingRight: 10 }}>
                   <Text>套餐</Text>
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text>{222 || 333}</Text>
+                    <Text style={{ color: '#ccc' }}>请选择套餐</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
               </Flex>
-            </TouchableHighlight>
-            <TouchableHighlight onPress={this.toggleAgingFun.bind(this, true)}>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.toggleAgingFun.bind(this, true)}>
               <Flex style={[contentPadding, { backgroundColor: '#fff' }]} direction='row' justify='between' align='center' >
                 <Flex.Item style={{ flex: 0, paddingVertical: 14, paddingRight: 10 }}>
                   <Text>分期</Text>
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text>{222 || 333}</Text>
+                    <Text style={{color: '#ccc'}}>请选择分期</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
               </Flex>
-            </TouchableHighlight> */}
-            <Flex style={{ backgroundColor: '#fff', marginTop: 10, paddingHorizontal: 10 }}>
-              <Tabs tabs={tabs}
-                initialPage={1}
-                onChange={(tab, index) => { console.log('onChange', index, tab); }}
-                onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
-              >
-                <View style={{ height: 400, padding: 10 }}>
-                  {this.renderMealList(mixList)}
-                </View>
-                <View style={{ height: 400 }}>
-                  {this.renderMealList( singleList)}
-                </View>
-              </Tabs>
-            </Flex>
+            </TouchableOpacity>
             <Flex style={[{ marginTop: 10, backgroundColor: '#fff' }, styles.basePadding]}>
-              <TouchableHighlight onPress={this.toggleDetailInfosFun.bind(this, true)}>
+              <TouchableOpacity onPress={this.toggleDetailInfosFun.bind(this, true)}>
                 <Flex direction="row" justify='between' align="center">
                   <Text>产品参数</Text>
                 </Flex>
-              </TouchableHighlight>
+              </TouchableOpacity>
             </Flex>
             <Flex direction='column' style={{ backgroundColor: '#fff' }}>
               <View>
@@ -374,7 +383,27 @@ export default class ProductDetailPage extends Component {
             goToPay={this.goToPayFun}
             data={lastPrice} />
         </View>
-
+        <Modal
+          popup
+          visible={true}
+          // onClose={this.onClose('modal2')}
+          animationType="slide-up"
+        >
+          <Flex style={{ backgroundColor: '#fff', marginTop: 10, paddingHorizontal: 10 }}>
+            <Tabs tabs={tabs}
+              initialPage={1}
+              onChange={(tab, index) => { console.log('onChange', index, tab); }}
+              onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
+            >
+              <View style={{ height: 400, padding: 10 }}>
+                {this.renderMealList(mixList)}
+              </View>
+              <View style={{ height: 400 }}>
+                {this.renderMealList(singleList)}
+              </View>
+            </Tabs>
+          </Flex>
+        </Modal>
         <ActionSheet
           ref={o => this.ActionSheet = o}
           title={'选择套餐'}

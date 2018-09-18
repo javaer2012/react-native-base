@@ -15,18 +15,21 @@ const triangle = {
   borderColor: '#fff',
   borderTopColor: '#ccc'
 }
-const CustomChildren = (props) => (
-  <TouchableOpacity style={{ backgroundColor: '#fff', width: 100 }} onPress={props.onClick}>
-    <View
-      style={{ height: 36, paddingLeft: 15, flexDirection: 'row', alignItems: 'center' }}
-    >
-      <Text style={{ flex: 1 }} numberOfLines={1} ellipsizeMode="tail">{props.addressMsg.district}</Text>
-      <View style={triangle}></View>
-      {/* <Text style={{ flex: 1 }}>{props.children}</Text>
+const CustomChildren = (props) => {
+  debugger
+  return (
+    <TouchableOpacity style={{ backgroundColor: '#fff', width: 100 }} onPress={props.onClick}>
+      <View
+        style={{ height: 36, paddingLeft: 15, flexDirection: 'row', alignItems: 'center' }}
+      >
+        <Text style={{ flex: 1 }} numberOfLines={1} ellipsizeMode="tail">{props.addressMsg.district}</Text>
+        <View style={triangle}></View>
+        {/* <Text style={{ flex: 1 }}>{props.children}</Text>
       <Text style={{ textAlign: 'right', color: '#888', marginRight: 15 }}>{props.extra}</Text> */}
-    </View>
-  </TouchableOpacity>
-);
+      </View>
+    </TouchableOpacity>
+  )
+};
 export default class PopupExample extends React.Component {
   constructor(props) {
     super(props);

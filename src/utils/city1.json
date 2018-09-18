@@ -1,0 +1,2644 @@
+{
+  "areaDict": {
+    "110000": {
+      "crmCityCode": "81101",
+      "crmCityName": "北京市",
+      "crmProvCode": "811",
+      "crmProvName": "北京市",
+      "admCityCode": "110000",
+      "admCityName": "北京市"
+    },
+    "120000": {
+      "crmCityCode": "81201",
+      "crmCityName": "天津市",
+      "crmProvCode": "812",
+      "crmProvName": "天津市",
+      "admCityCode": "120000",
+      "admCityName": "天津市"
+    },
+    "130100": {
+      "crmCityCode": "81301",
+      "crmCityName": "石家庄市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "130100",
+      "admCityName": "石家庄市"
+    },
+    "130200": {
+      "crmCityCode": "81302",
+      "crmCityName": "唐山市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "130200",
+      "admCityName": "唐山市"
+    },
+    "130300": {
+      "crmCityCode": "81303",
+      "crmCityName": "秦皇岛市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "130300",
+      "admCityName": "秦皇岛市"
+    },
+    "130400": {
+      "crmCityCode": "81304",
+      "crmCityName": "邯郸市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "130400",
+      "admCityName": "邯郸市"
+    },
+    "130500": {
+      "crmCityCode": "81305",
+      "crmCityName": "邢台市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "130500",
+      "admCityName": "邢台市"
+    },
+    "130600": {
+      "crmCityCode": "81306",
+      "crmCityName": "保定市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "130600",
+      "admCityName": "保定市"
+    },
+    "130700": {
+      "crmCityCode": "81307",
+      "crmCityName": "张家口市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "130700",
+      "admCityName": "张家口市"
+    },
+    "130800": {
+      "crmCityCode": "81308",
+      "crmCityName": "承德市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "130800",
+      "admCityName": "承德市"
+    },
+    "130900": {
+      "crmCityCode": "81309",
+      "crmCityName": "沧州市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "130900",
+      "admCityName": "沧州市"
+    },
+    "131000": {
+      "crmCityCode": "81310",
+      "crmCityName": "廊坊市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "131000",
+      "admCityName": "廊坊市"
+    },
+    "131100": {
+      "crmCityCode": "81311",
+      "crmCityName": "衡水市",
+      "crmProvCode": "813",
+      "crmProvName": "河北省",
+      "admCityCode": "131100",
+      "admCityName": "衡水市"
+    },
+    "140100": {
+      "crmCityCode": "81401",
+      "crmCityName": "太原市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "140100",
+      "admCityName": "太原市"
+    },
+    "140200": {
+      "crmCityCode": "81402",
+      "crmCityName": "大同市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "140200",
+      "admCityName": "大同市"
+    },
+    "140300": {
+      "crmCityCode": "81403",
+      "crmCityName": "阳泉市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "140300",
+      "admCityName": "阳泉市"
+    },
+    "140400": {
+      "crmCityCode": "81404",
+      "crmCityName": "长治市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "140400",
+      "admCityName": "长治市"
+    },
+    "140500": {
+      "crmCityCode": "81405",
+      "crmCityName": "晋城市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "140500",
+      "admCityName": "晋城市"
+    },
+    "140600": {
+      "crmCityCode": "81406",
+      "crmCityName": "朔州市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "140600",
+      "admCityName": "朔州市"
+    },
+    "140700": {
+      "crmCityCode": "81407",
+      "crmCityName": "晋中市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "140700",
+      "admCityName": "晋中市"
+    },
+    "140800": {
+      "crmCityCode": "81408",
+      "crmCityName": "运城市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "140800",
+      "admCityName": "运城市"
+    },
+    "140900": {
+      "crmCityCode": "81409",
+      "crmCityName": "忻州市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "140900",
+      "admCityName": "忻州市"
+    },
+    "141000": {
+      "crmCityCode": "81410",
+      "crmCityName": "临汾市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "141000",
+      "admCityName": "临汾市"
+    },
+    "141100": {
+      "crmCityCode": "81411",
+      "crmCityName": "吕梁市",
+      "crmProvCode": "814",
+      "crmProvName": "山西省",
+      "admCityCode": "141100",
+      "admCityName": "吕梁市"
+    },
+    "150100": {
+      "crmCityCode": "81501",
+      "crmCityName": "呼和浩特市",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "150100",
+      "admCityName": "呼和浩特市"
+    },
+    "150200": {
+      "crmCityCode": "81502",
+      "crmCityName": "包头市",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "150200",
+      "admCityName": "包头市"
+    },
+    "150300": {
+      "crmCityCode": "81503",
+      "crmCityName": "乌海市",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "150300",
+      "admCityName": "乌海市"
+    },
+    "150400": {
+      "crmCityCode": "81504",
+      "crmCityName": "赤峰市",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "150400",
+      "admCityName": "赤峰市"
+    },
+    "150500": {
+      "crmCityCode": "81505",
+      "crmCityName": "通辽市",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "150500",
+      "admCityName": "通辽市"
+    },
+    "150600": {
+      "crmCityCode": "81506",
+      "crmCityName": "鄂尔多斯市",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "150600",
+      "admCityName": "鄂尔多斯市"
+    },
+    "150700": {
+      "crmCityCode": "81507",
+      "crmCityName": "呼伦贝尔市",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "150700",
+      "admCityName": "呼伦贝尔市"
+    },
+    "150800": {
+      "crmCityCode": "81508",
+      "crmCityName": "巴彦淖尔市",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "150800",
+      "admCityName": "巴彦淖尔市"
+    },
+    "150900": {
+      "crmCityCode": "81509",
+      "crmCityName": "乌兰察布市",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "150900",
+      "admCityName": "乌兰察布市"
+    },
+    "152200": {
+      "crmCityCode": "81522",
+      "crmCityName": "兴安盟",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "152200",
+      "admCityName": "兴安盟"
+    },
+    "152500": {
+      "crmCityCode": "81525",
+      "crmCityName": "锡林郭勒盟",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "152500",
+      "admCityName": "锡林郭勒盟"
+    },
+    "152900": {
+      "crmCityCode": "81529",
+      "crmCityName": "阿拉善盟",
+      "crmProvCode": "815",
+      "crmProvName": "内蒙古自治区",
+      "admCityCode": "152900",
+      "admCityName": "阿拉善盟"
+    },
+    "210100": {
+      "crmCityCode": "82101",
+      "crmCityName": "沈阳市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "210100",
+      "admCityName": "沈阳市"
+    },
+    "210200": {
+      "crmCityCode": "82102",
+      "crmCityName": "大连市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "210200",
+      "admCityName": "大连市"
+    },
+    "210300": {
+      "crmCityCode": "82103",
+      "crmCityName": "鞍山市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "210300",
+      "admCityName": "鞍山市"
+    },
+    "210400": {
+      "crmCityCode": "82104",
+      "crmCityName": "抚顺市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "210400",
+      "admCityName": "抚顺市"
+    },
+    "210500": {
+      "crmCityCode": "82105",
+      "crmCityName": "本溪市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "210500",
+      "admCityName": "本溪市"
+    },
+    "210600": {
+      "crmCityCode": "82106",
+      "crmCityName": "丹东市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "210600",
+      "admCityName": "丹东市"
+    },
+    "210700": {
+      "crmCityCode": "82107",
+      "crmCityName": "锦州市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "210700",
+      "admCityName": "锦州市"
+    },
+    "210800": {
+      "crmCityCode": "82108",
+      "crmCityName": "营口市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "210800",
+      "admCityName": "营口市"
+    },
+    "210900": {
+      "crmCityCode": "82109",
+      "crmCityName": "阜新市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "210900",
+      "admCityName": "阜新市"
+    },
+    "211000": {
+      "crmCityCode": "82110",
+      "crmCityName": "辽阳市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "211000",
+      "admCityName": "辽阳市"
+    },
+    "211100": {
+      "crmCityCode": "82111",
+      "crmCityName": "盘锦市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "211100",
+      "admCityName": "盘锦市"
+    },
+    "211200": {
+      "crmCityCode": "82112",
+      "crmCityName": "铁岭市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "211200",
+      "admCityName": "铁岭市"
+    },
+    "211300": {
+      "crmCityCode": "82113",
+      "crmCityName": "朝阳市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "211300",
+      "admCityName": "朝阳市"
+    },
+    "211400": {
+      "crmCityCode": "82114",
+      "crmCityName": "葫芦岛市",
+      "crmProvCode": "821",
+      "crmProvName": "辽宁省",
+      "admCityCode": "211400",
+      "admCityName": "葫芦岛市"
+    },
+    "220100": {
+      "crmCityCode": "82201",
+      "crmCityName": "长春市",
+      "crmProvCode": "822",
+      "crmProvName": "吉林省",
+      "admCityCode": "220100",
+      "admCityName": "长春市"
+    },
+    "220200": {
+      "crmCityCode": "82202",
+      "crmCityName": "吉林市",
+      "crmProvCode": "822",
+      "crmProvName": "吉林省",
+      "admCityCode": "220200",
+      "admCityName": "吉林市"
+    },
+    "220300": {
+      "crmCityCode": "82203",
+      "crmCityName": "四平市",
+      "crmProvCode": "822",
+      "crmProvName": "吉林省",
+      "admCityCode": "220300",
+      "admCityName": "四平市"
+    },
+    "220400": {
+      "crmCityCode": "82204",
+      "crmCityName": "辽源市",
+      "crmProvCode": "822",
+      "crmProvName": "吉林省",
+      "admCityCode": "220400",
+      "admCityName": "辽源市"
+    },
+    "220500": {
+      "crmCityCode": "82205",
+      "crmCityName": "通化市",
+      "crmProvCode": "822",
+      "crmProvName": "吉林省",
+      "admCityCode": "220500",
+      "admCityName": "通化市"
+    },
+    "220600": {
+      "crmCityCode": "82206",
+      "crmCityName": "白山市",
+      "crmProvCode": "822",
+      "crmProvName": "吉林省",
+      "admCityCode": "220600",
+      "admCityName": "白山市"
+    },
+    "220700": {
+      "crmCityCode": "82207",
+      "crmCityName": "松原市",
+      "crmProvCode": "822",
+      "crmProvName": "吉林省",
+      "admCityCode": "220700",
+      "admCityName": "松原市"
+    },
+    "220800": {
+      "crmCityCode": "82208",
+      "crmCityName": "白城市",
+      "crmProvCode": "822",
+      "crmProvName": "吉林省",
+      "admCityCode": "220800",
+      "admCityName": "白城市"
+    },
+    "222400": {
+      "crmCityCode": "82224",
+      "crmCityName": "延边朝鲜族自治州",
+      "crmProvCode": "822",
+      "crmProvName": "吉林省",
+      "admCityCode": "222400",
+      "admCityName": "延边朝鲜族自治州"
+    },
+    "230100": {
+      "crmCityCode": "82301",
+      "crmCityName": "哈尔滨市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "230100",
+      "admCityName": "哈尔滨市"
+    },
+    "230200": {
+      "crmCityCode": "82302",
+      "crmCityName": "齐齐哈尔市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "230200",
+      "admCityName": "齐齐哈尔市"
+    },
+    "230300": {
+      "crmCityCode": "82303",
+      "crmCityName": "鸡西市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "230300",
+      "admCityName": "鸡西市"
+    },
+    "230400": {
+      "crmCityCode": "82304",
+      "crmCityName": "鹤岗市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "230400",
+      "admCityName": "鹤岗市"
+    },
+    "230500": {
+      "crmCityCode": "82305",
+      "crmCityName": "双鸭山市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "230500",
+      "admCityName": "双鸭山市"
+    },
+    "230600": {
+      "crmCityCode": "82306",
+      "crmCityName": "大庆市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "230600",
+      "admCityName": "大庆市"
+    },
+    "230700": {
+      "crmCityCode": "82307",
+      "crmCityName": "伊春市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "230700",
+      "admCityName": "伊春市"
+    },
+    "230800": {
+      "crmCityCode": "82308",
+      "crmCityName": "佳木斯市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "230800",
+      "admCityName": "佳木斯市"
+    },
+    "230900": {
+      "crmCityCode": "82309",
+      "crmCityName": "七台河市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "230900",
+      "admCityName": "七台河市"
+    },
+    "231000": {
+      "crmCityCode": "82310",
+      "crmCityName": "牡丹江市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "231000",
+      "admCityName": "牡丹江市"
+    },
+    "231100": {
+      "crmCityCode": "82311",
+      "crmCityName": "黑河市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "231100",
+      "admCityName": "黑河市"
+    },
+    "231200": {
+      "crmCityCode": "82312",
+      "crmCityName": "绥化市",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "231200",
+      "admCityName": "绥化市"
+    },
+    "232700": {
+      "crmCityCode": "82327",
+      "crmCityName": "大兴安岭地区",
+      "crmProvCode": "823",
+      "crmProvName": "黑龙江省",
+      "admCityCode": "232700",
+      "admCityName": "大兴安岭地区"
+    },
+    "310000": {
+      "crmCityCode": "83101",
+      "crmCityName": "上海市",
+      "crmProvCode": "831",
+      "crmProvName": "上海市",
+      "admCityCode": "310000",
+      "admCityName": "上海市"
+    },
+    "320100": {
+      "crmCityCode": "83201",
+      "crmCityName": "南京市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "320100",
+      "admCityName": "南京市"
+    },
+    "320200": {
+      "crmCityCode": "83202",
+      "crmCityName": "无锡市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "320200",
+      "admCityName": "无锡市"
+    },
+    "320300": {
+      "crmCityCode": "83203",
+      "crmCityName": "徐州市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "320300",
+      "admCityName": "徐州市"
+    },
+    "320400": {
+      "crmCityCode": "83204",
+      "crmCityName": "常州市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "320400",
+      "admCityName": "常州市"
+    },
+    "320500": {
+      "crmCityCode": "83205",
+      "crmCityName": "苏州市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "320500",
+      "admCityName": "苏州市"
+    },
+    "320600": {
+      "crmCityCode": "83206",
+      "crmCityName": "南通市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "320600",
+      "admCityName": "南通市"
+    },
+    "320700": {
+      "crmCityCode": "83207",
+      "crmCityName": "连云港市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "320700",
+      "admCityName": "连云港市"
+    },
+    "320800": {
+      "crmCityCode": "83208",
+      "crmCityName": "淮安市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "320800",
+      "admCityName": "淮安市"
+    },
+    "320900": {
+      "crmCityCode": "83209",
+      "crmCityName": "盐城市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "320900",
+      "admCityName": "盐城市"
+    },
+    "321000": {
+      "crmCityCode": "83210",
+      "crmCityName": "扬州市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "321000",
+      "admCityName": "扬州市"
+    },
+    "321100": {
+      "crmCityCode": "83211",
+      "crmCityName": "镇江市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "321100",
+      "admCityName": "镇江市"
+    },
+    "321200": {
+      "crmCityCode": "83212",
+      "crmCityName": "泰州市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "321200",
+      "admCityName": "泰州市"
+    },
+    "321300": {
+      "crmCityCode": "83213",
+      "crmCityName": "宿迁市",
+      "crmProvCode": "832",
+      "crmProvName": "江苏省",
+      "admCityCode": "321300",
+      "admCityName": "宿迁市"
+    },
+    "330100": {
+      "crmCityCode": "83301",
+      "crmCityName": "杭州市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "330100",
+      "admCityName": "杭州市"
+    },
+    "330200": {
+      "crmCityCode": "83302",
+      "crmCityName": "宁波市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "330200",
+      "admCityName": "宁波市"
+    },
+    "330300": {
+      "crmCityCode": "83303",
+      "crmCityName": "温州市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "330300",
+      "admCityName": "温州市"
+    },
+    "330400": {
+      "crmCityCode": "83304",
+      "crmCityName": "嘉兴市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "330400",
+      "admCityName": "嘉兴市"
+    },
+    "330500": {
+      "crmCityCode": "83305",
+      "crmCityName": "湖州市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "330500",
+      "admCityName": "湖州市"
+    },
+    "330600": {
+      "crmCityCode": "83306",
+      "crmCityName": "绍兴市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "330600",
+      "admCityName": "绍兴市"
+    },
+    "330700": {
+      "crmCityCode": "83307",
+      "crmCityName": "金华市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "330700",
+      "admCityName": "金华市"
+    },
+    "330800": {
+      "crmCityCode": "83308",
+      "crmCityName": "衢州市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "330800",
+      "admCityName": "衢州市"
+    },
+    "330900": {
+      "crmCityCode": "83309",
+      "crmCityName": "舟山市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "330900",
+      "admCityName": "舟山市"
+    },
+    "331000": {
+      "crmCityCode": "83310",
+      "crmCityName": "台州市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "331000",
+      "admCityName": "台州市"
+    },
+    "331100": {
+      "crmCityCode": "83311",
+      "crmCityName": "丽水市",
+      "crmProvCode": "833",
+      "crmProvName": "浙江省",
+      "admCityCode": "331100",
+      "admCityName": "丽水市"
+    },
+    "340100": {
+      "crmCityCode": "83401",
+      "crmCityName": "合肥市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "340100",
+      "admCityName": "合肥市"
+    },
+    "340200": {
+      "crmCityCode": "83402",
+      "crmCityName": "芜湖市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "340200",
+      "admCityName": "芜湖市"
+    },
+    "340300": {
+      "crmCityCode": "83403",
+      "crmCityName": "蚌埠市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "340300",
+      "admCityName": "蚌埠市"
+    },
+    "340400": {
+      "crmCityCode": "83404",
+      "crmCityName": "淮南市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "340400",
+      "admCityName": "淮南市"
+    },
+    "340500": {
+      "crmCityCode": "83405",
+      "crmCityName": "马鞍山市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "340500",
+      "admCityName": "马鞍山市"
+    },
+    "340600": {
+      "crmCityCode": "83406",
+      "crmCityName": "淮北市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "340600",
+      "admCityName": "淮北市"
+    },
+    "340700": {
+      "crmCityCode": "83407",
+      "crmCityName": "铜陵市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "340700",
+      "admCityName": "铜陵市"
+    },
+    "340800": {
+      "crmCityCode": "83408",
+      "crmCityName": "安庆市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "340800",
+      "admCityName": "安庆市"
+    },
+    "341000": {
+      "crmCityCode": "83410",
+      "crmCityName": "黄山市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "341000",
+      "admCityName": "黄山市"
+    },
+    "341100": {
+      "crmCityCode": "83411",
+      "crmCityName": "滁州市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "341100",
+      "admCityName": "滁州市"
+    },
+    "341200": {
+      "crmCityCode": "83412",
+      "crmCityName": "阜阳市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "341200",
+      "admCityName": "阜阳市"
+    },
+    "341300": {
+      "crmCityCode": "83413",
+      "crmCityName": "宿州市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "341300",
+      "admCityName": "宿州市"
+    },
+    "341500": {
+      "crmCityCode": "83415",
+      "crmCityName": "六安市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "341500",
+      "admCityName": "六安市"
+    },
+    "341600": {
+      "crmCityCode": "83416",
+      "crmCityName": "亳州市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "341600",
+      "admCityName": "亳州市"
+    },
+    "341700": {
+      "crmCityCode": "83417",
+      "crmCityName": "池州市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "341700",
+      "admCityName": "池州市"
+    },
+    "341800": {
+      "crmCityCode": "83418",
+      "crmCityName": "宣城市",
+      "crmProvCode": "834",
+      "crmProvName": "安徽省",
+      "admCityCode": "341800",
+      "admCityName": "宣城市"
+    },
+    "350100": {
+      "crmCityCode": "83501",
+      "crmCityName": "福州市",
+      "crmProvCode": "835",
+      "crmProvName": "福建省",
+      "admCityCode": "350100",
+      "admCityName": "福州市"
+    },
+    "350200": {
+      "crmCityCode": "83502",
+      "crmCityName": "厦门市",
+      "crmProvCode": "835",
+      "crmProvName": "福建省",
+      "admCityCode": "350200",
+      "admCityName": "厦门市"
+    },
+    "350300": {
+      "crmCityCode": "83503",
+      "crmCityName": "莆田市",
+      "crmProvCode": "835",
+      "crmProvName": "福建省",
+      "admCityCode": "350300",
+      "admCityName": "莆田市"
+    },
+    "350400": {
+      "crmCityCode": "83504",
+      "crmCityName": "三明市",
+      "crmProvCode": "835",
+      "crmProvName": "福建省",
+      "admCityCode": "350400",
+      "admCityName": "三明市"
+    },
+    "350500": {
+      "crmCityCode": "83505",
+      "crmCityName": "泉州市",
+      "crmProvCode": "835",
+      "crmProvName": "福建省",
+      "admCityCode": "350500",
+      "admCityName": "泉州市"
+    },
+    "350600": {
+      "crmCityCode": "83506",
+      "crmCityName": "漳州市",
+      "crmProvCode": "835",
+      "crmProvName": "福建省",
+      "admCityCode": "350600",
+      "admCityName": "漳州市"
+    },
+    "350700": {
+      "crmCityCode": "83507",
+      "crmCityName": "南平市",
+      "crmProvCode": "835",
+      "crmProvName": "福建省",
+      "admCityCode": "350700",
+      "admCityName": "南平市"
+    },
+    "350800": {
+      "crmCityCode": "83508",
+      "crmCityName": "龙岩市",
+      "crmProvCode": "835",
+      "crmProvName": "福建省",
+      "admCityCode": "350800",
+      "admCityName": "龙岩市"
+    },
+    "350900": {
+      "crmCityCode": "83509",
+      "crmCityName": "宁德市",
+      "crmProvCode": "835",
+      "crmProvName": "福建省",
+      "admCityCode": "350900",
+      "admCityName": "宁德市"
+    },
+    "360100": {
+      "crmCityCode": "83601",
+      "crmCityName": "南昌市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "360100",
+      "admCityName": "南昌市"
+    },
+    "360200": {
+      "crmCityCode": "83602",
+      "crmCityName": "景德镇市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "360200",
+      "admCityName": "景德镇市"
+    },
+    "360300": {
+      "crmCityCode": "83603",
+      "crmCityName": "萍乡市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "360300",
+      "admCityName": "萍乡市"
+    },
+    "360400": {
+      "crmCityCode": "83604",
+      "crmCityName": "九江市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "360400",
+      "admCityName": "九江市"
+    },
+    "360500": {
+      "crmCityCode": "83605",
+      "crmCityName": "新余市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "360500",
+      "admCityName": "新余市"
+    },
+    "360600": {
+      "crmCityCode": "83606",
+      "crmCityName": "鹰潭市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "360600",
+      "admCityName": "鹰潭市"
+    },
+    "360700": {
+      "crmCityCode": "83607",
+      "crmCityName": "赣州市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "360700",
+      "admCityName": "赣州市"
+    },
+    "360800": {
+      "crmCityCode": "83608",
+      "crmCityName": "吉安市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "360800",
+      "admCityName": "吉安市"
+    },
+    "360900": {
+      "crmCityCode": "83609",
+      "crmCityName": "宜春市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "360900",
+      "admCityName": "宜春市"
+    },
+    "361000": {
+      "crmCityCode": "83610",
+      "crmCityName": "抚州市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "361000",
+      "admCityName": "抚州市"
+    },
+    "361100": {
+      "crmCityCode": "83611",
+      "crmCityName": "上饶市",
+      "crmProvCode": "836",
+      "crmProvName": "江西省",
+      "admCityCode": "361100",
+      "admCityName": "上饶市"
+    },
+    "370100": {
+      "crmCityCode": "83701",
+      "crmCityName": "济南市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "370100",
+      "admCityName": "济南市"
+    },
+    "370200": {
+      "crmCityCode": "83702",
+      "crmCityName": "青岛市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "370200",
+      "admCityName": "青岛市"
+    },
+    "370300": {
+      "crmCityCode": "83703",
+      "crmCityName": "淄博市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "370300",
+      "admCityName": "淄博市"
+    },
+    "370400": {
+      "crmCityCode": "83704",
+      "crmCityName": "枣庄市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "370400",
+      "admCityName": "枣庄市"
+    },
+    "370500": {
+      "crmCityCode": "83705",
+      "crmCityName": "东营市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "370500",
+      "admCityName": "东营市"
+    },
+    "370600": {
+      "crmCityCode": "83706",
+      "crmCityName": "烟台市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "370600",
+      "admCityName": "烟台市"
+    },
+    "370700": {
+      "crmCityCode": "83707",
+      "crmCityName": "潍坊市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "370700",
+      "admCityName": "潍坊市"
+    },
+    "370800": {
+      "crmCityCode": "83708",
+      "crmCityName": "济宁市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "370800",
+      "admCityName": "济宁市"
+    },
+    "370900": {
+      "crmCityCode": "83709",
+      "crmCityName": "泰安市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "370900",
+      "admCityName": "泰安市"
+    },
+    "371000": {
+      "crmCityCode": "83710",
+      "crmCityName": "威海市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "371000",
+      "admCityName": "威海市"
+    },
+    "371100": {
+      "crmCityCode": "83711",
+      "crmCityName": "日照市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "371100",
+      "admCityName": "日照市"
+    },
+    "371200": {
+      "crmCityCode": "83712",
+      "crmCityName": "莱芜市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "371200",
+      "admCityName": "莱芜市"
+    },
+    "371300": {
+      "crmCityCode": "83713",
+      "crmCityName": "临沂市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "371300",
+      "admCityName": "临沂市"
+    },
+    "371400": {
+      "crmCityCode": "83714",
+      "crmCityName": "德州市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "371400",
+      "admCityName": "德州市"
+    },
+    "371500": {
+      "crmCityCode": "83715",
+      "crmCityName": "聊城市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "371500",
+      "admCityName": "聊城市"
+    },
+    "371600": {
+      "crmCityCode": "83716",
+      "crmCityName": "滨州市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "371600",
+      "admCityName": "滨州市"
+    },
+    "371700": {
+      "crmCityCode": "83717",
+      "crmCityName": "菏泽市",
+      "crmProvCode": "837",
+      "crmProvName": "山东省",
+      "admCityCode": "371700",
+      "admCityName": "菏泽市"
+    },
+    "410100": {
+      "crmCityCode": "84101",
+      "crmCityName": "郑州市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "410100",
+      "admCityName": "郑州市"
+    },
+    "410200": {
+      "crmCityCode": "84102",
+      "crmCityName": "开封市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "410200",
+      "admCityName": "开封市"
+    },
+    "410300": {
+      "crmCityCode": "84103",
+      "crmCityName": "洛阳市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "410300",
+      "admCityName": "洛阳市"
+    },
+    "410400": {
+      "crmCityCode": "84104",
+      "crmCityName": "平顶山市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "410400",
+      "admCityName": "平顶山市"
+    },
+    "410500": {
+      "crmCityCode": "84105",
+      "crmCityName": "安阳市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "410500",
+      "admCityName": "安阳市"
+    },
+    "410600": {
+      "crmCityCode": "84106",
+      "crmCityName": "鹤壁市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "410600",
+      "admCityName": "鹤壁市"
+    },
+    "410700": {
+      "crmCityCode": "84107",
+      "crmCityName": "新乡市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "410700",
+      "admCityName": "新乡市"
+    },
+    "410800": {
+      "crmCityCode": "84108",
+      "crmCityName": "焦作市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "410800",
+      "admCityName": "焦作市"
+    },
+    "410900": {
+      "crmCityCode": "84109",
+      "crmCityName": "濮阳市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "410900",
+      "admCityName": "濮阳市"
+    },
+    "411000": {
+      "crmCityCode": "84110",
+      "crmCityName": "许昌市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "411000",
+      "admCityName": "许昌市"
+    },
+    "411100": {
+      "crmCityCode": "84111",
+      "crmCityName": "漯河市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "411100",
+      "admCityName": "漯河市"
+    },
+    "411200": {
+      "crmCityCode": "84112",
+      "crmCityName": "三门峡市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "411200",
+      "admCityName": "三门峡市"
+    },
+    "411300": {
+      "crmCityCode": "84113",
+      "crmCityName": "南阳市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "411300",
+      "admCityName": "南阳市"
+    },
+    "411400": {
+      "crmCityCode": "84114",
+      "crmCityName": "商丘市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "411400",
+      "admCityName": "商丘市"
+    },
+    "411500": {
+      "crmCityCode": "84115",
+      "crmCityName": "信阳市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "411500",
+      "admCityName": "信阳市"
+    },
+    "411600": {
+      "crmCityCode": "84116",
+      "crmCityName": "周口市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "411600",
+      "admCityName": "周口市"
+    },
+    "411700": {
+      "crmCityCode": "84117",
+      "crmCityName": "驻马店市",
+      "crmProvCode": "841",
+      "crmProvName": "河南省",
+      "admCityCode": "411700",
+      "admCityName": "驻马店市"
+    },
+    "420100": {
+      "crmCityCode": "84201",
+      "crmCityName": "武汉市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "420100",
+      "admCityName": "武汉市"
+    },
+    "420200": {
+      "crmCityCode": "84202",
+      "crmCityName": "黄石市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "420200",
+      "admCityName": "黄石市"
+    },
+    "420300": {
+      "crmCityCode": "84203",
+      "crmCityName": "十堰市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "420300",
+      "admCityName": "十堰市"
+    },
+    "420500": {
+      "crmCityCode": "84205",
+      "crmCityName": "宜昌市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "420500",
+      "admCityName": "宜昌市"
+    },
+    "420700": {
+      "crmCityCode": "84207",
+      "crmCityName": "鄂州市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "420700",
+      "admCityName": "鄂州市"
+    },
+    "420800": {
+      "crmCityCode": "84208",
+      "crmCityName": "荆门市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "420800",
+      "admCityName": "荆门市"
+    },
+    "420900": {
+      "crmCityCode": "84209",
+      "crmCityName": "孝感市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "420900",
+      "admCityName": "孝感市"
+    },
+    "421000": {
+      "crmCityCode": "84210",
+      "crmCityName": "荆州市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "421000",
+      "admCityName": "荆州市"
+    },
+    "421100": {
+      "crmCityCode": "84211",
+      "crmCityName": "黄冈市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "421100",
+      "admCityName": "黄冈市"
+    },
+    "421200": {
+      "crmCityCode": "84212",
+      "crmCityName": "咸宁市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "421200",
+      "admCityName": "咸宁市"
+    },
+    "421300": {
+      "crmCityCode": "84213",
+      "crmCityName": "随州市",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "421300",
+      "admCityName": "随州市"
+    },
+    "422800": {
+      "crmCityCode": "84228",
+      "crmCityName": "恩施土家族苗族自治州",
+      "crmProvCode": "842",
+      "crmProvName": "湖北省",
+      "admCityCode": "422800",
+      "admCityName": "恩施土家族苗族自治州"
+    },
+    "430100": {
+      "crmCityCode": "84301",
+      "crmCityName": "长沙市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "430100",
+      "admCityName": "长沙市"
+    },
+    "430200": {
+      "crmCityCode": "84302",
+      "crmCityName": "株洲市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "430200",
+      "admCityName": "株洲市"
+    },
+    "430300": {
+      "crmCityCode": "84303",
+      "crmCityName": "湘潭市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "430300",
+      "admCityName": "湘潭市"
+    },
+    "430400": {
+      "crmCityCode": "84304",
+      "crmCityName": "衡阳市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "430400",
+      "admCityName": "衡阳市"
+    },
+    "430500": {
+      "crmCityCode": "84305",
+      "crmCityName": "邵阳市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "430500",
+      "admCityName": "邵阳市"
+    },
+    "430600": {
+      "crmCityCode": "84306",
+      "crmCityName": "岳阳市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "430600",
+      "admCityName": "岳阳市"
+    },
+    "430700": {
+      "crmCityCode": "84307",
+      "crmCityName": "常德市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "430700",
+      "admCityName": "常德市"
+    },
+    "430800": {
+      "crmCityCode": "84308",
+      "crmCityName": "张家界市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "430800",
+      "admCityName": "张家界市"
+    },
+    "430900": {
+      "crmCityCode": "84309",
+      "crmCityName": "益阳市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "430900",
+      "admCityName": "益阳市"
+    },
+    "431000": {
+      "crmCityCode": "84310",
+      "crmCityName": "郴州市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "431000",
+      "admCityName": "郴州市"
+    },
+    "431100": {
+      "crmCityCode": "84311",
+      "crmCityName": "永州市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "431100",
+      "admCityName": "永州市"
+    },
+    "431200": {
+      "crmCityCode": "84312",
+      "crmCityName": "怀化市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "431200",
+      "admCityName": "怀化市"
+    },
+    "431300": {
+      "crmCityCode": "84313",
+      "crmCityName": "娄底市",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "431300",
+      "admCityName": "娄底市"
+    },
+    "433100": {
+      "crmCityCode": "84331",
+      "crmCityName": "湘西土家族苗族自治州",
+      "crmProvCode": "843",
+      "crmProvName": "湖南省",
+      "admCityCode": "433100",
+      "admCityName": "湘西土家族苗族自治州"
+    },
+    "440100": {
+      "crmCityCode": "84401",
+      "crmCityName": "广州市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "440100",
+      "admCityName": "广州市"
+    },
+    "440200": {
+      "crmCityCode": "84402",
+      "crmCityName": "韶关市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "440200",
+      "admCityName": "韶关市"
+    },
+    "440300": {
+      "crmCityCode": "84403",
+      "crmCityName": "深圳市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "440300",
+      "admCityName": "深圳市"
+    },
+    "440400": {
+      "crmCityCode": "84404",
+      "crmCityName": "珠海市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "440400",
+      "admCityName": "珠海市"
+    },
+    "440500": {
+      "crmCityCode": "84405",
+      "crmCityName": "汕头市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "440500",
+      "admCityName": "汕头市"
+    },
+    "440600": {
+      "crmCityCode": "84406",
+      "crmCityName": "佛山市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "440600",
+      "admCityName": "佛山市"
+    },
+    "440700": {
+      "crmCityCode": "84407",
+      "crmCityName": "江门市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "440700",
+      "admCityName": "江门市"
+    },
+    "440800": {
+      "crmCityCode": "84408",
+      "crmCityName": "湛江市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "440800",
+      "admCityName": "湛江市"
+    },
+    "440900": {
+      "crmCityCode": "84409",
+      "crmCityName": "茂名市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "440900",
+      "admCityName": "茂名市"
+    },
+    "441200": {
+      "crmCityCode": "84412",
+      "crmCityName": "肇庆市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "441200",
+      "admCityName": "肇庆市"
+    },
+    "441300": {
+      "crmCityCode": "84413",
+      "crmCityName": "惠州市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "441300",
+      "admCityName": "惠州市"
+    },
+    "441400": {
+      "crmCityCode": "84414",
+      "crmCityName": "梅州市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "441400",
+      "admCityName": "梅州市"
+    },
+    "441500": {
+      "crmCityCode": "84415",
+      "crmCityName": "汕尾市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "441500",
+      "admCityName": "汕尾市"
+    },
+    "441600": {
+      "crmCityCode": "84416",
+      "crmCityName": "河源市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "441600",
+      "admCityName": "河源市"
+    },
+    "441700": {
+      "crmCityCode": "84417",
+      "crmCityName": "阳江市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "441700",
+      "admCityName": "阳江市"
+    },
+    "441800": {
+      "crmCityCode": "84418",
+      "crmCityName": "清远市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "441800",
+      "admCityName": "清远市"
+    },
+    "441900": {
+      "crmCityCode": "84419",
+      "crmCityName": "东莞市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "441900",
+      "admCityName": "东莞市"
+    },
+    "442000": {
+      "crmCityCode": "84420",
+      "crmCityName": "中山市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "442000",
+      "admCityName": "中山市"
+    },
+    "445100": {
+      "crmCityCode": "84451",
+      "crmCityName": "潮州市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "445100",
+      "admCityName": "潮州市"
+    },
+    "445200": {
+      "crmCityCode": "84452",
+      "crmCityName": "揭阳市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "445200",
+      "admCityName": "揭阳市"
+    },
+    "445300": {
+      "crmCityCode": "84453",
+      "crmCityName": "云浮市",
+      "crmProvCode": "844",
+      "crmProvName": "广东省",
+      "admCityCode": "445300",
+      "admCityName": "云浮市"
+    },
+    "450100": {
+      "crmCityCode": "84501",
+      "crmCityName": "南宁市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "450100",
+      "admCityName": "南宁市"
+    },
+    "450200": {
+      "crmCityCode": "84502",
+      "crmCityName": "柳州市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "450200",
+      "admCityName": "柳州市"
+    },
+    "450300": {
+      "crmCityCode": "84503",
+      "crmCityName": "桂林市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "450300",
+      "admCityName": "桂林市"
+    },
+    "450400": {
+      "crmCityCode": "84504",
+      "crmCityName": "梧州市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "450400",
+      "admCityName": "梧州市"
+    },
+    "450500": {
+      "crmCityCode": "84505",
+      "crmCityName": "北海市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "450500",
+      "admCityName": "北海市"
+    },
+    "450600": {
+      "crmCityCode": "84506",
+      "crmCityName": "防城港市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "450600",
+      "admCityName": "防城港市"
+    },
+    "450700": {
+      "crmCityCode": "84507",
+      "crmCityName": "钦州市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "450700",
+      "admCityName": "钦州市"
+    },
+    "450800": {
+      "crmCityCode": "84508",
+      "crmCityName": "贵港市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "450800",
+      "admCityName": "贵港市"
+    },
+    "450900": {
+      "crmCityCode": "84509",
+      "crmCityName": "玉林市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "450900",
+      "admCityName": "玉林市"
+    },
+    "451000": {
+      "crmCityCode": "84510",
+      "crmCityName": "百色市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "451000",
+      "admCityName": "百色市"
+    },
+    "451100": {
+      "crmCityCode": "84511",
+      "crmCityName": "贺州市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "451100",
+      "admCityName": "贺州市"
+    },
+    "451200": {
+      "crmCityCode": "84512",
+      "crmCityName": "河池市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "451200",
+      "admCityName": "河池市"
+    },
+    "451300": {
+      "crmCityCode": "84513",
+      "crmCityName": "来宾市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "451300",
+      "admCityName": "来宾市"
+    },
+    "451400": {
+      "crmCityCode": "84514",
+      "crmCityName": "崇左市",
+      "crmProvCode": "845",
+      "crmProvName": "广西壮族自治区",
+      "admCityCode": "451400",
+      "admCityName": "崇左市"
+    },
+    "460000": {
+      "crmCityCode": "84601",
+      "crmCityName": "海南省",
+      "crmProvCode": "846",
+      "crmProvName": "海南省",
+      "admCityCode": "460000",
+      "admCityName": "海南省"
+    },
+    "500000": {
+      "crmCityCode": "85001",
+      "crmCityName": "重庆市",
+      "crmProvCode": "850",
+      "crmProvName": "重庆市",
+      "admCityCode": "500000",
+      "admCityName": "重庆市"
+    },
+    "510100": {
+      "crmCityCode": "85101",
+      "crmCityName": "成都市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "510100",
+      "admCityName": "成都市"
+    },
+    "510300": {
+      "crmCityCode": "85103",
+      "crmCityName": "自贡市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "510300",
+      "admCityName": "自贡市"
+    },
+    "510400": {
+      "crmCityCode": "85104",
+      "crmCityName": "攀枝花市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "510400",
+      "admCityName": "攀枝花市"
+    },
+    "510500": {
+      "crmCityCode": "85105",
+      "crmCityName": "泸州市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "510500",
+      "admCityName": "泸州市"
+    },
+    "510600": {
+      "crmCityCode": "85106",
+      "crmCityName": "德阳市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "510600",
+      "admCityName": "德阳市"
+    },
+    "510700": {
+      "crmCityCode": "85107",
+      "crmCityName": "绵阳市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "510700",
+      "admCityName": "绵阳市"
+    },
+    "510800": {
+      "crmCityCode": "85108",
+      "crmCityName": "广元市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "510800",
+      "admCityName": "广元市"
+    },
+    "510900": {
+      "crmCityCode": "85109",
+      "crmCityName": "遂宁市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "510900",
+      "admCityName": "遂宁市"
+    },
+    "511000": {
+      "crmCityCode": "85110",
+      "crmCityName": "内江市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "511000",
+      "admCityName": "内江市"
+    },
+    "511100": {
+      "crmCityCode": "85111",
+      "crmCityName": "乐山市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "511100",
+      "admCityName": "乐山市"
+    },
+    "511300": {
+      "crmCityCode": "85113",
+      "crmCityName": "南充市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "511300",
+      "admCityName": "南充市"
+    },
+    "511400": {
+      "crmCityCode": "85114",
+      "crmCityName": "眉山市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "511400",
+      "admCityName": "眉山市"
+    },
+    "511500": {
+      "crmCityCode": "85115",
+      "crmCityName": "宜宾市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "511500",
+      "admCityName": "宜宾市"
+    },
+    "511600": {
+      "crmCityCode": "85116",
+      "crmCityName": "广安市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "511600",
+      "admCityName": "广安市"
+    },
+    "511700": {
+      "crmCityCode": "85117",
+      "crmCityName": "达州市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "511700",
+      "admCityName": "达州市"
+    },
+    "511800": {
+      "crmCityCode": "85118",
+      "crmCityName": "雅安市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "511800",
+      "admCityName": "雅安市"
+    },
+    "511900": {
+      "crmCityCode": "85119",
+      "crmCityName": "巴中市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "511900",
+      "admCityName": "巴中市"
+    },
+    "512000": {
+      "crmCityCode": "85120",
+      "crmCityName": "资阳市",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "512000",
+      "admCityName": "资阳市"
+    },
+    "513200": {
+      "crmCityCode": "85132",
+      "crmCityName": "阿坝藏族羌族自治州",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "513200",
+      "admCityName": "阿坝藏族羌族自治州"
+    },
+    "513300": {
+      "crmCityCode": "85133",
+      "crmCityName": "甘孜藏族自治州",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "513300",
+      "admCityName": "甘孜藏族自治州"
+    },
+    "513400": {
+      "crmCityCode": "85134",
+      "crmCityName": "凉山彝族自治州",
+      "crmProvCode": "851",
+      "crmProvName": "四川省",
+      "admCityCode": "513400",
+      "admCityName": "凉山彝族自治州"
+    },
+    "520100": {
+      "crmCityCode": "85201",
+      "crmCityName": "贵阳市",
+      "crmProvCode": "852",
+      "crmProvName": "贵州省",
+      "admCityCode": "520100",
+      "admCityName": "贵阳市"
+    },
+    "520200": {
+      "crmCityCode": "85202",
+      "crmCityName": "六盘水市",
+      "crmProvCode": "852",
+      "crmProvName": "贵州省",
+      "admCityCode": "520200",
+      "admCityName": "六盘水市"
+    },
+    "520300": {
+      "crmCityCode": "85203",
+      "crmCityName": "遵义市",
+      "crmProvCode": "852",
+      "crmProvName": "贵州省",
+      "admCityCode": "520300",
+      "admCityName": "遵义市"
+    },
+    "520400": {
+      "crmCityCode": "85204",
+      "crmCityName": "安顺市",
+      "crmProvCode": "852",
+      "crmProvName": "贵州省",
+      "admCityCode": "520400",
+      "admCityName": "安顺市"
+    },
+    "522300": {
+      "crmCityCode": "85223",
+      "crmCityName": "黔西南布依族苗族自治州",
+      "crmProvCode": "852",
+      "crmProvName": "贵州省",
+      "admCityCode": "522300",
+      "admCityName": "黔西南布依族苗族自治州"
+    },
+    "522600": {
+      "crmCityCode": "85226",
+      "crmCityName": "黔东南苗族侗族自治州",
+      "crmProvCode": "852",
+      "crmProvName": "贵州省",
+      "admCityCode": "522600",
+      "admCityName": "黔东南苗族侗族自治州"
+    },
+    "522700": {
+      "crmCityCode": "85227",
+      "crmCityName": "黔南布依族苗族自治州",
+      "crmProvCode": "852",
+      "crmProvName": "贵州省",
+      "admCityCode": "522700",
+      "admCityName": "黔南布依族苗族自治州"
+    },
+    "530100": {
+      "crmCityCode": "85301",
+      "crmCityName": "昆明市",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "530100",
+      "admCityName": "昆明市"
+    },
+    "530300": {
+      "crmCityCode": "85303",
+      "crmCityName": "曲靖市",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "530300",
+      "admCityName": "曲靖市"
+    },
+    "530400": {
+      "crmCityCode": "85304",
+      "crmCityName": "玉溪市",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "530400",
+      "admCityName": "玉溪市"
+    },
+    "530500": {
+      "crmCityCode": "85305",
+      "crmCityName": "保山市",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "530500",
+      "admCityName": "保山市"
+    },
+    "530600": {
+      "crmCityCode": "85306",
+      "crmCityName": "昭通市",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "530600",
+      "admCityName": "昭通市"
+    },
+    "530700": {
+      "crmCityCode": "85307",
+      "crmCityName": "丽江市",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "530700",
+      "admCityName": "丽江市"
+    },
+    "530800": {
+      "crmCityCode": "85308",
+      "crmCityName": "普洱市",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "530800",
+      "admCityName": "普洱市"
+    },
+    "530900": {
+      "crmCityCode": "85309",
+      "crmCityName": "临沧市",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "530900",
+      "admCityName": "临沧市"
+    },
+    "532300": {
+      "crmCityCode": "85323",
+      "crmCityName": "楚雄彝族自治州",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "532300",
+      "admCityName": "楚雄彝族自治州"
+    },
+    "532500": {
+      "crmCityCode": "85325",
+      "crmCityName": "红河哈尼族彝族自治州",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "532500",
+      "admCityName": "红河哈尼族彝族自治州"
+    },
+    "532600": {
+      "crmCityCode": "85326",
+      "crmCityName": "文山壮族苗族自治州",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "532600",
+      "admCityName": "文山壮族苗族自治州"
+    },
+    "532800": {
+      "crmCityCode": "85328",
+      "crmCityName": "西双版纳傣族自治州",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "532800",
+      "admCityName": "西双版纳傣族自治州"
+    },
+    "532900": {
+      "crmCityCode": "85329",
+      "crmCityName": "大理白族自治州",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "532900",
+      "admCityName": "大理白族自治州"
+    },
+    "533100": {
+      "crmCityCode": "85331",
+      "crmCityName": "德宏傣族景颇族自治州",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "533100",
+      "admCityName": "德宏傣族景颇族自治州"
+    },
+    "533300": {
+      "crmCityCode": "85333",
+      "crmCityName": "怒江傈僳族自治州",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "533300",
+      "admCityName": "怒江傈僳族自治州"
+    },
+    "533400": {
+      "crmCityCode": "85334",
+      "crmCityName": "迪庆藏族自治州",
+      "crmProvCode": "853",
+      "crmProvName": "云南省",
+      "admCityCode": "533400",
+      "admCityName": "迪庆藏族自治州"
+    },
+    "540100": {
+      "crmCityCode": "85401",
+      "crmCityName": "拉萨市",
+      "crmProvCode": "854",
+      "crmProvName": "西藏自治区",
+      "admCityCode": "540100",
+      "admCityName": "拉萨市"
+    },
+    "542100": {
+      "crmCityCode": "85421",
+      "crmCityName": "昌都地区",
+      "crmProvCode": "854",
+      "crmProvName": "西藏自治区",
+      "admCityCode": "542100",
+      "admCityName": "昌都地区"
+    },
+    "542200": {
+      "crmCityCode": "85422",
+      "crmCityName": "山南地区",
+      "crmProvCode": "854",
+      "crmProvName": "西藏自治区",
+      "admCityCode": "542200",
+      "admCityName": "山南地区"
+    },
+    "542400": {
+      "crmCityCode": "85424",
+      "crmCityName": "那曲地区",
+      "crmProvCode": "854",
+      "crmProvName": "西藏自治区",
+      "admCityCode": "542400",
+      "admCityName": "那曲地区"
+    },
+    "542500": {
+      "crmCityCode": "85425",
+      "crmCityName": "阿里地区",
+      "crmProvCode": "854",
+      "crmProvName": "西藏自治区",
+      "admCityCode": "542500",
+      "admCityName": "阿里地区"
+    },
+    "542600": {
+      "crmCityCode": "85426",
+      "crmCityName": "林芝地区",
+      "crmProvCode": "854",
+      "crmProvName": "西藏自治区",
+      "admCityCode": "542600",
+      "admCityName": "林芝地区"
+    },
+    "610100": {
+      "crmCityCode": "86101",
+      "crmCityName": "西安市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "610100",
+      "admCityName": "西安市"
+    },
+    "610200": {
+      "crmCityCode": "86102",
+      "crmCityName": "铜川市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "610200",
+      "admCityName": "铜川市"
+    },
+    "610300": {
+      "crmCityCode": "86103",
+      "crmCityName": "宝鸡市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "610300",
+      "admCityName": "宝鸡市"
+    },
+    "610400": {
+      "crmCityCode": "86104",
+      "crmCityName": "咸阳市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "610400",
+      "admCityName": "咸阳市"
+    },
+    "610500": {
+      "crmCityCode": "86105",
+      "crmCityName": "渭南市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "610500",
+      "admCityName": "渭南市"
+    },
+    "610600": {
+      "crmCityCode": "86106",
+      "crmCityName": "延安市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "610600",
+      "admCityName": "延安市"
+    },
+    "610700": {
+      "crmCityCode": "86107",
+      "crmCityName": "汉中市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "610700",
+      "admCityName": "汉中市"
+    },
+    "610800": {
+      "crmCityCode": "86108",
+      "crmCityName": "榆林市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "610800",
+      "admCityName": "榆林市"
+    },
+    "610900": {
+      "crmCityCode": "86109",
+      "crmCityName": "安康市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "610900",
+      "admCityName": "安康市"
+    },
+    "611000": {
+      "crmCityCode": "86110",
+      "crmCityName": "商洛市",
+      "crmProvCode": "861",
+      "crmProvName": "陕西省",
+      "admCityCode": "611000",
+      "admCityName": "商洛市"
+    },
+    "620100": {
+      "crmCityCode": "86201",
+      "crmCityName": "兰州市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "620100",
+      "admCityName": "兰州市"
+    },
+    "620200": {
+      "crmCityCode": "86202",
+      "crmCityName": "嘉峪关市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "620200",
+      "admCityName": "嘉峪关市"
+    },
+    "620300": {
+      "crmCityCode": "86203",
+      "crmCityName": "金昌市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "620300",
+      "admCityName": "金昌市"
+    },
+    "620400": {
+      "crmCityCode": "86204",
+      "crmCityName": "白银市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "620400",
+      "admCityName": "白银市"
+    },
+    "620500": {
+      "crmCityCode": "86205",
+      "crmCityName": "天水市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "620500",
+      "admCityName": "天水市"
+    },
+    "620600": {
+      "crmCityCode": "86206",
+      "crmCityName": "武威市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "620600",
+      "admCityName": "武威市"
+    },
+    "620700": {
+      "crmCityCode": "86207",
+      "crmCityName": "张掖市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "620700",
+      "admCityName": "张掖市"
+    },
+    "620800": {
+      "crmCityCode": "86208",
+      "crmCityName": "平凉市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "620800",
+      "admCityName": "平凉市"
+    },
+    "620900": {
+      "crmCityCode": "86209",
+      "crmCityName": "酒泉市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "620900",
+      "admCityName": "酒泉市"
+    },
+    "621000": {
+      "crmCityCode": "86210",
+      "crmCityName": "庆阳市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "621000",
+      "admCityName": "庆阳市"
+    },
+    "621100": {
+      "crmCityCode": "86211",
+      "crmCityName": "定西市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "621100",
+      "admCityName": "定西市"
+    },
+    "621200": {
+      "crmCityCode": "86212",
+      "crmCityName": "陇南市",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "621200",
+      "admCityName": "陇南市"
+    },
+    "622900": {
+      "crmCityCode": "86229",
+      "crmCityName": "临夏回族自治州",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "622900",
+      "admCityName": "临夏回族自治州"
+    },
+    "623000": {
+      "crmCityCode": "86230",
+      "crmCityName": "甘南藏族自治州",
+      "crmProvCode": "862",
+      "crmProvName": "甘肃省",
+      "admCityCode": "623000",
+      "admCityName": "甘南藏族自治州"
+    },
+    "630100": {
+      "crmCityCode": "86301",
+      "crmCityName": "西宁市",
+      "crmProvCode": "863",
+      "crmProvName": "青海省",
+      "admCityCode": "630100",
+      "admCityName": "西宁市"
+    },
+    "632200": {
+      "crmCityCode": "86322",
+      "crmCityName": "海北藏族自治州",
+      "crmProvCode": "863",
+      "crmProvName": "青海省",
+      "admCityCode": "632200",
+      "admCityName": "海北藏族自治州"
+    },
+    "632300": {
+      "crmCityCode": "86323",
+      "crmCityName": "黄南藏族自治州",
+      "crmProvCode": "863",
+      "crmProvName": "青海省",
+      "admCityCode": "632300",
+      "admCityName": "黄南藏族自治州"
+    },
+    "632500": {
+      "crmCityCode": "86325",
+      "crmCityName": "海南藏族自治州",
+      "crmProvCode": "863",
+      "crmProvName": "青海省",
+      "admCityCode": "632500",
+      "admCityName": "海南藏族自治州"
+    },
+    "632600": {
+      "crmCityCode": "86326",
+      "crmCityName": "果洛藏族自治州",
+      "crmProvCode": "863",
+      "crmProvName": "青海省",
+      "admCityCode": "632600",
+      "admCityName": "果洛藏族自治州"
+    },
+    "632700": {
+      "crmCityCode": "86327",
+      "crmCityName": "玉树藏族自治州",
+      "crmProvCode": "863",
+      "crmProvName": "青海省",
+      "admCityCode": "632700",
+      "admCityName": "玉树藏族自治州"
+    },
+    "632800": {
+      "crmCityCode": "86328",
+      "crmCityName": "海西蒙古族藏族自治州",
+      "crmProvCode": "863",
+      "crmProvName": "青海省",
+      "admCityCode": "632800",
+      "admCityName": "海西蒙古族藏族自治州"
+    },
+    "640100": {
+      "crmCityCode": "86401",
+      "crmCityName": "银川市",
+      "crmProvCode": "864",
+      "crmProvName": "宁夏回族自治区",
+      "admCityCode": "640100",
+      "admCityName": "银川市"
+    },
+    "640200": {
+      "crmCityCode": "86402",
+      "crmCityName": "石嘴山市",
+      "crmProvCode": "864",
+      "crmProvName": "宁夏回族自治区",
+      "admCityCode": "640200",
+      "admCityName": "石嘴山市"
+    },
+    "640300": {
+      "crmCityCode": "86403",
+      "crmCityName": "吴忠市",
+      "crmProvCode": "864",
+      "crmProvName": "宁夏回族自治区",
+      "admCityCode": "640300",
+      "admCityName": "吴忠市"
+    },
+    "640400": {
+      "crmCityCode": "86404",
+      "crmCityName": "固原市",
+      "crmProvCode": "864",
+      "crmProvName": "宁夏回族自治区",
+      "admCityCode": "640400",
+      "admCityName": "固原市"
+    },
+    "640500": {
+      "crmCityCode": "86405",
+      "crmCityName": "中卫市",
+      "crmProvCode": "864",
+      "crmProvName": "宁夏回族自治区",
+      "admCityCode": "640500",
+      "admCityName": "中卫市"
+    },
+    "650100": {
+      "crmCityCode": "86501",
+      "crmCityName": "乌鲁木齐市",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "650100",
+      "admCityName": "乌鲁木齐市"
+    },
+    "650200": {
+      "crmCityCode": "86502",
+      "crmCityName": "克拉玛依市",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "650200",
+      "admCityName": "克拉玛依市"
+    },
+    "652100": {
+      "crmCityCode": "86521",
+      "crmCityName": "吐鲁番地区",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "652100",
+      "admCityName": "吐鲁番地区"
+    },
+    "652200": {
+      "crmCityCode": "86522",
+      "crmCityName": "哈密地区",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "652200",
+      "admCityName": "哈密地区"
+    },
+    "652300": {
+      "crmCityCode": "86523",
+      "crmCityName": "昌吉回族自治州",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "652300",
+      "admCityName": "昌吉回族自治州"
+    },
+    "652700": {
+      "crmCityCode": "86527",
+      "crmCityName": "博尔塔拉蒙古自治州",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "652700",
+      "admCityName": "博尔塔拉蒙古自治州"
+    },
+    "652800": {
+      "crmCityCode": "86528",
+      "crmCityName": "巴音郭楞蒙古自治州",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "652800",
+      "admCityName": "巴音郭楞蒙古自治州"
+    },
+    "652900": {
+      "crmCityCode": "86529",
+      "crmCityName": "阿克苏地区",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "652900",
+      "admCityName": "阿克苏地区"
+    },
+    "653000": {
+      "crmCityCode": "86530",
+      "crmCityName": "克孜勒苏柯尔克孜自治州",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "653000",
+      "admCityName": "克孜勒苏柯尔克孜自治州"
+    },
+    "653100": {
+      "crmCityCode": "86531",
+      "crmCityName": "喀什地区",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "653100",
+      "admCityName": "喀什地区"
+    },
+    "653200": {
+      "crmCityCode": "86532",
+      "crmCityName": "和田地区",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "653200",
+      "admCityName": "和田地区"
+    },
+    "654000": {
+      "crmCityCode": "86540",
+      "crmCityName": "伊犁哈萨克自治州",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "654000",
+      "admCityName": "伊犁哈萨克自治州"
+    },
+    "654200": {
+      "crmCityCode": "86542",
+      "crmCityName": "塔城地区",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "654200",
+      "admCityName": "塔城地区"
+    },
+    "654300": {
+      "crmCityCode": "86543",
+      "crmCityName": "阿勒泰地区",
+      "crmProvCode": "865",
+      "crmProvName": "新疆维吾尔自治区",
+      "admCityCode": "654300",
+      "admCityName": "阿勒泰地区"
+    }
+  }
+}
