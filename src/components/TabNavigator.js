@@ -11,8 +11,8 @@ import Color from '../styles/var'
 export default createBottomTabNavigator(
   {
     "首页": { screen: Home },
-    "发现": { screen: Find },
-    "MyPage": { screen: My },
+    "FindPage": Find,
+    "MyPage": My,
   },
   {
     navigationOptions: ({ navigation }) => ({
@@ -26,7 +26,7 @@ export default createBottomTabNavigator(
             ? <Image style={{ width: 20, height: 20 }} source={require('../images/home.png')} />
             : <Image style={{ width: 20, height: 20 }} source={require('../images/homeActive.png')} />
         )
-        } else if (routeName === '发现') {
+        } else if (routeName === 'FindPage') {
           iconName =( !focused 
             ? <Image style={{ width: 22, height: 22 }} source={require('../images/find.png')} />
             : <Image style={{ width: 22, height: 22 }} source={require('../images/findActive.png')} />)

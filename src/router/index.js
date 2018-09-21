@@ -26,7 +26,6 @@ import KnowScore from "../containers/KnowScore";
 
 import ProductParameterPage from '../containers/ProductParameterPage/ProductParameterPage'
 import OrderInfo from '../containers/OrderInfo/OrderInfo'
-import Test from '../containers/Test'
 import MyInstallmentPage from '../containers/MyInstallmentPage/MyInstallmentPage'
 import MyOrder from '../containers/MyOrder/MyOrder'
 import WorkerEnter from '../containers/WorkerEnter/WorkerEnter'
@@ -39,6 +38,10 @@ import TakePicture from "../containers/TakePicture";
 import TabNavigator from '../components/TabNavigator'
 import Wait from "../containers/Wait";
 import AuthSuccess from "../containers/AuthSuccess";
+import BankCard from "../containers/BankCard";
+import AddBankCard from "../containers/AddBankCard";
+import MyCollections from "../containers/MyCollections";
+import CardInfo from "../containers/CardInfo";
 
 // const AppNavigator = StackNavigator({
 //     Tab: TabNavigator,
@@ -125,8 +128,13 @@ export default StackNavigator({
     PayResult,
     TakePicturePage:TakePicture,
     WaitPage:Wait,
-    AuthSuccessPage:AuthSuccess
+    AuthSuccessPage:AuthSuccess,
+    BackCardPage:BankCard,
+    AddBankCardPage:AddBankCard,
+    MyCollectionsPage:MyCollections,
+    CardInfoPage:CardInfo
 }, {
+    //initialRouteName:'BackCardPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

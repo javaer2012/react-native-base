@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View,ScrollView, Text,TouchableOpacity,StyleSheet,Image } from 'react-native';
+import { View,AsyncStorage, Text,TouchableOpacity,StyleSheet,Image } from 'react-native';
 import {List,InputItem,Button,WingBlank,WhiteSpace,Flex} from 'antd-mobile-rn';
 
 export default class PersonalInfo extends Component{
@@ -7,8 +7,31 @@ export default class PersonalInfo extends Component{
         title:"个人信息"
     }
 
-    render(){
+    state = {
+        user:null
+    }
 
+    constructor(props){
+        super(props)
+        this.initData()
+    }
+
+    async initData(){
+        try{
+            const userInfo = await AsyncStorage.getItem('userInfo')
+            console.log(userInfo)
+            const userJson = JSON.parse(userInfo)
+            this.setState({
+                user:{...userJson}
+            })
+        } catch(e){
+
+        }
+    }
+
+    render(){
+        if(this.state.user === null) return null
+        const {user} = this.state
         const Item = List.Item;
         const {navigation} = this.props;
         return (
@@ -17,9 +40,9 @@ export default class PersonalInfo extends Component{
                     <WhiteSpace size={"lg"}/>
                     <Image style={{width:60,height: 60,resizeMode:'stretch',marginRight: 15}} source={require('../images/imageNew/one/no_collection.jpg')}/>
                     <View>
-                        <Text>Sky</Text>
+                        <Text>{user.nickName || `昵称尚未设置`}</Text>
                         <Flex direction={"row"} justify={"between"} style={{height:50}}>
-                            <Text>13912341234</Text>
+                            <Text>{user.phoneNo}</Text>
                             <TouchableOpacity style={{marginLeft: 15}}><Text style={{color:'blue'}}>[解除绑定]</Text></TouchableOpacity>
                         </Flex>
                     </View>

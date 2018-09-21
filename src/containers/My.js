@@ -210,8 +210,8 @@ export default class My extends RentApp {
             const params = {
                 userId,
                 openId,
-                cityCode,
-                provinceCode,
+                cityCode:84401,
+                provinceCode:844,
             }
 
             const rsp = await api.getUserInfo(params)
@@ -326,10 +326,10 @@ export default class My extends RentApp {
                                        source={require('../images/my/favorite.png')}/>
 
                             </WingBlank>
-                            <View>
+                            <TouchableOpacity onPress={()=>navigation.navigate("MyCollectionsPage")}>
                                 <Text style={{fontSize: 12, marginBottom: 5}}>我的收藏</Text>
                                 <Text style={{fontSize: 10, color: '#989898'}}>点击查看您收藏的宝贝</Text>
-                            </View>
+                            </TouchableOpacity>
                         </Flex>
                     </Flex.Item>
                     <Flex.Item
@@ -343,8 +343,8 @@ export default class My extends RentApp {
 
                             <View>
                                 <WhiteSpace size={"xs"}/>
-                                <Text style={{fontSize: 12, marginBottom: 5}}>收藏历史</Text>
-                                <Text style={{fontSize: 10, color: '#989898'}}>点击查看您的收藏历史</Text>
+                                <Text style={{fontSize: 12, marginBottom: 5}}>信用历史</Text>
+                                <Text style={{fontSize: 10, color: '#989898'}}>点击查看您的信用历史</Text>
                             </View>
                         </Flex>
                     </Flex.Item>

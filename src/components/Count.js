@@ -16,54 +16,61 @@ export default class Count extends React.Component {
     }
 
     async sendMsg() {
-        console.log("Send Message")
         if(!this.props.username){
             Toast.info("手机号不能为空")
             return
         }
-        try {
-           await this.setState({
-                count: true
-            })
 
-            timer = setInterval(() => {
-                this.setState({
-                    time: this.state.time - 1
-                },()=>{
-                    if(this.state.time === 0){
-                        clearInterval(timer);
-                        this.setState({
-                            count:false,
-                            time:5
-                        })
-                    }
+        if(this.props.smsCall){
+            this.props.smsCall()
+
+        } else {
+            console.log("Send Message")
+
+            try {
+                await this.setState({
+                    count: true
                 })
-            }, 1000)
 
-            const address = await AsyncStorage.getItem('addressInfos')
-            const addressData = JSON.parse(address),
-                {district, cityCode, provinceCode} = addressData
-            const params = {
-                sourceType: 3,
-                cityCode,
-                provinceCode,
-                openId: config.authAppId,
-                phoneNo: this.props.username
-            }
-            const msg = await sendMsg(params)
+                timer = setInterval(() => {
+                    this.setState({
+                        time: this.state.time - 1
+                    },()=>{
+                        if(this.state.time === 0){
+                            clearInterval(timer);
+                            this.setState({
+                                count:false,
+                                time:5
+                            })
+                        }
+                    })
+                }, 1000)
 
-            const {data} = msg;
-            console.log(msg)
-            if (data.errcode === 1) {
-               Toast.info(data.errmsg,2)
+                const address = await AsyncStorage.getItem('addressInfos')
+                const addressData = JSON.parse(address),
+                    {district, cityCode, provinceCode} = addressData
+                const params = {
+                    sourceType: 3,
+                    cityCode,
+                    provinceCode,
+                    openId: config.authAppId,
+                    phoneNo: this.props.username
+                }
+                const msg = await sendMsg(params)
+
+                const {data} = msg;
+                console.log(msg)
+                if (data.errcode === 1) {
+                    Toast.info(data.errmsg,2)
+                }
+                else if (data.errcode === 4000) {
+                    Toast.info('手机号不能为空', 2)
+                } else {
+                    Toast.info(data.errmsg, 2)
+                }
+            } catch (e) {
+                console.log(e)
             }
-            else if (data.errcode === 4000) {
-                Toast.info('手机号不能为空', 2)
-            } else {
-                Toast.info(data.errmsg, 2)
-            }
-        } catch (e) {
-            console.log(e)
         }
     }
 
