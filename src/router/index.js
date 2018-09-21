@@ -42,6 +42,7 @@ import BankCard from "../containers/BankCard";
 import AddBankCard from "../containers/AddBankCard";
 import MyCollections from "../containers/MyCollections";
 import CardInfo from "../containers/CardInfo";
+import LocationPage from '../containers/LocationPage/LocationPage'
 
 // const AppNavigator = StackNavigator({
 //     Tab: TabNavigator,
@@ -132,9 +133,10 @@ export default StackNavigator({
     BackCardPage:BankCard,
     AddBankCardPage:AddBankCard,
     MyCollectionsPage:MyCollections,
-    CardInfoPage:CardInfo
+    CardInfoPage:CardInfo,
+    LocationPage
 }, {
-    //initialRouteName:'BackCardPage',
+        initialRouteName: 'MyPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

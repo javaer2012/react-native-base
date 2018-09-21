@@ -13,7 +13,6 @@ export default class RentApp extends Component{
         try{
            // await AsyncStorage.clear()
             const ids = await AsyncStorage.multiGet(['openId','userId','addressInfos'])
-            console.log(ids)
             this.openId = ids[0][1]
             this.userId = ids[1][1]
             this.cityCode = JSON.parse(ids[2][1]).cityCode

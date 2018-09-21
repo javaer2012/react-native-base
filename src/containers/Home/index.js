@@ -13,6 +13,8 @@ const { isCityOpen, getBannerAndNav, hotProducts, AmapRegeo, HTTP_IMG } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 const BANNER_HEIGHT = WIDTH / 75 * 42
+import { getIdData, schoolList, schoolData } from '../../utils/school'
+console.log(getIdData,"iii")
 
 
 
@@ -220,7 +222,7 @@ export default class Home extends Component {
       <TouchableOpacity
         key={index}
         style={[styles.navItem]}
-        onPress={() => navigate('ProductListPage', {})}
+        onPress={() => navigate('ProductListPage', { category : item.id })}
       >
         <Image 
           style={{ width: 49, height: 49 }} 

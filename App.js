@@ -16,11 +16,9 @@ import {getToken} from "./src/service/api";
 import api from './src/service/api'
 import config from './src/config';
 import DeviceInfo from 'react-native-device-info'
+import { areaDict } from './src/utils/city1.json'
 
-
-import {ActivityIndicator} from 'antd-mobile-rn'
-
-const { AmapRegeo,registerUser,isCityOpen } = api
+const { AmapRegeo, registerUser, isCityOpen, setCrmCode } = api
 
 export default class App extends Component {
 
@@ -102,15 +100,15 @@ export default class App extends Component {
                         district, city, citycode, adcode
                     }
                 }
-            } = data
+            } = data;
+            
+            const userAddressMsg = areaDict[`${adcode.substring(0, 3)}000`] || areaDict[`${adcode.substring(0, 4)}00`]
+
             const addressObj = {
-                district,
-                cityCode: citycode,
-                provinceCode: adcode
+                district, // 还是 userAddressMsg.crmCityName ?
+                provinceCode: userAddressMsg.crmProvCode,
+                cityCode: userAddressMsg.crmCityCode
             }
-
-            console.log(addressObj)
-
             await AsyncStorage.setItem('addressInfos', JSON.stringify(addressObj));
 
 

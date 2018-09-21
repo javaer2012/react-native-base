@@ -31,7 +31,6 @@ export default class Count extends React.Component {
                 await this.setState({
                     count: true
                 })
-
                 timer = setInterval(() => {
                     this.setState({
                         time: this.state.time - 1

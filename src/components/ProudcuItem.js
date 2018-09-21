@@ -4,8 +4,7 @@ import { flexRowBet, flexRow, contentPadding } from '../styles/common'
 import Color from '../styles/var'
 import { HTTP_IMG } from '../service/api'
 
-export default ({ data, children }) => {
-  console.log(data,"@@@@@@@")
+export default ({ data, children, imageStyle }) => {
   return (
     <TouchableOpacity
       style={styles.container}
@@ -16,10 +15,17 @@ export default ({ data, children }) => {
         source={require('../images/find.png')}
         //  || data.imgPath
       /> */}
-      <Image resizeMode="stretch" style={{ width: 50, height: 80, marginRight: 10 }} source={{ uri: `${HTTP_IMG}${data.imgPath}` }} />
+      <Image 
+        resizeMode="cover" 
+        style={{ 
+          width: imageStyle ? imageStyle.width : 50, 
+          height: imageStyle ? imageStyle.height : 80, 
+          marginRight: 10 
+        }} source={{ uri: `${HTTP_IMG}${data.imgPath || data.goodsImgPath}` }} />
 
       <View style={styles.contentBox}>
-        <Text style={styles.phoneName}>{data.phoneName} <Text>{data.phoneDesc}</Text></Text>
+        <Text style={styles.phoneName}>{data.phoneName || data.goodsName} <Text>{data.phoneDesc}</Text></Text>
+        {data.goodsDesc && <Text>{data.goodsDesc}</Text>}
         <View style={[flexRowBet, styles.btnBox]}>
           <Text style={styles.priceStyle}>￥ {data.price}</Text>
           <View>
