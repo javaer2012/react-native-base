@@ -199,6 +199,9 @@ export default class My extends RentApp {
     }
 
     async initalState() {
+        await new Promise((resolve,reject)=>{
+            setTimeout(resolve,0)
+        })
         try {
             const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
             console.log(user)
@@ -267,7 +270,7 @@ export default class My extends RentApp {
                 <Flex direction={"row"}>
                     <Flex.Item>
                         <ImageBackground style={  paramsFromLogin !== '0' && this.state.isCredited !== '0'?styles.topBackground:styles.topBackground1} source={require('../images/my/background.png')}>
-                            {paramsFromLogin !== 1 ?
+                            {paramsFromLogin !== "1" &&  paramsFromLogin !== 1?
                                 <View style={styles.content}>
                                     <Image style={styles.userIcon}
                                            source={require('../images/imageNew/one/userIcon.png')}/>

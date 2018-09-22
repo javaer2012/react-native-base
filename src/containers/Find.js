@@ -99,7 +99,11 @@ export default class Find extends RentApp {
         } else {
             return (
                 <React.Fragment>
-                    <Carousel infinite={true} autoplay={true} style={{width: '100%', height: 190}}>
+                    <Carousel selectedIndex={2}
+                              autoplay
+                              infinite
+                              afterChange={this.onHorizontalSelectedIndexChange}
+                              style={{width: '100%', height: 190}}>
                         {
                             detailList.map((item, index) => {
                                 return (

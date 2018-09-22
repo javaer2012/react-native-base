@@ -101,7 +101,7 @@ export default class App extends Component {
             } = data;
             if (data.infocode == '10000') {
                 // city = response.data.regeocode.addressComponent.city;
-                city = gdCity.substring(0, gdCity.length - 1);
+                city = gdCity.lenght >0 ? gdCity.substring(0, gdCity.length - 1):province.substring(0,province.length -1);
                 var code = localCodeInfo(city);
                 try {
                     // const { data } = await setCrmCode(code)
@@ -110,7 +110,7 @@ export default class App extends Component {
                         var option = {};
                         
                         for (var key in areaDict) {
-                            console.log("code：", code, "key：", key,)
+                            //console.log("code：", code, "key：", key,)
                             if (key == code) {
                                 option["city"] = province;
                                 option["provinceCode"] = areaDict[key].crmProvCode;
