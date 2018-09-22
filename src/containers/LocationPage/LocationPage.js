@@ -5,11 +5,12 @@ import {
 import { areaDict } from '../../utils/city1.json'
 import { Flex, SearchBar } from 'antd-mobile-rn';
 import Color from '../../styles/var'
+import { NavigationActions } from 'react-navigation'
+// import { NavigationActions } from 'react-navigation'
 
 const areaDictArr = Object.values(areaDict)
 
 import _ from 'lodash';
-// import { areaDict } from './cities-list/city1.json'
 const { width, height } = Dimensions.get('window')
 const SECTIONHEIGHT = 30, ROWHEIGHT = 40
 //这是利用lodash的range和数组的map画出26个英文字母
@@ -35,7 +36,6 @@ export default class List extends Component {
   getAddressMsg = async () => {
     try {
       const value = await AsyncStorage.getItem('addressInfos');
-      // console.log(value,"~~~~~~~33")
       if (value !== null) {
         // We have data!!
         return JSON.parse(value);
@@ -48,7 +48,6 @@ export default class List extends Component {
   async componentDidMount(){
     try {
       const addressMsg = await this.getAddressMsg()
-      console.log(addressMsg,"####")
       this.setState({
         userAddressMsg: addressMsg,
         // dataSource: Object.values(areaDict)
@@ -67,11 +66,21 @@ export default class List extends Component {
       </TouchableOpacity>
     )
   }
-  changedata = (item) => {
-    AsyncStorage.setItem('addressInfos', JSON.stringify(item));
+  changedata = async (item) => {
+    const addressinfos = {
+      city: item.admCityName,
+      cityCode: item.crmCityCode,
+      provinceCode: item.crmProvCode,
+    }
+    // debugger
+    await AsyncStorage.setItem('addressInfos', JSON.stringify(item));
+    const { navigate, setParams } = this.props.navigation;
+    setParams({ name: 'Lucy' })
+    navigate.goBack(null)
+    // navigate('ProductDetail', { productId: item.id })
+    
   }
   renderRow = ({ item }) => {
-    // console.log(item,"$$$")
     return (
       <TouchableOpacity
         key={item.rowId}
@@ -79,14 +88,13 @@ export default class List extends Component {
           borderBottomColor: '#faf0e6',
           borderBottomWidth: 0.5,
           height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30 }}
-          onPress={() => { that.changedata(item) }}>
+          onPress={() => { this.changedata(item) }}>
         <View><Text style={styles.rowdatatext}>{item.crmCityName}</Text></View>
 
       </TouchableOpacity>
     )
   }
   changeText = (text) => {
-    console.log("改变的文本: " + text);
   }
   //touch right indexLetters, scroll the left
   scrollTo = (index) => {
@@ -98,7 +106,6 @@ export default class List extends Component {
       // viewOffset: index * 40,
       index
     })
-    console.log(this._listView)
   }
   renderSectionHeader = (sectionData, sectionID) => {
     const { userAddressMsg } = this.state;
@@ -125,7 +132,7 @@ export default class List extends Component {
             paddingHorizontal: 20,
             paddingVertical: 8,
             borderRadius:6
-          }}>{userAddressMsg.district}</Text>
+          }}>{userAddressMsg.city}</Text>
         </Flex>
       </Flex>
     )

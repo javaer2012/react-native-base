@@ -107,7 +107,7 @@ export default StackNavigator({
     BadRecordPage:BadRecords,
     AuthRecordPage:AuthRecords,
     MyOrderPage:MyOrders,
-    PersonalInfoPage:PersonalInfo,
+    PersonalInfoPage:PersonalInfo, 
     AuthApplyPage:AuthApply,
     TermPage:Term,
     DrivingPage:DrivingLicense,
