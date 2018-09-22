@@ -17,6 +17,7 @@ import api from './src/service/api'
 import config from './src/config';
 import DeviceInfo from 'react-native-device-info'
 import { areaDict } from './src/utils/city1.json'
+import { cityObj, localCodeInfo } from './src/utils/city'
 
 const { AmapRegeo, registerUser, isCityOpen, setCrmCode } = api
 
@@ -30,30 +31,26 @@ export default class App extends Component {
          * App initialize
          */
         this.registerUser();
-        this.isOpen()
-        console.log(DeviceInfo.getUniqueID())
+        // this.isOpen()
     }
     componentWillMount(){
         this.beginWatch()
     }
 
-    isOpen = async ()=>{
+    isOpen = async (params)=>{
         try{
-
-            const params = {
-                provinceCode:844,
-                cityCode:84402,
-                openId:config.authAppId,
-            }
-
             const rsp = await isCityOpen(params);
-            if(rsp.data.errmsg === 'ok'){
-                await AsyncStorage.setItem('isCityOpen',rsp.data.isOpen)
+            if (rsp.data.errcode == 1) {
+                AsyncStorage.setItem('isCityOpen',rsp.data.isOpen)
             }
-            console.log(rsp)
+            else{
+                // throw (1)
+                console.log("x!!!! 判断isOpen失败")
+            }
+            // console.log(rsp)
 
         } catch (e) {
-
+            console.log("isOpen 函数错误 x!!!! 地址失败")
         }
     }
 
@@ -90,29 +87,47 @@ export default class App extends Component {
     }
 
     getCityFun = async (lat, lon) => {
+        var city;
         try {
             const { data } = await AmapRegeo(lat, lon)
-            const {
+            let {
                 status,
                 infocode,
                 regeocode: {
                     addressComponent: {
-                        district, city, citycode, adcode
+                        district, city:gdCity, citycode, adcode, province
                     }
                 }
             } = data;
-            
-            const userAddressMsg = areaDict[`${adcode.substring(0, 3)}000`] || areaDict[`${adcode.substring(0, 4)}00`]
-
-            const addressObj = {
-                district, // 还是 userAddressMsg.crmCityName ?
-                provinceCode: userAddressMsg.crmProvCode,
-                cityCode: userAddressMsg.crmCityCode
+            if (data.infocode == '10000') {
+                // city = response.data.regeocode.addressComponent.city;
+                city = gdCity.substring(0, gdCity.length - 1);
+                var code = localCodeInfo(city);
+                try {
+                    // const { data } = await setCrmCode(code)
+                    // if (data && data.areaDict) {
+                        // const { areaDict } = data;
+                        var option = {};
+                        
+                        for (var key in areaDict) {
+                            console.log("code：", code, "key：", key,)
+                            if (key == code) {
+                                option["city"] = province;
+                                option["provinceCode"] = areaDict[key].crmProvCode;
+                                option["cityCode"] = areaDict[key].crmCityCode;
+                            }
+                        }
+                        await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
+                        this.isOpen({
+                            provinceCode: option["provinceCode"],
+                            cityCode: option["cityCode"],
+                            openId: config.authAppId
+                        })
+                    // }
+                } catch (error) {
+                    console.log('setCrmCode 接口出错!!!!!!!!!!!1')
+                }
             }
-            await AsyncStorage.setItem('addressInfos', JSON.stringify(addressObj));
-
-
-            // console.log("=====>cityMsg!!!!!!", JSON.stringify(regeocode))
         } catch (error) {
             console.error(error)
         }

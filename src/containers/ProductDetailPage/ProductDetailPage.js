@@ -11,7 +11,9 @@ import PayBar from '../../components/PayBar'
 import ActionSheet from 'react-native-actionsheet'
 import api from '../.././service/api'
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
+import RentApp from "../../components/RentApp";
 const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods } = api
+const PRODUCT_ID = '201802241102330510355414'
 
 const storageItem = ({ data, itemData, onPress, subSkuId }) => {
   const boxStyle = [{
@@ -44,7 +46,7 @@ const tabs = [
 
 // activeCode
 
-export default class ProductDetailPage extends Component {
+export default class ProductDetailPage extends RentApp {
   state = {
     productDetail: {},
     isShowPackage: false,
@@ -58,18 +60,17 @@ export default class ProductDetailPage extends Component {
     count: 0,
     capacityId:'',
     colorId:'',
-    selectMealId:''
+    selectMealId:'',
   }
 
   async componentDidMount() {
     // const productId = this.props.navigation.getParam('productId');
-    const productId = '201802241102330510355414'
 
     try {
       const { data: queryGoodsDetailData } = await queryGoodsDetail({
         provinceCode: "844",
         cityCode: "84401",
-        goodsId: productId,
+        goodsId: PRODUCT_ID,
         userId: "12389"
       })
 
@@ -137,11 +138,11 @@ export default class ProductDetailPage extends Component {
     if (!data || !(data instanceof Array)) return false
     return data.map((item, index) => {
       return (
-        <View key={item.photoId || index} style={[{ backgroundColor: '#ccc' }]}>
+        <View key={item.photoId || index} style={[{ backgroundColor: '#fff' }]}>
           <Image
             resizeMode="center"
-            style={{ width: 50, height: 150, backgroundColor: "red" }}
-            source={{ uri: item.photoPath }}
+            style={{ width: WIDTH, height: WIDTH }}
+            source={{ uri: `${HTTP_IMG}${item.photoPath}` }}
           />
         </View>
       )
@@ -238,21 +239,34 @@ export default class ProductDetailPage extends Component {
   
   tollectCollectFun = async (status) => {
     try {
-      const { data } = await collectGoods()
+      const { openId, cityCode, userId, provinceCode} = this
+      const { data } = await collectGoods({
+        goodsId: PRODUCT_ID,
+        cityCode,
+        userId,
+        provinceCode,
+      })
+      console.log(data,"tttt")
+      // debugger
+      if (data.errcode === 1) {
+        thi.setState({
+          collectStatus: data.status
+        })
+      }
+      else{ console.error(data.errmsg) }
     } catch (error) {
-      console.log(error,"!!!")
+      console.error(error,"!!!")
     }
   }
 
   render() {
-    const { photoList, goodsBaseInfo, skuGroupList, singleList, mixList, lastPrice, count } = this.state
-    if (!photoList) {
-      return false
-    }
+    const { photoList, goodsBaseInfo, skuGroupList, singleList, mixList, lastPrice, count, isShowPackage } = this.state
+    if (!photoList) return false
     const { goodsName, goodsDesc, goodsDetailText, collectStatus, goodsPrice } = goodsBaseInfo || {}
     return (
       <Flex style={{ position: 'relative', width: '100%' }} direction="column">
         <ScrollView
+          style={{width: '100%', backgroundColor: '#fff'}}
           automaticallyAdjustContentInsets={false}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
@@ -371,11 +385,6 @@ export default class ProductDetailPage extends Component {
               </View>
             </Flex>
           </View>
-          {/* {isShowPackage && (
-            <Flex>
-
-            </Flex>
-          )} */}
 
         </ScrollView>
         <View style={[styles.paybarStyle]}>
@@ -385,7 +394,7 @@ export default class ProductDetailPage extends Component {
         </View>
         <Modal
           popup
-          visible={true}
+          visible={isShowPackage}
           // onClose={this.onClose('modal2')}
           animationType="slide-up"
         >

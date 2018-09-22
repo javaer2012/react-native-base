@@ -5,7 +5,9 @@ export default class RentApp extends Component{
     constructor(props){
         super(props)
 
-        this.getOpenIdAndUserId()
+        setTimeout(() => {
+            this.getOpenIdAndUserId()
+        }, 0);
     }
 
 
@@ -13,6 +15,7 @@ export default class RentApp extends Component{
         try{
            // await AsyncStorage.clear()
             const ids = await AsyncStorage.multiGet(['openId','userId','addressInfos'])
+            console.log(ids,"idsidsidsids")
             this.openId = ids[0][1]
             this.userId = ids[1][1]
             this.cityCode = JSON.parse(ids[2][1]).cityCode
