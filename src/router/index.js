@@ -102,7 +102,7 @@ export default StackNavigator({
     BadRecordPage:BadRecords,
     AuthRecordPage:AuthRecords,
     MyOrderPage:MyOrders,
-    PersonalInfoPage:PersonalInfo,
+    PersonalInfoPage:PersonalInfo, 
     AuthApplyPage:AuthApply,
     TermPage:Term,
     DrivingPage:DrivingLicense,
@@ -126,7 +126,7 @@ export default StackNavigator({
     TakePicturePage:TakePicture,
     LocationPage
 }, {
-        initialRouteName: 'LocationPage',
+        initialRouteName: 'WorkerEnter',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

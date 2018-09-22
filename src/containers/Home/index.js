@@ -1,24 +1,21 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, ScrollView, AsyncStorage, Dimensions } from 'react-native'
 import { Button, Carousel, List } from 'antd-mobile-rn';
-import { bannerNav_mock, productList_mock } from '../../mock/home'
 import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
 import Color from '../../styles/var'
 import TabBarCom from '../../components/TabBarCom'
-import Location from '../../components/Location'
 import api from '../.././service/api'
 
-const { isCityOpen, getBannerAndNav, hotProducts, AmapRegeo, HTTP_IMG } = api
+const {  getBannerAndNav, hotProducts, HTTP_IMG } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 const BANNER_HEIGHT = WIDTH / 75 * 42
 import { getIdData, schoolList, schoolData } from '../../utils/school'
-console.log(getIdData,"iii")
+import RentApp from "../../components/RentApp";
 
 
-
-export default class Home extends Component {
+export default class Home extends RentApp {
   state = {
     bannerList: [1, 2, 3],
     hotPhoneList: [],
@@ -26,48 +23,11 @@ export default class Home extends Component {
     value: [],
     pickerValue: [],
   }
-  // 地址相关
-  getCityFun = async (lat, lon) => {
-    try {
-      const { data } = await AmapRegeo(lat, lon)
-      const {
-                status,
-        infocode,
-        regeocode: {
-                    addressComponent: {
-                        district, city, citycode, adcode
-                    }
-                }
-            } = data
-      const addressObj = {
-        district,
-        cityCode: adcode,
-        provinceCode: citycode
-      }
-
-      await AsyncStorage.setItem('addressInfos', JSON.stringify(addressObj));
-      // console.log("=====>cityMsg!!!!!!", JSON.stringify(regeocode))
-    } catch (error) {
-      console.error(error)
-    }
-  }
-  // 地址相关
-  beginWatch = () => {
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => {
-        const { latitude, longitude } = coords
-        this.getCityFun(latitude, longitude)
-      },
-      (error) => alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    )
-  }
 
   // 从缓存中取出位置信息对象
   getAddressMsg = async () => {
     try {
       const value = await AsyncStorage.getItem('addressInfos');
-      // console.log(value,"~~~~~~~33")
       if (value !== null) {
         // We have data!!
         return JSON.parse(value);
@@ -77,35 +37,24 @@ export default class Home extends Component {
     }
   }
 
-  checkIsCityOpen = async () => {
-    const { addressMsg: { cityCode, provinceCode} } = this.state
-    try {
-      const res = await isCityOpen({
-        cityCode,
-        provinceCode
-      })
-      // console.log(res,"22222222")
-    } catch (error) {
-      console.error(error)
-    }
+  goToAddressPage = () => {
+
   }
 
-
   async componentWillMount(){
-    await this.beginWatch()
-    const addressMsg = await this.getAddressMsg()
+    const addressMsg = await this.getAddressMsg({})
     await this.setState({
       addressMsg
     })
-    const isCityOpen = this.checkIsCityOpen()
   }
 
   async componentDidMount() {
     try {
       const { data: getBannerAndNavData , data: { bannerList, navList } } = await getBannerAndNav({})
+     
       const { data: hotProductsData, data:{ hotMealList, hotPhoneList }} = await hotProducts({
-        provinceCode: "844",
-        cityCode: "84401"
+        provinceCode: "844" || addressMsg.provinceCode,  // 测试用
+        cityCode: "84401" || addressMsg.cityCode
       })
 
       this.setState({
@@ -140,7 +89,7 @@ export default class Home extends Component {
 
   // 手动选择地址后，重新获取地址信息
   uploadAddress = async () => {
-    const addressMsg = await this.getAddressMsg()
+    const addressMsg = await this.getAddressMsg({})
     this.setState({
       addressMsg
     })
@@ -150,6 +99,8 @@ export default class Home extends Component {
     const { bannerList, navList, hotPhoneList, addressMsg } = this.state
     console.log(hotPhoneList,"hotPhoneListhotPhoneList")
     const { navigate } = this.props.navigation;
+    const { params } = this.props.navigation.state;
+    console.log(params,"DDDDDDDD")
     // return (
     //   <View>
     //     <TabBarCom />
@@ -159,10 +110,13 @@ export default class Home extends Component {
     return (
       <View style={{ position: 'relative', height: '100%' }}>
         <View style={{ marginTop: 0 }}>
-          <Location 
+          <TouchableOpacity onPress={() => navigate('LocationPage', {})}>
+            <Text>{addressMsg.city}</Text>
+          </TouchableOpacity>
+          {/* <Location 
             addressMsg={addressMsg}
             uploadAddress={this.uploadAddress}
-            />
+            /> */}
         </View>
         <ScrollView
           automaticallyAdjustContentInsets={false}
