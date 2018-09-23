@@ -138,7 +138,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail
 }, {
-        //initialRouteName: 'FindPage',
+        initialRouteName: 'ProductDetail',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

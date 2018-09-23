@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, TouchableHighlight, Dimensions } from 'react-native'
-import { Button, Carousel, List, Flex, Tabs, Modal } from 'antd-mobile-rn';
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, TouchableHighlight, Dimensions, AsyncStorage } from 'react-native'
+import { Button, Carousel, List, Flex, Tabs, Modal, Popover } from 'antd-mobile-rn';
 import { ProductDetailPage_mock } from '../../mock/ProductDetailPage'
-import { flexRow, contentPadding, mainGray } from '../../styles/common'
+import { flexRow, contentPadding, mainGray, mainPink } from '../../styles/common'
 import Color from '../../styles/var'
 import Collect from '../../components/Collect'
 import SelectedListHoc from '../../components/SelectedList'
@@ -53,7 +53,22 @@ export default class ProductDetailPage extends RentApp {
     isShowDetailInfos: false,
     lastPrice: 0,
     photoList: [],
-    goodsBaseInfo:{},
+    goodsBaseInfo:{
+      "goodsId": "201802241102330510355414",
+      "goodsName": "OPPO R9S 128G版",
+      "goodsDesc": "OPPO R9S",
+      "goodsBrand": "OPPO",
+      "goodsModel": "OPPO R9S",
+      "goodsImgPath": "goods/20180226/201802261340332840248210.png",
+      "goodsConfigType": 1,
+      "category": "1",
+      "collectStatus": "0",
+      "goodsDetailText": "<p>OPPO R9S 128G版</p>",
+      "goodsPrice": 2000,
+      "activeId": "6da93d6aab194e48bd5b4f214b752638",
+      "activeCode": "gz-rent-phone",
+      "downPayment": 2000
+    },
     skuGroupList:[],
     singleList:[],
     mixList:[],
@@ -61,11 +76,23 @@ export default class ProductDetailPage extends RentApp {
     capacityId:'',
     colorId:'',
     selectMealId:'',
+    mealText:'请选择套餐',
+    showInstallment:false,
+    showNotCredit: false,
+    installmentInfo:{},
+    capitalProdList:[],
+    installmentText:'请选择分期',
+    userInfos:{},
+    paymentInfo:{},
+    capitalProdId:''
   }
 
   async componentDidMount() {
     // const productId = this.props.navigation.getParam('productId');
-
+    const user = await AsyncStorage.getItem('userInfo')
+    this.setState({
+      userInfos: JSON.parse(user)
+    })
     try {
       const { data: queryGoodsDetailData } = await queryGoodsDetail({
         provinceCode: "844",
@@ -107,7 +134,9 @@ export default class ProductDetailPage extends RentApp {
         goodsBaseInfo,
         skuGroupList,
         singleList,
-        mixList
+        mixList,
+        capitalProdList, // 分期
+        paymentInfo
         // productDetail: ProductDetailPage_mock
       })
     } catch (error) {
@@ -148,14 +177,16 @@ export default class ProductDetailPage extends RentApp {
       )
     })
   }
+
+  selectMealFun = (id, mealName) => {
+    this.setState({
+      selectMealId: id,
+      mealText: mealName
+    })
+  }
   renderMealList = (data) => {
     // debugger
     if (!data || !(data instanceof Array)) return false
-    const selectMeal = (id) => {
-      this.setState({
-        selectMealId: id
-      })
-    }
     const { selectMealId } = this.state
     const selectMealStyle={
       borderWidth: 1,
@@ -168,7 +199,7 @@ export default class ProductDetailPage extends RentApp {
         boxStyle.push(selectMealStyle)
       }
       return (
-        <TouchableOpacity style={boxStyle} key={item.photoId || index} onPress={selectMeal.bind(this, item.mealId)}>
+        <TouchableOpacity style={boxStyle} key={item.photoId || index} onPress={this.selectMealFun.bind(this, item.mealId, item.mealName)}>
           <Flex>
             <Flex.Item>
               <Text>
@@ -184,18 +215,10 @@ export default class ProductDetailPage extends RentApp {
       )
     })
   }
+
   renderSelectCombo = () => {
 
   }
-
-  // renderSkuGroupList = (data) => {
-  //   return data.map((item, index) => {
-  //     // return ()
-  //       // <CheckboxItem>
-
-  //       // </CheckboxItem>
-  //   })
-  // }
 
   selectedFun = (subSkuId, type) => {
     this.setState({ [type]: subSkuId })
@@ -205,10 +228,16 @@ export default class ProductDetailPage extends RentApp {
       isShowPackage: isShow
     })
   }
-  toggleAgingFun = (isShow) => {
-    this.setState({
-      isShowAgin: isShow
-    })
+  toggleInstallmentFun = async (isShow) => {
+    if (!"没有授信") {
+      this.setState({
+        showNotCredit: true
+      })
+    } else{
+      this.setState({
+        showInstallment: isShow
+      })
+    }
   }
   toggleDetailInfosFun = (isShow) => {
     const { navigate } = this.props.navigation;
@@ -219,24 +248,50 @@ export default class ProductDetailPage extends RentApp {
   }
 
   goToPayFun = async () => {
+    const { selectMealId, goodsBaseInfo, goodsAfterInfo,  paymentInfo, capitalProdId } = this.state
+    const mealInfoJson = JSON.stringify({
+      mealId: selectMealId
+    })
+    const capitalInfoJson = JSON.stringify({
+      prodId: capitalProdId
+    })
+
+    const goodsInfoJson = JSON.stringify(goodsAfterInfo)
+    {
+      goodsFirstAmount:0
+      totalStageAmount,
+      monthRate,
+      periods,
+      teleFirstAmount,
+        poundgeRate,
+        goodsSkuId,
+        goodsId
+    }
+
     const params = {
-      "openId": "otp3cjjLq6cQ7oPHIINRef8cFruA",
-      "provinceCode": "844",
-      "cityCode": "84401",
+      "openId": this.openId,
+      "provinceCode": this.provinceCode,
+      "cityCode": this.cityCode,
       "orderType": "1",
-      "userInfoJson": "{\"userId\":\"201808241044425400117198\",\"phoneNo\":\"18316579205\",\"userName\":\"邓夏宁\",\"idCardNo\":\"440883199305105071\",\"creditScore\":\"700\",\"maxAvailAmount\":3000}",
-      "goodsInfoJson": "{\"goodsFirstAmount\":0,\"totalStageAmount\":0,\"monthRate\":0.005,\"periods\":24,\"teleFirstAmount\":0,\"poundgeRate\":0,\"goodsSkuId\":\"201809071024544610527721\",\"goodsId\":\"201807191523324900507633\"}",
-      "mealInfoJson": "{\"mealId\":\"201808301508165440336042\"}",
-      "capitalInfoJson": "{\"prodId\":\"87f667ff3f274fd1918885c966169c0d\"}",
+      // "userInfoJson": "{\"userId\":\"201808241044425400117198\",\"phoneNo\":\"18316579205\",\"userName\":\"邓夏宁\",\"idCardNo\":\"440883199305105071\",\"creditScore\":\"700\",\"maxAvailAmount\":3000}",
+      userInfoJson: JSON.stringify(userInfos),
+      // "goodsInfoJson": "{\"goodsFirstAmount\":0,\"totalStageAmount\":0,\"monthRate\":0.005,\"periods\":24,\"teleFirstAmount\":0,\"poundgeRate\":0,\"goodsSkuId\":\"201809071024544610527721\",\"goodsId\":\"201807191523324900507633\"}",
+      goodsInfoJson,
+      mealInfoJson,
+      capitalInfoJson,
       "insureJson": "[]",
-      "activeId": "524eaa42bfec4d00b77f50d56fd82fe5",
-      "paymentId": "201806210950040190225842",
+      "activeId": goodsBaseInfo.activeId,
+      "paymentId": paymentInfo.paymentId,
       "sourceType": 2
     }
 
     const res = await commitOrder(params)
   }
-  
+  onClosesNotCredit = () => {
+    this.setState({
+      showNotCredit: false
+    })
+  }
   tollectCollectFun = async (status) => {
     try {
       const { openId, cityCode, userId, provinceCode} = this
@@ -246,21 +301,45 @@ export default class ProductDetailPage extends RentApp {
         userId,
         provinceCode,
       })
-      console.log(data,"tttt")
       // debugger
       if (data.errcode === 1) {
-        thi.setState({
+        this.setState({
           collectStatus: data.status
         })
       }
-      else{ console.error(data.errmsg) }
+      else { console.error(data.errmsg) }
     } catch (error) {
       console.error(error,"!!!")
     }
   }
 
+  selecteCapitalProd = (prodId) => {
+    this.setState({
+      capitalProdId: prodId
+    })
+  }
+
+  renderCapitalProdList = (capitalProdList) => {
+    return capitalProdList.map((item, index) => {
+      return (
+        <TouchableOpacity style={{ width: '100%' }} onPress={this.selecteCapitalProd.bind(this, item.prodId)}>
+          <Flex style={{ width: '100%', paddingVertical: 15, borderBottomColor: '#f2f2f2', borderBottomWidth: 1 }} direction="row" justify="start" align="center">
+            <Text style={{ backgroundColor: item.selected ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#ccc', borderRadius: 7, overflow: 'hidden' }}></Text>
+            <Text>{item.prodName}</Text>
+            <Text>{item.prodDesc}</Text>
+          </Flex>
+        </TouchableOpacity>
+      )
+    })
+  }
+
   render() {
-    const { photoList, goodsBaseInfo, skuGroupList, singleList, mixList, lastPrice, count, isShowPackage } = this.state
+    const { 
+      photoList, goodsBaseInfo, skuGroupList, userInfos,
+        singleList, mixList, lastPrice, count, isShowPackage, selectMealId, mealText,
+      showInstallment, installmentInfo, capitalProdList, installmentText 
+      } = this.state
+    // console.log(selectMealId,"hhhhhhhhhh")
     if (!photoList) return false
     const { goodsName, goodsDesc, goodsDetailText, collectStatus, goodsPrice } = goodsBaseInfo || {}
     return (
@@ -350,20 +429,20 @@ export default class ProductDetailPage extends RentApp {
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#ccc' }}>请选择套餐</Text>
+                    <Text style={{ color: '#f2f2f2' }}>{mealText}</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
               </Flex>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.toggleAgingFun.bind(this, true)}>
+            <TouchableOpacity onPress={this.toggleInstallmentFun.bind(this, true)}>
               <Flex style={[contentPadding, { backgroundColor: '#fff' }]} direction='row' justify='between' align='center' >
                 <Flex.Item style={{ flex: 0, paddingVertical: 14, paddingRight: 10 }}>
                   <Text>分期</Text>
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{color: '#ccc'}}>请选择分期</Text>
+                    <Text style={{ color: '#f2f2f2' }}>{installmentText}</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
@@ -394,6 +473,8 @@ export default class ProductDetailPage extends RentApp {
         </View>
         <Modal
           popup
+          maskClosable={true}
+          onClose={() => { this.setState({ isShowPackage: false }) }}
           visible={isShowPackage}
           // onClose={this.onClose('modal2')}
           animationType="slide-up"
@@ -413,14 +494,55 @@ export default class ProductDetailPage extends RentApp {
             </Tabs>
           </Flex>
         </Modal>
-        <ActionSheet
-          ref={o => this.ActionSheet = o}
-          title={'选择套餐'}
-          options={this.renderSelectCombo}
-          cancelButtonIndex={2}
-          destructiveButtonIndex={1}
-          onPress={(index) => { /* do something */ }}
-        />
+        <Modal
+          visible={this.state.showNotCredit}
+          transparent
+          maskClosable={false}
+          // onClose={this.onClose('modal1')}
+          // title="Title"
+          footer={[{ text: 'Ok', onPress: () => { this.onClosesNotCredit() } }]}
+          // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
+        >
+          <Text>还没有授信，是否立刻去授信</Text>
+        </Modal>
+        <Modal
+          popup
+          maskClosable={true}
+          onClose={() => { this.setState({ showInstallment: false }) }}
+          visible={ true ||  showInstallment}
+          // onClose={this.onClose('modal2')}
+          animationType="slide-up"
+        >
+          <Flex direction="column" style={{ backgroundColor: '#fff', marginTop: 10, height: 400 }}>
+            <Flex justify="start" style={{ paddingBottom: 20, paddingHorizontal: 30, marginTop: 30 ,width: '100%', borderBottomWidth: 1, borderColor: '#f2f2f2'}}>
+              <Text>分期金额：</Text><Text>{installmentInfo.price}</Text>
+            </Flex>
+            <Flex style={{ flex: 1, width: '100%', paddingHorizontal: 30}} direction="column" justify="start">
+              {this.renderCapitalProdList(capitalProdList)}
+            </Flex>
+            <Flex>
+              <TouchableOpacity 
+                style={{ padding: 20, backgroundColor: Color.mainPink, width: '100%'}}
+                onPress={() => { this.setState({})}}>
+                <Text style={{ color: '#fff', textAlign: "center" }}>确定</Text>
+              </TouchableOpacity>
+            </Flex>
+                
+            {/* <Tabs tabs={tabs}
+              initialPage={1}
+              onChange={(tab, index) => { console.log('onChange', index, tab); }}
+              onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
+            >
+              <View style={{ height: 400, padding: 10 }}>
+                {this.renderMealList(mixList)}
+              </View>
+              <View style={{ height: 400 }}>
+                {this.renderMealList(singleList)}
+              </View>
+            </Tabs> */}
+          </Flex>
+        </Modal>
+        
       </Flex>
     )
   }
@@ -480,285 +602,3 @@ const styles = StyleSheet.create({
     padding: 10
   }
 });
-
-
-
-// import React, { Component } from 'react'
-// import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native'
-// import { Button, Carousel, List, Flex } from 'antd-mobile-rn';
-// import { ProductDetailPage_mock } from '../../mock/ProductDetailPage'
-// import { flexRow, contentPadding, mainGray } from '../../styles/common'
-// import Color from '../../styles/var'
-// import Collect from '../../components/Collect'
-// import SelectedListHoc from '../../components/SelectedList'
-// import api from '../.././service/api'
-// const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
-
-// const { queryGoodsDetail, HTTP_IMG } = api
-
-// // queryGoodsDetail
-
-// const storageItem = ({ data, itemData, onPress, subSkuId}) => {
-//   const boxStyle = [{
-//     paddingVertical: 5,
-//     paddingHorizontal: 20,
-//     borderRadius: 5,
-//     marginBottom: 1
-//   }]
-//   const textStyle = []
-//   // debugger
-//   if (subSkuId === itemData.subSkuId) {
-//     boxStyle.push({
-//       backgroundColor: Color.mainPink
-//     })
-//     textStyle.push({
-//       color: '#fff'
-//     })
-//   }
-//   return (
-//     <View style={boxStyle}>
-//       <Text style={textStyle}>{itemData.subSkuName}</Text>
-//     </View>
-//   )
-// }
-// const SelectedList = SelectedListHoc(storageItem)
-
-
-// export default class ProductDetailPage extends Component {
-//   state = {
-//     photoList:[],
-//     goodsBaseInfo:{},
-//     skuGroupList:[]
-//   }
-//   componentWillReceiveProps(nextProps){
-
-//   }
-
-//   async componentDidMount(){
-//     // const productId = this.props.navigation.getParam('productId');
-//     const productId = '201802241102330510355414'
-
-//     try {
-//       const { data: queryGoodsDetailData } = await queryGoodsDetail({
-//         provinceCode: "844",
-//         cityCode: "84401",
-//         goodsId: productId,
-//         userId: "12389"
-//       })
-//       const { 
-//         photoList, 
-//         telecomProdList, 
-//         skuDetailList, 
-//         capitalProdList, 
-//         maxAvailAmount, 
-//         mealList, 
-//         bizTypeCode, 
-//         isCapitalConf, 
-//         goodsBaseInfo, 
-//         isTelConf, 
-//         insureList, 
-//         skuGroupList, 
-//         paymentInfo 
-//       } = queryGoodsDetailData
-//       console.log(queryGoodsDetailData, "mmnnns")
-//       this.setState({
-//         photoList,
-//         goodsBaseInfo,
-//         skuGroupList
-//         // productDetail: ProductDetailPage_mock
-//       })
-//     } catch (error) {
-//       console.error(error)
-//     }
-//   }
-
-//   renderImage = (data) => {
-//     if (!data || !(data instanceof Array)) return false
-
-//     return data.map((item, index) => {
-//         return (
-//           <View key={item.photoId} style={[styles.containerHorizontal]}>
-//             <Image 
-//               resizeMode="stretch"
-//               style={{ width: WIDTH, height: WIDTH }}
-//               source={{ uri: `${HTTP_IMG}${item.photoPath}` }}
-//               />
-//           </View>
-//       )
-//     })
-//   }
-
-//   renderDetailImage = (data) => {
-//     if (!data || !(data instanceof Array)) return false
-//     return data.map((item, index) => {
-//       return (
-//         <View key={item.photoId} style={[{backgroundColor:'#ccc'}]}>
-//           <Image
-//             resizeMode="stretch"
-//             style={{ width: 50, height: 150, backgroundColor: "red" }}
-//             source={{ uri: item.photoPath }}
-//           />
-//         </View>
-//       )
-//     })
-//   }
-
-//   renderSkuGroupList = (data) => {
-//     return data.map((item, index) => {
-//       // return ()
-//         // <CheckboxItem>
-
-//         // </CheckboxItem>
-//     })
-//   }
-
-//   selectedFun = (subSkuId) => {
-//     console.log(subSkuId, "YYYYYYYYYYYYYYy")
-//   }
-
-//   render() {
-//     const { photoList, goodsBaseInfo, skuGroupList } = this.state
-//     if (!photoList) {
-//       return false
-//     }
-//     const { goodsName, goodsDesc, goodsDetailText } = goodsBaseInfo
-
-//     return (
-//       <ScrollView
-//         style={{ flex: 1 }}
-//         automaticallyAdjustContentInsets={false}
-//         showsHorizontalScrollIndicator={false}
-//         showsVerticalScrollIndicator={false}
-//       >
-//         <View style={styles.container}>
-//           <Carousel
-//             style={styles.wrapper}
-//             selectedIndex={2}
-//             autoplay
-//             infinite
-//             afterChange={this.onHorizontalSelectedIndexChange}
-//           >
-//             {this.renderImage(photoList)}
-//           </Carousel>
-//         </View>
-//         <View style={styles.contentContainer}>
-//           <View style={styles.infoStyle}>
-//             <Text style={[]}>{goodsName} {goodsDesc}</Text>
-//             <View style={styles.btnBox}>
-//               <Text style={[{ color: Color.mainPink},{fontWeight: '600'}]}>{222 || goodsPrice}</Text>
-//               <View>
-//                 <Collect 
-//                   collectStatus={ 1 || collectStatus }
-//                 />
-//               </View>
-//             </View>
-//           </View>
-//           <View style={[styles.canSelectedBox]}>
-//             <View style={[flexRow, contentPadding, {
-//               backgroundColor: '#fff',
-//               paddingVertical: 10,
-//               alignItems: 'center'
-//             }]}>
-//               <Text style={{
-//                 ...mainGray
-//               }}>内存</Text>
-//               <View style={{ marginLeft: 10 }}>
-//                 {/* {this.renderSkuGroupList(skuGroupList[])} */}
-//                 <SelectedList
-//                   data={skuGroupList[0] ? skuGroupList[0].subSkuList : []} 
-//                   onPress={this.selectedFun}
-//                 />
-//               </View>
-//             </View>
-//             <View style={[flexRow, contentPadding, {
-//               backgroundColor: '#fff',
-//               paddingVertical: 10,
-//               alignItems: 'center'
-//             }]}>
-//               <Text style={{
-//                 ...mainGray
-//               }}>颜色</Text>
-//               <View style={{ marginLeft: 10 }}>
-//                 {/* {this.renderSkuGroupList(skuGroupList[])} */}
-//                 <SelectedList
-//                   data={skuGroupList[0] ? skuGroupList[0].subSkuList : []}
-//                   onPress={this.selectedFun}
-//                 />
-//               </View>
-//             </View>
-//           </View>
-//           <Flex style={[contentPadding, { backgroundColor: '#fff', marginBottom: 10}]} direction='row' justify='between' align='center' >
-//             <Flex.Item style={{ flex: 0, paddingVertical: 14, paddingRight: 10}}>
-//               <Text>套餐</Text>
-//             </Flex.Item>
-//             <Flex.Item>
-//               <Flex direction="row" justify='between' align="center">
-//                   <Text>{222 || 333}</Text>
-//                   <Text>></Text>
-//               </Flex>
-//             </Flex.Item>
-//           </Flex>
-
-//           <Flex style={[contentPadding, { backgroundColor: '#fff', marginBottom: 10 }]} direction='row' justify='between' align='center' >
-//             <Flex.Item style={{ flex: 0, paddingVertical: 14, paddingRight: 10 }}>
-//               <Text>分期</Text>
-//             </Flex.Item>
-//             <Flex.Item>
-//               <Flex direction="row" justify='between' align="center">
-//                 <Text>{222 || 333}</Text>
-//                 <Text>></Text>
-//               </Flex>
-//             </Flex.Item>
-//           </Flex>
-//           <Flex direction='column' style={{backgroundColor: '#fff'}}>
-//             <View>
-//               <Text>图文详情</Text>
-//             </View>
-//             <View style={styles.photoDetail}>
-//               {this.renderDetailImage(photoList)}
-//             </View>
-//           </Flex>
-//         </View>
-//       </ScrollView>
-//     )
-//   }
-// }
-
-
-// const styles = StyleSheet.create({
-//   container: {
-//     backgroundColor: '#fff',
-    
-//   },
-//   contentContainer: {
-    
-//   },
-//   infoStyle: {
-//     backgroundColor: '#fff',
-//     ...contentPadding,
-//     paddingVertical: 20,
-//     marginBottom: 12
-    
-//   },
-//   canSelectedBox:{
-//     marginBottom: 1
-//   },
-//   btnBox: {
-//     marginTop: 15,
-//     ...flexRow,
-//     justifyContent: 'space-between',
-//     alignItems: 'center'
-//   },
-//   wrapper:{
-//     // height: 150
-//   },
-//   photoDetail:{
-
-//   },
-//   containerHorizontal: {
-//     flexGrow: 1,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     height: 400,
-//   },
-// });
