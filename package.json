@@ -25,6 +25,7 @@
     "react-native-css": "^2.1.2",
     "react-native-device-info": "^0.22.5",
     "react-native-gifted-listview": "0.0.15",
+    "react-native-image-picker": "^0.26.10",
     "react-native-linear-gradient": "^2.4.2",
     "react-navigation": "^2.12.1",
     "react-redux": "^5.0.7",

@@ -59,7 +59,7 @@ export default class App extends Component {
     registerUser = async ()=>{
         try{
 
-            //await AsyncStorage.multiRemove(['openId','userId'])
+            await AsyncStorage.removeItem('openId')
             const openId = await AsyncStorage.multiGet(['openId','userId']);
 
             console.log(openId)

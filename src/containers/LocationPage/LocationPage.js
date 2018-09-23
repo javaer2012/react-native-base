@@ -132,7 +132,7 @@ export default class List extends Component {
             paddingHorizontal: 20,
             paddingVertical: 8,
             borderRadius:6
-          }}>{userAddressMsg.city}</Text>
+          }}>{userAddressMsg && userAddressMsg.city}</Text>
         </Flex>
       </Flex>
     )

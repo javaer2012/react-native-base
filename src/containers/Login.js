@@ -163,12 +163,14 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         color: '#989898',
         fontSize: 13,
-        height: 13
+        height: 15,
+        lineHeight:15
     },
     textRight: {
         textAlign: 'right',
         color: '#989898',
         fontSize: 13,
-        height: 13
+        height: 15,
+        lineHeight: 15
     }
 })
