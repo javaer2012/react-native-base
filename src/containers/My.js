@@ -11,7 +11,7 @@ import {
     Platform,
     AsyncStorage
 } from 'react-native';
-import {List, WingBlank, WhiteSpace, Flex} from 'antd-mobile-rn';
+import {List, WingBlank, WhiteSpace, Flex,Toast} from 'antd-mobile-rn';
 import Button from "../components/common/Button";
 import Canvas from 'react-native-canvas';
 import api from "../service/api";
@@ -221,6 +221,8 @@ export default class My extends RentApp {
 
             const {data} = rsp
 
+            console.log(data)
+
             if (data.errcode === 1) {
 
                 const newState = {
@@ -256,6 +258,14 @@ export default class My extends RentApp {
         }
         const ctx = canvas.getContext('2d');
         canvasScore(ctx, parseInt(this.state.userScore), this.state.lastScoreTime)
+    }
+
+    navigateWithLogin(pageName){
+        if(this.state.isBinding === '0'){
+            Toast.info("请先登录",2)
+        } else {
+            this.props.navigation.navigate(pageName)
+        }
     }
 
     render() {
@@ -329,7 +339,7 @@ export default class My extends RentApp {
                                        source={require('../images/my/favorite.png')}/>
 
                             </WingBlank>
-                            <TouchableOpacity onPress={()=>navigation.navigate("MyCollectionsPage")}>
+                            <TouchableOpacity onPress={()=>this.navigateWithLogin("MyCollectionsPage")}>
                                 <Text style={{fontSize: 12, marginBottom: 5}}>我的收藏</Text>
                                 <Text style={{fontSize: 10, color: '#989898'}}>点击查看您收藏的宝贝</Text>
                             </TouchableOpacity>
@@ -365,7 +375,7 @@ export default class My extends RentApp {
                         <WhiteSpace size={'sm'}/>
                         <Flex direction={'row'} justify={"end"} align={"start"}>
                             <Flex.Item>
-                                <TouchableOpacity onPress={() => navigation.navigate("PersonalInfoPage")}>
+                                <TouchableOpacity onPress={() =>this.navigateWithLogin("PersonalInfoPage")}>
                                     <Flex direction={"column"} justify={"start"} >
                                         <WhiteSpace size={"sm"}/>
                                         <Image style={{width: 30, height: 30}}
@@ -378,7 +388,7 @@ export default class My extends RentApp {
                             </Flex.Item>
 
                             <Flex.Item>
-                                <TouchableOpacity onPress={() => navigation.navigate("BadRecordPage")}>
+                                <TouchableOpacity onPress={() => this.navigateWithLogin("BadRecordPage")}>
                                     <Flex direction={"column"} justify={"start"} >
                                         <WhiteSpace size={"sm"}/>
                                         <Image style={{width: 30, height: 30}}
@@ -394,7 +404,7 @@ export default class My extends RentApp {
                             </Flex.Item>
 
                             <Flex.Item>
-                                <TouchableOpacity onPress={() => navigation.navigate("AuthRecordPage")}>
+                                <TouchableOpacity onPress={() => this.navigateWithLogin("AuthRecordPage")}>
                                     <Flex direction={"column"}>
                                         <WhiteSpace size={"sm"}/>
                                         <Image style={{width: 30, height: 30}}
@@ -407,7 +417,7 @@ export default class My extends RentApp {
                             </Flex.Item>
 
                             <Flex.Item>
-                                <TouchableOpacity onPress={() => navigation.navigate("MyOrderPage")}>
+                                <TouchableOpacity onPress={() => this.navigateWithLogin("MyOrderPage")}>
                                     <Flex direction={"column"}>
                                         <WhiteSpace size={"sm"}/>
                                         <Image style={{width: 30, height: 30}}

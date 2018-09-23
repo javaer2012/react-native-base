@@ -113,7 +113,7 @@ export default class Home extends RentApp {
       <View style={{ position: 'relative', height: '100%' }}>
         <View style={{ marginTop: 0 }}>
           <TouchableOpacity onPress={() => navigate('LocationPage', {})}>
-            <Text>{addressMsg.city}</Text>
+            <Text>{addressMsg && addressMsg.city}</Text>
           </TouchableOpacity>
           {/* <Location 
             addressMsg={addressMsg}

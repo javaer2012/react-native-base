@@ -6,9 +6,9 @@ import { HTTP_IMG } from '../service/api'
 
 export default ({ data, children, imageStyle }) => {
   return (
-    <TouchableOpacity
+    <View
       style={styles.container}
-      onPress={() => navigate('ProductListPage', {})}
+     // onPress={() => navigate('ProductListPage', {})}
     >
       {/* <Image
         style={{ width: 50, height: 80, marginRight: 10 }}
@@ -34,7 +34,7 @@ export default ({ data, children, imageStyle }) => {
         </View>
       </View>
        
-    </TouchableOpacity>
+    </View>
   )
 }
 

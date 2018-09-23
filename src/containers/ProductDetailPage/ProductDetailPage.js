@@ -509,7 +509,7 @@ export default class ProductDetailPage extends RentApp {
           popup
           maskClosable={true}
           onClose={() => { this.setState({ showInstallment: false }) }}
-          visible={ true ||  showInstallment}
+          visible={showInstallment}
           // onClose={this.onClose('modal2')}
           animationType="slide-up"
         >

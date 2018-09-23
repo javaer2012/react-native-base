@@ -10,7 +10,7 @@ import Color from '../styles/var'
 
 export default createBottomTabNavigator(
   {
-    "Home": Home,
+    "首页": Home,
     "FindPage": Find,
     "MyPage": My,
   },
@@ -20,7 +20,7 @@ export default createBottomTabNavigator(
         const { routeName } = navigation.state;
         //console.log("Haha, I'm back")
         let iconName;
-        if (routeName === 'Home') {
+        if (routeName === '首页') {
           // iconName = `ios-information-circle${focused ? '' : '-outline'}`;
           iconName =( !focused 
             ? <Image style={{ width: 20, height: 20 }} source={require('../images/home.png')} />
