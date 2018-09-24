@@ -188,7 +188,7 @@ export default class My extends RentApp {
 
         console.log("Page My")
 
-        this.initalState()
+        setTimeout(()=>this.initalState(),0)
 
         this.onRefresh = this.onRefresh.bind(this)
     }
@@ -354,11 +354,11 @@ export default class My extends RentApp {
                                     source={require('../images/my/authHistory.png')}/>
                             </WingBlank>
 
-                            <View>
+                            <TouchableOpacity onPress={()=>this.navigateWithLogin("AuthRecordPage")}>
                                 <WhiteSpace size={"xs"}/>
                                 <Text style={{fontSize: 12, marginBottom: 5}}>信用历史</Text>
                                 <Text style={{fontSize: 10, color: '#989898'}}>点击查看您的信用历史</Text>
-                            </View>
+                            </TouchableOpacity>
                         </Flex>
                     </Flex.Item>
                 </Flex>
@@ -404,7 +404,7 @@ export default class My extends RentApp {
                             </Flex.Item>
 
                             <Flex.Item>
-                                <TouchableOpacity onPress={() => this.navigateWithLogin("AuthRecordPage")}>
+                                <TouchableOpacity onPress={() => Toast.info("敬请期待",2)}>
                                     <Flex direction={"column"}>
                                         <WhiteSpace size={"sm"}/>
                                         <Image style={{width: 30, height: 30}}
@@ -471,6 +471,12 @@ export default class My extends RentApp {
                             <WingBlank size={"md"}>
                                 <Image style={styles.image} source={require('../images/my/moreClient.png')}/>
                             </WingBlank>
+                            <WhiteSpace size={"md"}/>
+                            <TouchableOpacity>
+                                <Flex direction={"row"} justify={"center"}>
+                                    <Text style={{color: '#06C1AE', fontSize: 14, textAlign: 'center'}}>立即查看</Text>
+                                </Flex>
+                            </TouchableOpacity>
                             <WhiteSpace size={"md"}/>
 
                         </View>

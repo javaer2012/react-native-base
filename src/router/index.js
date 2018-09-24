@@ -103,7 +103,6 @@ export default StackNavigator({
     RegisterPage: Register,
     ForgetPSWPage: ForgetPSW,
     ChangePSWPage: ChangePSW,
-    DrawerPage: DrawerTest,
     MyPage: My,
     BadRecordPage:BadRecords,
     AuthRecordPage:AuthRecords,
@@ -139,7 +138,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
-        initialRouteName: 'SearchPage',
+        //initialRouteName: 'AuthRecordPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
