@@ -3,6 +3,7 @@ import {ScrollView, View, Text, FlatList, AsyncStorage, StyleSheet, TouchableOpa
 import {Flex, Icon, WhiteSpace, WingBlank, SearchBar} from 'antd-mobile-rn';
 import api from "../service/api";
 import ProudcuItem from "../components/ProudcuItem";
+import Spinner from 'react-native-loading-spinner-overlay'
 
 
 const styles = StyleSheet.create({
@@ -81,6 +82,9 @@ export default class Search extends React.Component {
 
     queryGoodsByKeyWords = async (clean)=>{
         try{
+            await this.setState({
+                refreshing: true,
+            })
 
             const params = {
                 cityCode:84401,
@@ -116,7 +120,6 @@ export default class Search extends React.Component {
                 this.setState({
                     products: newGoods,
                     totalPage,
-                    refreshing: false,
                     loadMore
                 })
             } else{
@@ -127,6 +130,10 @@ export default class Search extends React.Component {
 
         }catch (e) {
 
+        } finally {
+            await this.setState({
+                refreshing:false
+            })
         }
     }
 
@@ -136,8 +143,7 @@ export default class Search extends React.Component {
         // debugger
         this.hasDo = true
         await this.setState({
-            pageNum,
-            refreshing: true,
+            pageNum
         })
         console.log(999)
         await this.queryGoodsByKeyWords()
@@ -197,6 +203,8 @@ export default class Search extends React.Component {
     render() {
         return (
             <View style={{width: '100%', backgroundColor: 'white'}}>
+                <Spinner visible={this.state.refreshing} textContent={"正在加载"}/>
+
                 <SearchBar style={{width: '100%', backgroundColor: 'white', color: 'black'}}
                            value={this.state.value} onChange={(value)=>this.setState({value})}
                            onSubmit={()=>this.queryGoodsByKeyWords(true)}/>
@@ -226,7 +234,7 @@ export default class Search extends React.Component {
                         </Flex>
                     </WingBlank>:null}
                 </View>:
-                    <FlatList style={{backgroundColor: 'white'}}
+                    <FlatList style={{backgroundColor: 'white',width:'100%'}}
                               data={this.state.products}
                               extraData={this.state}
                               renderItem={this._renderItem}
