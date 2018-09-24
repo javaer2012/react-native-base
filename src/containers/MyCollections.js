@@ -1,8 +1,9 @@
 import React from 'react'
-import {View, Text, AsyncStorage, FlatList,TouchableOpacity,Image,Dimensions} from 'react-native'
+import {View, Text, AsyncStorage, FlatList,TouchableOpacity,Image,Dimensions,ActivityIndicator} from 'react-native'
 import {Flex,WingBlank,WhiteSpace} from 'antd-mobile-rn'
 import RentApp from "../components/RentApp";
 import api, {HTTP_IMG} from "../service/api";
+import Spinner from 'react-native-loading-spinner-overlay'
 
 
 
@@ -15,7 +16,8 @@ export default class MyCollections extends RentApp{
     }
 
     state = {
-        list:[]
+        list:[],
+        loading:false
     }
 
     constructor(props){
@@ -34,6 +36,9 @@ export default class MyCollections extends RentApp{
     async initData(){
         try{
 
+            await this.setState({
+                loading:true
+            })
             const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
 
             const params = {
@@ -55,6 +60,10 @@ export default class MyCollections extends RentApp{
             }
         } catch (e) {
 
+        } finally {
+            await this.setState({
+                loading:false
+            })
         }
     }
 
@@ -84,6 +93,9 @@ export default class MyCollections extends RentApp{
 
     render(){
         return <View>
+            <Spinner visible={this.state.loading} textContent={"正在加载"}/>
+
+
             <FlatList style={{backgroundColor:'white'}}
                       ItemSeparatorComponent={(h)=>
                           <View style={{height: 1,width:375,borderBottomWidth: 1,borderBottomColor:'#F2F2F2'}}/>
