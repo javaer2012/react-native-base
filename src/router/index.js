@@ -46,55 +46,6 @@ import LocationPage from '../containers/LocationPage/LocationPage'
 import FindDetail from '../containers/FindDetail';
 import Imagepicker from '../containers/ImagePicker'
 
-// const AppNavigator = StackNavigator({
-//     Tab: TabNavigator,
-    // HomePage: Home,
-    // LoginPage: Login,
-//     RegisterPage: Register,
-//     ForgetPSWPage: ForgetPSW,
-//     ChangePSWPage: ChangePSW,
-//     DrawerPage: DrawerTest,
-//     MyPage: My,
-//     BadRecordPage:BadRecords,
-//     AuthRecordPage:AuthRecords,
-//     MyOrderPage:MyOrders,
-//     PersonalInfoPage:PersonalInfo,
-//     AuthApplyPage:AuthApply,
-//     TermPage:Term,
-//     DrivingPage:DrivingLicense,
-//     EducationPage:Education,
-//     SearchPage:Search,
-//     FindPage:Find,
-//     ScorePage:Score,
-//     KnowScorePage:KnowScore,
-//     ProductDetailPage: ProductDetailPage,
-//     ProductParameterPage: ProductParameterPage,
-//     ProductListPage: ProductListPage,
-//     OrderInfo: OrderInfo,
-//     MyInstallmentPage: MyInstallmentPage,
-//     MyOrder: MyOrder,
-//     WorkerEnter: WorkerEnter,
-//     Accept: Accept,
-//     DoIt: DoIt,
-//     UploadImg: UploadImg,
-//     Pay,
-//     PayResult
-// }, {
-//     initialRouteName: 'HomePage',
-//     /* The header config from HomeScreen is now here */
-//     navigationOptions: {
-//         headerStyle: {
-//             backgroundColor: '#06C1AE',
-//         },
-//         headerTintColor: '#fff',
-//         headerTitleStyle: {
-//             fontWeight: 'bold',
-//         },
-//     }
-// });
-// export default AppNavigator;
-
-
 
 export default StackNavigator({
     tab: TabNavigator,
@@ -139,7 +90,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
-        initialRouteName: 'MyInstallmentPage',
+        initialRouteName: 'MyOrderS',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

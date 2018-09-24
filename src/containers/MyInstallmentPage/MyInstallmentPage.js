@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, AsyncStorage } from 'react-native'
 import { Button } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/ProductDetailPage'
 import { flexRow, mainGray } from '../../styles/common'
@@ -45,12 +45,31 @@ export default class MyInstallmentPage extends RentApp {
   }
   
   async getData() {
-    const { openId, cityCode, userId, provinceCode } = this
-    const { data } = myStageList({
-      sourceType: 3,
-      openId, cityCode, userId, provinceCode,
-      orderId: ''
-    })
+
+    try {
+      const ids = await AsyncStorage.multiGet(['openId', 'userId', 'addressInfos'])
+      this.openId = ids[0][1]
+      this.userId = ids[1][1]
+      this.cityCode = JSON.parse(ids[2][1]).cityCode
+      this.provinceCode = JSON.parse(ids[2][1]).provinceCode
+
+      const { openId, cityCode, userId, provinceCode } = this
+      console.log(provinceCode, "RRRRRR")
+      const { data } = await myStageList({
+        sourceType: 3,
+        openId,
+        cityCode,
+        userId,
+        provinceCode,
+        orderId: ''
+      })
+      console.log(data, '=========>myStageList')
+
+    } catch (error) {
+      console.log(error, "error")
+    }
+   
+
   }
   
 
