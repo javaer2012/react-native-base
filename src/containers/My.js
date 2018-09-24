@@ -188,7 +188,7 @@ export default class My extends RentApp {
 
         console.log("Page My")
 
-        this.initalState()
+        setTimeout(()=>this.initalState(),0)
 
         this.onRefresh = this.onRefresh.bind(this)
     }
@@ -333,33 +333,37 @@ export default class My extends RentApp {
                 <Flex direction={'row'} style={{backgroundColor: 'white'}}>
 
                     <Flex.Item style={{width: 128, height: 65, paddingTop: 15}}>
-                        <Flex direction={'row'} justify={"center"} align={"center"}>
-                            <WingBlank size={"sm"}>
-                                <Image style={{height: 40, width: 40}}
-                                       source={require('../images/my/favorite.png')}/>
+                       <TouchableOpacity onPress={()=>this.navigateWithLogin("MyCollectionsPage")}>
+                           <Flex direction={'row'} justify={"center"} align={"center"}>
+                               <WingBlank size={"sm"}>
+                                   <Image style={{height: 40, width: 40}}
+                                          source={require('../images/my/favorite.png')}/>
 
-                            </WingBlank>
-                            <TouchableOpacity onPress={()=>this.navigateWithLogin("MyCollectionsPage")}>
-                                <Text style={{fontSize: 12, marginBottom: 5}}>我的收藏</Text>
-                                <Text style={{fontSize: 10, color: '#989898'}}>点击查看您收藏的宝贝</Text>
-                            </TouchableOpacity>
-                        </Flex>
+                               </WingBlank>
+                               <View >
+                                   <Text style={{fontSize: 12, marginBottom: 5}}>我的收藏</Text>
+                                   <Text style={{fontSize: 10, color: '#989898'}}>点击查看您收藏的宝贝</Text>
+                               </View>
+                           </Flex>
+                       </TouchableOpacity>
                     </Flex.Item>
                     <Flex.Item
                         style={{width: 127, height: 65, paddingTop: 15, borderLeftWidth: 1,borderTop:5,borderBottom:5, borderLeftColor: '#989898'}}>
-                        <Flex direction={'row'} justify={"center"}>
-                            <WingBlank size={"sm"}>
-                                <Image
-                                    style={{height: 40, width: 40}}
-                                    source={require('../images/my/authHistory.png')}/>
-                            </WingBlank>
+                       <TouchableOpacity onPress={()=>this.navigateWithLogin("AuthRecordPage")}>
+                           <Flex direction={'row'} justify={"center"}>
+                               <WingBlank size={"sm"}>
+                                   <Image
+                                       style={{height: 40, width: 40}}
+                                       source={require('../images/my/authHistory.png')}/>
+                               </WingBlank>
 
-                            <View>
-                                <WhiteSpace size={"xs"}/>
-                                <Text style={{fontSize: 12, marginBottom: 5}}>信用历史</Text>
-                                <Text style={{fontSize: 10, color: '#989898'}}>点击查看您的信用历史</Text>
-                            </View>
-                        </Flex>
+                               <View >
+                                   <WhiteSpace size={"xs"}/>
+                                   <Text style={{fontSize: 12, marginBottom: 5}}>信用历史</Text>
+                                   <Text style={{fontSize: 10, color: '#989898'}}>点击查看您的信用历史</Text>
+                               </View>
+                           </Flex>
+                       </TouchableOpacity>
                     </Flex.Item>
                 </Flex>
 
@@ -404,7 +408,7 @@ export default class My extends RentApp {
                             </Flex.Item>
 
                             <Flex.Item>
-                                <TouchableOpacity onPress={() => this.navigateWithLogin("AuthRecordPage")}>
+                                <TouchableOpacity onPress={() => Toast.info("敬请期待",2)}>
                                     <Flex direction={"column"}>
                                         <WhiteSpace size={"sm"}/>
                                         <Image style={{width: 30, height: 30}}
@@ -471,6 +475,12 @@ export default class My extends RentApp {
                             <WingBlank size={"md"}>
                                 <Image style={styles.image} source={require('../images/my/moreClient.png')}/>
                             </WingBlank>
+                            <WhiteSpace size={"md"}/>
+                            <TouchableOpacity>
+                                <Flex direction={"row"} justify={"center"}>
+                                    <Text style={{color: '#06C1AE', fontSize: 14, textAlign: 'center'}}>立即查看</Text>
+                                </Flex>
+                            </TouchableOpacity>
                             <WhiteSpace size={"md"}/>
 
                         </View>

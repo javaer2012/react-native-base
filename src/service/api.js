@@ -23,7 +23,7 @@ var sourceType = { sourceType: 3};
 // 高德地图web服务 key
 var amapKey= 'aadbcaa5c0767bc0e2c2dc8df80087c2';
 
-const getToken = async (cb)=> {
+export const getToken = async (cb)=> {
    try{
        const lycheeToken = await AsyncStorage.getItem('token');
        const exp = await AsyncStorage.getItem('exp');
@@ -795,6 +795,25 @@ export default {
 			});
 		});
 	},
+
+    uploadImage(data){
+       // params["sourceType"] = 3;
+        return new Promise((resolve,reject)=>{
+            getToken(token=>{
+                axios.post(`${url}/uploadImg`,data,{
+                    headers :{
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': 'Bearer ' + token
+                    }
+                })
+                    .then(res=>resolve(res))
+                    .catch(err=>{
+                        console.log(err)
+                        reject(err)
+                    })
+            })
+        })
+    },
 
 	//上传图片接口
 	uploadImg (params){

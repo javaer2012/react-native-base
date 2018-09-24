@@ -103,7 +103,6 @@ export default StackNavigator({
     RegisterPage: Register,
     ForgetPSWPage: ForgetPSW,
     ChangePSWPage: ChangePSW,
-    DrawerPage: DrawerTest, // 筛选列表
     MyPage: My, 
     BadRecordPage:BadRecords,  // 负面记录
     AuthRecordPage:AuthRecords, // 授信纪录
