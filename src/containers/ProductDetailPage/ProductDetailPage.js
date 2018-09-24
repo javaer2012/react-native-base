@@ -52,6 +52,7 @@ export default class ProductDetailPage extends RentApp {
     isShowPackage: false,
     isShowDetailInfos: false,
     lastPrice: 0,
+    skuDetailList:[],
     photoList: [],
     goodsBaseInfo:{
       "goodsId": "201802241102330510355414",
@@ -69,14 +70,18 @@ export default class ProductDetailPage extends RentApp {
       "activeCode": "gz-rent-phone",
       "downPayment": 2000
     },
+    goodsAfterInfo:{},
     skuGroupList:[],
     singleList:[],
     mixList:[],
     count: 0,
     capacityId:'',
     colorId:'',
-    selectMealId:'',
-    mealText:'请选择套餐',
+    selectMeal:{
+      mealId: 0,
+      mealPrice: 0,
+      mealText: '请选择套餐'
+    },
     showInstallment:false,
     showNotCredit: false,
     installmentInfo:{},
@@ -84,7 +89,9 @@ export default class ProductDetailPage extends RentApp {
     installmentText:'请选择分期',
     userInfos:{},
     paymentInfo:{},
-    capitalProdId:''
+    capitalProdId:'',
+    telecomProdList:[],
+    capitalProdObj:{}
   }
 
   async componentDidMount() {
@@ -135,8 +142,14 @@ export default class ProductDetailPage extends RentApp {
         skuGroupList,
         singleList,
         mixList,
+        skuDetailList,
         capitalProdList, // 分期
-        paymentInfo
+        paymentInfo,
+        telecomProdList,
+        goodsAfterInfo:{
+          downPayment: goodsBaseInfo.downPayment,
+          // totalStageAmount: 
+        }
         // productDetail: ProductDetailPage_mock
       })
     } catch (error) {
@@ -152,7 +165,7 @@ export default class ProductDetailPage extends RentApp {
 
     return data.map((item, index) => {
         return (
-          <View key={item.photoId} style={[styles.containerHorizontal]}>
+          <View key={item.photoId || index} style={[styles.containerHorizontal]}>
             <Image 
               resizeMode="stretch"
               style={{ width: WIDTH, height: WIDTH }}
@@ -178,16 +191,31 @@ export default class ProductDetailPage extends RentApp {
     })
   }
 
-  selectMealFun = (id, mealName) => {
+  selectMealFun = (item) => {
+    // const { goodsAfterInfo } = this.state
     this.setState({
-      selectMealId: id,
-      mealText: mealName
+      selectMeal: {
+        mealId: item.mealId,
+        mealText: item.mealName,
+        mealPrice: item.mealPrice
+      },
+      // goodsAfterInfo: {
+      //   goodsFirstAmount: 0,
+      //   totalStageAmount,
+      //   monthRate,
+      //   periods,
+      //   teleFirstAmount,
+      //   poundgeRate,
+      //   goodsSkuId,
+      //   goodsId
+      // }
+      // mealText: mealName
     })
   }
   renderMealList = (data) => {
     // debugger
     if (!data || !(data instanceof Array)) return false
-    const { selectMealId } = this.state
+    const { selectMeal } = this.state
     const selectMealStyle={
       borderWidth: 1,
       borderColor: Color.mainPink
@@ -195,11 +223,11 @@ export default class ProductDetailPage extends RentApp {
     
     return data.map((item, index) => {
       const boxStyle = [styles.mealItemStyle, { marginTop: 10 }]
-      if (item.mealId === selectMealId) {
+      if (item.mealId === selectMeal.mealId) {
         boxStyle.push(selectMealStyle)
       }
       return (
-        <TouchableOpacity style={boxStyle} key={item.photoId || index} onPress={this.selectMealFun.bind(this, item.mealId, item.mealName)}>
+        <TouchableOpacity style={boxStyle} key={item.photoId || index} onPress={this.selectMealFun.bind(this, item)}>
           <Flex>
             <Flex.Item>
               <Text>
@@ -248,25 +276,47 @@ export default class ProductDetailPage extends RentApp {
   }
 
   goToPayFun = async () => {
-    const { selectMealId, goodsBaseInfo, goodsAfterInfo,  paymentInfo, capitalProdId } = this.state
+    const { 
+      selectMeal, goodsBaseInfo, goodsAfterInfo, capacityId, colorId,
+      paymentInfo, capitalProdId, userInfos, capitalProdObj, skuDetailList 
+    } = this.state
+
+    let goodsSkuId = ''
+    skuDetailList.filter((item) => {
+      // return 
+      const unionId = JSON.parse(item.skuJsonStr).unionId
+      if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1 ) {
+        goodsSkuId = item.skuId
+      }
+    })
+
+    const newGoodsAfterInfo = Object.assign({}, goodsAfterInfo, {
+      totalStageAmount: selectMeal.mealPrice + goodsBaseInfo.goodsPrice,
+      monthRate: capitalProdObj.monthFee,
+      periods: capitalProdObj.periods,
+      poundgeRate: capitalProdObj.poundgeRate,
+      goodsId: goodsBaseInfo.goodsId,
+      goodsSkuId
+    })
+
     const mealInfoJson = JSON.stringify({
-      mealId: selectMealId
+      mealId: selectMeal.mealId
     })
     const capitalInfoJson = JSON.stringify({
       prodId: capitalProdId
     })
 
-    const goodsInfoJson = JSON.stringify(goodsAfterInfo)
-    {
-      goodsFirstAmount:0
-      totalStageAmount,
-      monthRate,
-      periods,
-      teleFirstAmount,
-        poundgeRate,
-        goodsSkuId,
-        goodsId
-    }
+    const goodsInfoJson = JSON.stringify(newGoodsAfterInfo)
+    // {
+    //   goodsFirstAmount:0
+    //   totalStageAmount,
+    //   monthRate,
+    //   periods,
+    //   teleFirstAmount,
+    //   poundgeRate,
+    //   goodsSkuId,
+    //   goodsId
+    // }
 
     const params = {
       "openId": this.openId,
@@ -284,7 +334,7 @@ export default class ProductDetailPage extends RentApp {
       "paymentId": paymentInfo.paymentId,
       "sourceType": 2
     }
-
+    console.log(params,"GGGGGGGGGG")
     const res = await commitOrder(params)
   }
   onClosesNotCredit = () => {
@@ -312,19 +362,30 @@ export default class ProductDetailPage extends RentApp {
       console.error(error,"!!!")
     }
   }
-
-  selecteCapitalProd = (prodId) => {
+  // 选择分期
+  selecteCapitalProd = (item) => {
+    this.setState({ capitalProdObj:item})
+  }
+  // 确认选择分期
+  selecteCapitalProdSure = (capitalProdObj) => {
+    let { goodsBaseInfo, selectMeal } = this.state
     this.setState({
-      capitalProdId: prodId
+      capitalProdId: capitalProdObj.prodId,
+      selectedCapitalProd: {
+        capitalPrice: goodsBaseInfo.goodsPrice + selectMeal.mealPrice,
+        prodId: capitalProdObj.prodId
+      },
+      showInstallment: false
     })
   }
 
   renderCapitalProdList = (capitalProdList) => {
+    const { capitalProdId } = this.state
     return capitalProdList.map((item, index) => {
       return (
-        <TouchableOpacity style={{ width: '100%' }} onPress={this.selecteCapitalProd.bind(this, item.prodId)}>
-          <Flex style={{ width: '100%', paddingVertical: 15, borderBottomColor: '#f2f2f2', borderBottomWidth: 1 }} direction="row" justify="start" align="center">
-            <Text style={{ backgroundColor: item.selected ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#ccc', borderRadius: 7, overflow: 'hidden' }}></Text>
+        <TouchableOpacity key={index} style={{ width: '100%' }} onPress={this.selecteCapitalProd.bind(this, item)}>
+          <Flex style={{ width: '100%', paddingVertical: 15, borderBottomColor: '#f6f6f6', borderBottomWidth: 1 }} direction="row" justify="start" align="center">
+            <Text style={{ backgroundColor: item.prodId === capitalProdId  ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#ccc', borderRadius: 7, overflow: 'hidden' }}></Text>
             <Text>{item.prodName}</Text>
             <Text>{item.prodDesc}</Text>
           </Flex>
@@ -336,7 +397,7 @@ export default class ProductDetailPage extends RentApp {
   render() {
     const { 
       photoList, goodsBaseInfo, skuGroupList, userInfos,
-        singleList, mixList, lastPrice, count, isShowPackage, selectMealId, mealText,
+      singleList, mixList, lastPrice, count, isShowPackage, selectMeal,
       showInstallment, installmentInfo, capitalProdList, installmentText 
       } = this.state
     // console.log(selectMealId,"hhhhhhhhhh")
@@ -384,7 +445,7 @@ export default class ProductDetailPage extends RentApp {
                   ...mainGray
                 }}>容量</Text>
                 <View style={{ marginLeft: 10 }}>
-                  <SelectedColorList
+                  <SelectedROMList
                     data={skuGroupList[0] ? skuGroupList[0].subSkuList : []} 
                     onPress={this.selectedFun.bind(this, 'capacityId')}
                   />
@@ -402,7 +463,7 @@ export default class ProductDetailPage extends RentApp {
                   marginRight: 10
                 }}> 颜色</Text>
                 <View>
-                  <SelectedROMList
+                  <SelectedColorList
                     data={skuGroupList[1] ? skuGroupList[1].subSkuList : []} 
                     onPress={this.selectedFun.bind(this, 'colorId')}
                   />
@@ -429,7 +490,7 @@ export default class ProductDetailPage extends RentApp {
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#f2f2f2' }}>{mealText}</Text>
+                    <Text style={{ color: '#f2f2f2' }}>{selectMeal.mealText}</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
@@ -482,8 +543,8 @@ export default class ProductDetailPage extends RentApp {
           <Flex style={{ backgroundColor: '#fff', marginTop: 10, paddingHorizontal: 10 }}>
             <Tabs tabs={tabs}
               initialPage={1}
-              onChange={(tab, index) => { console.log('onChange', index, tab); }}
-              onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
+              // onChange={(tab, index) => { console.log('onChange', index, tab); }}
+              // onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
             >
               <View style={{ height: 400, padding: 10 }}>
                 {this.renderMealList(mixList)}
@@ -523,23 +584,10 @@ export default class ProductDetailPage extends RentApp {
             <Flex>
               <TouchableOpacity 
                 style={{ padding: 20, backgroundColor: Color.mainPink, width: '100%'}}
-                onPress={() => { this.setState({})}}>
+                onPress={() => this.selecteCapitalProdSure(this.state.capitalProdObj) }>
                 <Text style={{ color: '#fff', textAlign: "center" }}>确定</Text>
               </TouchableOpacity>
             </Flex>
-                
-            {/* <Tabs tabs={tabs}
-              initialPage={1}
-              onChange={(tab, index) => { console.log('onChange', index, tab); }}
-              onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
-            >
-              <View style={{ height: 400, padding: 10 }}>
-                {this.renderMealList(mixList)}
-              </View>
-              <View style={{ height: 400 }}>
-                {this.renderMealList(singleList)}
-              </View>
-            </Tabs> */}
           </Flex>
         </Modal>
         

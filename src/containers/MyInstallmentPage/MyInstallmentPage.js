@@ -4,6 +4,9 @@ import { Button } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/ProductDetailPage'
 import { flexRow, mainGray } from '../../styles/common'
 import { Flex, List } from 'antd-mobile-rn';
+import api from '../.././service/api'
+import RentApp from "../../components/RentApp";
+const { myStageList } = api
 
 const periodList = [{
   "accountTime": "201804",
@@ -31,14 +34,26 @@ const periodList = [{
 
 const Item = List.Item;
 
-export default class MyInstallmentPage extends Component {
+export default class MyInstallmentPage extends RentApp {
   state = {
     totalMoney:"111",
     periodList: periodList
   }
 
   componentDidMount(){
+    this.getData()
   }
+  
+  async getData() {
+    const { openId, cityCode, userId, provinceCode } = this
+    const { data } = myStageList({
+      sourceType: 3,
+      openId, cityCode, userId, provinceCode,
+      orderId: ''
+    })
+  }
+  
+
   renderListTest = (list) => {
     const arr = [];
     const isSameYear = (year1, year2) => {
