@@ -138,6 +138,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
+    //initialRouteName:'MyCollectionsPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
