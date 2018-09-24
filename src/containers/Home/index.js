@@ -43,6 +43,8 @@ export default class Home extends RentApp {
 
   async componentWillMount(){
     const addressMsg = await this.getAddressMsg({})
+    const user = await AsyncStorage.getItem('userInfo')
+    console.log(user,"yyyy")
     await this.setState({
       addressMsg
     })

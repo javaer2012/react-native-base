@@ -138,7 +138,6 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
-        //initialRouteName: 'AuthRecordPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
