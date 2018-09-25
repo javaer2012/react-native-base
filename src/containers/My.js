@@ -9,36 +9,33 @@ import {
     RefreshControl,
     ImageBackground,
     Platform,
-    AsyncStorage
+    AsyncStorage,Dimensions
 } from 'react-native';
 import {List, WingBlank, WhiteSpace, Flex,Toast} from 'antd-mobile-rn';
 import Button from "../components/common/Button";
 import Canvas from 'react-native-canvas';
 import api from "../service/api";
 import RentApp from "../components/RentApp";
+import Spinner from 'react-native-loading-spinner-overlay'
+
+const {WIDTH,HEIGHT} = Dimensions.get('window')
 
 
 const styles = StyleSheet.create({
     topBackground: {
-        width: null,
+        width: WIDTH,
         height: 300,
         resizeMode: 'contain'
     },
     topBackground1:{
-        width:null,
+        width:WIDTH,
         height:220,
         resizeMode:'contain'
     },
     image: {
-        width: null,
+        width: WIDTH,
         height: 140,
         resizeMode: 'stretch'
-    },
-    content: {
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: 'center',
-        alignContent: 'center'
     },
     canvasContent: {
         paddingTop: 10,
@@ -47,8 +44,7 @@ const styles = StyleSheet.create({
     },
     userIcon: {
         width: 126,
-        height: 126,
-        marginLeft: 128
+        height: 126
     }
 })
 
@@ -179,8 +175,8 @@ export default class My extends RentApp {
         title: "我的"
     }
     state = {
-        refreshing: false,
-        isBinding: '0',
+        loading: false,
+        isLoggedIn: '0',
     }
 
     constructor(props) {
@@ -190,21 +186,20 @@ export default class My extends RentApp {
 
         setTimeout(()=>this.initalState(),0)
 
-        this.onRefresh = this.onRefresh.bind(this)
-    }
-
-    onRefresh = () => {
-        this.setState({refreshing: true});
-        setTimeout(() => this.setState({refreshing: false}), 2000)
     }
 
     async initalState() {
         await new Promise((resolve,reject)=>{
             setTimeout(resolve,0)
         })
+
+        await this.setState({
+            loading:true
+        })
         try {
-            const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
-            console.log(user)
+            //await AsyncStorage.getItem('isLoggedIn')
+            const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
+            console.log(isLoggedIn)
             const userId = this.userId,
                 openId = this.openId,
                 cityCode = this.cityCode,
@@ -226,6 +221,7 @@ export default class My extends RentApp {
             if (data.errcode === 1) {
 
                 const newState = {
+                    isLoggedIn,
                     ...data.userInfo
                 }
 
@@ -240,6 +236,10 @@ export default class My extends RentApp {
             console.log(rsp)
         } catch (e) {
 
+        } finally {
+            await this.setState({
+                loading:false
+            })
         }
     }
 
@@ -261,7 +261,7 @@ export default class My extends RentApp {
     }
 
     navigateWithLogin(pageName){
-        if(this.state.isBinding === '0'){
+        if(this.state.isLoggedIn === '0'){
             Toast.info("请先登录",2)
         } else {
             this.props.navigation.navigate(pageName)
@@ -274,21 +274,23 @@ export default class My extends RentApp {
 
         const {navigation} = this.props
 
-        const paramsFromLogin = navigation.getParam('isBinding',this.state.isBinding)
+        const paramsFromLogin = navigation.getParam('isLoggedIn',this.state.isLoggedIn)
         return (
             <ScrollView>
+
+                <Spinner visible={this.state.loading}/>
                 <Flex direction={"row"}>
                     <Flex.Item>
                         <ImageBackground style={  paramsFromLogin !== '0' && this.state.isCredited !== '0'?styles.topBackground:styles.topBackground1} source={require('../images/my/background.png')}>
                             {paramsFromLogin !== "1" &&  paramsFromLogin !== 1?
-                                <View style={styles.content}>
+                                <Flex direction={"column"} justify={"center"} align={"center"}>
                                     <Image style={styles.userIcon}
                                            source={require('../images/imageNew/one/userIcon.png')}/>
                                     <WhiteSpace size={"xl"}/>
                                     <Flex direction={"row"} justify={"around"}>
                                         <Button onClick={() => navigation.navigate('LoginPage')}>登录</Button>
                                     </Flex>
-                                </View> :
+                                </Flex> :
                                 <React.Fragment>
                                     {this.state.isCredited === 1?
                                         <Flex direction={"column"} align={"center"} justify={"center"}>
@@ -297,7 +299,9 @@ export default class My extends RentApp {
                                             <Flex.Item>
                                                 <Flex direction={"row"} justify={"center"} align={"center"}>
                                                     <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
-                                                            onClick={() => navigation.navigate('ScorePage')}>晒晒我的信用分</Button>
+                                                            onClick={() => navigation.navigate('ScorePage',{
+                                                                score:this.state.userScore ? this.state.userScore : 0
+                                                            })}>晒晒我的信用分</Button>
                                                 </Flex>
                                             </Flex.Item>
 
@@ -311,7 +315,7 @@ export default class My extends RentApp {
                                             </Flex.Item>
                                         </Flex>
                                     </Flex>:
-                                        <View style={styles.content}>
+                                        <Flex direction={"column"} justify={"center"} align={"center"}>
                                             <Image style={styles.userIcon}
                                                    source={require('../images/imageNew/one/userIcon.png')}/>
                                             <WhiteSpace size={"xl"}/>
@@ -320,7 +324,7 @@ export default class My extends RentApp {
 
 
                                             </Flex>
-                                        </View>
+                                        </Flex>
                                     }
                                 </React.Fragment>
 

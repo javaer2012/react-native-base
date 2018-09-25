@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, StyleSheet, Image,Dimensions} from 'react-native';
 import {WhiteSpace, Flex, Toast} from 'antd-mobile-rn';
 import Button from '../components/common/Button'
 import ImagePicker from "react-native-image-picker";
@@ -8,6 +8,7 @@ import api from "../service/api";
 
 import {getToken} from '../service/api'
 
+const {WIDTH,HEIGHT} = Dimensions.get('window')
 
 
 const styles = StyleSheet.create({
@@ -122,7 +123,7 @@ export default class DrivingLicense extends Component {
     render() {
         const {navigation} = this.props
         return (
-            <View>
+            <ScrollView>
 
                 <Flex direction={"column"} align={"center"}>
                     <WhiteSpace size={"xl"}/>
@@ -157,7 +158,7 @@ export default class DrivingLicense extends Component {
                     >完成</Button>
                 </Flex>
 
-            </View>
+            </ScrollView>
         )
     }
 }

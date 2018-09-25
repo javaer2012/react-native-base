@@ -37,6 +37,12 @@ export default class Score extends React.Component {
         index: 0
     }
 
+    constructor(props){
+        super(props)
+
+        this.score = props.navigation.getParam('score')
+    }
+
     render() {
         const {index} = this.state
         return (
@@ -45,7 +51,12 @@ export default class Score extends React.Component {
                 <Flex direction={"row"} justify={"center"} >
 
                     <ImageBackground style={{width:249, height:396,resizeMode:'contain'}} source={pics[index]}>
-                        <Text style={{color:'white'}}>730</Text>
+                        <WhiteSpace size={"lg"}/>
+                       <Flex direction={"column"} align={"center"}>
+                           <Text style={{color:'white'}}>我的立趣分</Text>
+                           <WhiteSpace size={"md"}/>
+                           <Text style={{color:'white',fontSize:20}}>{this.score}</Text>
+                       </Flex>
                     </ImageBackground>
                 </Flex>
 
