@@ -89,7 +89,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
-        initialRouteName: 'MyOrderS',
+        initialRouteName: 'WorkerEnter',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

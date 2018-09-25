@@ -24,7 +24,9 @@ export default class MyOrder extends RentApp {
       goodsImage: '商品图片',
       goodsSkus: '机型sku',
       totalFirstAmount: '首付总金额',
-      goodsFirstAmount:'商品首付金额'
+      goodsFirstAmount:'商品首付金额',
+      stageMonthRate:'',
+      payStatus:1,
     },{
       orderSn:1,
       orderId:2,
@@ -56,7 +58,7 @@ export default class MyOrder extends RentApp {
       const { data } = await api.myOrderList(params)
       if (data.errcode === 1) {
         this.setState({
-          orderList: data.orderList
+          // orderList: data.orderList
         })
       }
 
@@ -69,32 +71,63 @@ export default class MyOrder extends RentApp {
   renderList = (orderList) => {
     const { navigate } = this.props.navigation;
     return orderList.map((item, index) => {
+      const { 
+        orderSn,
+        orderId,
+        orderType,
+        orderStatus,
+        contractPhone,
+        orderTime,
+        handleTime,
+        actualAmount,
+        mealName,
+        mealDesc,
+        mealMonthFee,
+        goodsPrice,
+        goodsName,
+        goodsDesc,
+        goodsImage,
+        goodsSkus,
+        totalFirstAmount,
+        goodsFirstAmount,
+        stageMonthRate,
+        payStatus
+       } = item || {}
       return (
         <WingBlank key={index} style={{marginTop: 20}} size="lg">
           <Card>
-            <Card.Header
-              title="订单号"
-              // extra="this is extra"
-            />
-            <Card.Body>
+            <Card.Header title={'订单号：' + orderSn}/>
+            <Card.Body style={{borderBottomWidth: 1, borderBottomColor: '#f2f2f2'}}>
               {/* MyInstallmentPage */}
               <TouchableOpacity onPress={() => navigate('MyInstallmentPage', {})}>
                 <Flex style={{ paddingHorizontal: 20}}>
                   <Image source={require('../../images/find.png')}/>
                   <Flex style={{marginLeft: 20}} direction="column" align="start">
-                    {/* <Text style={styles.textBase}>内存：</Text>
-                    <Text style={styles.textBase}>价格：</Text> */}
-                    <Text style={styles.textBase}>首付总金额：</Text>
-                    <Text style={styles.textBase}>分期利率：</Text>
-                    <Text style={styles.textBase}>分期金额：</Text>
-                    <Text style={styles.textBase}>应还总金额：</Text>
-                    <Text style={styles.textBase}>支付状态：</Text>
-                    <Text style={styles.textBase}>订单状态</Text>
+                  
+                    <Text style={styles.textBase}>{goodsName}{goodsDesc}</Text>
+                    {/* <Text style={styles.textBase}>内存：</Text> */}
+                    <Text style={styles.textBase}>价格：{goodsPrice}</Text>
+                    <Text style={styles.textBase}>首付总金额：{goodsFirstAmount}</Text>
+                    <Text style={styles.textBase}>分期利率：{stageMonthRate}</Text>
+                    <Text style={styles.textBase}>分期金额：{mealMonthFee}</Text>
+                    <Text style={styles.textBase}>应还总金额：{totalFirstAmount}</Text>
+                    <Text style={styles.textBase}>支付状态：
+                      {payStatus === 1 && '待支付'}
+                      {payStatus === 2 && '已支付'}
+                      {payStatus === 3 && '已退款'}
+                    </Text>
+                    {/* 1-待支付；2-已支付；3-已退款 */}
+                    <Text style={styles.textBase}>订单状态：
+                      {orderStatus === 1 && '已下单'} 
+                      {orderStatus === 11 && '营业员扫码办理中'}
+                      {orderStatus === 3 && '已办理'}
+                    </Text>
                   </Flex>
                 </Flex>
               </TouchableOpacity>
             </Card.Body>
             <Card.Footer
+              style={{paddingTop: 7}}
               content="查看我的分期"
               extra=">"
             />
