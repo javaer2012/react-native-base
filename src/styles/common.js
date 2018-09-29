@@ -11,7 +11,7 @@ export const contentPadding = {
   paddingHorizontal: 14,
 }
 export const mainPink = {
-  color: 'pink'
+  color: '#F5475F'
 }
 export const mainGray = {
   color: '#ccc'

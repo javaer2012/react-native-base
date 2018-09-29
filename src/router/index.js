@@ -45,6 +45,8 @@ import CardInfo from "../containers/CardInfo";
 import LocationPage from '../containers/LocationPage/LocationPage'
 import FindDetail from '../containers/FindDetail';
 import Imagepicker from '../containers/ImagePicker'
+import OrderDetail from '../containers/OrderDetail/OrderDetail';
+
 
 
 export default StackNavigator({
@@ -57,7 +59,7 @@ export default StackNavigator({
     MyPage: My, 
     BadRecordPage:BadRecords,  // 负面记录
     AuthRecordPage:AuthRecords, // 授信纪录
-    MyOrderPage:MyOrders,
+    MyOrderPage:MyOrders, // 昊天的
     PersonalInfoPage:PersonalInfo,  // 个人信息 学历驾驶证
     AuthApplyPage:AuthApply, // 填写信用租机信息
     TermPage:Term, // 信息条款说明
@@ -72,7 +74,8 @@ export default StackNavigator({
     ProductListPage: ProductListPage,
     OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
     MyInstallmentPage: MyInstallmentPage, // 我的分期
-    MyOrder: MyOrder, // 我的订单
+    MyOrder: MyOrder, // 孟令禹 我的订单
+    OrderDetail: OrderDetail,
     WorkerEnter: WorkerEnter, // 营业员入口
     Accept: Accept,  //
     DoIt: DoIt,
@@ -89,7 +92,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
-        initialRouteName: 'WorkerEnter',
+        initialRouteName: 'OrderDetail',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
