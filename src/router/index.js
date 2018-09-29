@@ -29,6 +29,8 @@ import OrderInfo from '../containers/OrderInfo/OrderInfo'
 import MyInstallmentPage from '../containers/MyInstallmentPage/MyInstallmentPage'
 import MyOrder from '../containers/MyOrder/MyOrder'
 import WorkerEnter from '../containers/WorkerEnter/WorkerEnter'
+import WorkerOrder from '../containers/WorkerOrder/WorkerOrder'
+
 import Accept from '../containers/Accept/Accept'
 import DoIt from '../containers/DoIt/DoIt'
 import UploadImg from '../containers/UploadImg/UploadImg'
@@ -74,6 +76,7 @@ export default StackNavigator({
     MyInstallmentPage: MyInstallmentPage, // 我的分期
     MyOrder: MyOrder, // 我的订单
     WorkerEnter: WorkerEnter, // 营业员入口
+    WorkerOrder: WorkerOrder,
     Accept: Accept,  //
     DoIt: DoIt,
     UploadImg: UploadImg,
@@ -89,7 +92,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
-        initialRouteName: 'WorkerEnter',
+        initialRouteName: 'MyOrder',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

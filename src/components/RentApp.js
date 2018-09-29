@@ -1,16 +1,20 @@
 import {Component} from "react";
 import {AsyncStorage} from "react-native";
+import { Toast } from 'antd-mobile-rn';
 
 export default class RentApp extends Component{
     constructor(props){
         super(props)
-
         setTimeout(() => {
             this.getOpenIdAndUserId()
         }, 0);
+        this.showToast = this.showToast
+        this.getOpenIdAndUserId = this.getOpenIdAndUserId
     }
 
-
+    showToast(data){
+        Toast.info(data);
+    }
     async getOpenIdAndUserId(){
         try{
            // await AsyncStorage.clear()

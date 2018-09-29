@@ -8,47 +8,12 @@ import api from '../.././service/api'
 import RentApp from "../../components/RentApp";
 const { myStageList } = api
 
-const periodList = [{
-  "accountTime": "201804",
-  "totalRepayAmount": 1003.00,
-  "actualRepayAmount": 0.00,
-  "periodNoRepayAmount": 1003.00,
-  "shouldClearDate": "2018年04月15日 00:00",
-  "accountCycleDate": "2018年03月15日-04月14日",
-  "lastRepayTime": "2018年04月20日 00:00",
-  "orderSn": "201802251645327270001381",
-  "goodsName": "iphone7 plus",
-  "status": 1000
-}, {
-    "accountTime": "201803",
-    "totalRepayAmount": 1003.00,
-    "actualRepayAmount": 0.00,
-    "periodNoRepayAmount": 1003.00,
-    "shouldClearDate": "2018年04月15日 00:00",
-    "accountCycleDate": "2018年03月15日-04月14日",
-    "lastRepayTime": "2018年04月20日 00:00",
-    "orderSn": "201802251645327270001381",
-    "goodsName": "iphone7 plus",
-    "status": 1000
-  } , {
-    "accountTime": "201704",
-    "totalRepayAmount": 1003.00,
-    "actualRepayAmount": 0.00,
-    "periodNoRepayAmount": 1003.00,
-    "shouldClearDate": "2018年04月15日 00:00",
-    "accountCycleDate": "2018年03月15日-04月14日",
-    "lastRepayTime": "2018年04月20日 00:00",
-    "orderSn": "201802251645327270001381",
-    "goodsName": "iphone7 plus",
-    "status": 1000
-  }]
-
 const Item = List.Item;
 
 export default class MyInstallmentPage extends RentApp {
   state = {
     totalMoney:"111",
-    periodList: periodList,
+    periodList: [],
     // dataObj:{
     //   noRepayAmount:'100',
     //   stageId: '22',
@@ -61,21 +26,14 @@ export default class MyInstallmentPage extends RentApp {
     // }
   }
 
-  componentDidMount(){
+  async componentDidMount(){
+    await this.getOpenIdAndUserId()
     this.getData()
   }
   
   async getData() {
-
     try {
-      const ids = await AsyncStorage.multiGet(['openId', 'userId', 'addressInfos'])
-      this.openId = ids[0][1]
-      this.userId = ids[1][1]
-      this.cityCode = JSON.parse(ids[2][1]).cityCode
-      this.provinceCode = JSON.parse(ids[2][1]).provinceCode
-
       const { openId, cityCode, userId, provinceCode } = this
-      console.log(provinceCode, "RRRRRR")
       const params = {
         sourceType: 3,
         openId,
@@ -83,10 +41,25 @@ export default class MyInstallmentPage extends RentApp {
         userId,
         provinceCode,
         orderId: '0355df170a52440db9cb5dc614703ac7'
+        // 343164f313df40098c2e48d0a193de20
       }
-      const { data } = await myStageList(params)
+      const params1 = {
+        activeId: "524eaa42bfec4d00b77f50d56fd82fe5",
+        capitalInfoJson: "{\"prodId\":\"87f667ff3f274fd1918885c966169c0d\"}",
+        goodsInfoJson: "{\"goodsFirstAmount\":0,\"totalStageAmount\":0,\"monthRate\":0.005,\"periods\":24,\"teleFirstAmount\":0,\"poundgeRate\":0,\"goodsSkuId\":\"201809071024544610527721\",\"goodsId\":\"201807191523324900507633\"}",
+        insureJson: "[]",
+        mealInfoJson: "{\"mealId\":\"201808301508165440336042\"}",
+        openId: "otp3cjjLq6cQ7oPHIINRef8cFruA",
+        paymentId: "201806210950040190225842",
+        sourceType: 3,
+        userInfoJson: "{\"userId\":\"201808241044425400117198\",\"phoneNo\":\"18316579205\",\"userName\":\"邓夏宁\",\"idCardNo\":\"440883199305105071\",\"creditScore\":\"700\",\"maxAvailAmount\":935}",
+      }
+      const { data } = await myStageList(params1)
       if (data.errcode !== 1 && data.errmsg) Toast.info(data.errmsg);
-      console.log(data, '=========>myStageList')
+      console.log(data,"FFFFFFFFF")
+      this.setState({
+        periodList: data.periodList
+      })
 
     } catch (error) {
       console.log(error, "error")
@@ -115,22 +88,22 @@ export default class MyInstallmentPage extends RentApp {
     for (const key in lastData) {
       if (lastData.hasOwnProperty(key)) {
         var renderOneYearList = () => {
-          const element = lastData[key];
+          const element = lastData[key].reverse();
           const one_year_list = element.map((item, index) => {
-            const { paymentStatus } = item
+            const { accountStatus, repayStatus } = item
             // direction = "column"
             return (
               <Flex key={item.accountTime} justify="between" style={{ width: '100%', backgroundColor: '#fff', paddingHorizontal: 20, paddingVertical:10, borderTopWidth: 0.5, borderTopColor: '#f2f2f2' }}>
                 <Text style={{width: 100}}>
-                  {item.accountTime}
+                  {item.accountTime.substring(4, 6)}月份
                 </Text>
                 <Text style={{ width: 100 }}>{item.actualRepayAmount} </Text>
-                <Text>
-                  {paymentStatus === '1' && '未还款 >'}
-                  {paymentStatus === '2' && '还款中 >'}
-                  {paymentStatus === '3' && '还款完成 >'}
-                  {paymentStatus === '4' && '逾期还款 >'}
-                  {paymentStatus === undefined && ' >'} 
+                <Text style={{ color: '#999999'}}>
+                  {accountStatus === 0 && '未出账 >'}
+                  {accountStatus === 1 && '已出账 >'}
+                  {/* {repayStatus === 0 && '还款完成 >'}
+                  {repayStatus === 1 && '逾期还款 >'} */}
+                  {accountStatus === undefined && ' >'} 
                 </Text>
               </Flex>
             )
@@ -138,7 +111,7 @@ export default class MyInstallmentPage extends RentApp {
           return one_year_list
         }
       }
-      const one_year_item = <Flex key={key} direction="column" style={{ width: '100%',  marginBottom: 20 }}>
+      const one_year_item = <Flex key={key} direction="column" style={{ width: '100%'}}>
         <Flex justify="center" align="stretch" style={{ width: '100%', backgroundColor: '#f2f2f2', paddingVertical: 10}}>
           <Text style={{ backgroundColor: 'transparent'}}>{key}年</Text>
         </Flex>
@@ -163,7 +136,7 @@ export default class MyInstallmentPage extends RentApp {
           </Text>
         </Flex>
         <Flex direction="column" style={styles.cardBox}>
-          {this.renderListTest(periodList)}
+          {(!!periodList && !!periodList.length) && this.renderListTest(periodList)}
         </Flex>
         
       </Flex>
@@ -177,7 +150,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
     padding: 30,
-    backgroundColor: 'green',
+    backgroundColor: '#2FCBC3',
   },
   advance:{
     position: 'absolute',

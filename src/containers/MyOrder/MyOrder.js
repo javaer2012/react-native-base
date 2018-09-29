@@ -62,9 +62,9 @@ export default class MyOrder extends RentApp {
         })
       }
 
-      console.log(JSON.stringify(rsp), '=========>getData res')
+      console.log(JSON.stringify(data), '=========>getData res')
     } catch (e) {
-
+      console.log(e,"Err")
     }
   }
   

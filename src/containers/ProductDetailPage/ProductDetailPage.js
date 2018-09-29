@@ -86,15 +86,18 @@ export default class ProductDetailPage extends RentApp {
     showNotCredit: false,
     installmentInfo:{},
     capitalProdList:[],
-    installmentText:'请选择分期',
     userInfos:{},
     paymentInfo:{},
     capitalProdId:'',
     telecomProdList:[],
-    capitalProdObj:{}
+    capitalProdObj:{},
+    selectedCapitalProd:{
+      text: '请选择分期'
+    }
   }
 
   async componentDidMount() {
+   
     // const productId = this.props.navigation.getParam('productId');
     const user = await AsyncStorage.getItem('userInfo')
     this.setState({
@@ -153,7 +156,8 @@ export default class ProductDetailPage extends RentApp {
         // productDetail: ProductDetailPage_mock
       })
     } catch (error) {
-      console.error(error)
+      this.showToast(error)
+      // console.error(error)
     }
   }
   showActionSheet = () => {
@@ -296,7 +300,8 @@ export default class ProductDetailPage extends RentApp {
       periods: capitalProdObj.periods,
       poundgeRate: capitalProdObj.poundgeRate,
       goodsId: goodsBaseInfo.goodsId,
-      goodsSkuId
+      goodsSkuId,
+      goodsFirstAmount:''
     })
 
     const mealInfoJson = JSON.stringify({
@@ -307,17 +312,6 @@ export default class ProductDetailPage extends RentApp {
     })
 
     const goodsInfoJson = JSON.stringify(newGoodsAfterInfo)
-    // {
-    //   goodsFirstAmount:0
-    //   totalStageAmount,
-    //   monthRate,
-    //   periods,
-    //   teleFirstAmount,
-    //   poundgeRate,
-    //   goodsSkuId,
-    //   goodsId
-    // }
-
     const params = {
       "openId": this.openId,
       "provinceCode": this.provinceCode,
@@ -335,7 +329,17 @@ export default class ProductDetailPage extends RentApp {
       "sourceType": 2
     }
     console.log(params,"GGGGGGGGGG")
-    const res = await commitOrder(params)
+    try {
+      const { data } = await commitOrder(params)
+      console.log(data,"=========》data")
+      if (data.errcode !== 1 && data.errmsg) {
+        this.showToast(data.errmsg) 
+        return false
+      }
+      console.log(data, "===========>")
+    } catch (error) {
+      
+    }
   }
   onClosesNotCredit = () => {
     this.setState({
@@ -364,29 +368,47 @@ export default class ProductDetailPage extends RentApp {
   }
   // 选择分期
   selecteCapitalProd = (item) => {
-    this.setState({ capitalProdObj:item})
+    let { goodsBaseInfo, selectMeal } = this.state
+    const num = this.computPrice(item)
+    this.setState({
+      capitalProdObj: item,
+      selectedCapitalProd: {
+        capitalPrice: num,
+        prodId: item.prodId,
+        text: item.prodName
+      },
+    })
   }
   // 确认选择分期
   selecteCapitalProdSure = (capitalProdObj) => {
     let { goodsBaseInfo, selectMeal } = this.state
+    const num = this.computPrice(capitalProdObj)
     this.setState({
-      capitalProdId: capitalProdObj.prodId,
       selectedCapitalProd: {
-        capitalPrice: goodsBaseInfo.goodsPrice + selectMeal.mealPrice,
-        prodId: capitalProdObj.prodId
+        capitalPrice: num,
+        prodId: capitalProdObj.prodId,
+        text: capitalProdObj.prodName
       },
       showInstallment: false
     })
   }
-
+  computPrice = (data) => {
+    const { goodsBaseInfo: { goodsPrice }, telecomProdList } = this.state
+    const { price } = telecomProdList[0]
+    const { monthFee, periods } = data
+    const num = (goodsPrice * (1 + monthFee * periods) + price) / periods
+    // return `${num.toFixed(2)} x ${periods}期`
+    return num.toFixed(2)
+  }
   renderCapitalProdList = (capitalProdList) => {
-    const { capitalProdId } = this.state
+    const { capitalProdObj } = this.state
+    
     return capitalProdList.map((item, index) => {
       return (
         <TouchableOpacity key={index} style={{ width: '100%' }} onPress={this.selecteCapitalProd.bind(this, item)}>
           <Flex style={{ width: '100%', paddingVertical: 15, borderBottomColor: '#f6f6f6', borderBottomWidth: 1 }} direction="row" justify="start" align="center">
-            <Text style={{ backgroundColor: item.prodId === capitalProdId  ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#ccc', borderRadius: 7, overflow: 'hidden' }}></Text>
-            <Text>{item.prodName}</Text>
+            <Text style={{ backgroundColor: item.prodId === capitalProdObj.prodId  ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#ccc', borderRadius: 7, overflow: 'hidden' }}></Text>
+            <Text>{this.computPrice(item)} x {item.periods}期</Text>
             <Text>{item.prodDesc}</Text>
           </Flex>
         </TouchableOpacity>
@@ -398,7 +420,7 @@ export default class ProductDetailPage extends RentApp {
     const { 
       photoList, goodsBaseInfo, skuGroupList, userInfos,
       singleList, mixList, lastPrice, count, isShowPackage, selectMeal,
-      showInstallment, installmentInfo, capitalProdList, installmentText 
+      showInstallment, installmentInfo, capitalProdList, selectedCapitalProd 
       } = this.state
     // console.log(selectMealId,"hhhhhhhhhh")
     if (!photoList) return false
@@ -503,7 +525,7 @@ export default class ProductDetailPage extends RentApp {
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#f2f2f2' }}>{installmentText}</Text>
+                    <Text style={{ color: '#f2f2f2' }}>{selectedCapitalProd.text}</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
@@ -576,7 +598,7 @@ export default class ProductDetailPage extends RentApp {
         >
           <Flex direction="column" style={{ backgroundColor: '#fff', marginTop: 10, height: 400 }}>
             <Flex justify="start" style={{ paddingBottom: 20, paddingHorizontal: 30, marginTop: 30 ,width: '100%', borderBottomWidth: 1, borderColor: '#f2f2f2'}}>
-              <Text>分期金额：</Text><Text>{installmentInfo.price}</Text>
+              <Text>分期金额：</Text><Text>{selectedCapitalProd.capitalPrice} 元</Text>
             </Flex>
             <Flex style={{ flex: 1, width: '100%', paddingHorizontal: 30}} direction="column" justify="start">
               {this.renderCapitalProdList(capitalProdList)}
