@@ -15,7 +15,7 @@ const Button_ = ({children}) => {
     </TouchableOpacity>
   )
 }
-export default class MyOrder extends RentApp {
+export default class OrderDetail extends RentApp {
   state = {
     data: {
       goodsInfo: {
@@ -84,7 +84,7 @@ export default class MyOrder extends RentApp {
         provinceCode: this.provinceCode
       }
       // console.log(params, '=======》 params')
-      const { data } = await myOrderList(params)
+      const { data } = await staffOrderDetail(params)
       if (data.errcode === 1) {
         this.setState({
           // orderList: data.orderList

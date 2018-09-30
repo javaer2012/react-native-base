@@ -30,7 +30,6 @@ import MyInstallmentPage from '../containers/MyInstallmentPage/MyInstallmentPage
 import MyOrder from '../containers/MyOrder/MyOrder'
 import WorkerEnter from '../containers/WorkerEnter/WorkerEnter'
 import WorkerOrder from '../containers/WorkerOrder/WorkerOrder'
-import OrderDetail from '../containers/OrderDetail/OrderDetail'
 
 
 import Accept from '../containers/Accept/Accept'
@@ -79,7 +78,6 @@ export default StackNavigator({
     OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
     MyInstallmentPage: MyInstallmentPage, // 我的分期
     MyOrder: MyOrder, // 孟令禹 我的订单
-    OrderDetail: OrderDetail,
     WorkerEnter: WorkerEnter, // 营业员入口
     WorkerOrder: WorkerOrder,
     OrderDetail,
@@ -98,7 +96,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
-        initialRouteName: 'OrderDetail',
+        initialRouteName: 'ProductDetail',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

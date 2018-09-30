@@ -100,13 +100,10 @@ export default class App extends Component {
                 }
             } = data;
             if (data.infocode == '10000') {
-                // city = response.data.regeocode.addressComponent.city;
-                // (gdCity instanceof Array && gdCity.lenght > 0)
-                city = !(gdCity instanceof Array) && !!gdCity  ? gdCity.substring(0, gdCity.length - 1):province.substring(0,province.length -1);
-                
-                var code = localCodeInfo(city);
-                // debugger
                 try {
+                  city = !(gdCity instanceof Array) && !!gdCity  ? gdCity.substring(0, gdCity.length - 1):province.substring(0,province.length -1);
+                
+                  var code = localCodeInfo(city);
                     // const { data } = await setCrmCode(code)
                     // if (data && data.areaDict) {
                         // const { areaDict } = data;
@@ -121,7 +118,6 @@ export default class App extends Component {
                             }
                         }
                         await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
-                        console.log(option,"WWWWWWWWWWWWWWWWWoption")
                         this.isOpen({
                             provinceCode: option["provinceCode"],
                             cityCode: option["cityCode"],
@@ -129,7 +125,8 @@ export default class App extends Component {
                         })
                     // }
                 } catch (error) {
-                    console.log('setCrmCode 接口出错!!!!!!!!!!!1')
+                  this.showToast(error,'setCrmCode 接口出错!!!!!!!!!!')
+                    console.log()
                 }
             }
         } catch (error) {

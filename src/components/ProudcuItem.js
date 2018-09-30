@@ -3,7 +3,6 @@ import React from 'react'
 import { flexRowBet, flexRow, contentPadding } from '../styles/common'
 import Color from '../styles/var'
 import { HTTP_IMG } from '../service/api'
-const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 

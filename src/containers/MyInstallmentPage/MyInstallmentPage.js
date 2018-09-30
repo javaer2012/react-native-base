@@ -28,6 +28,7 @@ export default class MyInstallmentPage extends RentApp {
 
   async componentDidMount(){
     await this.getOpenIdAndUserId()
+    console.log(this.props.navigation.state.params,"=>>>>>>this.props.navigation.state.params")
     this.getData()
   }
   
@@ -56,7 +57,6 @@ export default class MyInstallmentPage extends RentApp {
       }
       const { data } = await myStageList(params1)
       if (data.errcode !== 1 && data.errmsg) Toast.info(data.errmsg);
-      console.log(data,"FFFFFFFFF")
       this.setState({
         periodList: data.periodList
       })
