@@ -13,7 +13,7 @@ import api from '../.././service/api'
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
 const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods } = api
-const PRODUCT_ID = '201802241102330510355414'
+// const PRODUCT_ID = '201802241102330510355414'
 
 const storageItem = ({ data, itemData, onPress, subSkuId }) => {
   const boxStyle = [{
@@ -40,154 +40,142 @@ const storageItem = ({ data, itemData, onPress, subSkuId }) => {
 const SelectedColorList = SelectedListHoc(storageItem)
 const SelectedROMList = SelectedListHoc(storageItem)
 const tabs = [
-  { title: '融合套餐', sub: '1' },
-  { title: '单产品套餐', sub: '2' },
+  { title: '电信套餐', sub: '1' },
+  // { title: '单产品套餐', sub: '2' },
 ];
-
-// activeCode
 
 export default class ProductDetailPage extends RentApp {
   state = {
-    productDetail: {},
-    isShowPackage: false,
-    isShowDetailInfos: false,
-    lastPrice: 0,
-    photoList: [],
-    goodsBaseInfo:{
-      "goodsId": "201802241102330510355414",
-      "goodsName": "OPPO R9S 128G版",
-      "goodsDesc": "OPPO R9S",
-      "goodsBrand": "OPPO",
-      "goodsModel": "OPPO R9S",
-      "goodsImgPath": "goods/20180226/201802261340332840248210.png",
-      "goodsConfigType": 1,
-      "category": "1",
-      "collectStatus": "0",
-      "goodsDetailText": "<p>OPPO R9S 128G版</p>",
-      "goodsPrice": 2000,
-      "activeId": "6da93d6aab194e48bd5b4f214b752638",
-      "activeCode": "gz-rent-phone",
-      "downPayment": 2000
-    },
-    skuGroupList:[],
-    singleList:[],
-    mixList:[],
-    count: 0,
-    capacityId:'',
-    colorId:'',
-    selectMealId:'',
-    mealText:'请选择套餐',
-    showInstallment:false,
-    showNotCredit: false,
-    installmentInfo:{},
-    capitalProdList:[],
-    installmentText:'请选择分期',
-    userInfos:{},
-    paymentInfo:{},
-    capitalProdId:''
+    photoList:[], // 图片列表
+    telecomProdList:[], // 电信套餐列表
+    skuDetailList:[], // 产品sku列表
+    capitalProdList:[], // 分期列表
+    disposeCapitalProdList:[], // 
+    maxAvailAmount: 0, // 最大额度
+    goodsBaseInfo: {}, // 商品基本信息
+    isTelConf: false, // 是否配置电信产品
+    insureList:[], // 保险列表
+    skuGroupList:[], // sku分组列表
+    paymentInfo:{}, //  接口返回的支付信息
+    computedPaymentInfo:{},
+    mealSelected: {}, //用户选择的套餐；
+    capitalProdSelected:{}, // 已选择分期
+    isShowPackage: false, // 套餐窗口的展示
+    isShowCapital: false, // 分期窗口
+    productId: '',  // 产品id
+    collectStatus: 0,
+    userInfos:{}, // 用户信息
+    showNotCredit:false,
+    capacityId: '', // 已选择的内存skuId
+    colorId: '', // 已选择的颜色skuId
   }
-
   async componentDidMount() {
-    // const productId = this.props.navigation.getParam('productId');
-    const user = await AsyncStorage.getItem('userInfo')
+    const productId = '201802241102330510355414' || this.props.navigation.getParam('productId');
+    await this.getOpenIdAndUserId()
+    let user = await AsyncStorage.getItem('userInfo')
+    user = { ...JSON.parse(user) }
+    console.log(user,"====>缓存中读取的userInfo")
     this.setState({
-      userInfos: JSON.parse(user)
+      userInfos: user,
+      productId
     })
     try {
       const { data: queryGoodsDetailData } = await queryGoodsDetail({
-        provinceCode: "844",
-        cityCode: "84401",
-        goodsId: PRODUCT_ID,
-        userId: "12389"
+        provinceCode: this.provinceCode,
+        cityCode: this.cityCode,
+        goodsId: productId,
+        userId: user.userId
       })
+      if (!queryGoodsDetailData || queryGoodsDetailData.errcode !==1 ) {
+        throw queryGoodsDetailData.errmsg ||  "queryGoodsDetailData 获取数据失败"
+        return 
+      }
 
-      if (!queryGoodsDetailData) return false
+      this.handleDataFun(queryGoodsDetailData)
 
-      const { 
-        photoList, 
-        telecomProdList, 
-        skuDetailList, 
-        capitalProdList, 
-        maxAvailAmount, 
-        mealList, 
-        bizTypeCode, 
-        isCapitalConf, 
-        goodsBaseInfo, 
-        isTelConf, 
-        insureList, 
-        skuGroupList, 
-        paymentInfo 
-      } = queryGoodsDetailData
-      const singleList = [];
-      const mixList = []
-      mealList.forEach(element => {
-        if (element.mealType == 1) {
-          singleList.push(element)
-        } else if (element.mealType == 2) {
-          mixList.push(element)
-        }
-        // 1 - 单产品套餐；2 - 融合套餐
-      });
-    
-      this.setState({
-        photoList,
-        goodsBaseInfo,
-        skuGroupList,
-        singleList,
-        mixList,
-        capitalProdList, // 分期
-        paymentInfo
-        // productDetail: ProductDetailPage_mock
-      })
     } catch (error) {
-      console.error(error)
+      this.showToast(error)
     }
   }
-  showActionSheet = () => {
-    this.ActionSheet.show()
-  }
+  handleDataFun = (data) => {
+    console.log(JSON.stringify(data))
+    const { 
+      photoList, // 图片列表
+      telecomProdList, // 电信套餐列表
+      skuDetailList, // 产品sku列表
+      capitalProdList, // 分期列表
+      maxAvailAmount, // 最大额度
+      goodsBaseInfo, // 商品基本信息
+      isTelConf, // 是否配置电信产品
+      insureList, // 保险列表
+      skuGroupList, // sku分组列表
+      paymentInfo, //  参数返回的支付信息
+      bizTypeCode, // 业务类型编码
+    } = data
+    
+    // if(res.data.capitalMealProdList != null && res.data.capitalMealProdList != '' && res.data.capitalMealProdList != 'undefined' ){
+    //   that.goodsConfigType = 2;
+    // }
 
-  renderImage = (data) => {
-    if (!data || !(data instanceof Array)) return false
+    // const singleList = [];
+    // const mixList = []
+    // telecomProdList.forEach(element => {
+    //   if (element.mealType == 1) {
+    //     singleList.push(element)
+    //   } else if (element.mealType == 2) {
+    //     mixList.push(element)
+    //   }
+    //   // 1 - 单产品套餐；2 - 融合套餐 initPayment
+    // });
+    const mealSelected = telecomProdList[0]
+    if(bizTypeCode == 'zq_rent_phone'){
+      if(isTelConf == 1){
+        mealSelected.selectMealIndex = 0	//套餐选中的列
 
-    return data.map((item, index) => {
-        return (
-          <View key={item.photoId} style={[styles.containerHorizontal]}>
-            <Image 
-              resizeMode="stretch"
-              style={{ width: WIDTH, height: WIDTH }}
-              source={{ uri: `${HTTP_IMG}${item.photoPath}` }}
-              />
-          </View>
-      )
+        // const canStageAmount = (goodsBaseInfo.goodsPrice + packagePrice - this.state.realDownPayment).toFixed(2);  //设置可分期金额
+
+        this.setState({
+          mealSelected: telecomProdList[0],
+          // canStageAmount:  (goodsBaseInfo.goodsPrice + telecomProdList[0].price - this.state.realDownPayment).toFixed(2)
+        })
+      }
+    }
+    // capitalProdList
+    const disposeCapitalProdList =  capitalProdList.map((item, index) => {
+      let sum = goodsBaseInfo.goodsPrice * (1 + item.monthFee * item.periods) + mealSelected.price;
+      const monthPay = (sum / item.periods).toFixed(2);
+      return { ...item, monthPay, sum}
     })
-  }
 
-  renderDetailImage = (data) => {
-    if (!data || !(data instanceof Array)) return false
-    return data.map((item, index) => {
-      return (
-        <View key={item.photoId || index} style={[{ backgroundColor: '#fff' }]}>
-          <Image
-            resizeMode="center"
-            style={{ width: WIDTH, height: WIDTH }}
-            source={{ uri: `${HTTP_IMG}${item.photoPath}` }}
-          />
-        </View>
-      )
-    })
-  }
-
-  selectMealFun = (id, mealName) => {
     this.setState({
-      selectMealId: id,
-      mealText: mealName
+      photoList, // 图片列表
+      telecomProdList, // 电信套餐列表
+      skuDetailList, // 产品sku列表
+      capitalProdList, // 分期列表
+      disposeCapitalProdList, // 处理后的分期列表
+      maxAvailAmount, // 最大额度
+      goodsBaseInfo, // 商品基本信息
+      isTelConf, // 是否配置电信产品
+      insureList, // 保险列表
+      skuGroupList, // sku分组列表
+      paymentInfo, //  支付信息
+      bizTypeCode
     })
   }
+
+  selectMealFun = (data) => {
+    this.setState({
+      mealSelected: data,
+      isShowPackage: false
+    })
+  }
+
+
+  // 渲染套餐
   renderMealList = (data) => {
-    // debugger
     if (!data || !(data instanceof Array)) return false
-    const { selectMealId } = this.state
+
+    const { mealSelected } = this.state
     const selectMealStyle={
       borderWidth: 1,
       borderColor: Color.mainPink
@@ -195,18 +183,18 @@ export default class ProductDetailPage extends RentApp {
     
     return data.map((item, index) => {
       const boxStyle = [styles.mealItemStyle, { marginTop: 10 }]
-      if (item.mealId === selectMealId) {
+      if (item.prodCode === mealSelected.prodCode) {
         boxStyle.push(selectMealStyle)
       }
       return (
-        <TouchableOpacity style={boxStyle} key={item.photoId || index} onPress={this.selectMealFun.bind(this, item.mealId, item.mealName)}>
+        <TouchableOpacity style={boxStyle} key={item.prodCode || index} onPress={this.selectMealFun.bind(this, item)}>
           <Flex>
             <Flex.Item>
               <Text>
-                {item.mealName}
+                {item.prodName}
               </Text>
               <Text>
-                {item.mealDesc}
+                {item.prodDesc}
               </Text>
             </Flex.Item>
           </Flex>
@@ -216,116 +204,27 @@ export default class ProductDetailPage extends RentApp {
     })
   }
 
-  renderSelectCombo = () => {
+  computPrice = (data) => {
+    const { goodsBaseInfo: { goodsPrice }, telecomProdList } = this.state
+    const { price } = telecomProdList[0]
+    const { monthFee, periods } = data
+    const num = (goodsPrice * (1 + monthFee * periods) + price) / periods
+    // return `${num.toFixed(2)} x ${periods}期`
+    return num.toFixed(2)
+  }
+  // 渲染分期 
+  renderCapitalProdList = (disposeCapitalProdList) => {
 
-  }
-
-  selectedFun = (subSkuId, type) => {
-    this.setState({ [type]: subSkuId })
-  }
-  togglePackageFun = (isShow) => {
-    this.setState({
-      isShowPackage: isShow
-    })
-  }
-  toggleInstallmentFun = async (isShow) => {
-    if (!"没有授信") {
-      this.setState({
-        showNotCredit: true
-      })
-    } else{
-      this.setState({
-        showInstallment: isShow
-      })
-    }
-  }
-  toggleDetailInfosFun = (isShow) => {
-    const { navigate } = this.props.navigation;
-    navigate('ProductParameterPage', {})
-    // this.setState({
-    //   isShowDetailInfos: isShow
-    // })
-  }
-
-  goToPayFun = async () => {
-    const { selectMealId, goodsBaseInfo, goodsAfterInfo,  paymentInfo, capitalProdId } = this.state
-    const mealInfoJson = JSON.stringify({
-      mealId: selectMealId
-    })
-    const capitalInfoJson = JSON.stringify({
-      prodId: capitalProdId
-    })
-
-    const goodsInfoJson = JSON.stringify(goodsAfterInfo)
-    {
-      goodsFirstAmount:0
-      totalStageAmount,
-      monthRate,
-      periods,
-      teleFirstAmount,
-        poundgeRate,
-        goodsSkuId,
-        goodsId
-    }
-
-    const params = {
-      "openId": this.openId,
-      "provinceCode": this.provinceCode,
-      "cityCode": this.cityCode,
-      "orderType": "1",
-      // "userInfoJson": "{\"userId\":\"201808241044425400117198\",\"phoneNo\":\"18316579205\",\"userName\":\"邓夏宁\",\"idCardNo\":\"440883199305105071\",\"creditScore\":\"700\",\"maxAvailAmount\":3000}",
-      userInfoJson: JSON.stringify(userInfos),
-      // "goodsInfoJson": "{\"goodsFirstAmount\":0,\"totalStageAmount\":0,\"monthRate\":0.005,\"periods\":24,\"teleFirstAmount\":0,\"poundgeRate\":0,\"goodsSkuId\":\"201809071024544610527721\",\"goodsId\":\"201807191523324900507633\"}",
-      goodsInfoJson,
-      mealInfoJson,
-      capitalInfoJson,
-      "insureJson": "[]",
-      "activeId": goodsBaseInfo.activeId,
-      "paymentId": paymentInfo.paymentId,
-      "sourceType": 2
-    }
-
-    const res = await commitOrder(params)
-  }
-  onClosesNotCredit = () => {
-    this.setState({
-      showNotCredit: false
-    })
-  }
-  tollectCollectFun = async (status) => {
-    try {
-      const { openId, cityCode, userId, provinceCode} = this
-      const { data } = await collectGoods({
-        goodsId: PRODUCT_ID,
-        cityCode,
-        userId,
-        provinceCode,
-      })
-      // debugger
-      if (data.errcode === 1) {
-        this.setState({
-          collectStatus: data.status
-        })
-      }
-      else { console.error(data.errmsg) }
-    } catch (error) {
-      console.error(error,"!!!")
-    }
-  }
-
-  selecteCapitalProd = (prodId) => {
-    this.setState({
-      capitalProdId: prodId
-    })
-  }
-
-  renderCapitalProdList = (capitalProdList) => {
-    return capitalProdList.map((item, index) => {
+    const { capitalProdSelected, goodsBaseInfo, mealSelected } = this.state
+    
+    return disposeCapitalProdList.map((item, index) => {
+      console.log(item,"itemitemitemitemitem")
+      // var obj = Object.assign({}, item, { monthPay: monthPay.toFixed(2), downPayment: 0, defaultIndex: index });
       return (
-        <TouchableOpacity style={{ width: '100%' }} onPress={this.selecteCapitalProd.bind(this, item.prodId)}>
-          <Flex style={{ width: '100%', paddingVertical: 15, borderBottomColor: '#f2f2f2', borderBottomWidth: 1 }} direction="row" justify="start" align="center">
-            <Text style={{ backgroundColor: item.selected ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#ccc', borderRadius: 7, overflow: 'hidden' }}></Text>
-            <Text>{item.prodName}</Text>
+        <TouchableOpacity key={index} style={{ width: '100%' }} onPress={this.selectedCapitalProdFun.bind(this, item)}>
+          <Flex style={{ width: '100%', paddingVertical: 15, borderBottomColor: '#f6f6f6', borderBottomWidth: 1 }} direction="row" justify="start" align="center">
+            <Text style={{ backgroundColor: item.prodId === capitalProdSelected.prodId  ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#ccc', borderRadius: 7, overflow: 'hidden' }}></Text>
+            <Text>{item.monthPay} x {item.periods}期</Text>
             <Text>{item.prodDesc}</Text>
           </Flex>
         </TouchableOpacity>
@@ -333,15 +232,180 @@ export default class ProductDetailPage extends RentApp {
     })
   }
 
+  capacityId_color_fun = (type, subSkuId ) => {  // 选择内存和颜色的方法
+    console.log(subSkuId, type,"@@@@@@")
+    this.setState({ [type]: subSkuId })
+  }
+  // 选择分期产品
+  selectedCapitalProdFun = (data) => {
+    this.setState({
+      capitalProdSelected: data,
+      isShowCapital: false
+    })
+  }
+
+  // 展示关闭套餐选择
+  togglePackageFun = (isShow) => {
+    this.setState({
+      isShowPackage: isShow
+    })
+  }
+
+  // 展示关闭分期选择
+  toggleCapitalFun = (isShow) => {
+    this.setState({
+      isShowCapital: isShow
+    })
+  }
+
+  // 展示关闭详细数据
+  toggleDetailInfosFun = () => {
+    
+  }
+
+  // 收藏状态切换
+  toggleCollectFun = async () => {
+    try {
+      const { cityCode, userId, provinceCode} = this
+      const { productId, goodsBaseInfo } = this.state
+      const { data } = await collectGoods({
+        goodsId: productId,
+        cityCode,
+        userId,
+        provinceCode,
+      })
+      this.showToast(data.errmsg)
+      this.setState({
+        goodsBaseInfo: {...goodsBaseInfo, collectStatus: data.status  }
+      })
+    } catch (error) {
+      console.error(error,"!!!")
+    }
+  }
+
+  // 下单支付
+  goToPayFun = async () => {
+    const { openId, provinceCode, cityCode, userId } = this
+    const {
+      productId,
+      userInfos,
+      computedPaymentInfo,
+      paymentInfo,
+      capitalProdSelected,
+      mealSelected,
+      goodsBaseInfo,
+      skuDetailList,
+      capacityId,
+      colorId,
+    } = this.state
+    
+    // 根据颜色 内存容量确定机器
+    let goodsSkuId = ''
+    skuDetailList.filter((item) => {
+      const unionId = JSON.parse(item.skuJsonStr).unionId
+      if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1) {
+        goodsSkuId = item.skuId
+      }
+    })
+
+
+    var options = {};
+    var _userInfo = {
+      userId,
+      phoneNo: userInfos.phoneNo,
+      userName: userInfos.userName,
+      idCardNo: userInfos.idCardNo,
+      creditScore: userInfos.creditScore,
+      maxAvailAmount: userInfos.maxAvailAmount,
+    }
+    const userInfoJson = JSON.stringify(_userInfo);
+
+    var _goodsInfo = {
+      // goodsFirstAmount: 
+      totalStageAmount: capitalProdSelected.sum,
+      monthRate: capitalProdSelected.monthFee,
+      periods: capitalProdSelected.periods,
+      teleFirstAmount: 0,
+      poundgeRate: capitalProdSelected.poundgeRate,
+      goodsSkuId: goodsSkuId,
+      goodsId: goodsBaseInfo.goodsId
+    };
+    const goodsInfoJson = JSON.stringify(_goodsInfo)
+
+    // 套餐选择
+    var _mealInfo = {}
+    // if (this.goodsConfigType == 2) {
+    //   mealInfoJson["mealId"] = this.capitalSelected.mealId;
+    // } else {
+    // }
+    
+    _mealInfo["mealId"] = mealSelected.prodId;//套餐价格与电信套餐价格的区别；
+    const mealInfoJson = JSON.stringify(_mealInfo);
+
+    // 金融分期产品
+    var _capitalInfo = {}
+    _capitalInfo.prodId = capitalProdSelected.prodId
+    const capitalInfoJson = JSON.stringify(_capitalInfo);
+    // options["capitalInfoJson"] = capitalInfoJson;
+
+    //保险；
+    // var insureJson = [];
+    // insureJson = JSON.stringify(insureJson);
+    // insureJson = insureJson.toString();
+    // options["insureJson"] = insureJson;
+  
+    const params = {
+      "openId": this.openId,
+      "provinceCode": this.provinceCode,
+      "cityCode": this.cityCode,
+      "orderType": goodsBaseInfo.category,
+      userInfoJson,
+      goodsInfoJson,
+      mealInfoJson,
+      capitalInfoJson,
+      "insureJson": "[]",
+      "activeId": goodsBaseInfo.activeId,
+      "paymentId": paymentInfo.paymentId,
+      // "sourceType": 2
+    }
+    console.log(JSON.stringify(params),"params=>>>>>>>GGGGGGGGGG")
+    try {
+      const { data } = await commitOrder(params)
+      console.log(data,"=========》data")
+      if (data.errcode !== 1 && data.errmsg) {
+        this.showToast(data.errmsg) 
+        return false
+      }
+      console.log(data, "===========>")
+    } catch (error) {
+      
+    }
+  }
+
   render() {
+  
     const { 
-      photoList, goodsBaseInfo, skuGroupList, userInfos,
-        singleList, mixList, lastPrice, count, isShowPackage, selectMealId, mealText,
-      showInstallment, installmentInfo, capitalProdList, installmentText 
-      } = this.state
-    // console.log(selectMealId,"hhhhhhhhhh")
-    if (!photoList) return false
-    const { goodsName, goodsDesc, goodsDetailText, collectStatus, goodsPrice } = goodsBaseInfo || {}
+      photoList, // 图片列表
+      telecomProdList, // 电信套餐列表
+      skuDetailList, // 产品sku列表
+      capitalProdList, // 分期列表
+      disposeCapitalProdList,
+      maxAvailAmount, // 最大额度
+      goodsBaseInfo, // 商品基本信息
+      isTelConf, // 是否配置电信产品
+      insureList, // 保险列表
+      skuGroupList, // sku分组列表
+      paymentInfo, //  支付信息
+      computedPaymentInfo,
+      mealSelected,
+      capitalProdSelected,
+      isShowPackage,
+      isShowCapital,
+      showNotCredit,
+      // lastPrice: 0,
+    } = this.state
+      if (!photoList) return false
+    const { goodsName, goodsDesc, goodsDetailText, goodsPrice } = goodsBaseInfo || {}
     return (
       <Flex style={{ position: 'relative', width: '100%' }} direction="column">
         <ScrollView
@@ -358,7 +422,7 @@ export default class ProductDetailPage extends RentApp {
               infinite
               afterChange={this.onHorizontalSelectedIndexChange}
             >
-              {this.renderImage(photoList)}
+              {_renderImage(photoList)}
             </Carousel>
           </View>
           <View style={styles.contentContainer}>
@@ -368,8 +432,8 @@ export default class ProductDetailPage extends RentApp {
                 <Text style={[{ color: Color.mainPink }, { fontWeight: '600' }]}>￥ {goodsPrice}</Text>
                 <View>
                   <Collect
-                    onTollectCollect={this.tollectCollectFun}
-                    collectStatus={collectStatus || 0}
+                    onTollectCollect={this.toggleCollectFun}
+                    collectStatus={goodsBaseInfo.collectStatus || 0}
                   />
                 </View>
               </View>
@@ -384,9 +448,9 @@ export default class ProductDetailPage extends RentApp {
                   ...mainGray
                 }}>容量</Text>
                 <View style={{ marginLeft: 10 }}>
-                  <SelectedColorList
+                  <SelectedROMList
                     data={skuGroupList[0] ? skuGroupList[0].subSkuList : []} 
-                    onPress={this.selectedFun.bind(this, 'capacityId')}
+                    onPress={this.capacityId_color_fun.bind(this, 'capacityId')}
                   />
                 </View>
               </View>
@@ -402,9 +466,9 @@ export default class ProductDetailPage extends RentApp {
                   marginRight: 10
                 }}> 颜色</Text>
                 <View>
-                  <SelectedROMList
+                  <SelectedColorList
                     data={skuGroupList[1] ? skuGroupList[1].subSkuList : []} 
-                    onPress={this.selectedFun.bind(this, 'colorId')}
+                    onPress={this.capacityId_color_fun.bind(this, 'colorId')}
                   />
                 </View>
               </View>
@@ -429,20 +493,20 @@ export default class ProductDetailPage extends RentApp {
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#f2f2f2' }}>{mealText}</Text>
+                    <Text style={{ color: '#f2f2f2' }}>{mealSelected.prodName}</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
               </Flex>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.toggleInstallmentFun.bind(this, true)}>
+            <TouchableOpacity onPress={this.toggleCapitalFun.bind(this, true)}>
               <Flex style={[contentPadding, { backgroundColor: '#fff' }]} direction='row' justify='between' align='center' >
                 <Flex.Item style={{ flex: 0, paddingVertical: 14, paddingRight: 10 }}>
                   <Text>分期</Text>
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#f2f2f2' }}>{installmentText}</Text>
+                    <Text style={{ color: '#f2f2f2' }}>{capitalProdSelected.text}</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
@@ -460,7 +524,7 @@ export default class ProductDetailPage extends RentApp {
                 <Text>图文详情</Text>
               </View>
               <View style={styles.photoDetail}>
-                {this.renderDetailImage(photoList)}
+                {renderDetailImage(photoList)}
               </View>
             </Flex>
           </View>
@@ -469,33 +533,58 @@ export default class ProductDetailPage extends RentApp {
         <View style={[styles.paybarStyle]}>
           <PayBar
             goToPay={this.goToPayFun}
-            data={lastPrice} />
+            data={computedPaymentInfo.price || '-'} />
         </View>
         <Modal
           popup
           maskClosable={true}
           onClose={() => { this.setState({ isShowPackage: false }) }}
           visible={isShowPackage}
-          // onClose={this.onClose('modal2')}
           animationType="slide-up"
         >
           <Flex style={{ backgroundColor: '#fff', marginTop: 10, paddingHorizontal: 10 }}>
-            <Tabs tabs={tabs}
-              initialPage={1}
-              onChange={(tab, index) => { console.log('onChange', index, tab); }}
-              onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
-            >
-              <View style={{ height: 400, padding: 10 }}>
-                {this.renderMealList(mixList)}
-              </View>
-              <View style={{ height: 400 }}>
-                {this.renderMealList(singleList)}
+            <Tabs tabs={tabs} initialPage={0}>
+              <View style={{ height: 400, padding: 10, position: 'relative' }}>
+                <ScrollView style={{height: 350}}>
+                  {this.renderMealList(telecomProdList)}  
+                </ScrollView>
+                {/* <Flex style={styles.mealBtnBox}>
+                  <TouchableOpacity 
+                    style={{ padding: 14, backgroundColor: Color.mainPink, width: '100%'}}
+                    onPress={() => this.selecteCapitalProdSure(this.state.capitalProdObj) }>
+                    <Text style={{ color: '#fff', textAlign: "center" }}>确定</Text>
+                  </TouchableOpacity>
+                </Flex> */}
               </View>
             </Tabs>
           </Flex>
         </Modal>
         <Modal
-          visible={this.state.showNotCredit}
+          popup
+          maskClosable={true}
+          onClose={() => { this.setState({ isShowPackage: false }) }}
+          visible={isShowPackage}
+          animationType="slide-up"
+        >
+          <Flex style={{ backgroundColor: '#fff', marginTop: 10, paddingHorizontal: 10 }}>
+            <Tabs tabs={tabs} initialPage={0}>
+              <View style={{ height: 400, padding: 10, position: 'relative' }}>
+                <ScrollView style={{height: 350}}>
+                  {this.renderMealList(telecomProdList)}  
+                </ScrollView>
+                {/* <Flex style={styles.mealBtnBox}>
+                  <TouchableOpacity 
+                    style={{ padding: 14, backgroundColor: Color.mainPink, width: '100%'}}
+                    onPress={() => this.selecteCapitalProdSure(this.state.capitalProdObj) }>
+                    <Text style={{ color: '#fff', textAlign: "center" }}>确定</Text>
+                  </TouchableOpacity>
+                </Flex> */}
+              </View>
+            </Tabs>
+          </Flex>
+        </Modal>
+        <Modal
+          visible={showNotCredit}
           transparent
           maskClosable={false}
           // onClose={this.onClose('modal1')}
@@ -508,46 +597,65 @@ export default class ProductDetailPage extends RentApp {
         <Modal
           popup
           maskClosable={true}
-          onClose={() => { this.setState({ showInstallment: false }) }}
-          visible={showInstallment}
-          // onClose={this.onClose('modal2')}
+          onClose={() => { this.setState({ isShowCapital: false }) }}
+          visible={isShowCapital}
           animationType="slide-up"
         >
           <Flex direction="column" style={{ backgroundColor: '#fff', marginTop: 10, height: 400 }}>
             <Flex justify="start" style={{ paddingBottom: 20, paddingHorizontal: 30, marginTop: 30 ,width: '100%', borderBottomWidth: 1, borderColor: '#f2f2f2'}}>
-              <Text>分期金额：</Text><Text>{installmentInfo.price}</Text>
+              <Text>分期金额：</Text><Text>{capitalProdSelected.capitalPrice} 元</Text>
             </Flex>
             <Flex style={{ flex: 1, width: '100%', paddingHorizontal: 30}} direction="column" justify="start">
-              {this.renderCapitalProdList(capitalProdList)}
+              {this.renderCapitalProdList(disposeCapitalProdList)}
             </Flex>
             <Flex>
-              <TouchableOpacity 
+              {/* <TouchableOpacity 
                 style={{ padding: 20, backgroundColor: Color.mainPink, width: '100%'}}
-                onPress={() => { this.setState({})}}>
+                onPress={() => this.selecteCapitalProdSure(this.state.capitalProdObj) }>
                 <Text style={{ color: '#fff', textAlign: "center" }}>确定</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </Flex>
-                
-            {/* <Tabs tabs={tabs}
-              initialPage={1}
-              onChange={(tab, index) => { console.log('onChange', index, tab); }}
-              onTabClick={(tab, index) => { console.log('onTabClick', index, tab); }}
-            >
-              <View style={{ height: 400, padding: 10 }}>
-                {this.renderMealList(mixList)}
-              </View>
-              <View style={{ height: 400 }}>
-                {this.renderMealList(singleList)}
-              </View>
-            </Tabs> */}
           </Flex>
         </Modal>
-        
+
+        {/* isShowCapital */}
       </Flex>
     )
   }
 }
 
+
+// 渲染banner
+_renderImage = (data) => {
+  if (!data || !(data instanceof Array)) return false
+  return data.map((item, index) => {
+      return (
+        <View key={item.photoId || index} style={[styles.containerHorizontal]}>
+          <Image 
+            resizeMode="stretch"
+            style={{ width: WIDTH, height: WIDTH }}
+            source={{ uri: `${HTTP_IMG}${item.photoPath}` }}
+            />
+        </View>
+    )
+  })
+}
+
+// 渲染图文详情
+renderDetailImage = (data) => {
+  if (!data || !(data instanceof Array)) return false
+  return data.map((item, index) => {
+    return (
+      <View key={item.photoId || index} style={[{ backgroundColor: '#fff' }]}>
+        <Image
+          resizeMode="center"
+          style={{ width: WIDTH, height: WIDTH }}
+          source={{ uri: `${HTTP_IMG}${item.photoPath}` }}
+        />
+      </View>
+    )
+  })
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -578,6 +686,11 @@ const styles = StyleSheet.create({
   },
   photoDetail: {
 
+  },
+  mealBtnBox: {
+    position: 'absolute',
+    width: '100%',
+    bottom: 20
   },
   containerHorizontal: {
     flexGrow: 1,

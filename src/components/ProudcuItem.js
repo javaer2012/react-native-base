@@ -1,8 +1,10 @@
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, Dimensions } from 'react-native'
 import React from 'react'
 import { flexRowBet, flexRow, contentPadding } from '../styles/common'
 import Color from '../styles/var'
 import { HTTP_IMG } from '../service/api'
+
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 export default ({ data, children, imageStyle }) => {
   return (
@@ -24,8 +26,14 @@ export default ({ data, children, imageStyle }) => {
         }} source={{ uri: `${HTTP_IMG}${data.imgPath || data.goodsImgPath}` }} />
 
       <View style={styles.contentBox}>
-        <Text style={styles.phoneName}>{data.phoneName || data.goodsName} <Text>{data.phoneDesc}</Text></Text>
-        {data.goodsDesc && <Text>{data.goodsDesc}</Text>}
+        {/* <Text style={styles.phoneName}>{data.phoneName || data.goodsName} <Text>{data.phoneDesc}</Text></Text>
+        {data.goodsDesc && <Text>{data.goodsDesc}</Text>} */}
+        <Text style={{ flexWrap: 'wrap', width: WIDTH - 80 }}>
+          {data.phoneName || data.goodsName}
+          <Text style={{ flexWrap: 'wrap' }}>{data.phoneDesc}</Text>
+        </Text>
+        {data.goodsDesc && <Text style={{ flexWrap: 'wrap' }}>{data.goodsDesc}</Text>}
+
         <View style={[flexRowBet, styles.btnBox]}>
           <Text style={styles.priceStyle}>￥ {data.price}</Text>
           <View>

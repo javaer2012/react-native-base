@@ -102,7 +102,6 @@ export default class Home extends RentApp {
     console.log(hotPhoneList,"hotPhoneListhotPhoneList")
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
-    console.log(params,"DDDDDDDD")
     // return (
     //   <View>
     //     <TabBarCom />

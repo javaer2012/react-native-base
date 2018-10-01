@@ -29,6 +29,9 @@ import OrderInfo from '../containers/OrderInfo/OrderInfo'
 import MyInstallmentPage from '../containers/MyInstallmentPage/MyInstallmentPage'
 import MyOrder from '../containers/MyOrder/MyOrder'
 import WorkerEnter from '../containers/WorkerEnter/WorkerEnter'
+import WorkerOrder from '../containers/WorkerOrder/WorkerOrder'
+
+
 import Accept from '../containers/Accept/Accept'
 import DoIt from '../containers/DoIt/DoIt'
 import UploadImg from '../containers/UploadImg/UploadImg'
@@ -46,54 +49,7 @@ import LocationPage from '../containers/LocationPage/LocationPage'
 import FindDetail from '../containers/FindDetail';
 import Imagepicker from '../containers/ImagePicker'
 import NegativeRecord from '../containers/NegativeRecord'
-
-// const AppNavigator = StackNavigator({
-//     Tab: TabNavigator,
-    // HomePage: Home,
-    // LoginPage: Login,
-//     RegisterPage: Register,
-//     ForgetPSWPage: ForgetPSW,
-//     ChangePSWPage: ChangePSW,
-//     DrawerPage: DrawerTest,
-//     MyPage: My,
-//     BadRecordPage:BadRecords,
-//     AuthRecordPage:AuthRecords,
-//     MyOrderPage:MyOrders,
-//     PersonalInfoPage:PersonalInfo,
-//     AuthApplyPage:AuthApply,
-//     TermPage:Term,
-//     DrivingPage:DrivingLicense,
-//     EducationPage:Education,
-//     SearchPage:Search,
-//     FindPage:Find,
-//     ScorePage:Score,
-//     KnowScorePage:KnowScore,
-//     ProductDetailPage: ProductDetailPage,
-//     ProductParameterPage: ProductParameterPage,
-//     ProductListPage: ProductListPage,
-//     OrderInfo: OrderInfo,
-//     MyInstallmentPage: MyInstallmentPage,
-//     MyOrder: MyOrder,
-//     WorkerEnter: WorkerEnter,
-//     Accept: Accept,
-//     DoIt: DoIt,
-//     UploadImg: UploadImg,
-//     Pay,
-//     PayResult
-// }, {
-//     initialRouteName: 'HomePage',
-//     /* The header config from HomeScreen is now here */
-//     navigationOptions: {
-//         headerStyle: {
-//             backgroundColor: '#06C1AE',
-//         },
-//         headerTintColor: '#fff',
-//         headerTitleStyle: {
-//             fontWeight: 'bold',
-//         },
-//     }
-// });
-// export default AppNavigator;
+import OrderDetail from '../containers/OrderDetail/OrderDetail';
 
 
 
@@ -104,27 +60,29 @@ export default StackNavigator({
     RegisterPage: Register,
     ForgetPSWPage: ForgetPSW,
     ChangePSWPage: ChangePSW,
-    MyPage: My,
-    BadRecordPage:BadRecords,
-    AuthRecordPage:AuthRecords,
-    MyOrderPage:MyOrders,
-    PersonalInfoPage:PersonalInfo, 
-    AuthApplyPage:AuthApply,
-    TermPage:Term,
-    DrivingPage:DrivingLicense,
-    EducationPage:Education,
-    SearchPage:Search,
-    FindPage:Find,
-    ScorePage:Score,
-    KnowScorePage:KnowScore,
-    ProductDetail: ProductDetailPage,
-    ProductParameterPage: ProductParameterPage,
+    MyPage: My, 
+    BadRecordPage:BadRecords,  // 负面记录
+    AuthRecordPage:AuthRecords, // 授信纪录
+    MyOrderPage:MyOrders, // 昊天的
+    PersonalInfoPage:PersonalInfo,  // 个人信息 学历驾驶证
+    AuthApplyPage:AuthApply, // 填写信用租机信息
+    TermPage:Term, // 信息条款说明
+    DrivingPage:DrivingLicense, // 驾驶证件
+    EducationPage:Education, // 学籍学历
+    SearchPage:Search, // 搜索页面
+    FindPage:Find, // 发现页面
+    ScorePage:Score, // 晒晒分
+    KnowScorePage:KnowScore, // 了解信用分
+    ProductDetail: ProductDetailPage, //商品详情
+    ProductParameterPage: ProductParameterPage,  // 商品参数详情
     ProductListPage: ProductListPage,
-    OrderInfo: OrderInfo,  // 租机信息
-    MyInstallmentPage: MyInstallmentPage,
-    MyOrder: MyOrder,
-    WorkerEnter: WorkerEnter,
-    Accept: Accept,
+    OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
+    MyInstallmentPage: MyInstallmentPage, // 我的分期
+    MyOrder: MyOrder, // 孟令禹 我的订单
+    WorkerEnter: WorkerEnter, // 营业员入口
+    WorkerOrder: WorkerOrder,
+    OrderDetail,
+    Accept: Accept,  //
     DoIt: DoIt,
     UploadImg: UploadImg,
     Pay,
@@ -140,7 +98,7 @@ export default StackNavigator({
     FindDetailPage:FindDetail,
     NegativeRecord
 }, {
-    //initialRouteName:'MyCollectionsPage',
+        //initialRouteName: 'ProductDetail',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
