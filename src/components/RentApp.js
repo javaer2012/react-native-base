@@ -13,7 +13,7 @@ export default class RentApp extends Component{
     }
 
     showToast(data){
-        Toast.info(data);
+        Toast.info(data, 1.5,null , false);
     }
     async getOpenIdAndUserId(){
         try{

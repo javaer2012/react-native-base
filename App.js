@@ -18,7 +18,7 @@ import config from './src/config';
 import DeviceInfo from 'react-native-device-info'
 import { areaDict } from './src/utils/city1.json'
 import { cityObj, localCodeInfo } from './src/utils/city'
-
+// this.registerUser();
 const { AmapRegeo, registerUser, isCityOpen, setCrmCode } = api
 
 export default class App extends Component {
@@ -30,7 +30,6 @@ export default class App extends Component {
         /**
          * App initialize
          */
-        this.registerUser();
         // this.isOpen()
     }
     componentWillMount(){
@@ -66,8 +65,8 @@ export default class App extends Component {
 
             if(!openId[0][1] || !openId[1][1]){
                 const params = {
-                    provinceCode:844,
-                    cityCode:84401,
+                    provinceCode: this.provinceCode,
+                    cityCode: this.cityCode,
                     openId:DeviceInfo.getUniqueID()
                 }
                 const register = await registerUser(params);
@@ -118,6 +117,7 @@ export default class App extends Component {
                             }
                         }
                         await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
+                        this.registerUser()
                         this.isOpen({
                             provinceCode: option["provinceCode"],
                             cityCode: option["cityCode"],

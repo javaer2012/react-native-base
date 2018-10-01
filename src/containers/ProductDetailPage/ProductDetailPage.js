@@ -50,6 +50,7 @@ export default class ProductDetailPage extends RentApp {
     telecomProdList:[], // 电信套餐列表
     skuDetailList:[], // 产品sku列表
     capitalProdList:[], // 分期列表
+    disposeCapitalProdList:[], // 
     maxAvailAmount: 0, // 最大额度
     goodsBaseInfo: {}, // 商品基本信息
     isTelConf: false, // 是否配置电信产品
@@ -97,6 +98,7 @@ export default class ProductDetailPage extends RentApp {
     }
   }
   handleDataFun = (data) => {
+    console.log(JSON.stringify(data))
     const { 
       photoList, // 图片列表
       telecomProdList, // 电信套餐列表
@@ -125,9 +127,9 @@ export default class ProductDetailPage extends RentApp {
     //   }
     //   // 1 - 单产品套餐；2 - 融合套餐 initPayment
     // });
+    const mealSelected = telecomProdList[0]
     if(bizTypeCode == 'zq_rent_phone'){
       if(isTelConf == 1){
-        const mealSelected = telecomProdList[0]
         mealSelected.selectMealIndex = 0	//套餐选中的列
 
         // const canStageAmount = (goodsBaseInfo.goodsPrice + packagePrice - this.state.realDownPayment).toFixed(2);  //设置可分期金额
@@ -138,12 +140,19 @@ export default class ProductDetailPage extends RentApp {
         })
       }
     }
-    console.log(telecomProdList,"@@@@@@@")
+    // capitalProdList
+    const disposeCapitalProdList =  capitalProdList.map((item, index) => {
+      let sum = goodsBaseInfo.goodsPrice * (1 + item.monthFee * item.periods) + mealSelected.price;
+      const monthPay = (sum / item.periods).toFixed(2);
+      return { ...item, monthPay, sum}
+    })
+
     this.setState({
       photoList, // 图片列表
       telecomProdList, // 电信套餐列表
       skuDetailList, // 产品sku列表
       capitalProdList, // 分期列表
+      disposeCapitalProdList, // 处理后的分期列表
       maxAvailAmount, // 最大额度
       goodsBaseInfo, // 商品基本信息
       isTelConf, // 是否配置电信产品
@@ -203,15 +212,19 @@ export default class ProductDetailPage extends RentApp {
     // return `${num.toFixed(2)} x ${periods}期`
     return num.toFixed(2)
   }
+  // 渲染分期 
+  renderCapitalProdList = (disposeCapitalProdList) => {
 
-  renderCapitalProdList = (capitalProdList) => {
-    const { capitalProdSelected } = this.state
-    return capitalProdList.map((item, index) => {
+    const { capitalProdSelected, goodsBaseInfo, mealSelected } = this.state
+    
+    return disposeCapitalProdList.map((item, index) => {
+      console.log(item,"itemitemitemitemitem")
+      // var obj = Object.assign({}, item, { monthPay: monthPay.toFixed(2), downPayment: 0, defaultIndex: index });
       return (
         <TouchableOpacity key={index} style={{ width: '100%' }} onPress={this.selectedCapitalProdFun.bind(this, item)}>
           <Flex style={{ width: '100%', paddingVertical: 15, borderBottomColor: '#f6f6f6', borderBottomWidth: 1 }} direction="row" justify="start" align="center">
             <Text style={{ backgroundColor: item.prodId === capitalProdSelected.prodId  ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#ccc', borderRadius: 7, overflow: 'hidden' }}></Text>
-            <Text>{this.computPrice(item)} x {item.periods}期</Text>
+            <Text>{item.monthPay} x {item.periods}期</Text>
             <Text>{item.prodDesc}</Text>
           </Flex>
         </TouchableOpacity>
@@ -223,21 +236,11 @@ export default class ProductDetailPage extends RentApp {
     console.log(subSkuId, type,"@@@@@@")
     this.setState({ [type]: subSkuId })
   }
-  
-  // capacityId_color_fun = (type,id) => {
-  //   if (type === 'capacityId') {
-  //     this.setState({
-        
-  //     })
-  //   } else if (type === 'colorId') {
-      
-  //   }
-  //   console.log(type,"333333333",id)
-  // }
-
+  // 选择分期产品
   selectedCapitalProdFun = (data) => {
     this.setState({
-      capitalProdSelected: data
+      capitalProdSelected: data,
+      isShowCapital: false
     })
   }
 
@@ -280,13 +283,32 @@ export default class ProductDetailPage extends RentApp {
     }
   }
 
+  // 下单支付
   goToPayFun = async () => {
     const { openId, provinceCode, cityCode, userId } = this
     const {
       productId,
       userInfos,
-      computedPaymentInfo
+      computedPaymentInfo,
+      paymentInfo,
+      capitalProdSelected,
+      mealSelected,
+      goodsBaseInfo,
+      skuDetailList,
+      capacityId,
+      colorId,
     } = this.state
+    
+    // 根据颜色 内存容量确定机器
+    let goodsSkuId = ''
+    skuDetailList.filter((item) => {
+      const unionId = JSON.parse(item.skuJsonStr).unionId
+      if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1) {
+        goodsSkuId = item.skuId
+      }
+    })
+
+
     var options = {};
     var _userInfo = {
       userId,
@@ -297,71 +319,54 @@ export default class ProductDetailPage extends RentApp {
       maxAvailAmount: userInfos.maxAvailAmount,
     }
     const userInfoJson = JSON.stringify(_userInfo);
-    options["userInfoJson"] = userInfoJson;
+
     var _goodsInfo = {
       // goodsFirstAmount: 
-      totalStageAmount: computedPaymentInfo.price
+      totalStageAmount: capitalProdSelected.sum,
+      monthRate: capitalProdSelected.monthFee,
+      periods: capitalProdSelected.periods,
+      teleFirstAmount: 0,
+      poundgeRate: capitalProdSelected.poundgeRate,
+      goodsSkuId: goodsSkuId,
+      goodsId: goodsBaseInfo.goodsId
     };
+    const goodsInfoJson = JSON.stringify(_goodsInfo)
 
-  //   goodsInfoJson["goodsFirstAmount"] = this.realDownPayment;
-  //   goodsInfoJson["totalStageAmount"] = this.sum;
-  //   goodsInfoJson["monthRate"] = this.capitalSelected.monthFee;
-  //   goodsInfoJson["periods"] = this.capitalSelected.periods;
-  //   goodsInfoJson["teleFirstAmount"] = this.initPayment;
-  //   goodsInfoJson["poundgeRate"] = this.capitalSelected.poundgeRate;
-  //   goodsInfoJson["goodsSkuId"] = this.goodsSkuId;
-  // goodsInfoJson["goodsId"] = this.goodsId;
+    // 套餐选择
+    var _mealInfo = {}
+    // if (this.goodsConfigType == 2) {
+    //   mealInfoJson["mealId"] = this.capitalSelected.mealId;
+    // } else {
+    // }
+    
+    _mealInfo["mealId"] = mealSelected.prodId;//套餐价格与电信套餐价格的区别；
+    const mealInfoJson = JSON.stringify(_mealInfo);
 
+    // 金融分期产品
+    var _capitalInfo = {}
+    _capitalInfo.prodId = capitalProdSelected.prodId
+    const capitalInfoJson = JSON.stringify(_capitalInfo);
+    // options["capitalInfoJson"] = capitalInfoJson;
 
-
-    // const { 
-    //   selectMeal, goodsBaseInfo, capacityId, colorId,telecomProdList,
-    //   paymentInfo, capitalProdId, userInfos, capitalProdObj, skuDetailList 
-    // } = this.state
-
-    // let goodsSkuId = ''
-    // skuDetailList.filter((item) => {
-    //   // return 
-    //   const unionId = JSON.parse(item.skuJsonStr).unionId
-    //   if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1 ) {
-    //     goodsSkuId = item.skuId
-    //   }
-    // })
-
-    var goodsInfoJson = {
-      totalStageAmount: selectMeal.mealPrice + goodsBaseInfo.goodsPrice,
-      monthRate: capitalProdObj.monthFee,
-      periods: capitalProdObj.periods,
-      poundgeRate: capitalProdObj.poundgeRate,
-      goodsId: goodsBaseInfo.goodsId,
-      goodsSkuId,
-      goodsFirstAmount: goodsBaseInfo.downPayment,
-      teleFirstAmount: telecomProdList && telecomProdList.initPayment
-    }
-
-    const mealInfoJson = JSON.stringify({
-      mealId: selectMeal.mealId
-    })
-    const capitalInfoJson = JSON.stringify({
-      prodId: capitalProdId
-    })
-
-    // goodsInfoJson = JSON.stringify(goodsInfoJson)
+    //保险；
+    // var insureJson = [];
+    // insureJson = JSON.stringify(insureJson);
+    // insureJson = insureJson.toString();
+    // options["insureJson"] = insureJson;
+  
     const params = {
       "openId": this.openId,
       "provinceCode": this.provinceCode,
       "cityCode": this.cityCode,
-      "orderType": "1",
-      // "userInfoJson": "{\"userId\":\"201808241044425400117198\",\"phoneNo\":\"18316579205\",\"userName\":\"邓夏宁\",\"idCardNo\":\"440883199305105071\",\"creditScore\":\"700\",\"maxAvailAmount\":3000}",
-      userInfoJson: JSON.stringify(userInfos),
-      // "goodsInfoJson": "{\"goodsFirstAmount\":0,\"totalStageAmount\":0,\"monthRate\":0.005,\"periods\":24,\"teleFirstAmount\":0,\"poundgeRate\":0,\"goodsSkuId\":\"201809071024544610527721\",\"goodsId\":\"201807191523324900507633\"}",
-      goodsInfoJson: JSON.stringify(goodsInfoJson),
+      "orderType": goodsBaseInfo.category,
+      userInfoJson,
+      goodsInfoJson,
       mealInfoJson,
       capitalInfoJson,
       "insureJson": "[]",
       "activeId": goodsBaseInfo.activeId,
       "paymentId": paymentInfo.paymentId,
-      "sourceType": 2
+      // "sourceType": 2
     }
     console.log(JSON.stringify(params),"params=>>>>>>>GGGGGGGGGG")
     try {
@@ -384,6 +389,7 @@ export default class ProductDetailPage extends RentApp {
       telecomProdList, // 电信套餐列表
       skuDetailList, // 产品sku列表
       capitalProdList, // 分期列表
+      disposeCapitalProdList,
       maxAvailAmount, // 最大额度
       goodsBaseInfo, // 商品基本信息
       isTelConf, // 是否配置电信产品
@@ -600,7 +606,7 @@ export default class ProductDetailPage extends RentApp {
               <Text>分期金额：</Text><Text>{capitalProdSelected.capitalPrice} 元</Text>
             </Flex>
             <Flex style={{ flex: 1, width: '100%', paddingHorizontal: 30}} direction="column" justify="start">
-              {this.renderCapitalProdList(capitalProdList)}
+              {this.renderCapitalProdList(disposeCapitalProdList)}
             </Flex>
             <Flex>
               {/* <TouchableOpacity 
