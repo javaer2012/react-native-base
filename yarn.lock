@@ -3612,6 +3612,10 @@ jest@23.5.0:
     import-local "^1.0.0"
     jest-cli "^23.5.0"
 
+jquery@^3.3.1:
+  version "3.3.1"
+  resolved "http://registry.npm.taobao.org/jquery/download/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
+
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"
   resolved "http://registry.npm.taobao.org/js-tokens/download/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
@@ -5442,6 +5446,10 @@ react-native-tab-view@^1.0.0:
   resolved "http://registry.npm.taobao.org/react-native-tab-view/download/react-native-tab-view-1.0.2.tgz#66e0bc6d38a227ed2b212e3a256b7902f6ce02ed"
   dependencies:
     prop-types "^15.6.1"
+
+react-native-uploader@^0.0.10:
+  version "0.0.10"
+  resolved "http://registry.npm.taobao.org/react-native-uploader/download/react-native-uploader-0.0.10.tgz#ea46d23c5a8e83392aabc12443184c342245f607"
 
 react-native@0.56.0:
   version "0.56.0"

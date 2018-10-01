@@ -44,7 +44,7 @@ export default class ForgetPSW extends RentApp{
                     phoneNp:this.state.username
                 })
             } else {
-                Toast.info(data.errmsg,2)
+                Toast.info(data.errmsg,1)
             }
 
         } catch (e) {

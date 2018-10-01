@@ -32,7 +32,7 @@ export default class ChangePSW extends RentApp{
             console.log(rsp)
             const {data} = rsp
             if(data.errcode === 1){
-                Toast.info("修改密码成功",2)
+                Toast.info("修改密码成功",1)
                 setTimeout(()=>this.props.navigation.navigate("LoginPage"),2000)
             } else {
                 Toast.info(data.errmsg)

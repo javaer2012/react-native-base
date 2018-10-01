@@ -72,7 +72,7 @@ export default class AuthRecords extends RentApp {
     render() {
         return (
             <View>
-                <ImageBackground resizeMode={"contain"} style={{width:'100%',height:180}} source={require('../images/authHistory.jpeg')}>
+                <ImageBackground resizeMode={"stretch"} style={{width:'100%',height:180}} source={require('../images/authHistory.jpeg')}>
                     <Flex style={{height:'100%'}} direction={"column"} justify={"center"}>
                         <Text style={{color:'brown',fontSize:20}}>我共履约了</Text>
                         <WhiteSpace size={"md"}/>

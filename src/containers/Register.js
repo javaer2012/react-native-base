@@ -58,12 +58,12 @@ export default class Register extends RentApp{
             const {data} = userId;
             if(data.errcode === 1){
                 await AsyncStorage.setItem('userId',data.userId);
-                Toast.info("注册成功！",2);
+                Toast.info("注册成功！",1);
                 setTimeout(()=>{
                     this.props.navigation.navigate("LoginPage")
                 },2000)
             } else {
-                Toast.info(data.errmsg,2)
+                Toast.info(data.errmsg,1)
             }
             console.log(userId)
         } catch (e) {

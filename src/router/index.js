@@ -45,6 +45,7 @@ import CardInfo from "../containers/CardInfo";
 import LocationPage from '../containers/LocationPage/LocationPage'
 import FindDetail from '../containers/FindDetail';
 import Imagepicker from '../containers/ImagePicker'
+import NegativeRecord from '../containers/NegativeRecord'
 
 // const AppNavigator = StackNavigator({
 //     Tab: TabNavigator,
@@ -137,8 +138,9 @@ export default StackNavigator({
     CardInfoPage:CardInfo,
     LocationPage,
     FindDetailPage:FindDetail,
+    NegativeRecord
 }, {
-    //initialRouteName:'SearchPage',
+    //initialRouteName:'MyCollectionsPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
