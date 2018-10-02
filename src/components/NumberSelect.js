@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 
 export default class NumberSelect extends Component {
   state = {
-    number: 0
+    number: 1
   }
 
   _onPress = ( num ) => {

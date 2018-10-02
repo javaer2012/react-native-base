@@ -12,7 +12,7 @@ import ActionSheet from 'react-native-actionsheet'
 import api from '../.././service/api'
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
-const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods } = api
+const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods, payment } = api
 // const PRODUCT_ID = '201802241102330510355414'
 
 const storageItem = ({ data, itemData, onPress, subSkuId }) => {
@@ -98,7 +98,7 @@ export default class ProductDetailPage extends RentApp {
     }
   }
   handleDataFun = (data) => {
-    console.log(JSON.stringify(data))
+    // console.log(JSON.stringify(data))
     const { 
       photoList, // 图片列表
       telecomProdList, // 电信套餐列表
@@ -218,7 +218,6 @@ export default class ProductDetailPage extends RentApp {
     const { capitalProdSelected, goodsBaseInfo, mealSelected } = this.state
     
     return disposeCapitalProdList.map((item, index) => {
-      console.log(item,"itemitemitemitemitem")
       // var obj = Object.assign({}, item, { monthPay: monthPay.toFixed(2), downPayment: 0, defaultIndex: index });
       return (
         <TouchableOpacity key={index} style={{ width: '100%' }} onPress={this.selectedCapitalProdFun.bind(this, item)}>
@@ -306,7 +305,8 @@ export default class ProductDetailPage extends RentApp {
       if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1) {
         goodsSkuId = item.skuId
       }
-    })
+    })  
+    console.log(goodsSkuId,"===========>goodsSkuId")
 
 
     var options = {};
@@ -375,8 +375,24 @@ export default class ProductDetailPage extends RentApp {
       if (data.errcode !== 1 && data.errmsg) {
         this.showToast(data.errmsg) 
         return false
+      } else if (data.errcode === 1 ) {
+        this.showToast(data.errmsg)
+        await AsyncStorage.setItem('pastDueTime', JSON.stringify((+new Date()) + 1800000))
+        const { navigate } = this.props.navigation;
+        navigate('Pay', { 
+          amount: 0,
+          orderId: data.orderId,
+          orderSn: data.orderSn,
+          activeId: goodsBaseInfo.activeId
+          // firstPay: data.firstPay
+         })
+        // errcode: 1
+        // errmsg: "订单提交成功！"
+        // firstPay: 3265
+        // orderId: "109aa832c2534d8c8512d8709024dc2d"
+        // orderSn: "201810011834098838036560"
       }
-      console.log(data, "===========>")
+
     } catch (error) {
       
     }
@@ -493,7 +509,7 @@ export default class ProductDetailPage extends RentApp {
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#f2f2f2' }}>{mealSelected.prodName}</Text>
+                    <Text style={{ color: '#ccc' }}>{mealSelected.prodName}</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
@@ -506,7 +522,8 @@ export default class ProductDetailPage extends RentApp {
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#f2f2f2' }}>{capitalProdSelected.text}</Text>
+                    <Text style={{ color: '#ccc' }}>{capitalProdSelected.prodName}</Text>
+                    {/* {console.log(capitalProdSelected,"!!!!!")} */}
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
@@ -533,7 +550,7 @@ export default class ProductDetailPage extends RentApp {
         <View style={[styles.paybarStyle]}>
           <PayBar
             goToPay={this.goToPayFun}
-            data={computedPaymentInfo.price || '-'} />
+            data={0} />
         </View>
         <Modal
           popup
@@ -603,7 +620,7 @@ export default class ProductDetailPage extends RentApp {
         >
           <Flex direction="column" style={{ backgroundColor: '#fff', marginTop: 10, height: 400 }}>
             <Flex justify="start" style={{ paddingBottom: 20, paddingHorizontal: 30, marginTop: 30 ,width: '100%', borderBottomWidth: 1, borderColor: '#f2f2f2'}}>
-              <Text>分期金额：</Text><Text>{capitalProdSelected.capitalPrice} 元</Text>
+              <Text>分期金额：</Text><Text>{capitalProdSelected.sum} 元</Text>
             </Flex>
             <Flex style={{ flex: 1, width: '100%', paddingHorizontal: 30}} direction="column" justify="start">
               {this.renderCapitalProdList(disposeCapitalProdList)}

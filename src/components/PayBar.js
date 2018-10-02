@@ -7,7 +7,7 @@ export default ({ data, goToPay }) => {
   return (
     <Flex justify="between" style={{paddingLeft: 20, backgroundColor: '#fff'}}>
       <Text style={{ color: Color.mainPink}}>
-        您仅需支付<Text style={{ fontWeight: '600', color: Color.mainPink}}>{data}</Text>
+        您仅需支付<Text style={{ fontWeight: '600', color: Color.mainPink}}>{data}元</Text>
       </Text>
       <TouchableHighlight 
         onPress={goToPay}

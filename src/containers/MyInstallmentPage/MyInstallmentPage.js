@@ -33,6 +33,8 @@ export default class MyInstallmentPage extends RentApp {
   }
   
   async getData() {
+    const orderId = this.props.navigation.getParam('orderId');
+
     try {
       const { openId, cityCode, userId, provinceCode } = this
       const params = {
@@ -41,21 +43,10 @@ export default class MyInstallmentPage extends RentApp {
         cityCode,
         userId,
         provinceCode,
-        orderId: '0355df170a52440db9cb5dc614703ac7'
+        orderId,
         // 343164f313df40098c2e48d0a193de20
       }
-      const params1 = {
-        activeId: "524eaa42bfec4d00b77f50d56fd82fe5",
-        capitalInfoJson: "{\"prodId\":\"87f667ff3f274fd1918885c966169c0d\"}",
-        goodsInfoJson: "{\"goodsFirstAmount\":0,\"totalStageAmount\":0,\"monthRate\":0.005,\"periods\":24,\"teleFirstAmount\":0,\"poundgeRate\":0,\"goodsSkuId\":\"201809071024544610527721\",\"goodsId\":\"201807191523324900507633\"}",
-        insureJson: "[]",
-        mealInfoJson: "{\"mealId\":\"201808301508165440336042\"}",
-        openId: "otp3cjjLq6cQ7oPHIINRef8cFruA",
-        paymentId: "201806210950040190225842",
-        sourceType: 3,
-        userInfoJson: "{\"userId\":\"201808241044425400117198\",\"phoneNo\":\"18316579205\",\"userName\":\"邓夏宁\",\"idCardNo\":\"440883199305105071\",\"creditScore\":\"700\",\"maxAvailAmount\":935}",
-      }
-      const { data } = await myStageList(params1)
+      const { data } = await myStageList(params)
       if (data.errcode !== 1 && data.errmsg) Toast.info(data.errmsg);
       this.setState({
         periodList: data.periodList

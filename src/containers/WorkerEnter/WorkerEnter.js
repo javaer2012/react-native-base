@@ -17,8 +17,13 @@ export default class WorkerEnter extends RentApp {
 
   async componentDidMount() {
     await this.getOpenIdAndUserId()
-    this.getData(1)
-    this.getData(2) // 已受理
+    const { orderList: notDoOrderList} = await this.getData(1) // 未受理
+    const { orderList: hasDoOrderList }  = await this.getData(2) //  已受理
+    
+    this.setState({
+      hasDoOrderList,
+      notDoOrderList
+    })
   }
 
   getData = async (type) => {
@@ -34,17 +39,23 @@ export default class WorkerEnter extends RentApp {
       pageNum
     }
     const { data } = await orderList_ajax(params)
-    if (type === 1) {
-      console.log(data.orderList,"======>notDoOrderList")
-      this.setState({
-        notDoOrderList: data.orderList
-      })
-    } else if (type === 2) {
-      console.log(data.orderList, "======>hasDoOrderList")
-      this.setState({
-        hasDoOrderList: data.orderList
-      })
+    if (!data || data.errcode !== 1) {
+      throw data.errmsg || "data 获取数据失败"
+      return
+    } else{
+      return data
     }
+    // if (type === 1) {
+    //   console.log(data.orderList,"======>notDoOrderList")
+    //   this.setState({
+    //     notDoOrderList: data.orderList
+    //   })
+    // } else if (type === 2) {
+    //   console.log(data.orderList, "======>hasDoOrderList")
+    //   this.setState({
+    //     hasDoOrderList: data.orderList
+    //   })
+    // }
     
   }
 
@@ -65,8 +76,8 @@ export default class WorkerEnter extends RentApp {
       } = item
       const { navigate } = this.props.navigation;
       return (
-        <TouchableOpacity style={{marginBottom: 10}} onPress={() => navigate('MyInstallmentPage', {})}>
-          <Flex style={styles.orderBox} key={index} direction="column" align="start">
+        <TouchableOpacity key={index}  style={{marginBottom: 10}} onPress={() => navigate('MyInstallmentPage', {})}>
+          <Flex style={styles.orderBox}direction="column" align="start">
             <View style={styles.title}>
               <Text>订单流水号：{orderSn}</Text>
             </View>
@@ -126,7 +137,9 @@ export default class WorkerEnter extends RentApp {
                       </Flex>
                     </TouchableOpacity>
 
-                  </View>) : <View></View>
+              </View>) : <Flex justify="center" align="center" style={{ paddingVertical: 34 }}>
+                  <Text>暂无订单</Text>
+                </Flex>
                 }
                 {
               (!!hasDoOrderList && !!hasDoOrderList.length) ? (<View style={STYLE}>
@@ -143,12 +156,12 @@ export default class WorkerEnter extends RentApp {
                       </Flex>
                     </TouchableOpacity>
                   
-                </View>) : <View></View>
+              </View>) : <Flex justify="center" align="center" style={{ flex: 1 }}>
+                  <Text>暂无订单</Text>
+                </Flex>
                 }
               </Tabs>
-              <Flex justify="center" align="center" style={{paddingVertical: 34}}>
-                <Text>暂无订单</Text>
-              </Flex>
+              
             </Flex>
         </ScrollView>
     )

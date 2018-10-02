@@ -80,12 +80,15 @@ export default class OrderDetail extends RentApp {
       const params = {
         userId: this.userId,
         openId: this.openId,
+        orderId: '31524c0b69a44ebbb163862094f412ec',
         cityCode: this.cityCode,
         provinceCode: this.provinceCode
       }
       // console.log(params, '=======》 params')
       const { data } = await staffOrderDetail(params)
+      console.log(data, "ggggggggggggggggggggggggggggggggggggg")
       if (data.errcode === 1) {
+       
         this.setState({
           // orderList: data.orderList
         })
