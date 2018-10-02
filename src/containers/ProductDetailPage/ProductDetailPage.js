@@ -12,6 +12,7 @@ import ActionSheet from 'react-native-actionsheet'
 import api from '../.././service/api'
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
+import EasyModal from './components/EasyModal'
 const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods, payment } = api
 // const PRODUCT_ID = '201802241102330510355414'
 
@@ -68,9 +69,12 @@ export default class ProductDetailPage extends RentApp {
     showNotCredit:false,
     capacityId: '', // 已选择的内存skuId
     colorId: '', // 已选择的颜色skuId
+    isShowBindCard: false,
+    isShowEasyModal: false,
+    EasyModalInfos:{},
   }
   async componentDidMount() {
-    const productId = '201802241102330510355414' || this.props.navigation.getParam('productId');
+    const productId = '201807191036353330096584' || this.props.navigation.getParam('productId');
     await this.getOpenIdAndUserId()
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
@@ -204,14 +208,6 @@ export default class ProductDetailPage extends RentApp {
     })
   }
 
-  computPrice = (data) => {
-    const { goodsBaseInfo: { goodsPrice }, telecomProdList } = this.state
-    const { price } = telecomProdList[0]
-    const { monthFee, periods } = data
-    const num = (goodsPrice * (1 + monthFee * periods) + price) / periods
-    // return `${num.toFixed(2)} x ${periods}期`
-    return num.toFixed(2)
-  }
   // 渲染分期 
   renderCapitalProdList = (disposeCapitalProdList) => {
 
@@ -232,8 +228,35 @@ export default class ProductDetailPage extends RentApp {
   }
 
   capacityId_color_fun = (type, subSkuId ) => {  // 选择内存和颜色的方法
-    console.log(subSkuId, type,"@@@@@@")
     this.setState({ [type]: subSkuId })
+  }
+
+  check = () => {
+    const { userInfos } = this.state
+    var isBinding = userInfos.isBinding;
+    var isCredited = userInfos.isCredited;
+    // debugger
+    if (isBinding == 0) {
+      this.setState({
+        isShowEasyModal: true,
+        EasyModalInfos: {
+          title: '提示',
+          text: '您还没登录，是否立即登录?',
+          toPage: "LoginPage"
+        }
+      })
+      return false;
+    } else if (isBinding == 1 && isCredited == 0) {
+      this.setState({
+        isShowEasyModal: true,
+        EasyModalInfos: {
+          title: '提示',
+          text: '您还没授信，是否立即授信?',
+          toPage: "AuthApplyPage"
+        }
+      })
+      return false;
+    }
   }
   // 选择分期产品
   selectedCapitalProdFun = (data) => {
@@ -252,6 +275,9 @@ export default class ProductDetailPage extends RentApp {
 
   // 展示关闭分期选择
   toggleCapitalFun = (isShow) => {
+    if (!this.check()) {
+      return false
+    }
     this.setState({
       isShowCapital: isShow
     })
@@ -297,6 +323,20 @@ export default class ProductDetailPage extends RentApp {
       capacityId,
       colorId,
     } = this.state
+
+
+    //绑卡判断
+    if ( capitalProdSelected && capitalProdSelected.isCreditCard == 1 && userInfos.isCreditCard == 0) {
+      //需要绑卡并且还没有绑卡
+      th.setState({
+        isShowBindCard: true
+      })
+      return false
+    }
+    // 判断是否选择套餐了
+    if (!capitalProdSelected.sum) {
+      this.showToast('请选择套餐')
+    }
     
     // 根据颜色 内存容量确定机器
     let goodsSkuId = ''
@@ -334,10 +374,6 @@ export default class ProductDetailPage extends RentApp {
 
     // 套餐选择
     var _mealInfo = {}
-    // if (this.goodsConfigType == 2) {
-    //   mealInfoJson["mealId"] = this.capitalSelected.mealId;
-    // } else {
-    // }
     
     _mealInfo["mealId"] = mealSelected.prodId;//套餐价格与电信套餐价格的区别；
     const mealInfoJson = JSON.stringify(_mealInfo);
@@ -346,13 +382,6 @@ export default class ProductDetailPage extends RentApp {
     var _capitalInfo = {}
     _capitalInfo.prodId = capitalProdSelected.prodId
     const capitalInfoJson = JSON.stringify(_capitalInfo);
-    // options["capitalInfoJson"] = capitalInfoJson;
-
-    //保险；
-    // var insureJson = [];
-    // insureJson = JSON.stringify(insureJson);
-    // insureJson = insureJson.toString();
-    // options["insureJson"] = insureJson;
   
     const params = {
       "openId": this.openId,
@@ -368,7 +397,6 @@ export default class ProductDetailPage extends RentApp {
       "paymentId": paymentInfo.paymentId,
       // "sourceType": 2
     }
-    console.log(JSON.stringify(params),"params=>>>>>>>GGGGGGGGGG")
     try {
       const { data } = await commitOrder(params)
       console.log(data,"=========》data")
@@ -386,19 +414,28 @@ export default class ProductDetailPage extends RentApp {
           activeId: goodsBaseInfo.activeId
           // firstPay: data.firstPay
          })
-        // errcode: 1
-        // errmsg: "订单提交成功！"
-        // firstPay: 3265
-        // orderId: "109aa832c2534d8c8512d8709024dc2d"
-        // orderSn: "201810011834098838036560"
       }
 
     } catch (error) {
       
     }
   }
+  bindCardFun = () => {
+
+  }
 
   render() {
+    const that = this
+    const footerButtons = [
+        { text: '取消', onPress: () => {
+            this.setState({ isShowEasyModal: false})
+        }
+      },
+      { text: '确定', onPress: () => {
+        that.props.navigation.navigate(EasyModalInfos.toPage)
+        this.setState({ isShowEasyModal: false })
+      }},
+    ];
   
     const { 
       photoList, // 图片列表
@@ -418,7 +455,9 @@ export default class ProductDetailPage extends RentApp {
       isShowPackage,
       isShowCapital,
       showNotCredit,
-      // lastPrice: 0,
+      EasyModalInfos,
+      isShowEasyModal
+      
     } = this.state
       if (!photoList) return false
     const { goodsName, goodsDesc, goodsDetailText, goodsPrice } = goodsBaseInfo || {}
@@ -545,7 +584,6 @@ export default class ProductDetailPage extends RentApp {
               </View>
             </Flex>
           </View>
-
         </ScrollView>
         <View style={[styles.paybarStyle]}>
           <PayBar
@@ -634,8 +672,32 @@ export default class ProductDetailPage extends RentApp {
             </Flex>
           </Flex>
         </Modal>
-
-        {/* isShowCapital */}
+        <Modal
+          title="提示"
+          transparent
+          onClose={this.bindCardFun}
+          maskClosable
+          visible={this.state.isShowBindCard}
+          closable
+          footer={footerButtons}
+        >
+          <View style={{ paddingVertical: 20 }}>
+            <Text style={{ textAlign: 'center' }}>您还绑定银行卡，是否立即绑定?</Text>t>
+          </View>
+        </Modal>
+        <Modal
+          title="提示"
+          transparent
+          // onClose={this.bindCardFun}
+          maskClosable
+          visible={isShowEasyModal}
+          closable
+          footer={footerButtons}
+        >
+          <View style={{ paddingVertical: 20 }}>
+            <Text style={{ textAlign: 'center' }}>{EasyModalInfos.text}</Text>
+          </View>
+        </Modal>
       </Flex>
     )
   }

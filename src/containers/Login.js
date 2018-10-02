@@ -29,6 +29,10 @@ export default class Login extends RentApp {
         school.schoolList()
     }
 
+    async componentDidMount(){
+        await this.getOpenIdAndUserId()
+    }
+
     async login() {
         if (!this.state.username || !this.state.password){
             Toast.info("用户名和密码不能为空",1)

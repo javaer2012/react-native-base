@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, AsyncStorage } from 'react-native';
 import { Flex, List, WhiteSpace, WingBlank } from 'antd-mobile-rn';
 // import Button from '../../components/common/Button'
 import Card from './components/Card'
@@ -76,13 +76,19 @@ export default class OrderDetail extends RentApp {
   async getData() {
     try {
 
-      // const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
+      const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
+      this.setState({
+        userInfo: user
+      })
+      console.log(user,"rrrrrrrrr")
+
       const params = {
         userId: this.userId,
         openId: this.openId,
         orderId: '31524c0b69a44ebbb163862094f412ec',
         cityCode: this.cityCode,
         provinceCode: this.provinceCode
+        // 3123123
       }
       // console.log(params, '=======》 params')
       const { data } = await staffOrderDetail(params)

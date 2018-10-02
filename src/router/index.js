@@ -98,7 +98,7 @@ export default StackNavigator({
     FindDetailPage:FindDetail,
     NegativeRecord
 }, {
-        //initialRouteName: 'DoIt',
+        //initialRouteName: 'ProductDetail',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

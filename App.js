@@ -18,10 +18,11 @@ import config from './src/config';
 import DeviceInfo from 'react-native-device-info'
 import { areaDict } from './src/utils/city1.json'
 import { cityObj, localCodeInfo } from './src/utils/city'
+import RentApp from "./src/components/RentApp";
 // this.registerUser();
 const { AmapRegeo, registerUser, isCityOpen, setCrmCode } = api
 
-export default class App extends Component {
+export default class App extends RentApp {
 
     constructor(props){
         super(props)
