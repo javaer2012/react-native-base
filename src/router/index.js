@@ -96,7 +96,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
-        initialRouteName: 'DoIt',
+        initialRouteName: 'OrderDetail',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
