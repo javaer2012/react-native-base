@@ -40,6 +40,8 @@ export default class AuthSuccess extends RentApp{
         this.max = props.navigation.getParam('maxCreditAmount')
         this.score = props.navigation.getParam('creditScore')
         this.monthFee = props.navigation.getParam('monthFee')
+        this.fromPageName = props.navigation.getParam('fromPageName',"ProductListPage")
+        this.fromPageParams = props.navigation.getParam('fromPageParams',{})
 
         this.saveData(this.max,this.score,this.monthFee)
     }
@@ -60,7 +62,7 @@ export default class AuthSuccess extends RentApp{
                     <Text style={styles.text}>{`您的信用额度为${this.max}元`}</Text>
                     <WhiteSpace size={"xl"}/>
 
-                    <Button style={styles.btn}>立即使用</Button>
+                    <Button style={styles.btn} onClick={()=>this.props.navigation.replace(this.fromPageName,{...this.fromPageParams})}>立即使用</Button>
                 </Flex>
 
             </View>
