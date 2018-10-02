@@ -34,6 +34,7 @@ export default class App extends Component {
     }
     componentWillMount(){
         this.beginWatch()
+        //AsyncStorage.clear()
     }
 
     isOpen = async (params)=>{

@@ -47,7 +47,7 @@ export default class Login extends RentApp {
                 if(data.errcode === 1){
                     const {userInfo} = data
                     await AsyncStorage.multiSet([['userId',userInfo.userId],['openId',userInfo.openId],['isLoggedIn','1']])
-                    this.props.navigation.replace("MyPage",{
+                    this.props.navigation.navigate("MyPage",{
                         isLoggedIn:"1"
                     })
                 } else {
