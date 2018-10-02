@@ -8,6 +8,7 @@ import api from '../.././service/api'
 import RentApp from "../../components/RentApp";
 import { throttle } from '../../utils/funs'
 import { Flex } from 'antd-mobile-rn';
+import Color from '../../styles/var'
 const { queryGoodsList, HTTP_IMG } = api
 
 // 
@@ -86,7 +87,6 @@ export default class ProductListPage extends RentApp {
       pageNum,
       refreshing: true,
     })
-    console.log(999)
     await this.getData()
     this.hasDo = false
 
@@ -94,21 +94,16 @@ export default class ProductListPage extends RentApp {
 
   _renderItem = ({ item }) => {
     const { navigate } = this.props.navigation;
-    // debugger
-    // let rowData = item.item;
-    // let index = rowData.key
 
     return (
       <TouchableOpacity
         key={item.id}
-        onPress={() => navigate('ProductDetail', {
-          productId:item.id
-        })}
+        onPress={() => navigate('ProductDetail', { productId: item.id})}
       >
         <ProudcuItem imageStyle={{ width: 100, height: 100 }} data={item}>
-          {/* <Button style={{ width: 80, backgroundColor: Color.mainPink }} size='small'>
-                  <Text style={{ color: '#fff' }}>去购买</Text>
-                </Button> */}
+          <Button onClick={() => navigate('ProductDetail', { productId: item.id })} style={{ width: 80, backgroundColor: Color.mainPink }} size='small'>
+            <Text style={{ color: '#fff' }}>去购买</Text>
+          </Button>
         </ProudcuItem>
       </TouchableOpacity>
     )
