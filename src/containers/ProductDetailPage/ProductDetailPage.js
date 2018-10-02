@@ -74,7 +74,8 @@ export default class ProductDetailPage extends RentApp {
     EasyModalInfos:{},
   }
   async componentDidMount() {
-    const productId = '201807191036353330096584' || this.props.navigation.getParam('productId');
+    // '201807191036353330096584' || 
+    const productId = this.props.navigation.getParam('productId');
     await this.getOpenIdAndUserId()
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
@@ -90,6 +91,7 @@ export default class ProductDetailPage extends RentApp {
         goodsId: productId,
         userId: user.userId
       })
+      console.log(queryGoodsDetailData, "mmmmmmmmmm")
       if (!queryGoodsDetailData || queryGoodsDetailData.errcode !==1 ) {
         throw queryGoodsDetailData.errmsg ||  "queryGoodsDetailData 获取数据失败"
         return 
@@ -228,15 +230,22 @@ export default class ProductDetailPage extends RentApp {
   }
 
   capacityId_color_fun = (type, subSkuId ) => {  // 选择内存和颜色的方法
-    this.setState({ [type]: subSkuId })
+    if (this.state[type]) {
+      this.setState({ [type]: '' })
+    }else{
+      this.setState({ [type]: subSkuId })
+    }
+  
   }
 
-  check = () => {
+  check = async () => {
     const { userInfos } = this.state
-    var isBinding = userInfos.isBinding;
+    // var isBinding = userInfos.isBinding;
     var isCredited = userInfos.isCredited;
+    // await AsyncStorage.multiSet([['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
     // debugger
-    if (isBinding == 0) {
+    if (isLoggedIn !== "1") {
       this.setState({
         isShowEasyModal: true,
         EasyModalInfos: {
@@ -246,7 +255,7 @@ export default class ProductDetailPage extends RentApp {
         }
       })
       return false;
-    } else if (isBinding == 1 && isCredited == 0) {
+    } else if (isCredited == 0) {
       this.setState({
         isShowEasyModal: true,
         EasyModalInfos: {
@@ -510,24 +519,27 @@ export default class ProductDetailPage extends RentApp {
                 </View>
               </View>
             </View>
-            <View style={[styles.canSelectedBox]}>
-              <View style={[flexRow, contentPadding, {
-                backgroundColor: '#fff',
-                paddingVertical: 10,
-                alignItems: 'center'
-              }]}>
-                <Text style={{
-                  ...mainGray,
-                  marginRight: 10
-                }}> 颜色</Text>
-                <View>
-                  <SelectedColorList
-                    data={skuGroupList[1] ? skuGroupList[1].subSkuList : []} 
-                    onPress={this.capacityId_color_fun.bind(this, 'colorId')}
-                  />
+            {
+              skuGroupList[1] && (
+                <View style={[styles.canSelectedBox]}>
+                  <View style={[flexRow, contentPadding, {
+                    backgroundColor: '#fff',
+                    paddingVertical: 10,
+                    alignItems: 'center'
+                  }]}>
+                    <Text style={{
+                      ...mainGray,
+                      marginRight: 10
+                    }}> 颜色</Text>
+                    <View>
+                      <SelectedColorList
+                        data={skuGroupList[1].subSkuList}
+                        onPress={this.capacityId_color_fun.bind(this, 'colorId')}
+                      />
+                    </View>
+                  </View>
                 </View>
-              </View>
-            </View>
+              )}
             <Flex style={{ backgroundColor: '#fff', padding: 10 }} direction='row' align='center'>
               <Text style={{
                 ...mainGray,

@@ -24,42 +24,43 @@ export default class Home extends RentApp {
     pickerValue: [],
   }
 
-  // 从缓存中取出位置信息对象
-  getAddressMsg = async () => {
-    try {
-      const value = await AsyncStorage.getItem('addressInfos');
-      if (value !== null) {
-        // We have data!!
-        return JSON.parse(value);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  }
+  // // 从缓存中取出位置信息对象
+  // getAddressMsg = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('addressInfos');
+  //     if (value !== null) {
+  //       // We have data!!
+  //       return JSON.parse(value);
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //   }
+  // }
 
   goToAddressPage = () => {
 
   }
 
   async componentWillMount(){
-    const addressMsg = await this.getAddressMsg({})
+    await this.getOpenIdAndUserId()
+    // const addressMsg = await this.getAddressMsg({})
     const user = await AsyncStorage.getItem('userInfo')
-    console.log(user,"yyyy")
-    await this.setState({
-      addressMsg
-    })
+    // console.log(user,"yyyy")
+    // await this.setState({
+    //   addressMsg
+    // })
   }
 
   async componentDidMount() {
-    const { addressMsg } = this.state
+    // const { addressMsg } = this.state
     try {
       const { data: getBannerAndNavData , data: { bannerList, navList } } = await getBannerAndNav({})
      
       const { data: hotProductsData, data:{ hotMealList, hotPhoneList }} = await hotProducts({
-        provinceCode: addressMsg.provinceCode,  // 测试用
-        cityCode: addressMsg.cityCode
+        provinceCode: this.provinceCode,  // 测试用
+        cityCode: this.cityCode
       })
-
+      console.log(hotProductsData,"EEEEEEEEEEE")
       this.setState({
         bannerList,
         navList,

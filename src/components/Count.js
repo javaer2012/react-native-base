@@ -11,7 +11,7 @@ export default class Count extends React.Component {
 
 
     state = {
-        time: 5,
+        time: 60,
         count: false
     }
 
@@ -39,7 +39,7 @@ export default class Count extends React.Component {
                             clearInterval(timer);
                             this.setState({
                                 count:false,
-                                time:5
+                                time:60
                             })
                         }
                     })
@@ -69,6 +69,13 @@ export default class Count extends React.Component {
                 }
             } catch (e) {
                 console.log(e)
+                Toast.info("服务器响应超时，请稍后再试",1)
+                clearInterval(timer);
+                this.setState({
+                    count:false,
+                    time:60
+                })
+
             }
         }
     }

@@ -29,6 +29,10 @@ export default class Login extends RentApp {
         school.schoolList()
     }
 
+    async componentDidMount(){
+        await this.getOpenIdAndUserId()
+    }
+
     async login() {
         if (!this.state.username || !this.state.password){
             Toast.info("用户名和密码不能为空",1)
@@ -47,7 +51,7 @@ export default class Login extends RentApp {
                 if(data.errcode === 1){
                     const {userInfo} = data
                     await AsyncStorage.multiSet([['userId',userInfo.userId],['openId',userInfo.openId],['isLoggedIn','1']])
-                    this.props.navigation.replace("MyPage",{
+                    this.props.navigation.navigate("MyPage",{
                         isLoggedIn:"1"
                     })
                 } else {
