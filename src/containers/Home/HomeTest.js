@@ -46,6 +46,7 @@ export default class Home extends Component {
     const { bannerList, navList, products } = this.state
     return (
       <View stlye={{marginTop: 50}}>
+
         <Carousel
           style={styles.wrapper}
           selectedIndex={2}

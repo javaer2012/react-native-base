@@ -33,9 +33,10 @@ export default class App extends RentApp {
          */
         // this.isOpen()
     }
-    componentWillMount(){
+    async componentWillMount(){
+        await this.getOpenIdAndUserId()
         this.beginWatch()
-        //AsyncStorage.clear()
+        AsyncStorage.clear()
     }
 
     isOpen = async (params)=>{
@@ -60,7 +61,7 @@ export default class App extends RentApp {
     registerUser = async ()=>{
         try{
 
-            //await AsyncStorage.removeItem('openId')
+            await AsyncStorage.removeItem('openId')
             const openId = await AsyncStorage.multiGet(['openId','userId']);
 
             console.log(openId)

@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     StyleSheet,
     Image,
-    RefreshControl,
     ImageBackground,
     Platform,
     AsyncStorage,Dimensions
@@ -25,12 +24,12 @@ const styles = StyleSheet.create({
     topBackground: {
         width: WIDTH,
         height: 300,
-        resizeMode: 'contain'
+        resizeMode: 'stretch'
     },
     topBackground1:{
         width:WIDTH,
         height:220,
-        resizeMode:'contain'
+        resizeMode:'stretch'
     },
     image: {
         width: WIDTH,
