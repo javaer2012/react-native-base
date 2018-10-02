@@ -441,7 +441,7 @@ export default class My extends RentApp {
                 <WhiteSpace size={"sm"}/>
 
                 <List style={{backgroundColor: 'white'}} renderHeader={
-                    <View>
+                    <TouchableOpacity onPress={()=>this.navigateWithLogin('ProductListPage')}>
                         <WhiteSpace size={"sm"}/>
                         <Flex direction={"row"}>
                             <View style={{width: 2, height: 12, backgroundColor: '#06C1AE', marginRight: 5}}/>
@@ -453,14 +453,12 @@ export default class My extends RentApp {
                         </WingBlank>
 
                         <WhiteSpace size={"md"}/>
-                        <TouchableOpacity>
-                            <Flex direction={"row"} justify={"center"}>
+                             <Flex direction={"row"} justify={"center"}>
                                 <Text style={{color: '#06C1AE', fontSize: 14, textAlign: 'center'}}>立即查看</Text>
                             </Flex>
-                        </TouchableOpacity>
                         <WhiteSpace size={"md"}/>
 
-                    </View>
+                    </TouchableOpacity>
                 }></List>
 
                 <WhiteSpace size={"sm"}/>

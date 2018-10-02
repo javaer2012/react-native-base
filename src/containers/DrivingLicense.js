@@ -5,9 +5,6 @@ import Button from '../components/common/Button'
 import ImagePicker from "react-native-image-picker";
 import api from "../service/api";
 import Spinner from 'react-native-loading-spinner-overlay'
-
-
-import {getToken} from '../service/api'
 import RentApp from "../components/RentApp";
 
 const {WIDTH,HEIGHT} = Dimensions.get('window')
@@ -144,12 +141,6 @@ export default class DrivingLicense extends RentApp {
                 });
             }
         });
-    }
-
-    image(){
-        getToken(token=>{
-
-        })
     }
 
     uploadImages = async () => {

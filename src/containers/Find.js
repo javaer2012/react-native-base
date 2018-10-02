@@ -99,11 +99,16 @@ export default class Find extends RentApp {
         } else {
             return (
                 <React.Fragment>
-                    <Carousel selectedIndex={2}
-                              autoplay
-                              infinite
-                              afterChange={this.onHorizontalSelectedIndexChange}
-                              style={{width: '100%', height: 190}}>
+                    {detailList.length === 1? <TouchableOpacity style={{width: '100%', height: 200}}
+                                                                onPress={()=>this.getDetail(detailList[0].detailId,itemType)}>
+                        <Image resizeMode={'stretch'} style={{width: '100%', height: 190}}
+                               source={{uri: `${imgUrl}${detailList[0].imagePath}`}}/>
+                    </TouchableOpacity>:
+                        <Carousel selectedIndex={2}
+                                                         autoplay
+                                                         infinite
+                                                         afterChange={this.onHorizontalSelectedIndexChange}
+                                                         style={{width: '100%', height: 190}}>
                         {
                             detailList.map((item, index) => {
                                 return (
@@ -117,7 +122,8 @@ export default class Find extends RentApp {
                             })
 
                         }
-                    </Carousel>
+                    </Carousel>}
+
                     <WhiteSpace size={"md"}/>
                 </React.Fragment>
             )
