@@ -24,19 +24,6 @@ export default class Home extends RentApp {
     pickerValue: [],
   }
 
-  // // 从缓存中取出位置信息对象
-  // getAddressMsg = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem('addressInfos');
-  //     if (value !== null) {
-  //       // We have data!!
-  //       return JSON.parse(value);
-  //     }
-  //   } catch (error) {
-  //     // Error retrieving data
-  //   }
-  // }
-
   goToAddressPage = () => {
 
   }
@@ -45,14 +32,12 @@ export default class Home extends RentApp {
     await this.getOpenIdAndUserId()
     // const addressMsg = await this.getAddressMsg({})
     const user = await AsyncStorage.getItem('userInfo')
-    // console.log(user,"yyyy")
     // await this.setState({
     //   addressMsg
     // })
   }
 
   async componentDidMount() {
-    // const { addressMsg } = this.state
     try {
       const { data: getBannerAndNavData , data: { bannerList, navList } } = await getBannerAndNav({})
      
@@ -60,7 +45,6 @@ export default class Home extends RentApp {
         provinceCode: this.provinceCode,  // 测试用
         cityCode: this.cityCode
       })
-      console.log(hotProductsData,"EEEEEEEEEEE")
       this.setState({
         bannerList,
         navList,
@@ -101,35 +85,22 @@ export default class Home extends RentApp {
 
   render() {
     const { bannerList, navList, hotPhoneList, addressMsg } = this.state
-    console.log(hotPhoneList,"hotPhoneListhotPhoneList")
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
-    // return (
-    //   <View>
-    //     <TabBarCom />
-    //     <Text>11</Text>
-    //   </View>
-    // )
+
     return (
       <View style={{ position: 'relative', height: '100%' }}>
         <View style={{ marginTop: 0 }}>
           <TouchableOpacity onPress={() => navigate('LocationPage', {})}>
             <Text>{addressMsg && addressMsg.city}</Text>
           </TouchableOpacity>
-          {/* <Location 
-            addressMsg={addressMsg}
-            uploadAddress={this.uploadAddress}
-            /> */}
+
         </View>
         <ScrollView
           automaticallyAdjustContentInsets={false}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         >
-          {/* <View>
-            <Text onClick={this.onClick} numberOfLines={10} ellipsizeMode="tail">{addressMsg.formatted_address}</Text>
-          </View> */}
-        
           <Carousel
             style={styles.wrapper}
             selectedIndex={2}
@@ -174,6 +145,7 @@ export default class Home extends RentApp {
     )
   }
   renderNavList = (list) => {
+    console.log(list,"ggggggfffffff")
     const { navigate } = this.props.navigation;
     return list.map((item, index) => (
       <TouchableOpacity

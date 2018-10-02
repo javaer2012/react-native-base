@@ -13,6 +13,7 @@ import api from '../.././service/api'
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
 import EasyModal from './components/EasyModal'
+import { authAppSecret } from '../../config'
 const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods, payment } = api
 // const PRODUCT_ID = '201802241102330510355414'
 
@@ -75,7 +76,7 @@ export default class ProductDetailPage extends RentApp {
   }
   async componentDidMount() {
     // '201807191036353330096584' || 
-    const productId = this.props.navigation.getParam('productId');
+    const productId = "201807191036353330096584" || this.props.navigation.getParam('productId');
     await this.getOpenIdAndUserId()
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
@@ -89,7 +90,7 @@ export default class ProductDetailPage extends RentApp {
         provinceCode: this.provinceCode,
         cityCode: this.cityCode,
         goodsId: productId,
-        userId: user.userId
+        userId: user.userId || authAppSecret
       })
       console.log(queryGoodsDetailData, "mmmmmmmmmm")
       if (!queryGoodsDetailData || queryGoodsDetailData.errcode !==1 ) {
@@ -239,13 +240,15 @@ export default class ProductDetailPage extends RentApp {
   }
 
   check = async () => {
-    const { userInfos } = this.state
-    // var isBinding = userInfos.isBinding;
-    var isCredited = userInfos.isCredited;
-    // await AsyncStorage.multiSet([['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
-    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
-    // debugger
-    if (isLoggedIn !== "1") {
+    try {
+      
+      const { userInfos } = this.state
+      // var isBinding = userInfos.isBinding;
+      var isCredited = userInfos.isCredited;
+      // await AsyncStorage.multiSet([['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
+      const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
+
+      console.log(isLoggedIn, "tttt")
       this.setState({
         isShowEasyModal: true,
         EasyModalInfos: {
@@ -254,17 +257,29 @@ export default class ProductDetailPage extends RentApp {
           toPage: "LoginPage"
         }
       })
-      return false;
-    } else if (isCredited == 0) {
-      this.setState({
-        isShowEasyModal: true,
-        EasyModalInfos: {
-          title: '提示',
-          text: '您还没授信，是否立即授信?',
-          toPage: "AuthApplyPage"
-        }
-      })
-      return false;
+      return false
+      if (isLoggedIn !== "1") {
+        this.setState({
+          isShowEasyModal: true,
+          EasyModalInfos: {
+            title: '提示',
+            text: '您还没登录，是否立即登录?',
+            toPage: "LoginPage"
+          }
+        })
+        return false;
+      } else if (isCredited == 0) {
+        this.setState({
+          isShowEasyModal: true,
+          EasyModalInfos: {
+            title: '提示',
+            text: '您还没授信，是否立即授信?',
+            toPage: "AuthApplyPage"
+          }
+        })
+        return false;
+      }
+    } catch (error) {
     }
   }
   // 选择分期产品
@@ -283,8 +298,9 @@ export default class ProductDetailPage extends RentApp {
   }
 
   // 展示关闭分期选择
-  toggleCapitalFun = (isShow) => {
-    if (!this.check()) {
+  toggleCapitalFun = async (isShow) => {
+    // console.log(await this.check(),"this.check()")
+    if (! await this.check()) {
       return false
     }
     this.setState({
@@ -700,8 +716,9 @@ export default class ProductDetailPage extends RentApp {
         <Modal
           title="提示"
           transparent
-          // onClose={this.bindCardFun}
+          onClose={() => this.setState({ isShowEasyModal: false})}
           maskClosable
+          closable={false}
           visible={isShowEasyModal}
           closable
           footer={footerButtons}

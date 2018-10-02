@@ -12,7 +12,8 @@ export default ({ text, visible, toPage, navigate }) => {
     <Modal
       title="提示"
       transparent
-      // onClose={this.bindCardFun}
+      // onClose={this.cancelFun}
+      closable={true}
       maskClosable
       visible={visible}
       closable
