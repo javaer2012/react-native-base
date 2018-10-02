@@ -74,9 +74,15 @@ export default class List extends Component {
     }
     // debugger
     await AsyncStorage.setItem('addressInfos', JSON.stringify(item));
-    const { navigate, setParams } = this.props.navigation;
-    setParams({ name: 'Lucy' })
-    navigate.goBack(null)
+    // const { navigate, setParams } = this.props.navigation;
+    // setParams({ name: 'Lucy' })
+    // NavigationActions
+    // navigate.goBack(null)
+    const backAction = NavigationActions.back({
+      // key: 'Profile'
+    })
+    this.props.navigation.dispatch(backAction)
+
     // navigate('ProductDetail', { productId: item.id })
     
   }
