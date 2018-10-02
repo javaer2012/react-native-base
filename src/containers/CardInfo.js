@@ -52,7 +52,7 @@ export default class CardInfo extends RentApp{
 
             const {data} = rsp
             if(data.errcode === 0){
-                Toast.info(data.errmsg,2)
+                Toast.info(data.errmsg,1)
             } else {
                 this.setState({
                     signMsgSn:data.signMsgSn
@@ -91,9 +91,9 @@ export default class CardInfo extends RentApp{
 
             const {data} = rsp
             if(data.errcode === 1){
-                Toast.info('绑卡成功',2)
+                Toast.info('绑卡成功',1)
             } else {
-                Toast.info(data.errmsg,2)
+                Toast.info(data.errmsg,1)
             }
         } catch (e) {
 

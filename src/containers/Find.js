@@ -94,30 +94,36 @@ export default class Find extends RentApp {
 
         const {detailList,itemType} = item;
 
-        if (detailList.length < 0) {
+        if (detailList.length <= 0) {
             return null
         } else {
             return (
                 <React.Fragment>
-                    <Carousel selectedIndex={2}
-                              autoplay
-                              infinite
-                              afterChange={this.onHorizontalSelectedIndexChange}
-                              style={{width: '100%', height: 190}}>
+                    {detailList.length === 1? <TouchableOpacity style={{width: '100%', height: 200}}
+                                                                onPress={()=>this.getDetail(detailList[0].detailId,itemType)}>
+                        <Image resizeMode={'stretch'} style={{width: '100%', height: 190}}
+                               source={{uri: `${imgUrl}${detailList[0].imagePath}`}}/>
+                    </TouchableOpacity>:
+                        <Carousel selectedIndex={2}
+                                                         autoplay
+                                                         infinite
+                                                         afterChange={this.onHorizontalSelectedIndexChange}
+                                                         style={{width: '100%', height: 190}}>
                         {
                             detailList.map((item, index) => {
                                 return (
 
                                     <TouchableOpacity style={{width: '100%', height: 200}}
                                                       onPress={()=>this.getDetail(item.detailId,itemType)}>
-                                        <Image resizeMode={'contain'} style={{width: '100%', height: 190}}
+                                        <Image resizeMode={'stretch'} style={{width: '100%', height: 190}}
                                                source={{uri: `${imgUrl}${item.imagePath}`}}/>
                                     </TouchableOpacity>
                                 )
                             })
 
                         }
-                    </Carousel>
+                    </Carousel>}
+
                     <WhiteSpace size={"md"}/>
                 </React.Fragment>
             )
@@ -133,13 +139,13 @@ export default class Find extends RentApp {
 
         return (
 
-            <TouchableOpacity style={{width: '100%', backgroundColor: 'white'}}
+            <TouchableOpacity style={{width: '100%', backgroundColor: 'white',borderBottomColor:'#EAEEEF',borderBottomWidth: 10}}
                               onPress={()=>this.getDetail(content.detailId,itemType)}>
                 <WhiteSpace size={"md"}/>
                 <WingBlank size={"md"}>
                     <Flex direction={"row"} justify={"around"}>
                         <Text style={{width: 216}}>{content.leftText}</Text>
-                        <Image resizeMode={"contain"} style={{width: 120, height: 70}}
+                        <Image resizeMode={"stretch"} style={{width: 120, height: 70}}
                                source={{uri: `${imgUrl}/${content.imagePath}`}}></Image>
                     </Flex>
                 </WingBlank>
@@ -153,7 +159,7 @@ export default class Find extends RentApp {
         const {imageList,textList,itemType} = item;
 
         return(
-            <TouchableOpacity style={{width:'100%',backgroundColor:'white'}}
+            <TouchableOpacity style={{width:'100%',backgroundColor:'white',borderBottomColor:'#EAEEEF',borderBottomWidth: 10}}
                               onPress={()=>this.getDetail(textList[0].detailId,itemType)}>
                 <WhiteSpace size={"md"}/>
                 <WingBlank size={"md"}>

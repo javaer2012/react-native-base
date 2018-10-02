@@ -60,7 +60,7 @@ export default class Count extends React.Component {
                 const {data} = msg;
                 console.log(msg)
                 if (data.errcode === 1) {
-                    Toast.info(data.errmsg,2)
+                    Toast.info(data.errmsg,1)
                 }
                 else if (data.errcode === 4000) {
                     Toast.info('手机号不能为空', 2)

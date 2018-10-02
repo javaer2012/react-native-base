@@ -189,11 +189,8 @@ export default class My extends RentApp {
     }
 
     async initalState() {
-        await new Promise((resolve,reject)=>{
-            setTimeout(resolve,0)
-        })
 
-        await this.setState({
+         this.setState({
             loading:true
         })
         try {
@@ -237,7 +234,7 @@ export default class My extends RentApp {
         } catch (e) {
 
         } finally {
-            await this.setState({
+             this.setState({
                 loading:false
             })
         }
@@ -261,8 +258,8 @@ export default class My extends RentApp {
     }
 
     navigateWithLogin(pageName){
-        if(this.state.isLoggedIn === '0'){
-            Toast.info("请先登录",2)
+        if(this.state.isLoggedIn === '0' || this.state.isLoggedIn === null){
+            Toast.info("请先登录",1)
         } else {
             this.props.navigation.navigate(pageName)
         }
@@ -396,7 +393,7 @@ export default class My extends RentApp {
                             </Flex.Item>
 
                             <Flex.Item>
-                                <TouchableOpacity onPress={() => this.navigateWithLogin("BadRecordPage")}>
+                                <TouchableOpacity onPress={() => this.navigateWithLogin("NegativeRecord")}>
                                     <Flex direction={"column"} justify={"start"} >
                                         <WhiteSpace size={"sm"}/>
                                         <Image style={{width: 30, height: 30}}
@@ -412,7 +409,7 @@ export default class My extends RentApp {
                             </Flex.Item>
 
                             <Flex.Item>
-                                <TouchableOpacity onPress={() => Toast.info("敬请期待",2)}>
+                                <TouchableOpacity onPress={() => Toast.info("敬请期待",1)}>
                                     <Flex direction={"column"}>
                                         <WhiteSpace size={"sm"}/>
                                         <Image style={{width: 30, height: 30}}
@@ -444,7 +441,7 @@ export default class My extends RentApp {
                 <WhiteSpace size={"sm"}/>
 
                 <List style={{backgroundColor: 'white'}} renderHeader={
-                    <View>
+                    <TouchableOpacity onPress={()=>this.navigateWithLogin('ProductListPage')}>
                         <WhiteSpace size={"sm"}/>
                         <Flex direction={"row"}>
                             <View style={{width: 2, height: 12, backgroundColor: '#06C1AE', marginRight: 5}}/>
@@ -456,14 +453,12 @@ export default class My extends RentApp {
                         </WingBlank>
 
                         <WhiteSpace size={"md"}/>
-                        <TouchableOpacity>
-                            <Flex direction={"row"} justify={"center"}>
+                             <Flex direction={"row"} justify={"center"}>
                                 <Text style={{color: '#06C1AE', fontSize: 14, textAlign: 'center'}}>立即查看</Text>
                             </Flex>
-                        </TouchableOpacity>
                         <WhiteSpace size={"md"}/>
 
-                    </View>
+                    </TouchableOpacity>
                 }></List>
 
                 <WhiteSpace size={"sm"}/>

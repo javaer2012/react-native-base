@@ -31,7 +31,7 @@ export default class Login extends RentApp {
 
     async login() {
         if (!this.state.username || !this.state.password){
-            Toast.info("用户名和密码不能为空",2)
+            Toast.info("用户名和密码不能为空",1)
         } else {
             try{
                 const {username,password,code} = this.state;
@@ -51,7 +51,7 @@ export default class Login extends RentApp {
                         isLoggedIn:"1"
                     })
                 } else {
-                    Toast.info(data.errmsg,2)
+                    Toast.info(data.errmsg,1)
                 }
             } catch (e) {
 
@@ -59,10 +59,6 @@ export default class Login extends RentApp {
         }
 
 
-    }
-    renderCount(){
-        if(this.state.count) return (<Text>{`倒计时 ${this.state.time} 秒`}</Text>)
-        return (<Text style={styles.sms} onPress={this.sendMsg.bind(this)}>获取验证码</Text>)
     }
 
 

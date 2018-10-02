@@ -50,12 +50,12 @@ export default class AddBankCard extends RentApp {
 
         const {userName,cardNo} = this.state
         if(!userName || !cardNo){
-            Toast.info("姓名和银行卡号不能为空",2)
+            Toast.info("姓名和银行卡号不能为空",1)
             return
         }
 
         if(userName !== this.userInfo.userName){
-            Toast.info("姓名与授信信息不相符",2)
+            Toast.info("姓名与授信信息不相符",1)
             return
         }
 
@@ -72,10 +72,10 @@ export default class AddBankCard extends RentApp {
 
                    })
                } else {
-                   Toast.info('暂时仅支持储蓄卡',2)
+                   Toast.info('暂时仅支持储蓄卡',1)
                }
            } else {
-               Toast.info(type,2)
+               Toast.info(type,1)
            }
         })
     }

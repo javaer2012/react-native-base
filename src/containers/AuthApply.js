@@ -43,7 +43,7 @@ export default class AuthApply extends RentApp {
 
     async onSubmit(){
         if(!this.state.checked){
-            Toast.info("请勾选协议",2)
+            Toast.info("请勾选协议",1)
             return
         }
 

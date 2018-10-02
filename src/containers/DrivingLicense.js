@@ -1,14 +1,39 @@
 import React, {Component} from 'react';
-import {ScrollView, Text, TouchableOpacity, StyleSheet, Image,Dimensions} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, StyleSheet, Image, Dimensions, AsyncStorage,ImageBackground} from 'react-native';
 import {WhiteSpace, Flex, Toast} from 'antd-mobile-rn';
 import Button from '../components/common/Button'
 import ImagePicker from "react-native-image-picker";
-import axios from 'axios'
 import api from "../service/api";
-
-import {getToken} from '../service/api'
+import Spinner from 'react-native-loading-spinner-overlay'
+import RentApp from "../components/RentApp";
 
 const {WIDTH,HEIGHT} = Dimensions.get('window')
+
+const submitDrivingLicense = {
+    openId:'',
+    userId:'',
+    cityCode:'',
+    provinceCode:'',
+    userInfoJson:{
+        itemId:'',
+        itemCode:'drivingLicence',
+        subItemList:[{
+            subItemId:'',
+            subItemCode:'driver_licence_front',
+            subItemName:'驾驶证正面',
+            subItemOrderNo:1,
+            subItemValue:''//get from rsp
+        },
+            {
+                subItemId:'',
+                subItemCode:'driver_licence_follower',
+                subItemName:'驾驶证附页',
+                subItemOrderNo:2,
+                subItemValue:''//get from rsp
+            }]
+
+    }
+}
 
 
 const styles = StyleSheet.create({
@@ -33,7 +58,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default class DrivingLicense extends Component {
+export default class DrivingLicense extends RentApp {
     static navigationOptions = {
         title: "驾驶证"
     }
@@ -41,6 +66,44 @@ export default class DrivingLicense extends Component {
     state = {
         main: null,
         back: null
+    }
+
+    componentDidMount(){
+        setTimeout(()=>this.initData(),0)
+    }
+
+    async initData(){
+        try{
+
+            await this.setState({
+                loading:true
+            })
+            const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
+
+            const params = {
+                userId:this.userId,
+                openId:this.openId,
+                cityCode:84401,
+                provinceCode:844
+            }
+            console.log(params)
+            const rsp = await api.userInfo(params)
+
+            console.log(rsp)
+
+            const {data} = rsp
+            if(data.errcode === 1){
+                this.setState({
+                    cateList:data.cateList
+                })
+            }
+        } catch (e) {
+            console.log(e)
+        } finally {
+            await this.setState({
+                loading:false
+            })
+        }
     }
 
 
@@ -73,21 +136,16 @@ export default class DrivingLicense extends Component {
                 // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
                 this.setState({
-                    [id]: source
+                    [id]: source,
+                    [`${id}base64`]:response.data
                 });
             }
         });
     }
 
-    image(){
-        getToken(token=>{
-
-        })
-    }
-
     uploadImages = async () => {
 
-        const {main, back} = this.state;
+        const {main, back,cateList} = this.state;
         if (main === null) {
             Toast.info("请选择驾照正面照", 2);
             return
@@ -97,33 +155,89 @@ export default class DrivingLicense extends Component {
             return
         }
 
-        const formData = new FormData(),
-            mainImage = {uri: main.uri, type: 'multipart/form-data', name: '驾照正面.png'},
-            backImage = {uri: back.uri, type: 'multipart/form-data', name: '驾照背面.png'}
+        this.setState({
+            loading:true
+        })
 
-        formData.append("files", mainImage)
-        formData.append("files", backImage)
 
-        const rsp = await api.uploadImage(formData);
-        console.log(rsp)
+        cateList.forEach(item=>{
+            if(item.cateCode === 'base_info'){
+                item.creditItemList.forEach(creditItem=>{
+                    if(creditItem.itemCode === 'drivingLicence'){
+                        //拿到驾照item 响应的 id
+                        this.itemInfo = creditItem
+                    }
+                })
+            }
+        })
 
-        // const a = axios.post('uploadImg',null,{
-        //     baseURL:"https://mobile2.lychee-info.cn/cps-rest",
-        //     header:{
-        //         'Content-Type':'application/x-www-form-urlencoded',
-        //         'Authorization':"Bearer eyJhbGciOiJIUzUxMiJ9.eyJyYW5kb21LZXkiOiI0bXp1YmIiLCJzdWIiOiJQSzl0b1hsSWRiTG9KTHE3IiwiZXhwIjoxNTM3NzEzOTEyLCJpYXQiOjE1Mzc2Mjc1MTJ9.BJ3x8NOwSU3joDwfIy0d3n-W8nHSS2DdDaHlv7SLQLWn8NNNWFz6ZdeLfuCC9sUP4_EwhbyBAAlRA7zR7IVyBA"
-        //     }
-        // })
-        //
-        // console.log(a)
+        let formData = new FormData(),
+            backData = new FormData(),
+            mainImage = {uri: main.uri, type: 'image/png', name: '驾照正面.png'},
+            backImage = {uri: back.uri, type: 'image/png', name: '驾照背面.png'}
+
+        formData.append("file", mainImage)
+
+        backData.append("file", backImage)
+
+        try{
+
+            const rsp = await  Promise.all([api.uploadImage(formData),api.uploadImage(backData)]);
+
+            const [font,back] = rsp;
+            console.log(rsp)
+
+            if(font.data.errcode === 0 || back.data.errcode === 0) throw "图片上传失败！"
+
+            console.log(this.itemInfo)
+
+            this.itemInfo.subItemList[0].subItemValue = font.data.filePath
+            this.itemInfo.subItemList[1].subItemValue = back.data.filePath
+            const userInfoJson = JSON.stringify({...this.itemInfo}).toString()
+
+            const userParams = {
+                openId:this.openId,
+                userId:this.userId,
+                cityCode:84401,
+                provinceCode:844,
+                userInfoJson
+            }
+
+
+            const setUser = await api.submitUserInfo(userParams)
+
+            if(setUser.data.errcode === 1){
+                Toast.info("驾照信息提交成功！",1)
+                setTimeout(()=> {this.props.navigation.replace('PersonalInfoPage')},2000)
+            } else {
+                Toast.info(setUser.data.errmsg,1)
+            }
+            //
+            console.log(setUser)
+
+
+        } catch (e) {
+            Toast.info(e,1)
+
+        } finally {
+            this.setState({loading:false})
+        }
+
+
+
+
+
 
 
     }
 
     render() {
+        console.log("Render")
         const {navigation} = this.props
+
         return (
             <ScrollView>
+                <Spinner visible={this.state.loading}/>
 
                 <Flex direction={"column"} align={"center"}>
                     <WhiteSpace size={"xl"}/>
@@ -131,20 +245,28 @@ export default class DrivingLicense extends Component {
                     <WhiteSpace size={"xl"}/>
                     <TouchableOpacity onPress={() => this.selectPhotoTapped('main')}>
                         {this.state.main ?
-                            <Image style={{width: 300, height: 200}}
+                            <Image style={{width: 335, height: 217}}
                                    source={this.state.main}/> :
-                            <Image style={{width: 300, height: 200}}
-                                   source={require('../images/imageNew/one/card1.png')}/>}
+                            <ImageBackground style={{width: 335, height: 217}}
+                                             source={require('../images/driving/font.png')}>
+                                <Flex direction={"row"} justify={"center"} align={"center"} style={{height:217}}>
+                                    <Image style={{width:88,height:88}} source={require('../images/driving/camera.png')}/>
+                                </Flex>
+                            </ImageBackground>}
 
                     </TouchableOpacity>
                     <WhiteSpace size={"xl"}/>
 
                     <TouchableOpacity onPress={() => this.selectPhotoTapped('back')}>
                         {this.state.back ?
-                            <Image style={{width: 300, height: 200}}
+                            <Image style={{width: 335, height: 217}}
                                    source={this.state.back}/> :
-                            <Image style={{width: 300, height: 200}}
-                                   source={require('../images/imageNew/one/card2.png')}/>
+                            <ImageBackground style={{width: 335, height: 217}}
+                                             source={require('../images/driving/back.png')}>
+                                <Flex justify={"center"} align={"center"} style={{height:217}}>
+                                    <Image style={{width:88,height:88}} source={require('../images/driving/camera.png')}/>
+                                </Flex>
+                            </ImageBackground>
                         }
 
                     </TouchableOpacity>
