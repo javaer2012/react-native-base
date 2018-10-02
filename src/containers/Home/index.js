@@ -51,12 +51,13 @@ export default class Home extends RentApp {
   }
 
   async componentDidMount() {
+    const { addressMsg } = this.state
     try {
       const { data: getBannerAndNavData , data: { bannerList, navList } } = await getBannerAndNav({})
      
       const { data: hotProductsData, data:{ hotMealList, hotPhoneList }} = await hotProducts({
-        provinceCode: "844" || addressMsg.provinceCode,  // 测试用
-        cityCode: "84401" || addressMsg.cityCode
+        provinceCode: addressMsg.provinceCode,  // 测试用
+        cityCode: addressMsg.cityCode
       })
 
       this.setState({
