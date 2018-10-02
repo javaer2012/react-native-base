@@ -82,7 +82,7 @@ export default StackNavigator({
     WorkerOrder: WorkerOrder,
     OrderDetail,
     Accept: Accept,  //
-    DoIt: DoIt,
+    DoIt: DoIt,  // 受理：crm信息回填
     UploadImg: UploadImg,
     Pay,
     PayResult,
@@ -96,7 +96,7 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
 }, {
-        initialRouteName: 'ProductDetail',
+        initialRouteName: 'DoIt',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

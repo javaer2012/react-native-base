@@ -15,11 +15,11 @@ export default class RentApp extends Component{
     showToast(data){
         Toast.info(data, 1.5,null , false);
     }
+    
     async getOpenIdAndUserId(){
         try{
            // await AsyncStorage.clear()
             const ids = await AsyncStorage.multiGet(['openId','userId','addressInfos'])
-            // debugger
             this.openId = ids[0][1]
             // console.log(this., "idsidsidsids")
             this.userId = ids[1][1]

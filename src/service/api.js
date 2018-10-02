@@ -284,7 +284,8 @@ export default {
 	},
 	//订单或者分期支付 ；
 	payment (params) {
-		params["sourceType"] = 3;
+		params["sourceType"] = "3";
+		console.log(params,"^^^^^^6")
 		return new Promise((resolve,reject) => {
 			getToken( token => {
 				// console.log(JSON.stringify(params))

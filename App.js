@@ -126,7 +126,6 @@ export default class App extends Component {
                     // }
                 } catch (error) {
                   this.showToast(error,'setCrmCode 接口出错!!!!!!!!!!')
-                    console.log()
                 }
             }
         } catch (error) {

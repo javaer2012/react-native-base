@@ -46,8 +46,6 @@ export default class MyOrder extends RentApp {
 
   async getData() {
     try {
-
-      // const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
       const params = {
         userId: this.userId,
         openId: this.openId,
@@ -58,7 +56,7 @@ export default class MyOrder extends RentApp {
       const { data } = await api.myOrderList(params)
       if (data.errcode === 1) {
         this.setState({
-          // orderList: data.orderList
+          orderList: data.orderList
         })
       }
 
@@ -99,7 +97,9 @@ export default class MyOrder extends RentApp {
             <Card.Header title={'订单号：' + orderSn}/>
             <Card.Body style={{borderBottomWidth: 1, borderBottomColor: '#f2f2f2'}}>
               {/* MyInstallmentPage */}
-              <TouchableOpacity onPress={() => navigate('MyInstallmentPage', {})}>
+              <TouchableOpacity onPress={() => navigate('MyInstallmentPage', {
+                orderId: item.orderId
+              })}>
                 <Flex style={{ paddingHorizontal: 20}}>
                   <Image source={require('../../images/find.png')}/>
                   <Flex style={{marginLeft: 20}} direction="column" align="start">

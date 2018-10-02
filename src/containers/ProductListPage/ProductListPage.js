@@ -22,6 +22,7 @@ export default class ProductListPage extends RentApp {
   }
 
   async componentDidMount(){
+    await this.getOpenIdAndUserId()
     this.getData()
 
     // const { data } = queryGoodsList({
