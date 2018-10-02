@@ -40,8 +40,6 @@
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		841BC0E5216255FA00EEEB46 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 841BC0E4216255FA00EEEB46 /* assets */; };
-		841BC0E72162560700EEEB46 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 841BC0E62162560700EEEB46 /* main.jsbundle */; };
 		841BC12921630B2C00EEEB46 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 841BC12821630B2C00EEEB46 /* libz.tbd */; };
 		841BC12B21630B3C00EEEB46 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 841BC12A21630B3C00EEEB46 /* libbz2.1.0.tbd */; };
 		846D727C214CE7040035E93F /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 846D7279214CE6C80035E93F /* libRNDeviceInfo.a */; };
@@ -407,8 +405,6 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		8091303A4BA94972B6879701 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		841BC0E4216255FA00EEEB46 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
-		841BC0E62162560700EEEB46 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = bundle/main.jsbundle; sourceTree = "<group>"; };
 		841BC12821630B2C00EEEB46 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		841BC12A21630B3C00EEEB46 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
 		8E3DFB9D881244E7A81255AF /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
@@ -563,8 +559,6 @@
 		13B07FAE1A68108700A75B9A /* myboy */ = {
 			isa = PBXGroup;
 			children = (
-				841BC0E62162560700EEEB46 /* main.jsbundle */,
-				841BC0E4216255FA00EEEB46 /* assets */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -1265,10 +1259,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				841BC0E5216255FA00EEEB46 /* assets in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				841BC0E72162560700EEEB46 /* main.jsbundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

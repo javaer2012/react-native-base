@@ -9,7 +9,7 @@
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import "RCTHotUpdate.h"
+//#import "RCTHotUpdate.h"
 
 @implementation AppDelegate
 
@@ -17,13 +17,9 @@
 {
   NSURL *jsCodeLocation;
 
-#if DEBUG
-  //jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
-#else
-  // 非DEBUG情况下启用热更新
-  jsCodeLocation = [RCTHotUpdate bundleURL];
-#endif
+
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+  //jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
