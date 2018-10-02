@@ -101,7 +101,9 @@ export default class ProductListPage extends RentApp {
     return (
       <TouchableOpacity
         key={item.id}
-        onPress={() => navigate('ProductDetailPage', {})}
+        onPress={() => navigate('ProductDetail', {
+          productId:item.id
+        })}
       >
         <ProudcuItem imageStyle={{ width: 100, height: 100 }} data={item}>
           {/* <Button style={{ width: 80, backgroundColor: Color.mainPink }} size='small'>

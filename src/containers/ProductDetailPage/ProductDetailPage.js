@@ -13,6 +13,8 @@ import api from '../.././service/api'
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
 import EasyModal from './components/EasyModal'
+import config from '../../config'
+
 const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods, payment } = api
 // const PRODUCT_ID = '201802241102330510355414'
 
@@ -89,7 +91,7 @@ export default class ProductDetailPage extends RentApp {
         provinceCode: this.provinceCode,
         cityCode: this.cityCode,
         goodsId: productId,
-        userId: user.userId
+        userId: user.userId || config.authAppId
       })
       console.log(queryGoodsDetailData, "mmmmmmmmmm")
       if (!queryGoodsDetailData || queryGoodsDetailData.errcode !==1 ) {

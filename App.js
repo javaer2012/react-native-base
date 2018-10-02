@@ -10,7 +10,7 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import store from './src/store/store';
 import AppNavigator from './src/router';
-import {AsyncStorage} from 'react-native';
+import {AsyncStorage,Platform} from 'react-native';
 import {setData,getData} from './src/utils/storage'
 import {getToken} from "./src/service/api";
 import api from './src/service/api'
@@ -19,6 +19,22 @@ import DeviceInfo from 'react-native-device-info'
 import { areaDict } from './src/utils/city1.json'
 import { cityObj, localCodeInfo } from './src/utils/city'
 import RentApp from "./src/components/RentApp";
+
+
+import {
+    isFirstTime,
+    isRolledBack,
+    packageVersion,
+    currentVersion,
+    checkUpdate,
+    downloadUpdate,
+    switchVersion,
+    switchVersionLater,
+    markSuccess,
+} from 'react-native-update';
+
+import _updateConfig from './update.json';
+const {appKey} = _updateConfig[Platform.OS];
 // this.registerUser();
 const { AmapRegeo, registerUser, isCityOpen, setCrmCode } = api
 
