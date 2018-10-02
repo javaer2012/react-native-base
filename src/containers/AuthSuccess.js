@@ -45,7 +45,7 @@ export default class AuthSuccess extends RentApp{
     }
 
     async saveData(max,score,monthFee){
-        await AsyncStorage.multiSet([['maxCreditAmount',max],['creditScore',score],['monthFee',monthFee]])
+        await AsyncStorage.multiSet([['maxCreditAmount',max.toString()],['creditScore',score.toString()],['monthFee',monthFee.toString()]])
     }
 
     render(){

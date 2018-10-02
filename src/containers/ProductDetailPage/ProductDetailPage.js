@@ -249,15 +249,7 @@ export default class ProductDetailPage extends RentApp {
       const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
 
       console.log(isLoggedIn, "tttt")
-      this.setState({
-        isShowEasyModal: true,
-        EasyModalInfos: {
-          title: '提示',
-          text: '您还没登录，是否立即登录?',
-          toPage: "LoginPage"
-        }
-      })
-      return false
+
       if (isLoggedIn !== "1") {
         this.setState({
           isShowEasyModal: true,
@@ -268,7 +260,7 @@ export default class ProductDetailPage extends RentApp {
           }
         })
         return false;
-      } else if (isCredited == 0) {
+      } else if (isCredited === 0) {
         this.setState({
           isShowEasyModal: true,
           EasyModalInfos: {

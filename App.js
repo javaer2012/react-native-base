@@ -78,7 +78,7 @@ export default class App extends RentApp {
         try{
 
             await AsyncStorage.removeItem('openId')
-            const openId = await AsyncStorage.multiGet(['openId','userId']);
+            const openId = await AsyncStorage.multiGet(['openId','userId','isLoggedIn']);
 
             console.log(openId)
 
@@ -150,8 +150,6 @@ export default class App extends RentApp {
         } catch (error) {
             console.error(error)
         }
-
-
 
     }
 
