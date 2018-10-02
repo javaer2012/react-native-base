@@ -241,14 +241,11 @@ export default class ProductDetailPage extends RentApp {
 
   check = async () => {
     try {
-      
       const { userInfos } = this.state
       // var isBinding = userInfos.isBinding;
       var isCredited = userInfos.isCredited;
       // await AsyncStorage.multiSet([['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
       const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
-
-      console.log(isLoggedIn, "tttt")
 
       if (isLoggedIn !== "1") {
         this.setState({
@@ -271,6 +268,7 @@ export default class ProductDetailPage extends RentApp {
         })
         return false;
       }
+      return true
     } catch (error) {
     }
   }
