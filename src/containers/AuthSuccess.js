@@ -40,14 +40,19 @@ export default class AuthSuccess extends RentApp{
         this.max = props.navigation.getParam('maxCreditAmount')
         this.score = props.navigation.getParam('creditScore')
         this.monthFee = props.navigation.getParam('monthFee')
-        this.fromPageName = props.navigation.getParam('fromPageName',"ProductListPage")
-        this.fromPageParams = props.navigation.getParam('fromPageParams',{})
 
         this.saveData(this.max,this.score,this.monthFee)
     }
 
     async saveData(max,score,monthFee){
         await AsyncStorage.multiSet([['maxCreditAmount',max.toString()],['creditScore',score.toString()],['monthFee',monthFee.toString()]])
+    }
+
+    async componentDidMount(){
+        const fromPage = await AsyncStorage.multiGet(['fromPageName','fromPageParams']);
+
+        this.fromPageName = fromPage[0][1] || 'MyPage' //默认跳转至我的页面
+        this.fromPageParams = fromPage[1][1]?JSON.parse(fromPage[1][1]) : {} //默认没有参数
     }
 
     render(){

@@ -247,6 +247,7 @@ export default class ProductDetailPage extends RentApp {
       // await AsyncStorage.multiSet([['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
       const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
 
+
       if (isLoggedIn !== "1") {
         this.setState({
           isShowEasyModal: true,
