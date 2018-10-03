@@ -50,6 +50,7 @@ import FindDetail from '../containers/FindDetail';
 import Imagepicker from '../containers/ImagePicker'
 import NegativeRecord from '../containers/NegativeRecord'
 import OrderDetail from '../containers/OrderDetail/OrderDetail';
+import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
 
 
 
@@ -96,9 +97,10 @@ export default StackNavigator({
     CardInfoPage:CardInfo,
     LocationPage,
     FindDetailPage:FindDetail,
-    NegativeRecord
+    NegativeRecord,
+    SchoolSearchPage
 }, {
-        // initialRouteName: 'ProductDetail',
+        initialRouteName: 'SchoolSearchPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

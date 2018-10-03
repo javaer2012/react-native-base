@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native'
 const cityObj = [{ "id": "00", "province": "安徽省", "initial": "A" },
 { "id": "01", "province": "澳门特别行政区", "initial": "A" },
 
@@ -131,7 +132,7 @@ function pushCity() {
 
 }
 //保存地区信息到缓存  //{"id":"03","province":"重庆"}
-function setAreaInfo(area,cb){
+async function  setAreaInfo(area,cb){
     for (var i = 0; i < cityObj.length;i++){
         if(cityObj[i].province == area){
             try{
@@ -139,6 +140,7 @@ function setAreaInfo(area,cb){
                 data["id"]=cityObj[i].id;
                 data["province"]=cityObj[i].province;
                 wx.setStorageSync('areaInfo', data);
+                await AsyncStorage.setItem('areaInfo')
                 typeof cb ==="function" && cb();
                 
             }catch(e){
@@ -153,5 +155,6 @@ module.exports = {
     searchLetter: searchLetter,
     areaList: areaList,
     areaObjs: areaObjs,
-    setAreaInfo: setAreaInfo
+    setAreaInfo: setAreaInfo,
+    cityObj,
 }
