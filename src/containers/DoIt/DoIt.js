@@ -12,10 +12,21 @@ const bgf = {
 
 export default class DoIt extends Component {
   state = {
-    completePay: false
+    completePay: false,
+    agreement:'',
+    crm:'',
+    client: ''
   }
 
-  componentDidMount() {
+  goToNext = () => {
+    const { navigate } = this.props.navigation
+    const { agreement, crm, client } = this.state
+    navigate('Pay', {
+      agreement,
+      crm,
+      client,
+      // firstPay: data.firstPay
+    })
   }
 
   render() {
@@ -25,10 +36,10 @@ export default class DoIt extends Component {
     
     const data = [
       {
-        active: false,
+        active: true,
         text: '填信息'
       }, {
-        active: true,
+        active: false,
         text: '上传并签协议'
       }
     ]
@@ -54,35 +65,42 @@ export default class DoIt extends Component {
     }
     return (
       <Flex direction="column" style={{backgroundColor: '#fff', flex: 1}}>
-        <Progress data={data}/>
-        <Flex  style={{marginTop: 80, width: '100%'}}>
-          <Flex direction="column" style={{ flex: 1, borderColor: '#fff' }}>
+        <Flex style={{marginTop: 16}}>
+          <Progress data={data} />
+        </Flex>
+        <Flex  style={{marginTop: 80, width: '100%', backgroundColor: '#fff'}}>
+          <Flex direction="column" style={{ flex: 1, borderColor: '#fff', paddingHorizontal: 20 }}>
             <Flex  style={[inputBoxStyle]}>
               <Text style={[labelStyle,{marginRight: 10}]}>合约号码</Text>
               <TextInput
                 style={ inputBaseStyle }
-                onChangeText={(text) => this.setState({ text })}
-                value={"11111"}
+                onChangeText={(text) => this.setState({ agreement: text })}
+                value={"请输入合约号码"}
               />
             </Flex >
             <Flex   style={[inputBoxStyle]}>
-              <Text style={[labelStyle,{marginRight: 10}]}>合约号码</Text>
+              <Text style={[labelStyle, { marginRight: 10 }]}>crm订单号</Text>
               <TextInput
                 style={ inputBaseStyle }
-                onChangeText={(text) => this.setState({ text })}
-                value={"2222"}
+                onChangeText={(text) => this.setState({ crm:text })}
+                value={"请输入crm订单号"}
               />
             </Flex >
             <Flex  style={[inputBoxStyle]}>
-              <Text style={[labelStyle,{marginRight: 10}]}>合约号码</Text>
+              <Text style={[labelStyle, { marginRight: 10 }]}>终端串码</Text>
               <TextInput
                 style={ inputBaseStyle }
-                onChangeText={(text) => this.setState({ text })}
-                value={"33333"}
+                onChangeText={(text) => this.setState({ client:text })}
+                value={"请输入终端串码"}
               />
             </Flex >
             <Flex justify="center" style={{width: '100%', marginTop: 40}}>
-              <Button style={{ width: 340}}>下一步</Button>
+              {/* <Button style={{ width: 340}}>下一步</Button> */}
+              <TouchableOpacity
+                style={{ padding: 14, backgroundColor: Color.mainPink, width: '100%' }}
+                onPress={() => this.goToNext() }>
+                <Text style={{ color: '#fff', textAlign: "center" }}>下一步</Text>
+              </TouchableOpacity>
             </Flex>
           </Flex>
         </Flex>

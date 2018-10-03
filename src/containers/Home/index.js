@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, ScrollView, AsyncStorage, Dimensions } from 'react-native'
-import { Button, Carousel, List } from 'antd-mobile-rn';
+import { Button, Carousel, List, Flex } from 'antd-mobile-rn';
 import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
 import Color from '../../styles/var'
@@ -16,6 +16,9 @@ import RentApp from "../../components/RentApp";
 
 
 export default class Home extends RentApp {
+  static navigationOptions = {
+    title: "信用租机"
+  }
   state = {
     bannerList: [1, 2, 3],
     hotPhoneList: [],
@@ -28,13 +31,25 @@ export default class Home extends RentApp {
 
   }
 
+  getAddressMsg = async () => {
+    try {
+      const value = await AsyncStorage.getItem('addressInfos');
+      if (value !== null) {
+        // We have data!!
+        return JSON.parse(value);
+      }
+    } catch (error) {
+      // Error retrieving data
+    }
+  }
+
   async componentWillMount(){
-    await this.getOpenIdAndUserId()
-    // const addressMsg = await this.getAddressMsg({})
-    const user = await AsyncStorage.getItem('userInfo')
-    // await this.setState({
-    //   addressMsg
-    // })
+    // await this.getOpenIdAndUserId()
+    const addressMsg = await this.getAddressMsg()
+    // const user = await AsyncStorage.getItem('userInfo')
+    this.setState({
+      addressMsg
+    })
   }
 
   async componentDidMount() {
@@ -90,12 +105,17 @@ export default class Home extends RentApp {
 
     return (
       <View style={{ position: 'relative', height: '100%' }}>
-        <View style={{ marginTop: 0 }}>
-          <TouchableOpacity onPress={() => navigate('LocationPage', {})}>
-            <Text>{addressMsg && addressMsg.city}</Text>
+        <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
+          <TouchableOpacity  onPress={() => navigate('LocationPage', {})}>
+            <Text style={{color: '#fff'}}>{addressMsg && addressMsg.city}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27}} onPress={() => navigate('LocationPage', {})}>
+            <Flex style={{backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20}}>
+              <Text style={{color: '#ccc'}}>搜索商品</Text>
+            </Flex>
           </TouchableOpacity>
 
-        </View>
+        </Flex>
         <ScrollView
           automaticallyAdjustContentInsets={false}
           showsHorizontalScrollIndicator={false}
@@ -145,7 +165,6 @@ export default class Home extends RentApp {
     )
   }
   renderNavList = (list) => {
-    console.log(list,"ggggggfffffff")
     const { navigate } = this.props.navigation;
     return list.map((item, index) => (
       <TouchableOpacity
