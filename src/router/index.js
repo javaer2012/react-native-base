@@ -100,7 +100,7 @@ export default StackNavigator({
     NegativeRecord,
     SchoolSearchPage
 }, {
-        initialRouteName: 'SchoolSearchPage',
+        initialRouteName: 'ProductListPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

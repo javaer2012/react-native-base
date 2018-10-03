@@ -109,7 +109,7 @@ export default class Home extends RentApp {
           <TouchableOpacity  onPress={() => navigate('LocationPage', {})}>
             <Text style={{color: '#fff'}}>{addressMsg && addressMsg.city}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27}} onPress={() => navigate('LocationPage', {})}>
+          <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
             <Flex style={{backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20}}>
               <Text style={{color: '#ccc'}}>搜索商品</Text>
             </Flex>

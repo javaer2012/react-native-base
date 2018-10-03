@@ -1,41 +1,39 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity, AsyncStorage, FlatList, RefreshControl } from 'react-native'
-import { Button } from 'antd-mobile-rn';
+// import { Button } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/home'
 import { flexRow } from '../../styles/common'
 import ProudcuItem from '../../components/ProudcuItem'
 import api from '../.././service/api'
 import RentApp from "../../components/RentApp";
 import { throttle } from '../../utils/funs'
-import { Flex } from 'antd-mobile-rn';
+import { Flex, Drawer, WhiteSpace, Button } from 'antd-mobile-rn';
 import Color from '../../styles/var'
+import Search from '../Search';
+import Sidebar from '../../components/common/SlideBar'
 const { queryGoodsList, HTTP_IMG } = api
 
 // 
 
 export default class ProductListPage extends RentApp {
+  static navigationOptions = {
+    title: "商品列表"
+  }
   state = {
     products:[],
     pageNum:1,
     pageSize:10,
     refreshing: false,
-    isLoreMoreing: ''
+    isLoreMoreing: '',
+    selected: [],  // 选中的筛选条件,
+    isShowSelected: false,
+    cateList: []
   }
 
   async componentDidMount(){
     await this.getOpenIdAndUserId()
     this.getData()
-
-    // const { data } = queryGoodsList({
-    //   sourceType: 3,
-    // })
-    // const { navList } = bannerNav_mock
-    // const { hotPhoneList } = productList_mock
-
-    // this.setState({
-    //   navList,
-    //   products: hotPhoneList
-    // })
+    this.getCateList()
   }
 
   getData = async () =>{
@@ -52,32 +50,53 @@ export default class ProductListPage extends RentApp {
       const params = {
         userId,
         openId,
-        // cityCode,
-        // provinceCode,
-        provinceCode: "844",
-        cityCode: "84401",
+        provinceCode,
+        cityCode,
         category,
         pageNum,
         pageSize
       }
       
       const rsp = await queryGoodsList(params)
-      const { data: { errcode, goodsList, totalPage } } = rsp || {}
-      if (errcode === 1) {
-        const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
+      const { data,data: { errcode, goodsList, totalPage } } = rsp || {}
+      // console.log(data)
+      if (errcode === 1 && goodsList.length) {
+        // const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
         this.setState({
           products: [...products, ...goodsList],
           totalPage,
           refreshing: false,
-          isLoreMoreing
+          isLoreMoreing: 'LoreMoreing'
         })
-      } else{
-        // throw('出错')
+      } else if (errcode === 1 && !goodsList.length) {
+        this.setState({
+          isLoreMoreing: 'LoreMoreEmpty'
+        })
       }
     } catch (e) {
 
     }
   }
+
+  async getCateList() {
+    try {
+      console.log("Call api of List")
+      const listRsp = await api.queryConditionList({
+        "provinceCode": this.provinceCode,
+        "cityCode": this.cityCode,
+        "category": '1'
+      });
+      console.log(listRsp, '=====>listRsp')
+      if (listRsp.data.errcode === 1) {
+        this.setState({
+          cateList: listRsp.data.cateList
+        })
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   hasDo = false
 
   loadMoreFun = async (pageNum) => {
@@ -128,10 +147,41 @@ export default class ProductListPage extends RentApp {
     })
   }
 
+  onSelect(id) {
+    const idIndex = this.state.selected.indexOf(id),
+      selected = Array.from(this.state.selected);
+    if (idIndex !== -1) {
+      selected.splice(idIndex, 1);
+    } else {
+      selected.push(id)
+    }
+    this.setState({
+      ...this.state,
+      selected
+    })
+  }
+
   render() {
-    let { products, pageNum } = this.state
+    let { products, pageNum, selected, cateList } = this.state
+    const searchBtnStyle = [{
+      paddingHorizontal: 36,
+      paddingVertical: 10
+    }]
     return (
-      <Flex style={{ height: '100%'}}>
+      <Flex direction="column" align="stretch" style={{ height: '100%'}}>
+        <Flex direction='column' align="stretch" style={{ backgroundColor: '#fff', paddingVertical: 6,borderBottomColor: '#eee',borderBottomWidth:0.5 }}>
+          <Flex direction="row" justify="around" align="stretch">
+            <TouchableOpacity style={[searchBtnStyle]}>
+              <Text style={{color: selected === 1 ? Color.mainPink : '#333'}}>推荐</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[searchBtnStyle, { borderLeftWidth: 1, borderRightWidth: 1 ,borderColor: '#eee'}]} >
+              <Text style={{ color: selected === 2 ? Color.mainPink : '#333' }}>价格</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[searchBtnStyle]} onPress={() => this.setState({ isShowSelected: true})}>
+              <Text style={{ color: selected ===3 ? Color.mainPink : '#333' }}>筛选</Text>
+            </TouchableOpacity>
+          </Flex>
+        </Flex>
         <FlatList
           data={products || []}
           onEndReachedThreshold={0.1}
@@ -148,6 +198,22 @@ export default class ProductListPage extends RentApp {
           renderItem={this._renderItem}
           ListFooterComponent={this.renderFooter}//尾巴
         />
+        <Drawer
+          sidebar={<Sidebar source={cateList} selected={selected} onSelect={this.onSelect} />}
+          position="right"
+          open={false}
+          drawerRef={(el) => (this.drawer = el)}
+          onOpenChange={this.onOpenChange}
+          drawerBackgroundColor="#ccc"
+          drawerWidth={328}
+        >
+          <View style={{ flex: 1, marginTop: 114, padding: 8, minHeight: 603, zIndex: 10 }}>
+            <Button onClick={() => this.drawer && this.drawer.openDrawer()}>
+              Open drawer
+                    </Button>
+            <WhiteSpace />
+          </View>
+        </Drawer>
         {/* <FlatList style={styles.productListBox}>
           {this.renderList(products) }
          

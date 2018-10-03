@@ -68,6 +68,9 @@ const baseSchoolObjsFun = () => {
 }
 
 export default class SchoolSearchPage extends RentApp {
+  static navigationOptions = {
+    title: "选择学校"
+  }
   state = {
     dataSource: [],
     addressMsg:{},
@@ -208,7 +211,7 @@ export default class SchoolSearchPage extends RentApp {
   renderSectionHeader = (sectionData, sectionID) => {
     const { userAddressMsg } = this.state;
     return (
-      <Flex direction='column'  style={{padding: 8, position: 'absolute', top: 0, width: '100%', zIndex: 10}}>
+      <Flex direction='column'  style={{padding: 8, position: 'absolute', top: 0, width: '100%', zIndex: 10, backgroundColor: '#fff'}}>
         <View style={styles.searchBox}>
           {/* <Image source={require('../res/image/search_bar_icon_normal.png')} style={styles.searchIcon} /> */}
           <TextInput 
@@ -240,7 +243,7 @@ export default class SchoolSearchPage extends RentApp {
   render(){
     const { searchschoolObjs, baseSchoolObjs } = this.state
     return (      
-        <View style={{ height: Dimensions.get('window').height, marginBottom: 10 }}>
+        <View style={{ height: Dimensions.get('window').height, marginBottom: 10, paddingTop: 60 }}>
           {this.renderSectionHeader()}
           <FlatList
             contentContainerStyle={styles.contentContainer}
