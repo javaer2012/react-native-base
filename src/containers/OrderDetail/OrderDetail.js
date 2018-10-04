@@ -18,57 +18,62 @@ const Button_ = ({ children, onPress}) => {
 }
 export default class OrderDetail extends RentApp {
   state = {
-    data: {
-      goodsInfo: {
-        goodsImagePath: '',
-        goodsName: '',
-        goodsDesc: '',
-        actualUsedAmount: '',
-        totalFirstAmount: '',
-        goodsSkus: ''
-      },
-      userInfo: {
-        userName: '',
-        phoneNo: '',
-        idCardNo: '',
-        creditAmount: '',
-        creditScore: '',
-      },
-      stageInfo: {
-        totalStageAmount: '',
-        capitalProdName: '',
-        stagePeriods: '',
-        stageMonthRate: '',
-        eachStageAmount: '',
-      },
-      contractMealInfo: {
-        mealId: '',
-        mealCode: '',
-        mealName: '',
-        mealPrice: '',
-        mealType: '',
-        mealAmount: ''
-      },
-      insureList: [
-        {
-          insureId: '',
-          insureName: '',
-          insureType: "",
-          policyNo: '',
-          insureAmount: '',
-          insureStartTime: '',
-          insureEndTime: '',
-          insureStatus: ''
-        }
-      ],
-      loading:false
+    userInfo:{},  // 缓存获取的用户信息
+    goodsInfo: {
+      goodsImagePath: '',
+      goodsName: '',
+      goodsDesc: '',
+      actualUsedAmount: '',
+      totalFirstAmount: '',
+      goodsSkus: ''
+    },
+    orderUserInfo: {  // 接口获取的用户信息
+      userName: '',
+      phoneNo: '',
+      idCardNo: '',
+      creditAmount: '',
+      creditScore: '',
+    },
+    stageInfo: {
+      totalStageAmount: '',
+      capitalProdName: '',
+      stagePeriods: '',
+      stageMonthRate: '',
+      eachStageAmount: '',
+    },
+    contractMealInfo: {
+      mealId: '',
+      mealCode: '',
+      mealName: '',
+      mealPrice: '',
+      mealType: '',
+      mealAmount: ''
+    },
+    insureList: [
+      {
+        insureId: '',
+        insureName: '',
+        insureType: "",
+        policyNo: '',
+        insureAmount: '',
+        insureStartTime: '',
+        insureEndTime: '',
+        insureStatus: ''
+      }
+    ],
 
-    }
+    orderId: '',
+    loading: false
   }
 
   async componentDidMount() {
     try {
       await this.getOpenIdAndUserId()
+      const orderId = this.props.navigation.getParam('orderId');
+      console.log(orderId,"!!!!")
+      this.setState({
+        orderId
+      })
       this.getData()
     } catch (error) {
       console.log(error, "error")
@@ -78,27 +83,40 @@ export default class OrderDetail extends RentApp {
   async getData() {
     try {
       await this.setState({ loading: true })
-      const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
+      let user = await AsyncStorage.getItem('userInfo')
+      user = { ...JSON.parse(user) }
       this.setState({
         userInfo: user
       })
-      const orderId = this.props.navigation.getParam('orderId');
+      const { orderId } = this.state
       const params = {
         userId: this.userId,
         openId: this.openId,
         orderId,
         cityCode: this.cityCode,
         provinceCode: this.provinceCode,
-        staffNo: 3123123
-        // 3123123
+        staffNo: 3123123 || user.staffNo
       }
       console.log(params, '=======》 params')
       const { data } = await staffOrderDetail(params)
-      console.log(data, "ggggggggggggggggggggggggggggggggggggg")
+      console.log(JSON.stringify(data), "ggggggggggggggggggggggggggggggggggggg")
       if (data.errcode === 1) {
-       
+        const { 
+          // orderUserInfo: userInfo, 
+          userInfo,
+          orderTime, 
+          stageInfo, 
+          insureList, 
+          contractMealInfo,
+          goodsInfo 
+        } = data
         this.setState({
-          // orderList: data.orderList
+          orderUserInfo: userInfo,
+          orderTime,
+          stageInfo,
+          insureList,
+          contractMealInfo,
+          goodsInfo 
         })
       }
 
@@ -110,16 +128,17 @@ export default class OrderDetail extends RentApp {
     }
   }
   render() {
-    const { data: { userInfo, stageInfo, contractMealInfo } } = this.state
+    const { userInfo, stageInfo, contractMealInfo, orderUserInfo } = this.state
+    console.log(orderUserInfo,"userInfouserInfouserInfo")
     return (
       <ScrollView>
         <Flex direction="column">
           <Flex style={styles.cardBox} align="stretch">
             <Card title="用户信息">
               <Flex direction="column" align="start">
-                <Text style={styles.textBase}>姓名：{userInfo.userName}</Text>
-                <Text style={styles.textBase}>电话号码：{userInfo.phoneNo}</Text>
-                <Text style={styles.textBase}>身份证号：{userInfo.idCardNo}</Text>
+                <Text style={styles.textBase}>姓名：{orderUserInfo.userName}</Text>
+                <Text style={styles.textBase}>电话号码：{orderUserInfo.phoneNo}</Text>
+                <Text style={styles.textBase}>身份证号：{orderUserInfo.idCardNo}</Text>
               </Flex>
             </Card>
           </Flex>
@@ -169,11 +188,11 @@ export default class OrderDetail extends RentApp {
               </Button_>
             </Flex>
             <Flex style={{marginTop: 20}}>
-              <Button_ onPress={() => { this.props.navigation.navigate('Home') }}>
-                {'营业员受理'}
-              </Button_>
-              <Button_>
-                {'营业员受理'}
+              <Button_ onPress={() => { this.props.navigation.navigate('Accept', {
+                orderId: this.state.orderId,
+                staffNo: userInfo.staffNo
+              }) }}>
+                {'营业员受理'}``
               </Button_>
             </Flex>
           </Flex>
