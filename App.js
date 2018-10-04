@@ -6,18 +6,18 @@
  * @flow
  */
 
-import React, { Component } from 'react';
-import { Provider } from 'react-redux';
+import React, {Component} from 'react';
+import {Provider} from 'react-redux';
 import store from './src/store/store';
 import AppNavigator from './src/router';
-import {AsyncStorage,Platform} from 'react-native';
-import {setData,getData} from './src/utils/storage'
+import {AsyncStorage, Platform, Linking, Alert} from 'react-native';
+import {setData, getData} from './src/utils/storage'
 import {getToken} from "./src/service/api";
 import api from './src/service/api'
 import config from './src/config';
 import DeviceInfo from 'react-native-device-info'
-import { areaDict } from './src/utils/city1.json'
-import { cityObj, localCodeInfo } from './src/utils/city'
+import {areaDict} from './src/utils/city1.json'
+import {cityObj, localCodeInfo} from './src/utils/city'
 import RentApp from "./src/components/RentApp";
 
 
@@ -34,13 +34,14 @@ import {
 } from 'react-native-update';
 
 import _updateConfig from './update.json';
+
 const {appKey} = _updateConfig[Platform.OS];
 // this.registerUser();
-const { AmapRegeo, registerUser, isCityOpen, setCrmCode } = api
+const {AmapRegeo, registerUser, isCityOpen, setCrmCode} = api
 
 export default class App extends RentApp {
 
-    constructor(props){
+    constructor(props) {
         super(props)
         console.log('App start')
 
@@ -49,19 +50,65 @@ export default class App extends RentApp {
          */
         // this.isOpen()
     }
-    async componentWillMount(){
-        await this.getOpenIdAndUserId()
+
+
+    componentWillMount() {
+
+
+        if (isFirstTime) {
+            //标记首次首次启动
+            markSuccess()
+        } else if(isRolledBack){
+            Alert.alert("更新失败，回滚到上一个可用版本")
+        }
+
+        //Alert.alert(`Is First Time:${isFirstTime}`)
+
+        this.checkUpdate()
+
+
+        this.getOpenIdAndUserId()
         this.beginWatch()
-        AsyncStorage.clear()
     }
 
-    isOpen = async (params)=>{
-        try{
+    checkUpdate = ()=>{
+
+
+        checkUpdate(appKey)
+            .then(info=>{
+
+                if (info.expired) {
+                    Alert.alert('提示', '您的应用版本已更新,请前往应用商店下载新的版本', [
+                        {
+                            text: '确定', onPress: () => {
+                                info.downloadUrl && Linking.openURL(info.downloadUrl)
+                            }
+                        },
+                    ]);
+                } else if (info.upToDate) {
+                    //最新版本，不需要操作
+                    //Alert.alert('提示', '您的版本已经最新')
+                } else {
+                    Alert.alert('提示', '检查到新的版本' + info.name + ',是否下载?\n' + info.description, [
+                        {
+                            text: '是', onPress: () => {
+                                this.doUpdate(info)
+                            }
+                        },
+                        {text: '否',},
+                    ]);
+                }
+            })
+            .catch(err=>Alert.alert(err.toString()))
+    }
+
+    isOpen = async (params) => {
+        try {
             const rsp = await isCityOpen(params);
             if (rsp.data.errcode == 1) {
-                AsyncStorage.setItem('isCityOpen',rsp.data.isOpen)
+                AsyncStorage.setItem('isCityOpen', rsp.data.isOpen)
             }
-            else{
+            else {
                 // throw (1)
                 console.log("x!!!! 判断isOpen失败")
             }
@@ -72,29 +119,48 @@ export default class App extends RentApp {
         }
     }
 
+    doUpdate = async (info) => {
+
+        downloadUpdate(info)
+            .then(download=>{
+                Alert.alert('提示', '下载完毕,是否重启应用?', [
+                    {
+                        text: '是', onPress: () => {
+                            switchVersion(download);
+                        }
+                    },
+                    {text: '否',},
+                    {
+                        text: '下次启动时', onPress: () => {
+                            switchVersionLater(download);
+                        }
+                    },
+                ]);
+            })
+    }
 
 
-    registerUser = async ()=>{
-        try{
+    registerUser = async () => {
+        try {
 
             await AsyncStorage.removeItem('openId')
-            const openId = await AsyncStorage.multiGet(['openId','userId','isLoggedIn']);
+            const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
 
             console.log(openId)
 
-            if(!openId[0][1] || !openId[1][1]){
+            if (!openId[0][1] || !openId[1][1]) {
                 const params = {
                     provinceCode: this.provinceCode,
                     cityCode: this.cityCode,
-                    openId:DeviceInfo.getUniqueID()
+                    openId: DeviceInfo.getUniqueID()
                 }
                 const register = await registerUser(params);
 
                 console.log(register)
                 const {data} = register;
-                if(data.errcode === 1){
-                    const {openId,userId} = data;
-                    await AsyncStorage.multiSet([['openId',openId],['userId',userId]])
+                if (data.errcode === 1) {
+                    const {openId, userId} = data;
+                    await AsyncStorage.multiSet([['openId', openId], ['userId', userId]])
                 }
                 console.log(register)
             }
@@ -107,44 +173,44 @@ export default class App extends RentApp {
     getCityFun = async (lat, lon) => {
         var city;
         try {
-            const { data } = await AmapRegeo(lat, lon)
+            const {data} = await AmapRegeo(lat, lon)
             let {
                 status,
                 infocode,
                 regeocode: {
                     addressComponent: {
-                        district, city:gdCity, citycode, adcode, province
+                        district, city: gdCity, citycode, adcode, province
                     }
                 }
             } = data;
             if (data.infocode == '10000') {
                 try {
-                  city = !(gdCity instanceof Array) && !!gdCity  ? gdCity.substring(0, gdCity.length - 1):province.substring(0,province.length -1);
-                
-                  var code = localCodeInfo(city);
+                    city = !(gdCity instanceof Array) && !!gdCity ? gdCity.substring(0, gdCity.length - 1) : province.substring(0, province.length - 1);
+
+                    var code = localCodeInfo(city);
                     // const { data } = await setCrmCode(code)
                     // if (data && data.areaDict) {
-                        // const { areaDict } = data;
-                        var option = {};
-                        
-                        for (var key in areaDict) {
-                            //console.log("code：", code, "key：", key,)
-                            if (key == code) {
-                                option["city"] = province;
-                                option["provinceCode"] = areaDict[key].crmProvCode;
-                                option["cityCode"] = areaDict[key].crmCityCode;
-                            }
+                    // const { areaDict } = data;
+                    var option = {};
+
+                    for (var key in areaDict) {
+                        //console.log("code：", code, "key：", key,)
+                        if (key == code) {
+                            option["city"] = province;
+                            option["provinceCode"] = areaDict[key].crmProvCode;
+                            option["cityCode"] = areaDict[key].crmCityCode;
                         }
-                        await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
-                        this.registerUser()
-                        this.isOpen({
-                            provinceCode: option["provinceCode"],
-                            cityCode: option["cityCode"],
-                            openId: config.authAppId
-                        })
+                    }
+                    await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
+                    this.registerUser()
+                    this.isOpen({
+                        provinceCode: option["provinceCode"],
+                        cityCode: option["cityCode"],
+                        openId: config.authAppId
+                    })
                     // }
                 } catch (error) {
-                  this.showToast(error,'setCrmCode 接口出错!!!!!!!!!!')
+                    this.showToast(error, 'setCrmCode 接口出错!!!!!!!!!!')
                 }
             }
         } catch (error) {
@@ -153,21 +219,21 @@ export default class App extends RentApp {
 
     }
 
-    beginWatch =async () => {
-       //await AsyncStorage.clear()
+    beginWatch = async () => {
+        //await AsyncStorage.clear()
         const value1 = await AsyncStorage.getItem('Test')
-        console.log("Test1",value1)
+        console.log("Test1", value1)
 
 
         navigator.geolocation.getCurrentPosition(
-            ({ coords }) => {
-                const { latitude, longitude } = coords
+            ({coords}) => {
+                const {latitude, longitude} = coords
                 this.getCityFun(latitude, longitude)
                 // var initialPosition = JSON.stringify(position);
                 // this.setState({ initialPosition });
             },
             (error) => alert(error.message),
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         )
 
     }
@@ -180,6 +246,6 @@ export default class App extends RentApp {
 
         );
     }
-       
+
 }
 

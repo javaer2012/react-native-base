@@ -100,7 +100,7 @@ export default StackNavigator({
     NegativeRecord,
     CrmPage_2
 }, {
-         initialRouteName: 'CrmPage_2',
+         //initialRouteName: 'CrmPage_2',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
