@@ -49,6 +49,7 @@ import Imagepicker from '../containers/ImagePicker'
 import NegativeRecord from '../containers/NegativeRecord'
 import OrderDetail from '../containers/OrderDetail/OrderDetail';
 import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
+import CrmPage_2 from '../containers/crmPage_2'
 
 
 
@@ -95,9 +96,10 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
     NegativeRecord,
-    SchoolSearchPage
+    SchoolSearchPage,
+    CrmPage_2,
 }, {
-        initialRouteName: 'Accept',
+        initialRouteName: 'CrmPage_2',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
