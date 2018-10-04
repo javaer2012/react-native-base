@@ -7,7 +7,7 @@
     "test": "jest",
     "devI": "node scripts/custom-rn-theme && react-native run-ios",
     "devA": "react-native run-android",
-    "bundle:ios":"react-native bundle --entry-file index.js --bundle-output ./ios/bundle/rent.jsbundle --platform ios --assets-dest ./ios/bundle --dev false"
+    "bundle:ios":"react-native bundle --entry-file index.js --bundle-output ./ios/bundle/main.jsbundle --platform ios --assets-dest ./ios/bundle --dev false"
   },
   "dependencies": {
     "antd-mobile-demo-data": "^0.2.0",
