@@ -11,12 +11,12 @@ const styles = StyleSheet.create({
 })
 
 const thumbNail = [
-    require('../images/imageNew/one/00.png'),
-    require('../images/imageNew/one/01.png'),
-    require('../images/imageNew/one/02.png'),
-    require('../images/imageNew/one/03.png'),
-    require('../images/imageNew/one/04.png'),
-    require('../images/imageNew/one/05.png')
+    require('../images/imageNew/one/00_0.png'),
+    require('../images/imageNew/one/01_0.png'),
+    require('../images/imageNew/one/02_0.png'),
+    require('../images/imageNew/one/03_0.png'),
+    require('../images/imageNew/one/04_0.png'),
+    require('../images/imageNew/one/05_0.png')
 ];
 
 const pics = [
