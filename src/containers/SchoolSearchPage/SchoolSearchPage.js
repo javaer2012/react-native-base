@@ -7,17 +7,14 @@ import { Flex, SearchBar } from 'antd-mobile-rn';
 import Color from '../../styles/var'
 import { NavigationActions } from 'react-navigation'
 import RentApp from "../../components/RentApp";
+import { schoolObjs } from '../../utils/school'
+import { cityObj, setAreaInfo } from '../../utils/areaSchool'
 
 const areaDictArr = Object.values(areaDict)
-
+const letters = ["A", "B", "C", "F", "G", "H", "J", "L", "N", "Q", "S", "T", "X", "Y", "Z"] 
 import _ from 'lodash';
 const { width, height } = Dimensions.get('window')
 const SECTIONHEIGHT = 30, ROWHEIGHT = 40
-//这是利用lodash的range和数组的map画出26个英文字母
-const letters = _
-  .range('A'.charCodeAt(0), 'Z'.charCodeAt(0) + 1)
-  .map(n => String.fromCharCode(n).substr(0))
-_.pull(letters, 'O', 'V')//去掉o和V,这两个下面没有城市
 let city = []//城市的数组
 var totalheight = [];//每个字母对应的城市和字母的总高度
 var that = null
@@ -25,13 +22,80 @@ var totalNumber = 10;//总条数的数据
 var searchHeight = 35;//搜索框高度
 var searchHeightMargin = 2;//搜索框margin
 
-export default class List extends RentApp {
+const schoolSingleDeck = [] // 单层地址数组
+// const schoolList = letters.map(item => {
+//   schoolSingleDeck.push(cityObj[item])
+//   // let tempObj = {};
+//   // let areaInfo = [];
+
+//   // tempObj.initial = initial;
+//   // tempObj.areaInfo = schoolArr.filter(
+//   //   schoolName => schoolName.initial == initial
+//   // );
+// })
+
+// function areaListFun() {
+//   let tempArr = [];
+
+//   letters.map(
+//     initial => {
+//       let tempObj = {};
+//       let areaInfo = [];
+
+//       tempObj.initial = initial;
+//       tempObj.areaInfo = cityObj.filter(
+//         city => city.initial == initial
+//       );
+
+//       tempArr.push(tempObj);
+//     }
+//   );
+
+//   // console.log('地区信息：',JSON.stringify(tempArr));
+//   return tempArr;
+// }
+
+// const areaList = areaListFun()
+
+
+const baseSchoolObjsFun = () => {
+  let ARR = []
+
+  schoolObjs.forEach(item => {
+    ARR = [...ARR, ...item.schoolInfo]
+  })
+  return ARR
+}
+
+export default class SchoolSearchPage extends RentApp {
+  static navigationOptions = {
+    title: "选择学校"
+  }
   state = {
     dataSource: [],
     addressMsg:{},
     userAddressMsg:{},
-    searchText:''
+    searchText:'', // 选择地名称
+    selectedLetters:'', // 选择 的首字母
+    searchschoolObjs:[],
+    baseSchoolObjs: baseSchoolObjsFun()
   }
+
+  // setSchoolList = () => {
+  //   const ARR = []
+  //   areaList.map((areaItem, index) => {
+  //     areaItem.areaInfo.map((item, index) => {
+
+  //       schoolObjs.forEach((school) => {
+  //         if (school.id === item.id) {
+  //           ARR.push
+  //         }
+  //       })
+
+  //       return item.id
+  //     })
+  //   })
+  // }
   
   // 从缓存中取出位置信息对象
   getAddressMsg = async () => {
@@ -51,16 +115,15 @@ export default class List extends RentApp {
       const addressMsg = await this.getAddressMsg()
       this.setState({
         userAddressMsg: addressMsg,
-        // dataSource: Object.values(areaDict)
       }) 
     } catch (error) {
       console.error(error)
     }
   }
-  // render ringht index Letters
+
   renderLetters(letter, index) {
     return (
-      <TouchableOpacity key={index} activeOpacity={0.6} onPress={() => { this.scrollTo(index) }}>
+      <TouchableOpacity key={index} activeOpacity={0.6} onPress={() => { this.setState({ selectedLetters: letter }); this.scrollTo(index) }}>
         <View style={styles.letter}>
           <Text style={styles.letterText}>{letter}</Text>
         </View>
@@ -68,21 +131,48 @@ export default class List extends RentApp {
     )
   }
   changedata = async (item) => {
-    const addressinfos = {
-      city: item.admCityName,
-      cityCode: item.crmCityCode,
-      provinceCode: item.crmProvCode,
-    }
-    await AsyncStorage.setItem('addressInfos', JSON.stringify(item));
+    const JS_STR_item = JSON.stringify(item)
+    await AsyncStorage.setItem('selectedSchool', JS_STR_item);
     const backAction = NavigationActions.back({
       // key: 'Profile'
+      selectedSchool: JS_STR_item
     })
     this.props.navigation.dispatch(backAction)
-
-    // navigate('ProductDetail', { productId: item.id })
-    
   }
-  renderRow = ({ item }) => {
+  renderRow =  ({item}) => {
+
+    return (
+      <TouchableOpacity
+        key={item.short}
+        style={{
+          borderBottomColor: '#faf0e6',
+          borderBottomWidth: 0.5,
+          height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30
+        }}
+        onPress={() => { this.changedata(item) }}>
+        <View><Text style={styles.rowdatatext}>{item.schoolName}</Text></View>
+
+      </TouchableOpacity>
+    )
+
+    // return item.map((element, index) => {
+    //   return (
+    //     <TouchableOpacity
+    //       key={index}
+    //       style={{
+    //         borderBottomColor: '#faf0e6',
+    //         borderBottomWidth: 0.5,
+    //         height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30
+    //       }}
+    //       onPress={() => { this.changedata(element) }}>
+    //       <View><Text style={styles.rowdatatext}>{element.schoolName}</Text></View>
+
+    //     </TouchableOpacity>
+    //   )
+    // });
+
+    return false
+
     const { searchText } = this.state
     if (searchText && item.crmCityName !== searchText) return false
 
@@ -99,31 +189,38 @@ export default class List extends RentApp {
       </TouchableOpacity>
     )
   }
+  // 搜索
   changeText = (text) => {
-    this.setState({
-      searchText: text
+    const { searchschoolObjs } = this.state
+    const newSearchschoolObjs =[]
+    schoolObjs.filter(item => {
+
+       item.schoolInfo.filter(cItem => {
+         if (cItem.schoolName.indexOf(text) !== -1 || cItem.initial.indexOf(text) !== -1 || cItem.short.indexOf(text) !== -1 || cItem.shorter.indexOf(text) !== -1  ) {
+
+           newSearchschoolObjs.push(cItem)
+        }
+      })
     })
-  }
-  //touch right indexLetters, scroll the left
-  scrollTo = (index) => {
-    let position = index * 40;
-    this._listView.scrollToIndex({
-      index
+
+    this.setState({
+      searchText: text,
+      searchschoolObjs: newSearchschoolObjs
     })
   }
   renderSectionHeader = (sectionData, sectionID) => {
     const { userAddressMsg } = this.state;
     return (
-      <Flex direction='column'  style={{padding: 8}}>
+      <Flex direction='column'  style={{padding: 8, position: 'absolute', top: 0, width: '100%', zIndex: 10, backgroundColor: '#fff'}}>
         <View style={styles.searchBox}>
           {/* <Image source={require('../res/image/search_bar_icon_normal.png')} style={styles.searchIcon} /> */}
           <TextInput 
             style={styles.inputText}
             onChangeText={(text) => this.changeText(text)}
             underlineColorAndroid='transparent' //设置下划线背景色透明 达到去掉下划线的效果
-            placeholder='请输入城市名称或拼音' />
+            placeholder='输入地区名或拼音查询' />
         </View>
-        <Flex direction='column' justify="start" align='start' style={{flex: 1, width: '100%', paddingLeft: 10}}>
+        {/* <Flex direction='column' justify="start" align='start' style={{flex: 1, width: '100%', paddingLeft: 10}}>
           <Text style={{
             textAlign: 'left',
             marginTop: 10
@@ -138,23 +235,23 @@ export default class List extends RentApp {
             paddingVertical: 8,
             borderRadius:6
           }}>{userAddressMsg && userAddressMsg.city}</Text>
-        </Flex>
+        </Flex> */}
       </Flex>
     )
   }
 
   render(){
+    const { searchschoolObjs, baseSchoolObjs } = this.state
     return (      
-        <View style={{ height: Dimensions.get('window').height, marginBottom: 10 }}>
+        <View style={{ height: Dimensions.get('window').height, marginBottom: 10, paddingTop: 60 }}>
+          {this.renderSectionHeader()}
           <FlatList
             contentContainerStyle={styles.contentContainer}
             ref={listView => this._listView = listView}
-            
             extraData={this.state}
-            data={areaDictArr}
+            data={(searchschoolObjs.length && searchschoolObjs) || baseSchoolObjs}
             renderItem={this.renderRow}
-            ListHeaderComponent={this.renderSectionHeader}
-            // renderSectionHeader={this.renderSectionHeader}
+            // ListHeaderComponent={this.renderSectionHeader}
             onEndReachedThreshold={0.1}
             style={{ height: '100%' }}
 

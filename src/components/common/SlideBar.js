@@ -109,8 +109,8 @@ const SelectItem =(cateId,onSelect,id,selected,subName) =>{
     const targetSelected =  selected.includes(id)
 
     return (
-        <TouchableOpacity style={{position:'relative'}} onPress={()=>onSelect(id)}>
-            <View key={ id}
+        <TouchableOpacity key={id} style={{position:'relative'}} onPress={()=>onSelect(id)}>
+            <View
                   style={cateId === ""?styles.longOption:styles.option}>
                 <Text
                     style={{backgroundColor:targetSelected?'#FFE4E4':'#EAEEEF',textAlign:'center',height:33,lineHeight:33,fontSize:14 ,color:targetSelected?'#DD2727':'black'}}>
@@ -234,13 +234,14 @@ const renderSubContent = (cateId,subId,subName,selected,onSelect) =>{
 //categories
 const CateContent = (props)=>{
     const {source,selected,onSelect} = props;
+    console.log(source,"!!!!")
 
    const list = source.map((category,index)=>{
     const subContent = category.subCateList.map((subCate,subIndex)=>{
         return  renderSubContent(category.cateId,subCate.subCateId,subCate.subCateName,selected,onSelect)
     })
     return (
-        <View>
+        <View key={index}>
             <List.Item key={category.cateId}>
                 <Text style={{color: '#888888'}}>{category.cateName}</Text>
             </List.Item>

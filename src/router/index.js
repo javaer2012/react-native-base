@@ -31,9 +31,7 @@ import MyOrder from '../containers/MyOrder/MyOrder'
 import WorkerEnter from '../containers/WorkerEnter/WorkerEnter'
 import WorkerOrder from '../containers/WorkerOrder/WorkerOrder'
 
-
 import Accept from '../containers/Accept/Accept'
-import DoIt from '../containers/DoIt/DoIt'
 import UploadImg from '../containers/UploadImg/UploadImg'
 import Pay from '../containers/Pay/Pay'
 import PayResult from '../containers/PayResult/PayResult'
@@ -51,6 +49,7 @@ import Imagepicker from '../containers/ImagePicker'
 import NegativeRecord from '../containers/NegativeRecord'
 import OrderDetail from '../containers/OrderDetail/OrderDetail';
 import CrmPage_2 from '../containers/crmPage_2'
+import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
 
 
 
@@ -61,7 +60,7 @@ export default StackNavigator({
     RegisterPage: Register,
     ForgetPSWPage: ForgetPSW,
     ChangePSWPage: ChangePSW,
-    MyPage: My, 
+    MyPage: My,
     BadRecordPage:BadRecords,  // 负面记录
     AuthRecordPage:AuthRecords, // 授信纪录
     MyOrderPage:MyOrders, // 昊天的
@@ -81,10 +80,9 @@ export default StackNavigator({
     MyInstallmentPage: MyInstallmentPage, // 我的分期
     MyOrder: MyOrder, // 孟令禹 我的订单
     WorkerEnter: WorkerEnter, // 营业员入口
-    WorkerOrder: WorkerOrder,
-    OrderDetail,
-    Accept: Accept,  //
-    DoIt: DoIt,  // 受理：crm信息回填
+    WorkerOrder: WorkerOrder, // 啥都没有
+    OrderDetail, // 从WorkerEnter进入受理订单页面
+    Accept: Accept,  // 受理：crm信息回填
     UploadImg: UploadImg,
     Pay,
     PayResult,
@@ -98,9 +96,10 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
     NegativeRecord,
-    CrmPage_2
+    CrmPage_2,
+    SchoolSearchPage
 }, {
-         //initialRouteName: 'CrmPage_2',
+        initialRouteName: 'Accept',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

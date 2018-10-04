@@ -13613,7 +13613,8 @@ function pushCity() {
 
 // console.log('searchLetter2:', searchLetter2)
 module.exports = {
-    getIdData: getIdData,
+    schoolObjs,
+    // getIdData: getIdData,
     schoolList: schoolList,
-    schoolData: schoolData
+    // schoolData: schoolData
 }

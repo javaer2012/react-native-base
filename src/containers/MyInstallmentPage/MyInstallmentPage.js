@@ -122,14 +122,16 @@ export default class MyInstallmentPage extends RentApp {
         <Flex style={styles.totalMoneyStyle} direction="column" justify="center">
           <Text style={[styles.textBase]}>全部待还(元)</Text>
           <Text style={[styles.textBase]}>{totalMoney}</Text>
-          <Text style={[ styles.advance]}>
-            提前还款
-          </Text>
+          <TouchableOpacity style={[styles.advance]} onPress={() => this.showToast('敬请期待')}>
+            <Text>
+              提前还款
+            </Text>
+          </TouchableOpacity>
+          
         </Flex>
         <Flex direction="column" style={styles.cardBox}>
           {(!!periodList && !!periodList.length) && this.renderListTest(periodList)}
         </Flex>
-        
       </Flex>
     )
   }
@@ -146,9 +148,11 @@ const styles = StyleSheet.create({
   advance:{
     position: 'absolute',
     height: advanceH,
-    lineHeight: advanceH,
+    // lineHeight: advanceH,
     bottom: 0 - advanceH / 2,
     // paddingVertical: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 60,
     backgroundColor: '#fff'
   },
