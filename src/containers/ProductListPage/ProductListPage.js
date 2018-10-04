@@ -12,8 +12,9 @@ import Color from '../../styles/var'
 import Search from '../Search';
 import Sidebar from '../../components/common/SlideBar'
 const { queryGoodsList, HTTP_IMG } = api
+import Spinner from 'react-native-loading-spinner-overlay';
+// import throttle from '../../utils/throttle'
 
-// 
 
 export default class ProductListPage extends RentApp {
   static navigationOptions = {
@@ -27,7 +28,8 @@ export default class ProductListPage extends RentApp {
     isLoreMoreing: '',
     selected: [],  // 选中的筛选条件,
     isShowSelected: false,
-    cateList: []
+    cateList: [],
+    loading: false,
   }
 
   async componentDidMount(){
@@ -37,8 +39,11 @@ export default class ProductListPage extends RentApp {
   }
 
   getData = async () =>{
+    const { pageNum, pageSize, products, isLoreMoreing } = this.state
+    if (isLoreMoreing === 'LoreMoreEmpty')  return false 
     const category = this.props.navigation.getParam('category');
-    const { pageNum, pageSize, products } = this.state
+    
+    await this.setState({ loading: true })
     try {
       const user = await AsyncStorage.multiGet(['userId', 'openId', 'isLogin', 'addressInfos'])
       const userId = this.userId,
@@ -47,19 +52,10 @@ export default class ProductListPage extends RentApp {
         cityCode = this.cityCode,
         provinceCode = this.provinceCode;
 
-      const params = {
-        userId,
-        openId,
-        provinceCode,
-        cityCode,
-        category,
-        pageNum,
-        pageSize
-      }
+      const params = { userId, openId, provinceCode, cityCode, category, pageNum, pageSize }
       
       const rsp = await queryGoodsList(params)
       const { data,data: { errcode, goodsList, totalPage } } = rsp || {}
-      // console.log(data)
       if (errcode === 1 && goodsList.length) {
         // const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
         this.setState({
@@ -75,6 +71,8 @@ export default class ProductListPage extends RentApp {
       }
     } catch (e) {
 
+    } finally {
+      this.setState({ loading: false })
     }
   }
 
@@ -86,7 +84,7 @@ export default class ProductListPage extends RentApp {
         "cityCode": this.cityCode,
         "category": '1'
       });
-      console.log(listRsp, '=====>listRsp')
+      console.log(JSON.stringify(listRsp.data.cateList), '=====>listRsp')
       if (listRsp.data.errcode === 1) {
         this.setState({
           cateList: listRsp.data.cateList
@@ -99,6 +97,8 @@ export default class ProductListPage extends RentApp {
 
   hasDo = false
 
+  throttleGetData = throttle(this.getData, 1000)
+  
   loadMoreFun = async (pageNum) => {
     // debugger
     this.hasDo = true
@@ -106,7 +106,8 @@ export default class ProductListPage extends RentApp {
       pageNum,
       refreshing: true,
     })
-    await this.getData()
+    this.throttleGetData()
+    // await this.getData()
     this.hasDo = false
 
   }
@@ -162,12 +163,27 @@ export default class ProductListPage extends RentApp {
   }
 
   render() {
-    let { products, pageNum, selected, cateList } = this.state
+    let { products, pageNum, selected, cateList, isShowSelected } = this.state
     const searchBtnStyle = [{
       paddingHorizontal: 36,
       paddingVertical: 10
     }]
+    // console.log(isShowSelected,"!!!!!!!!!!!!!!!!!!!!!!")
     return (
+      <Drawer
+        sidebar={<Sidebar source={cateList} selected={selected} onSelect={this.onSelect} />}
+        position="right"
+        open={false}
+        drawerRef={(el) => (this.drawer = el)}
+        drawerBackgroundColor="#ccc"
+        drawerWidth={328}
+      >
+        {/* <View style={{ flex: 1, marginTop: 114, padding: 8, minHeight: 603, zIndex: 10 }}>
+          <Button onClick={() => this.drawer && this.drawer.openDrawer()}>
+            Open drawer
+                    </Button>
+          <WhiteSpace />
+        </View> */}
       <Flex direction="column" align="stretch" style={{ height: '100%'}}>
         <Flex direction='column' align="stretch" style={{ backgroundColor: '#fff', paddingVertical: 6,borderBottomColor: '#eee',borderBottomWidth:0.5 }}>
           <Flex direction="row" justify="around" align="stretch">
@@ -177,7 +193,7 @@ export default class ProductListPage extends RentApp {
             <TouchableOpacity style={[searchBtnStyle, { borderLeftWidth: 1, borderRightWidth: 1 ,borderColor: '#eee'}]} >
               <Text style={{ color: selected === 2 ? Color.mainPink : '#333' }}>价格</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[searchBtnStyle]} onPress={() => this.setState({ isShowSelected: true})}>
+              <TouchableOpacity style={[searchBtnStyle]} onPress={() => this.drawer.openDrawer()}>
               <Text style={{ color: selected ===3 ? Color.mainPink : '#333' }}>筛选</Text>
             </TouchableOpacity>
           </Flex>
@@ -198,27 +214,14 @@ export default class ProductListPage extends RentApp {
           renderItem={this._renderItem}
           ListFooterComponent={this.renderFooter}//尾巴
         />
-        <Drawer
-          sidebar={<Sidebar source={cateList} selected={selected} onSelect={this.onSelect} />}
-          position="right"
-          open={false}
-          drawerRef={(el) => (this.drawer = el)}
-          onOpenChange={this.onOpenChange}
-          drawerBackgroundColor="#ccc"
-          drawerWidth={328}
-        >
-          <View style={{ flex: 1, marginTop: 114, padding: 8, minHeight: 603, zIndex: 10 }}>
-            <Button onClick={() => this.drawer && this.drawer.openDrawer()}>
-              Open drawer
-                    </Button>
-            <WhiteSpace />
-          </View>
-        </Drawer>
-        {/* <FlatList style={styles.productListBox}>
-          {this.renderList(products) }
-         
-        </FlatList> */}
+        
+        
+        <View style={{ flex: 1 }}>
+          <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
+        </View>
+        
       </Flex>
+      </Drawer>
     )
   }
 
@@ -231,7 +234,7 @@ export default class ProductListPage extends RentApp {
       return (
         <View style={{
           height: 44,
-          backgroundColor: 'rgb(200,200,200)',
+          // backgroundColor: 'rgb(200,200,200)',
           justifyContent: 'center',
           alignItems: 'center'
         }}>
@@ -242,7 +245,7 @@ export default class ProductListPage extends RentApp {
       return (
         <View style={{
           height: 44,
-          backgroundColor: 'rgb(200,200,200)',
+          // backgroundColor: 'rgb(200,200,200)',
           justifyContent: 'center',
           alignItems: 'center'
         }}>

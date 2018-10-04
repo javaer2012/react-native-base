@@ -7,10 +7,11 @@ import api from '../.././service/api'
 import RentApp from "../../components/RentApp";
 import ProudcuItem from '../../components/ProudcuItem'
 import Color from '../../styles/var'
+import Spinner from 'react-native-loading-spinner-overlay';
 const { staffOrderDetail } = api
-const Button_ = ({children}) => {
+const Button_ = ({ children, onPress}) => {
   return (
-    <TouchableOpacity style={{ flex: 1, justifyContent:'center', backgroundColor: Color.mainPink, paddingVertical: 13, height: 40 }}>
+    <TouchableOpacity onPress={onPress} style={{ flex: 1, justifyContent:'center', backgroundColor: Color.mainPink, paddingVertical: 13, height: 40 }}>
       <Text style={{ color: '#fff', textAlign: 'center' }} >{children}</Text>
     </TouchableOpacity>
   )
@@ -59,7 +60,8 @@ export default class OrderDetail extends RentApp {
           insureEndTime: '',
           insureStatus: ''
         }
-      ]
+      ],
+      loading:false
 
     }
   }
@@ -75,22 +77,22 @@ export default class OrderDetail extends RentApp {
 
   async getData() {
     try {
-
+      await this.setState({ loading: true })
       const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
       this.setState({
         userInfo: user
       })
-      console.log(user,"rrrrrrrrr")
-
+      const orderId = this.props.navigation.getParam('orderId');
       const params = {
         userId: this.userId,
         openId: this.openId,
-        orderId: '31524c0b69a44ebbb163862094f412ec',
+        orderId,
         cityCode: this.cityCode,
-        provinceCode: this.provinceCode
+        provinceCode: this.provinceCode,
+        staffNo: 3123123
         // 3123123
       }
-      // console.log(params, '=======》 params')
+      console.log(params, '=======》 params')
       const { data } = await staffOrderDetail(params)
       console.log(data, "ggggggggggggggggggggggggggggggggggggg")
       if (data.errcode === 1) {
@@ -103,6 +105,8 @@ export default class OrderDetail extends RentApp {
       console.log(JSON.stringify(rsp), '=========>getData res')
     } catch (e) {
 
+    } finally {
+      this.setState({ loading: false })
     }
   }
   render() {
@@ -160,17 +164,24 @@ export default class OrderDetail extends RentApp {
           </Flex>
           <Flex direction="column" align="stretch" style={{ paddingHorizontal: 10, flex: 1, width: '100%', backgroundColor:'#fff',paddingBottom: 80 }}>
             <Flex style={{ marginTop: 30 }}>
-              <Button_>
+              <Button_ onPress={() => { this.props.navigation.navigate('Home')}}>
                 {'回到首页'}
               </Button_>
             </Flex>
             <Flex style={{marginTop: 20}}>
+              <Button_ onPress={() => { this.props.navigation.navigate('Home') }}>
+                {'营业员受理'}
+              </Button_>
               <Button_>
                 {'营业员受理'}
               </Button_>
             </Flex>
           </Flex>
+          <View style={{ flex: 1 }}>
+            <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
+          </View>
         </Flex>
+        
       </ScrollView>
     )
   }
