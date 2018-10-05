@@ -4,6 +4,7 @@ import {Flex, Icon, WhiteSpace, WingBlank, SearchBar} from 'antd-mobile-rn';
 import api from "../service/api";
 import ProudcuItem from "../components/ProudcuItem";
 import Spinner from 'react-native-loading-spinner-overlay'
+import RentApp from "../components/RentApp";
 
 
 const styles = StyleSheet.create({
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default class Search extends React.Component {
+export default class Search extends RentApp {
     static navigationOptions = {
         title: "搜索"
     }
@@ -34,7 +35,8 @@ export default class Search extends React.Component {
     }
 
 
-    componentDidMount(){
+    async componentDidMount(){
+        await this.getOpenIdAndUserId()
         this.getHotKeywords()
         this.getLatestKeyword()
     }
@@ -59,8 +61,8 @@ export default class Search extends React.Component {
             //await AsyncStorage.removeItem('latestKeywords')
 
             const params = {
-                cityCode:84401,
-                provinceCode:844
+                cityCode: this.cityCode,
+                provinceCode: this.provinceCode
             }
 
             const rsp = await api.getHotWord(params)
@@ -87,8 +89,8 @@ export default class Search extends React.Component {
             })
 
             const params = {
-                cityCode:84401,
-                provinceCode: 844,
+                cityCode: this.cityCode,
+                provinceCode: this.provinceCode,
                 keyWord:this.state.value,
                 pageNum:clean?1:this.state.pageNum,
                 pageSize:this.state.pageSize
@@ -109,7 +111,7 @@ export default class Search extends React.Component {
                 latest.push({
                     name:this.state.value
                 })
-
+            // console.log(latest,"@@@@@@22")
             await AsyncStorage.setItem('latestKeywords',JSON.stringify(latest))
 
             const { data: { errcode, goodsList, totalPage } } = rsp || {}
@@ -199,6 +201,12 @@ export default class Search extends React.Component {
 
     }
 
+    searchGoodsFun = () => {
+        const keyWord = this.state.value
+        const { navigate } = this.props.navigation;
+        navigate('ProductListPage', { keyWord })
+    }
+
 
     render() {
         return (
@@ -207,7 +215,8 @@ export default class Search extends React.Component {
 
                 <SearchBar style={{width: '100%', backgroundColor: 'white', color: 'black'}}
                            value={this.state.value} onChange={(value)=>this.setState({value})}
-                           onSubmit={()=>this.queryGoodsByKeyWords(true)}/>
+                        //    onSubmit={()=>this.queryGoodsByKeyWords(true)}/>
+                    onSubmit={() => this.searchGoodsFun() } />
 
                 {this.state.products.length === 0? <View>
                     {this.state.latest.length >0?<WingBlank size={"md"} style={{backgroundColor: 'white'}}>

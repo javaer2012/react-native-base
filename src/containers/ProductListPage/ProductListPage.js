@@ -15,7 +15,6 @@ const { queryGoodsList, HTTP_IMG } = api
 import Spinner from 'react-native-loading-spinner-overlay';
 // import throttle from '../../utils/throttle'
 
-
 export default class ProductListPage extends RentApp {
   static navigationOptions = {
     title: "商品列表"
@@ -39,9 +38,12 @@ export default class ProductListPage extends RentApp {
   }
 
   getData = async () =>{
+    console.log(999)
     const { pageNum, pageSize, products, isLoreMoreing } = this.state
     if (isLoreMoreing === 'LoreMoreEmpty')  return false 
     const category = this.props.navigation.getParam('category');
+    const keyWord = this.props.navigation.getParam('keyWord');
+    
     
     await this.setState({ loading: true })
     try {
@@ -52,7 +54,7 @@ export default class ProductListPage extends RentApp {
         cityCode = this.cityCode,
         provinceCode = this.provinceCode;
 
-      const params = { userId, openId, provinceCode, cityCode, category, pageNum, pageSize }
+      const params = { userId, openId, provinceCode, cityCode, category, keyWord, pageNum, pageSize }
       
       const rsp = await queryGoodsList(params)
       const { data,data: { errcode, goodsList, totalPage } } = rsp || {}
@@ -72,6 +74,7 @@ export default class ProductListPage extends RentApp {
     } catch (e) {
 
     } finally {
+      // doing = false
       this.setState({ loading: false })
     }
   }
@@ -95,21 +98,14 @@ export default class ProductListPage extends RentApp {
     }
   }
 
-  hasDo = false
-
   throttleGetData = throttle(this.getData, 1000)
   
   loadMoreFun = async (pageNum) => {
-    // debugger
-    this.hasDo = true
     await this.setState({
       pageNum,
       refreshing: true,
     })
     this.throttleGetData()
-    // await this.getData()
-    this.hasDo = false
-
   }
 
   _renderItem = ({ item }) => {
@@ -163,12 +159,12 @@ export default class ProductListPage extends RentApp {
   }
 
   render() {
-    let { products, pageNum, selected, cateList, isShowSelected } = this.state
+    let { products, pageNum, selected, cateList, isShowSelected, isLoreMoreing } = this.state
     const searchBtnStyle = [{
       paddingHorizontal: 36,
       paddingVertical: 10
     }]
-    // console.log(isShowSelected,"!!!!!!!!!!!!!!!!!!!!!!")
+
     return (
       <Drawer
         sidebar={<Sidebar source={cateList} selected={selected} onSelect={this.onSelect} />}
@@ -204,10 +200,12 @@ export default class ProductListPage extends RentApp {
           extraData={this.state}
           style={{height: '100%'}}
           onEndReached={() => {
-            if (this.hasDo) {
-              return false
+            if (isLoreMoreing !== 'LoreMoreEmpty') {
+              this.loadMoreFun(pageNum + 1)
+            } else if (isLoreMoreing == 'LoreMoreing') {
+              console.log('LoreMoreing')
             }
-            this.loadMoreFun( pageNum + 1)
+       
           }}
           // refreshing={this.state.refreshing}
           keyExtractor={this._keyExtractor}

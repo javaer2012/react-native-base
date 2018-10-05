@@ -234,7 +234,6 @@ const renderSubContent = (cateId,subId,subName,selected,onSelect) =>{
 //categories
 const CateContent = (props)=>{
     const {source,selected,onSelect} = props;
-    console.log(source,"!!!!")
 
    const list = source.map((category,index)=>{
     const subContent = category.subCateList.map((subCate,subIndex)=>{
