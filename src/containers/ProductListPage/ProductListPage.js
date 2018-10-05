@@ -38,7 +38,6 @@ export default class ProductListPage extends RentApp {
   }
 
   getData = async () =>{
-    console.log(999)
     const { pageNum, pageSize, products, isLoreMoreing } = this.state
     if (isLoreMoreing === 'LoreMoreEmpty')  return false 
     const category = this.props.navigation.getParam('category');
