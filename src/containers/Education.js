@@ -20,6 +20,11 @@ export default class Education extends Component{
             }
         });
     }
+
+    setSchoolFun = (data) => {
+        console.log(data,"!!!")
+
+    }
     render(){
 
         const Item = List.Item;
@@ -40,7 +45,7 @@ export default class Education extends Component{
                     </Item>
                     <Item arrow={"horizontal"} onClick={() => navigation.navigate("SchoolSearchPage",  {
                         cityId: this.state.cityId,
-                        callback: (data) => this.secityIdFun(data)
+                        callback: (data) => this.setSchoolFun(data)
                     })}>院校名称</Item>
                     <Item arrow={"horizontal"} onClick={()=>navigation.navigate("DrivingPage")}>当前状态</Item>
 
