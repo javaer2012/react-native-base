@@ -57,6 +57,7 @@ export default class ProductListPage extends RentApp {
       const params = { userId, openId, provinceCode, cityCode, category, keyWord, pageNum, pageSize }
       
       const rsp = await queryGoodsList(params)
+        console.log("Products:",rsp)
       const { data,data: { errcode, goodsList, totalPage } } = rsp || {}
       if (errcode === 1 && goodsList.length) {
         // const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
