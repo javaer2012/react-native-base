@@ -99,7 +99,6 @@ export default class ProductDetailPage extends RentApp {
         goodsId: productId,
         userId: user.userId || authAppSecret
       })
-      console.log(JSON.stringify(queryGoodsDetailData), "mmmmmmmmmm")
       if (!queryGoodsDetailData || queryGoodsDetailData.errcode !==1 ) {
         throw queryGoodsDetailData.errmsg ||  "queryGoodsDetailData 获取数据失败"
         return 
