@@ -24,8 +24,6 @@ import RentApp from "./src/components/RentApp";
 import {
     isFirstTime,
     isRolledBack,
-    packageVersion,
-    currentVersion,
     checkUpdate,
     downloadUpdate,
     switchVersion,
@@ -140,8 +138,9 @@ export default class App extends RentApp {
     }
 
 
-    registerUser = async () => {
+    registerUser = async (option) => {
         try {
+            await AsyncStorage.clear()
 
             await AsyncStorage.removeItem('openId')
             const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
@@ -150,8 +149,8 @@ export default class App extends RentApp {
 
             if (!openId[0][1] || !openId[1][1]) {
                 const params = {
-                    provinceCode: this.provinceCode,
-                    cityCode: this.cityCode,
+                    provinceCode: option.provinceCode,
+                    cityCode: option.cityCode,
                     openId: DeviceInfo.getUniqueID()
                 }
                 const register = await registerUser(params);
@@ -202,7 +201,7 @@ export default class App extends RentApp {
                         }
                     }
                     await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
-                    this.registerUser()
+                    this.registerUser(option)
                     this.isOpen({
                         provinceCode: option["provinceCode"],
                         cityCode: option["cityCode"],

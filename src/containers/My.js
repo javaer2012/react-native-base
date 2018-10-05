@@ -183,8 +183,6 @@ export default class My extends RentApp {
 
         console.log("Page My")
 
-        setTimeout(()=>this.initalState(),0)
-
     }
 
     async initalState() {
@@ -247,6 +245,15 @@ export default class My extends RentApp {
         console.log("UnMount")
     }
 
+    componentDidUpdate(){
+        console.log("Updated")
+
+       const fromPage =  this.props.navigation.getParam('fromPage')
+        if(fromPage === "login"){
+            setTimeout(()=>this.initalState(),0)
+        }
+    }
+
     handleCanvas(canvas) {
         if(!canvas) return
         if (canvas) {
@@ -269,6 +276,9 @@ export default class My extends RentApp {
         console.log(this.state)
 
         const {navigation} = this.props
+
+        const a = navigation.getParam('isLoggedIn')
+        if(a) this.props.navigation.replace("MyPage")
 
         const paramsFromLogin = navigation.getParam('isLoggedIn',this.state.isLoggedIn)
         return (

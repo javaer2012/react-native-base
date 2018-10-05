@@ -99,7 +99,8 @@ export default StackNavigator({
     CrmPage_2,
     SchoolSearchPage
 }, {
-        initialRouteName: 'Accept',
+       //initialRouteName: 'SchoolSearchPage',
+       //initialRouteName: 'SchoolSearchPage',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
