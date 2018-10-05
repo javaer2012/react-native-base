@@ -73,7 +73,6 @@ export default class ProductDetailPage extends RentApp {
     productId: '',  // 产品id
     collectStatus: 0,
     userInfos:{}, // 用户信息
-    showNotCredit:false,
     capacityId: '', // 已选择的内存skuId
     colorId: '', // 已选择的颜色skuId
     isShowBindCard: false,
@@ -100,7 +99,7 @@ export default class ProductDetailPage extends RentApp {
         goodsId: productId,
         userId: user.userId || authAppSecret
       })
-      // console.log(queryGoodsDetailData, "mmmmmmmmmm")
+      console.log(JSON.stringify(queryGoodsDetailData), "mmmmmmmmmm")
       if (!queryGoodsDetailData || queryGoodsDetailData.errcode !==1 ) {
         throw queryGoodsDetailData.errmsg ||  "queryGoodsDetailData 获取数据失败"
         return 
@@ -242,7 +241,6 @@ export default class ProductDetailPage extends RentApp {
       var isCredited = userInfos.isCredited;
       // await AsyncStorage.multiSet([['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
       const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
-
       if (isLoggedIn !== "1") {
         this.setState({
           isShowEasyModal: true,
@@ -467,7 +465,6 @@ export default class ProductDetailPage extends RentApp {
       capitalProdSelected,
       isShowPackage,
       isShowCapital,
-      showNotCredit,
       EasyModalInfos,
       isShowEasyModal,
       loading
@@ -659,17 +656,6 @@ export default class ProductDetailPage extends RentApp {
               </View>
             </Tabs>
           </Flex>
-        </Modal>
-        <Modal
-          visible={showNotCredit}
-          transparent
-          maskClosable={false}
-          // onClose={this.onClose('modal1')}
-          // title="Title"
-          footer={[{ text: 'Ok', onPress: () => { this.onClosesNotCredit() } }]}
-          // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
-        >
-          <Text>还没有授信，是否立刻去授信</Text>
         </Modal>
         <Modal
           popup
