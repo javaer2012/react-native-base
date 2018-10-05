@@ -12,7 +12,6 @@ import store from './src/store/store';
 import AppNavigator from './src/router';
 
 import { AsyncStorage, ActivityIndicator, View } from 'react-native';
-import {setData,getData} from './src/utils/storage'
 import {getToken} from "./src/service/api";
 import api from './src/service/api'
 import config from './src/config';

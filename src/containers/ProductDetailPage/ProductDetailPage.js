@@ -15,6 +15,7 @@ import RentApp from "../../components/RentApp";
 import EasyModal from './components/EasyModal'
 import { authAppSecret } from '../../config'
 const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods, payment } = api
+import Spinner from 'react-native-loading-spinner-overlay';
 // const PRODUCT_ID = '201802241102330510355414'
 
 const storageItem = ({ data, itemData, onPress, subSkuId }) => {
@@ -22,7 +23,9 @@ const storageItem = ({ data, itemData, onPress, subSkuId }) => {
     paddingVertical: 5,
     paddingHorizontal: 20,
     borderRadius: 5,
-    marginBottom: 1
+    marginBottom: 1,
+    borderWidth: 1,
+    boederColor: Color.mainPink
   }]
   const textStyle = []
   if (subSkuId === itemData.subSkuId) {
@@ -47,6 +50,9 @@ const tabs = [
 ];
 
 export default class ProductDetailPage extends RentApp {
+  static navigationOptions = {
+    title: "商品详情"
+  }
   state = {
     photoList:[], // 图片列表
     telecomProdList:[], // 电信套餐列表
@@ -73,6 +79,7 @@ export default class ProductDetailPage extends RentApp {
     isShowBindCard: false,
     isShowEasyModal: false,
     EasyModalInfos:{},
+    loading: false,
   }
   async componentDidMount() {
     // '201807191036353330096584' || 
@@ -86,6 +93,7 @@ export default class ProductDetailPage extends RentApp {
       productId
     })
     try {
+      await this.setState({ loading: true })
       const { data: queryGoodsDetailData } = await queryGoodsDetail({
         provinceCode: this.provinceCode,
         cityCode: this.cityCode,
@@ -102,6 +110,8 @@ export default class ProductDetailPage extends RentApp {
 
     } catch (error) {
       this.showToast(error)
+    } finally {
+      await this.setState({ loading: false })
     }
   }
   handleDataFun = (data) => {
@@ -120,20 +130,6 @@ export default class ProductDetailPage extends RentApp {
       bizTypeCode, // 业务类型编码
     } = data
     
-    // if(res.data.capitalMealProdList != null && res.data.capitalMealProdList != '' && res.data.capitalMealProdList != 'undefined' ){
-    //   that.goodsConfigType = 2;
-    // }
-
-    // const singleList = [];
-    // const mixList = []
-    // telecomProdList.forEach(element => {
-    //   if (element.mealType == 1) {
-    //     singleList.push(element)
-    //   } else if (element.mealType == 2) {
-    //     mixList.push(element)
-    //   }
-    //   // 1 - 单产品套餐；2 - 融合套餐 initPayment
-    // });
     const mealSelected = telecomProdList[0]
     if(bizTypeCode == 'zq_rent_phone'){
       if(isTelConf == 1){
@@ -221,7 +217,7 @@ export default class ProductDetailPage extends RentApp {
       return (
         <TouchableOpacity key={index} style={{ width: '100%' }} onPress={this.selectedCapitalProdFun.bind(this, item)}>
           <Flex style={{ width: '100%', paddingVertical: 15, borderBottomColor: '#f6f6f6', borderBottomWidth: 1 }} direction="row" justify="start" align="center">
-            <Text style={{ backgroundColor: item.prodId === capitalProdSelected.prodId  ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#ccc', borderRadius: 7, overflow: 'hidden' }}></Text>
+            <Text style={{ backgroundColor: item.prodId === capitalProdSelected.prodId  ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#888', borderRadius: 7, overflow: 'hidden' }}></Text>
             <Text>{item.monthPay} x {item.periods}期</Text>
             <Text>{item.prodDesc}</Text>
           </Flex>
@@ -322,6 +318,8 @@ export default class ProductDetailPage extends RentApp {
       console.error(error,"!!!")
     }
   }
+
+  
 
   // 下单支付
   goToPayFun = async () => {
@@ -471,7 +469,8 @@ export default class ProductDetailPage extends RentApp {
       isShowCapital,
       showNotCredit,
       EasyModalInfos,
-      isShowEasyModal
+      isShowEasyModal,
+      loading
       
     } = this.state
       if (!photoList) return false
@@ -509,13 +508,14 @@ export default class ProductDetailPage extends RentApp {
               </View>
             </View>
             <View style={[styles.canSelectedBox]}>
-              <View style={[flexRow, contentPadding, {
+              <View style={[flexRow, {
                 backgroundColor: '#fff',
-                paddingVertical: 10,
+                padding: 10,
                 alignItems: 'center'
               }]}>
                 <Text style={{
-                  ...mainGray
+                  // ...mainGray
+                  color: '#888',
                 }}>容量</Text>
                 <View style={{ marginLeft: 10 }}>
                   <SelectedROMList
@@ -534,7 +534,7 @@ export default class ProductDetailPage extends RentApp {
                     alignItems: 'center'
                   }]}>
                     <Text style={{
-                      ...mainGray,
+                      color: '#888',
                       marginRight: 10
                     }}> 颜色</Text>
                     <View>
@@ -548,16 +548,17 @@ export default class ProductDetailPage extends RentApp {
               )}
             <Flex style={{ backgroundColor: '#fff', padding: 10 }} direction='row' align='center'>
               <Text style={{
-                ...mainGray,
+                color: '#888',
                 marginRight: 10
               }}>数量</Text>
-              <NumberSelect
+              <Text style={{color: Color.mainPink}}>1</Text>
+              {/* <NumberSelect
                 _onPress={(count) => {
                   this.setState({
                     count: count
                   }, () => { console.log(count, "ffff") })
                 }}
-              ></NumberSelect>
+              ></NumberSelect> */}
             </Flex>
             <TouchableOpacity onPress={this.togglePackageFun.bind(this, true)}>
               <Flex style={[contentPadding, { backgroundColor: '#fff', marginBottom: 1 }]} direction='row' justify='between' align='center' >
@@ -566,7 +567,7 @@ export default class ProductDetailPage extends RentApp {
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#ccc' }}>{mealSelected.prodName}</Text>
+                    <Text style={{ color: '#888' }}>{mealSelected.prodName}</Text>
                     <Text>></Text>
                   </Flex>
                 </Flex.Item>
@@ -579,7 +580,7 @@ export default class ProductDetailPage extends RentApp {
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#ccc' }}>{capitalProdSelected.prodName}</Text>
+                    <Text style={{ color: '#888' }}>{capitalProdSelected.prodName || '请选择分期'}</Text>
                     {/* {console.log(capitalProdSelected,"!!!!!")} */}
                     <Text>></Text>
                   </Flex>
@@ -607,6 +608,9 @@ export default class ProductDetailPage extends RentApp {
           <PayBar
             goToPay={this.goToPayFun}
             data={0} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
         </View>
         <Modal
           popup
@@ -723,6 +727,7 @@ export default class ProductDetailPage extends RentApp {
 }
 
 
+
 // 渲染banner
 _renderImage = (data) => {
   if (!data || !(data instanceof Array)) return false
@@ -794,7 +799,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 400,
+    height: 350,
   },
   paybarStyle: {
     width: '100%',
