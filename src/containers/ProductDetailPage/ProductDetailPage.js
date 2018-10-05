@@ -341,7 +341,7 @@ export default class ProductDetailPage extends RentApp {
     //绑卡判断
     if ( capitalProdSelected && capitalProdSelected.isCreditCard == 1 && userInfos.isCreditCard == 0) {
       //需要绑卡并且还没有绑卡
-      th.setState({
+      this.setState({
         isShowBindCard: true
       })
       return false
