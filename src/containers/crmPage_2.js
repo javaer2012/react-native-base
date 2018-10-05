@@ -1,5 +1,6 @@
 import React from 'react'
-import {View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, ActivityIndicator} from 'react-native'
+
+import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, ActivityIndicator, AsyncStorage} from 'react-native'
 import ImagePicker from "react-native-image-picker";
 import {Flex, WhiteSpace, WingBlank} from 'antd-mobile-rn'
 import RentApp from "../components/RentApp";
@@ -7,7 +8,7 @@ import Button from '../components/common/Button'
 import Progress from '../components/Progress'
 import Spinner from 'react-native-loading-spinner-overlay'
 import api from "../service/api";
-
+const { staffCommitOrder } = api
 
 const styles = StyleSheet.create({
     circle: {width: 36, height: 36, borderRadius: 18, backgroundColor: '#3487FF'},
@@ -25,34 +26,96 @@ const data = [
         text: '上传并签协议'
     }
 ]
-
 export default class CrmPage_2 extends RentApp {
 
     static navigationOptons = {
         title: 'crm信息回填'
     }
 
-    state = {}
-
-    confirm = async ()=> {
-        this.setState({
-            loading: true
-        })
-
-        const {
-            id_filePath,
-            id_back_filePath,
-            id_person_filePath,
-            ter_pho_filePath,
-            ternimal_filePath,
-            contract_filePath
-        } = this.state
-
-        console.log(this.state)
-
-        setTimeout(()=>this.setState({loading:false}),3000)
+    state = {
+        fromAcceptDate:{},
+        loading: false,
     }
 
+
+    confirm = async ()=> {
+        await this.setState({ loading: true })
+        try {
+            const {
+                id_filePath,
+                id_back_filePath,
+                id_person_filePath,
+                ter_pho_filePath,
+                ternimal_filePath,
+                contract_filePath,
+                fromAcceptDate
+            } = this.state
+
+            const user = await AsyncStorage.multiGet(['userId', 'openId', 'isLogin', 'addressInfos'])
+            const userId = this.userId,
+                openId = this.openId,
+                isLogin = user[2][1] || false,
+                cityCode = this.cityCode,
+                provinceCode = this.provinceCode;
+            const staffInfo = {
+                terminalCode: fromAcceptDate.client,
+                staffNo: fromAcceptDate.staffNo,
+                contractPhoneNo: fromAcceptDate.agreement,
+                crmOrderNo: '1'
+            }
+            const staffInfoJson = JSON.stringify(staffInfo)
+            const photoList = {
+                frontCardPath: id_filePath,
+                backCardPath: id_back_filePath,
+                handCardPath: id_person_filePath,
+                terminalCardPath: ter_pho_filePath,
+                terminalAgreementPath: ternimal_filePath,
+                contractDealPath: contract_filePath
+            }
+            const photoListStr = JSON.stringify(photoList)
+
+            const params = { 
+                userId, 
+                provinceCode, 
+                cityCode, 
+                orderId: fromAcceptDate && fromAcceptDate.orderId, 
+                staffInfoJson,
+                photoListStr
+                // "photoListStr": "{\"frontCardPath\":\" / order / 20180925 / Ho0u_i9InzLkZhPTI8aXCZT8rwVyM6o12aCK48pKgK8X5QoRG9MRgxGd2iBcJg00.jpg\",\"backCardPath\":\"/order/20180925 / 5yngSOX8gv7oKtT4DofMiVdV7ofTHL6RTiJy-Qzs7WbeTt0QTlKhjK3n8bOUiIve.jpg\",\"handCardPath\":\"/order/20180925 / TpWrluACoIbRO4pKTCU_pqAhMRc7 - izzfix04OmekejZB1shkLyKkIIoIFpC7Pd5.jpg\",\"terminalCardPath\":\"/order/20180925 / 9ib9s9PEquzN9DnONk31FA3Yng38hk_GXhGwYvl1w3nx4fsploi6IxmQB2zWwhQb.jpg\",\"terminalAgreementPath\":\"/order/20180925 / gm0gdLB1Uu6iOdmp - 9qxew8El2VULNrYDbyhVFVe-zknjpyxk4TWbH6a15ASWglj.jpg\",\"contractDealPath\":\"/order/20180925 / gm0gdLB1Uu6iOdmp - 9qxe6OVQ8XQE81kzPvT7Ho58257_ngbijl9apz_qQHdufsQ.jpg\"}",
+            }
+
+            const rsp = await staffCommitOrder(params)
+            console.log(rsp,"!!!!!!!!!!!!1")
+            if (errcode === 1 && goodsList.length) {
+                const { data, data: { errcode, goodsList, totalPage } } = rsp || {}
+                // const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
+                this.setState({
+                    products: [...products, ...goodsList],
+                    totalPage,
+                    refreshing: false,
+                    isLoreMoreing: 'LoreMoreing'
+                })
+            } else if (errcode === 1 && !goodsList.length) {
+                this.setState({
+                    isLoreMoreing: 'LoreMoreEmpty'
+                })
+            }
+        } catch (e) {
+            console.log(e,"errrrrrrr")
+        } finally {
+            this.setState({ loading: false })
+        }
+    }
+
+    componentDidMount = async () => {
+        // const { agreement, crm, client, } = this.state
+        await this.getOpenIdAndUserId()
+        const fromAcceptDate = this.props.navigation.state.params
+        console.log(fromAcceptDate,'1111111111111')
+        this.setState({
+            fromAcceptDate
+        })
+    }
 
     selectPhotoTapped(id) {
 
@@ -127,14 +190,13 @@ export default class CrmPage_2 extends RentApp {
                 <WhiteSpace size={"xl"}/>
                 <Flex direction={"column"} justify={"start"} align={"center"}>
                     <Flex direction={"row"} align={"center"} justify={"center"}>
-
                         <Progress data={data}/>
 
                     </Flex>
                     <WhiteSpace size={"md"}/>
 
-
                     <Flex direction={"row"} justify={"around"} style={{width: '100%',marginTop:80}}>
+
                         <TouchableOpacity onPress={() => this.selectPhotoTapped("id")}>
                             {this.state.idloading === true ?
                                 <Flex justify={"center"} align={"center"} style={{width: 170, height: 134}}>

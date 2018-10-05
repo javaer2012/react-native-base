@@ -140,9 +140,9 @@ export default class App extends RentApp {
 
     registerUser = async (option) => {
         try {
-            await AsyncStorage.clear()
+           // await AsyncStorage.clear()
 
-            await AsyncStorage.removeItem('openId')
+           // await AsyncStorage.removeItem('openId')
             const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
 
             console.log(openId)

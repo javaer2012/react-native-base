@@ -41,6 +41,7 @@ export default class WorkerEnter extends RentApp {
       pageNum
     }
     const { data } = await orderList_ajax(params)
+    console.log(JSON.stringify(data),"!!!!!!!")
     if (!data || data.errcode !== 1) {
       throw data.errmsg || "data 获取数据失败"
       return
@@ -82,7 +83,7 @@ export default class WorkerEnter extends RentApp {
           key={index}  
           style={{marginBottom: 10, backgroundColor: '#fff', paddingBottom: 20}} 
           onPress={() => navigate('OrderDetail', {
-            orderId
+            orderId,
           })}
         >
           <Flex style={styles.orderBox}direction="column" align="start">
@@ -104,8 +105,9 @@ export default class WorkerEnter extends RentApp {
     const { notDoOrderList, hasDoOrderList } = this.state
     const { navigate } = this.props.navigation;
     const tabs = [
-      { title: '已受理' },
       { title: '未受理' },
+      { title: '已受理' },
+     
     ];
     const STYLE = {
       alignItems: 'flex-start',

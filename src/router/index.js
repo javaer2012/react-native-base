@@ -48,8 +48,8 @@ import FindDetail from '../containers/FindDetail';
 import Imagepicker from '../containers/ImagePicker'
 import NegativeRecord from '../containers/NegativeRecord'
 import OrderDetail from '../containers/OrderDetail/OrderDetail';
-import CrmPage_2 from '../containers/crmPage_2'
 import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
+import CrmPage_2 from '../containers/crmPage_2'
 
 
 
@@ -99,8 +99,7 @@ export default StackNavigator({
     CrmPage_2,
     SchoolSearchPage
 }, {
-       //initialRouteName: 'SchoolSearchPage',
-       //initialRouteName: 'SchoolSearchPage',
+        // initialRouteName: 'WorkerEnter',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
