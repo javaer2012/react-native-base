@@ -77,6 +77,7 @@ export default class List extends RentApp {
 
   changedata = (item) => {
     const addressInfos = {
+      crmProvName: item.crmProvName,
       city: item.admCityName,
       cityCode: item.crmCityCode,
       provinceCode: item.crmProvCode,

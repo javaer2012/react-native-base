@@ -13,9 +13,7 @@ export default class Education extends Component{
     }
     setCityIdFun = (data) => {
         cityObj.forEach(element => {
-            console.log(data.city , element.province,"mmmmmm")
-            if (data.city === element.province) {
-                debugger
+            if (data.crmProvName === element.province) {
                 this.setState({
                     cityId: element.id
                 })
