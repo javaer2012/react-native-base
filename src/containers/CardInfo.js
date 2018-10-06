@@ -117,8 +117,8 @@ export default class CardInfo extends RentApp{
                         await AsyncStorage.setItem(['userInfo',JSON.stringify(newUserInfo)])
                     }
 
-                this.props.navigation.navigation("ProductDetailPage",{
-                    provinceCode:this.productId
+                this.props.navigation.replace("ProductDetailPage",{
+                    productId:this.productId
                 })
             } else {
                 Toast.info(data.errmsg,1)
