@@ -2,8 +2,7 @@ import React, {Component} from 'react';
 import {ScrollView, Text, TouchableOpacity, StyleSheet, Image, Dimensions, AsyncStorage,ImageBackground} from 'react-native';
 import {WhiteSpace, Flex, Toast} from 'antd-mobile-rn';
 import Button from '../components/common/Button'
-import ImagePicker from "react-native-image-picker";
-import api from "../service/api";
+ import api from "../service/api";
 import Spinner from 'react-native-loading-spinner-overlay'
 import RentApp from "../components/RentApp";
 
@@ -182,7 +181,7 @@ export default class DrivingLicense extends RentApp {
 
         try{
 
-            const rsp = await  Promise.all([api.uploadImage(formData),api.uploadImage(backData)]);
+            const rsp = await  Promise.all([api.uploadImage(formData,'drivingLicense'),api.uploadImage(backData,"drivingLicense")]);
 
             const [font,back] = rsp;
             console.log(rsp)

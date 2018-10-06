@@ -11,6 +11,11 @@ export default class RentApp extends Component{
         this.showToast = this.showToast
         this.getOpenIdAndUserId = this.getOpenIdAndUserId
     }
+    GO_BACK(data) {
+        const { navigate, goBack, state } = this.props.navigation;
+        state.params.callback(data);
+        this.props.navigation.goBack();
+    }
 
     showToast(data){
         Toast.info(data, 1.5,null , false);
@@ -28,4 +33,6 @@ export default class RentApp extends Component{
 
         }
     }
+
+
 }

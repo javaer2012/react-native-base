@@ -28,6 +28,8 @@ export default class Pay extends RentApp {
   }
 
   async componentDidMount() {
+
+    console.log("Pay Page")
     const  pastDueTime = await AsyncStorage.getItem('pastDueTime')
     const passDueTime = moment(+pastDueTime).format("hh:mm")
     let user = await AsyncStorage.getItem('userInfo')

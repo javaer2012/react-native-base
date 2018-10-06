@@ -4,10 +4,10 @@ import ImagePicker from "react-native-image-picker";
 import {Flex, WhiteSpace, WingBlank} from 'antd-mobile-rn'
 import RentApp from "../components/RentApp";
 import Button from '../components/common/Button'
+import Progress from '../components/Progress'
 import Spinner from 'react-native-loading-spinner-overlay'
 import api from "../service/api";
 const { staffCommitOrder } = api
-
 
 const styles = StyleSheet.create({
     circle: {width: 36, height: 36, borderRadius: 18, backgroundColor: '#3487FF'},
@@ -16,6 +16,15 @@ const styles = StyleSheet.create({
     camera: {width: 35, height: 35}
 })
 
+const data = [
+    {
+        active: true,
+        text: '填信息'
+    }, {
+        active: true,
+        text: '上传并签协议'
+    }
+]
 export default class CrmPage_2 extends RentApp {
 
     static navigationOptons = {
@@ -180,22 +189,13 @@ export default class CrmPage_2 extends RentApp {
                 <WhiteSpace size={"xl"}/>
                 <Flex direction={"column"} justify={"start"} align={"center"}>
                     <Flex direction={"row"} align={"center"} justify={"center"}>
-
-                        <View style={styles.circle}>
-                            <Text style={styles.text}>1</Text>
-                        </View>
-
-                        <View style={styles.line}></View>
-
-                        <View style={styles.circle}>
-                            <Text style={styles.text}>2</Text>
-                        </View>
+                        <Progress data={data}/>
 
                     </Flex>
                     <WhiteSpace size={"md"}/>
 
+                    <Flex direction={"row"} justify={"around"} style={{width: '100%',marginTop:80}}>
 
-                    <Flex direction={"row"} justify={"around"} style={{width: '100%'}}>
                         <TouchableOpacity onPress={() => this.selectPhotoTapped("id")}>
                             {this.state.idloading === true ?
                                 <Flex justify={"center"} align={"center"} style={{width: 170, height: 134}}>

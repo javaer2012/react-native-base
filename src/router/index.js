@@ -48,8 +48,8 @@ import FindDetail from '../containers/FindDetail';
 import Imagepicker from '../containers/ImagePicker'
 import NegativeRecord from '../containers/NegativeRecord'
 import OrderDetail from '../containers/OrderDetail/OrderDetail';
-import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
 import CrmPage_2 from '../containers/crmPage_2'
+import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
 
 
 
@@ -60,7 +60,7 @@ export default StackNavigator({
     RegisterPage: Register,
     ForgetPSWPage: ForgetPSW,
     ChangePSWPage: ChangePSW,
-    MyPage: My, 
+    MyPage: My,
     BadRecordPage:BadRecords,  // 负面记录
     AuthRecordPage:AuthRecords, // 授信纪录
     MyOrderPage:MyOrders, // 昊天的
@@ -96,10 +96,10 @@ export default StackNavigator({
     LocationPage,
     FindDetailPage:FindDetail,
     NegativeRecord,
-    SchoolSearchPage,
     CrmPage_2,
+    SchoolSearchPage
 }, {
-    initialRouteName: 'EducationPage',
+        // initialRouteName: 'BadRecords',
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {

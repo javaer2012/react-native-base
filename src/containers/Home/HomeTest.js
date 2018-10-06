@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import {Text, View, StyleSheet, Image, TouchableOpacity, Alert, Linking} from 'react-native'
 import { Button, Carousel } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/home'
 import ProductList from '../../components/ProductList'
 import { flexRow } from '../../styles/common'
+import {checkUpdate, downloadUpdate, switchVersion, switchVersionLater} from "react-native-update";
 
 
 
@@ -42,10 +43,45 @@ export default class Home extends Component {
     })
   }
 
+    doUpdate = info => {
+        downloadUpdate(info).then(hash => {
+            Alert.alert('提示', '下载完毕,是否重启应用?', [
+                {text: '是', onPress: ()=>{switchVersion(hash);}},
+                {text: '否',},
+                {text: '下次启动时', onPress: ()=>{switchVersionLater(hash);}},
+            ]);
+        }).catch(err => {
+            Alert.alert('提示', '更新失败.');
+        });
+    };
+    checkUpdate = () => {
+        checkUpdate(appKey).then(info => {
+            if (info.expired) {
+                Alert.alert('提示', '您的应用版本已过期,请前往应用商店下载新的版本', [
+                    {text: '确定', onPress: ()=>{info.downloadUrl && Linking.openURL(info.downloadUrl)}},
+                ]);
+            } else if (info.upToDate) {
+                Alert.alert('提示', '您的应用版本已是最新.');
+            } else {
+                Alert.alert('提示', '检查到新的版本'+info.name+',是否下载?\n'+ info.description, [
+                    {text: '是', onPress: ()=>{this.doUpdate(info)}},
+                    {text: '否',},
+                ]);
+            }
+        }).catch(err => {
+            Alert.alert('提示', '更新失败.');
+        });
+    };
+
   render() {
     const { bannerList, navList, products } = this.state
     return (
       <View stlye={{marginTop: 50}}>
+
+          <TouchableOpacity onPress={this.checkUpdate}>
+              <Text>检测版本</Text>
+          </TouchableOpacity>
+
         <Carousel
           style={styles.wrapper}
           selectedIndex={2}
@@ -61,10 +97,11 @@ export default class Home extends Component {
         <View style={styles.productListBox}>
           <Text style={styles.listTitle}>推荐产品</Text>
           {this.renderList(products)}
-          {/* <ProductList 
+          {/* <ProductList
             data={products}
           /> */}
         </View>
+
       </View>
     )
   }

@@ -20,7 +20,7 @@
 #if DEBUG
   // 原来的jsCodeLocation保留在这里
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
-  //jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"rent" withExtension:@"jsbundle"];
+  //jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #else
   // 非DEBUG情况下启用热更新
   jsCodeLocation=[RCTHotUpdate bundleURL];

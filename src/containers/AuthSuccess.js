@@ -45,7 +45,14 @@ export default class AuthSuccess extends RentApp{
     }
 
     async saveData(max,score,monthFee){
-        await AsyncStorage.multiSet([['maxCreditAmount',max],['creditScore',score],['monthFee',monthFee]])
+        await AsyncStorage.multiSet([['maxCreditAmount',max.toString()],['creditScore',score.toString()],['monthFee',monthFee.toString()]])
+    }
+
+    async componentDidMount(){
+        const fromPage = await AsyncStorage.multiGet(['fromPageName','fromPageParams']);
+
+        this.fromPageName = fromPage[0][1] || 'MyPage' //默认跳转至我的页面
+        this.fromPageParams = fromPage[1][1]?JSON.parse(fromPage[1][1]) : {} //默认没有参数
     }
 
     render(){
@@ -60,7 +67,7 @@ export default class AuthSuccess extends RentApp{
                     <Text style={styles.text}>{`您的信用额度为${this.max}元`}</Text>
                     <WhiteSpace size={"xl"}/>
 
-                    <Button style={styles.btn}>立即使用</Button>
+                    <Button style={styles.btn} onClick={()=>this.props.navigation.replace(this.fromPageName,{...this.fromPageParams})}>立即使用</Button>
                 </Flex>
 
             </View>

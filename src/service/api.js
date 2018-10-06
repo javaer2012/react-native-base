@@ -816,14 +816,14 @@ export default {
         });
     },
 
-    uploadImage(data) {
+    uploadImage(data,folder) {
         // params["sourceType"] = 3;
         return new Promise((resolve, reject) => {
             getToken(token => {
 
                 const date = moment().format("YYYY-MM-DD").split('-').join('')
 
-                axios.post(`${url}/uploadImg?catalog=%2fdrivingLicense%2f${date}&orderId=41bbeeca8f35485ab2e9422c812ad538`,data,
+                axios.post(`${url}/uploadImg?catalog=%2f${folder}%2f${date}&orderId=41bbeeca8f35485ab2e9422c812ad538`,data,
                     {
                         headers: {
                             Accept:'*/*',

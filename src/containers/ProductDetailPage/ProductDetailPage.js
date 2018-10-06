@@ -54,40 +54,43 @@ export default class ProductDetailPage extends RentApp {
     title: "商品详情"
   }
   state = {
-    photoList:[], // 图片列表
-    telecomProdList:[], // 电信套餐列表
-    skuDetailList:[], // 产品sku列表
-    capitalProdList:[], // 分期列表
-    disposeCapitalProdList:[], // 
+    photoList: [], // 图片列表
+    telecomProdList: [], // 电信套餐列表
+    skuDetailList: [], // 产品sku列表
+    capitalProdList: [], // 分期列表
+    disposeCapitalProdList: [], // 
     maxAvailAmount: 0, // 最大额度
     goodsBaseInfo: {}, // 商品基本信息
     isTelConf: false, // 是否配置电信产品
-    insureList:[], // 保险列表
-    skuGroupList:[], // sku分组列表
-    paymentInfo:{}, //  接口返回的支付信息
-    computedPaymentInfo:{},
+    insureList: [], // 保险列表
+    skuGroupList: [], // sku分组列表
+    paymentInfo: {}, //  接口返回的支付信息
+    computedPaymentInfo: {},
     mealSelected: {}, //用户选择的套餐；
-    capitalProdSelected:{}, // 已选择分期
+    capitalProdSelected: {}, // 已选择分期
     isShowPackage: false, // 套餐窗口的展示
     isShowCapital: false, // 分期窗口
     productId: '',  // 产品id
     collectStatus: 0,
-    userInfos:{}, // 用户信息
-    showNotCredit:false,
+    userInfos: {}, // 用户信息
     capacityId: '', // 已选择的内存skuId
     colorId: '', // 已选择的颜色skuId
     isShowBindCard: false,
     isShowEasyModal: false,
-    EasyModalInfos:{},
+    EasyModalInfos: {},
     loading: false,
   }
   async componentDidMount() {
+    this.getData()
+  }
+
+  getData = async () => {
     // '201807191036353330096584' || 
     const productId = "201807191036353330096584" || this.props.navigation.getParam('productId');
     await this.getOpenIdAndUserId()
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
-    console.log(user,"====>缓存中读取的userInfo")
+    console.log(user, "====>缓存中读取的userInfo")
     this.setState({
       userInfos: user,
       productId
@@ -100,10 +103,10 @@ export default class ProductDetailPage extends RentApp {
         goodsId: productId,
         userId: user.userId || authAppSecret
       })
-      // console.log(queryGoodsDetailData, "mmmmmmmmmm")
-      if (!queryGoodsDetailData || queryGoodsDetailData.errcode !==1 ) {
-        throw queryGoodsDetailData.errmsg ||  "queryGoodsDetailData 获取数据失败"
-        return 
+      // console.log(JSON.stringify(queryGoodsDetailData), "mmmmmmmmmm")
+      if (!queryGoodsDetailData || queryGoodsDetailData.errcode !== 1) {
+        throw queryGoodsDetailData.errmsg || "queryGoodsDetailData 获取数据失败"
+        return
       }
 
       this.handleDataFun(queryGoodsDetailData)
@@ -116,7 +119,7 @@ export default class ProductDetailPage extends RentApp {
   }
   handleDataFun = (data) => {
     // console.log(JSON.stringify(data))
-    const { 
+    const {
       photoList, // 图片列表
       telecomProdList, // 电信套餐列表
       skuDetailList, // 产品sku列表
@@ -129,10 +132,10 @@ export default class ProductDetailPage extends RentApp {
       paymentInfo, //  参数返回的支付信息
       bizTypeCode, // 业务类型编码
     } = data
-    
+
     const mealSelected = telecomProdList[0]
-    if(bizTypeCode == 'zq_rent_phone'){
-      if(isTelConf == 1){
+    if (bizTypeCode == 'zq_rent_phone') {
+      if (isTelConf == 1) {
         mealSelected.selectMealIndex = 0	//套餐选中的列
 
         // const canStageAmount = (goodsBaseInfo.goodsPrice + packagePrice - this.state.realDownPayment).toFixed(2);  //设置可分期金额
@@ -144,10 +147,9 @@ export default class ProductDetailPage extends RentApp {
       }
     }
     // capitalProdList
-    const disposeCapitalProdList =  capitalProdList.map((item, index) => {
-      let sum = goodsBaseInfo.goodsPrice * (1 + item.monthFee * item.periods) + mealSelected.price;
-      const monthPay = (sum / item.periods).toFixed(2);
-      return { ...item, monthPay, sum}
+    const disposeCapitalProdList = capitalProdList.map((item, index) => {
+      let sum = (goodsBaseInfo.goodsPrice * (1 + item.monthFee * item.periods) + mealSelected.price).toFixed(2);      const monthPay = (sum / item.periods).toFixed(2);
+      return { ...item, monthPay, sum }
     })
 
     this.setState({
@@ -179,11 +181,11 @@ export default class ProductDetailPage extends RentApp {
     if (!data || !(data instanceof Array)) return false
 
     const { mealSelected } = this.state
-    const selectMealStyle={
+    const selectMealStyle = {
       borderWidth: 1,
       borderColor: Color.mainPink
     }
-    
+
     return data.map((item, index) => {
       const boxStyle = [styles.mealItemStyle, { marginTop: 10 }]
       if (item.prodCode === mealSelected.prodCode) {
@@ -202,7 +204,7 @@ export default class ProductDetailPage extends RentApp {
             </Flex.Item>
           </Flex>
         </TouchableOpacity>
-        
+
       )
     })
   }
@@ -211,13 +213,13 @@ export default class ProductDetailPage extends RentApp {
   renderCapitalProdList = (disposeCapitalProdList) => {
 
     const { capitalProdSelected, goodsBaseInfo, mealSelected } = this.state
-    
+
     return disposeCapitalProdList.map((item, index) => {
       // var obj = Object.assign({}, item, { monthPay: monthPay.toFixed(2), downPayment: 0, defaultIndex: index });
       return (
         <TouchableOpacity key={index} style={{ width: '100%' }} onPress={this.selectedCapitalProdFun.bind(this, item)}>
           <Flex style={{ width: '100%', paddingVertical: 15, borderBottomColor: '#f6f6f6', borderBottomWidth: 1 }} direction="row" justify="start" align="center">
-            <Text style={{ backgroundColor: item.prodId === capitalProdSelected.prodId  ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#888', borderRadius: 7, overflow: 'hidden' }}></Text>
+            <Text style={{ backgroundColor: item.prodId === capitalProdSelected.prodId ? Color.mainPink : '#fff', width: 14, height: 14, marginRight: 10, borderWidth: 2, borderColor: '#888', borderRadius: 7, overflow: 'hidden' }}></Text>
             <Text>{item.monthPay} x {item.periods}期</Text>
             <Text>{item.prodDesc}</Text>
           </Flex>
@@ -226,13 +228,13 @@ export default class ProductDetailPage extends RentApp {
     })
   }
 
-  capacityId_color_fun = (type, subSkuId ) => {  // 选择内存和颜色的方法
+  capacityId_color_fun = (type, subSkuId) => {  // 选择内存和颜色的方法
     if (this.state[type]) {
       this.setState({ [type]: '' })
-    }else{
+    } else {
       this.setState({ [type]: subSkuId })
     }
-  
+
   }
 
   check = async () => {
@@ -242,7 +244,6 @@ export default class ProductDetailPage extends RentApp {
       var isCredited = userInfos.isCredited;
       // await AsyncStorage.multiSet([['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
       const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
-
       if (isLoggedIn !== "1") {
         this.setState({
           isShowEasyModal: true,
@@ -296,13 +297,13 @@ export default class ProductDetailPage extends RentApp {
 
   // 展示关闭详细数据
   toggleDetailInfosFun = () => {
-    
+
   }
 
   // 收藏状态切换
   toggleCollectFun = async () => {
     try {
-      const { cityCode, userId, provinceCode} = this
+      const { cityCode, userId, provinceCode } = this
       const { productId, goodsBaseInfo } = this.state
       const { data } = await collectGoods({
         goodsId: productId,
@@ -312,14 +313,14 @@ export default class ProductDetailPage extends RentApp {
       })
       this.showToast(data.errmsg)
       this.setState({
-        goodsBaseInfo: {...goodsBaseInfo, collectStatus: data.status  }
+        goodsBaseInfo: { ...goodsBaseInfo, collectStatus: data.status }
       })
     } catch (error) {
-      console.error(error,"!!!")
+      console.error(error, "!!!")
     }
   }
 
-  
+
 
   // 下单支付
   goToPayFun = async () => {
@@ -339,7 +340,7 @@ export default class ProductDetailPage extends RentApp {
 
 
     //绑卡判断
-    if ( capitalProdSelected && capitalProdSelected.isCreditCard == 1 && userInfos.isCreditCard == 0) {
+    if (capitalProdSelected && capitalProdSelected.isCreditCard == 1 && userInfos.isCreditCard == 0) {
       //需要绑卡并且还没有绑卡
       th.setState({
         isShowBindCard: true
@@ -350,7 +351,7 @@ export default class ProductDetailPage extends RentApp {
     if (!capitalProdSelected.sum) {
       this.showToast('请选择套餐')
     }
-    
+
     // 根据颜色 内存容量确定机器
     let goodsSkuId = ''
     skuDetailList.filter((item) => {
@@ -358,8 +359,8 @@ export default class ProductDetailPage extends RentApp {
       if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1) {
         goodsSkuId = item.skuId
       }
-    })  
-    console.log(goodsSkuId,"===========>goodsSkuId")
+    })
+    console.log(goodsSkuId, "===========>goodsSkuId")
 
 
     var options = {};
@@ -387,7 +388,7 @@ export default class ProductDetailPage extends RentApp {
 
     // 套餐选择
     var _mealInfo = {}
-    
+
     _mealInfo["mealId"] = mealSelected.prodId;//套餐价格与电信套餐价格的区别；
     const mealInfoJson = JSON.stringify(_mealInfo);
 
@@ -395,7 +396,7 @@ export default class ProductDetailPage extends RentApp {
     var _capitalInfo = {}
     _capitalInfo.prodId = capitalProdSelected.prodId
     const capitalInfoJson = JSON.stringify(_capitalInfo);
-  
+
     const params = {
       "openId": this.openId,
       "provinceCode": this.provinceCode,
@@ -412,25 +413,25 @@ export default class ProductDetailPage extends RentApp {
     }
     try {
       const { data } = await commitOrder(params)
-      console.log(data,"=========》data")
+      console.log(data, "=========》data")
       if (data.errcode !== 1 && data.errmsg) {
-        this.showToast(data.errmsg) 
+        this.showToast(data.errmsg)
         return false
-      } else if (data.errcode === 1 ) {
+      } else if (data.errcode === 1) {
         this.showToast(data.errmsg)
         await AsyncStorage.setItem('pastDueTime', JSON.stringify((+new Date()) + 1800000))
         const { navigate } = this.props.navigation;
-        navigate('Pay', { 
+        navigate('Pay', {
           amount: 0,
           orderId: data.orderId,
           orderSn: data.orderSn,
           activeId: goodsBaseInfo.activeId
           // firstPay: data.firstPay
-         })
+        })
       }
 
     } catch (error) {
-      
+
     }
   }
   bindCardFun = () => {
@@ -440,17 +441,20 @@ export default class ProductDetailPage extends RentApp {
   render() {
     const that = this
     const footerButtons = [
-        { text: '取消', onPress: () => {
-            this.setState({ isShowEasyModal: false})
+      {
+        text: '取消', onPress: () => {
+          this.setState({ isShowEasyModal: false })
         }
       },
-      { text: '确定', onPress: () => {
-        that.props.navigation.navigate(EasyModalInfos.toPage)
-        this.setState({ isShowEasyModal: false })
-      }},
+      {
+        text: '确定', onPress: () => {
+          that.props.navigation.navigate(EasyModalInfos.toPage)
+          this.setState({ isShowEasyModal: false })
+        }
+      },
     ];
-  
-    const { 
+
+    const {
       photoList, // 图片列表
       telecomProdList, // 电信套餐列表
       skuDetailList, // 产品sku列表
@@ -467,18 +471,17 @@ export default class ProductDetailPage extends RentApp {
       capitalProdSelected,
       isShowPackage,
       isShowCapital,
-      showNotCredit,
       EasyModalInfos,
       isShowEasyModal,
       loading
-      
+
     } = this.state
-      if (!photoList) return false
+    if (!photoList) return false
     const { goodsName, goodsDesc, goodsDetailText, goodsPrice } = goodsBaseInfo || {}
     return (
       <Flex style={{ position: 'relative', width: '100%' }} direction="column">
         <ScrollView
-          style={{width: '100%', backgroundColor: '#fff'}}
+          style={{ width: '100%', backgroundColor: '#fff' }}
           automaticallyAdjustContentInsets={false}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
@@ -519,7 +522,7 @@ export default class ProductDetailPage extends RentApp {
                 }}>容量</Text>
                 <View style={{ marginLeft: 10 }}>
                   <SelectedROMList
-                    data={skuGroupList[0] ? skuGroupList[0].subSkuList : []} 
+                    data={skuGroupList[0] ? skuGroupList[0].subSkuList : []}
                     onPress={this.capacityId_color_fun.bind(this, 'capacityId')}
                   />
                 </View>
@@ -551,7 +554,7 @@ export default class ProductDetailPage extends RentApp {
                 color: '#888',
                 marginRight: 10
               }}>数量</Text>
-              <Text style={{color: Color.mainPink}}>1</Text>
+              <Text style={{ color: Color.mainPink }}>1</Text>
               {/* <NumberSelect
                 _onPress={(count) => {
                   this.setState({
@@ -622,8 +625,8 @@ export default class ProductDetailPage extends RentApp {
           <Flex style={{ backgroundColor: '#fff', marginTop: 10, paddingHorizontal: 10 }}>
             <Tabs tabs={tabs} initialPage={0}>
               <View style={{ height: 400, padding: 10, position: 'relative' }}>
-                <ScrollView style={{height: 350}}>
-                  {this.renderMealList(telecomProdList)}  
+                <ScrollView style={{ height: 350 }}>
+                  {this.renderMealList(telecomProdList)}
                 </ScrollView>
                 {/* <Flex style={styles.mealBtnBox}>
                   <TouchableOpacity 
@@ -646,8 +649,8 @@ export default class ProductDetailPage extends RentApp {
           <Flex style={{ backgroundColor: '#fff', marginTop: 10, paddingHorizontal: 10 }}>
             <Tabs tabs={tabs} initialPage={0}>
               <View style={{ height: 400, padding: 10, position: 'relative' }}>
-                <ScrollView style={{height: 350}}>
-                  {this.renderMealList(telecomProdList)}  
+                <ScrollView style={{ height: 350 }}>
+                  {this.renderMealList(telecomProdList)}
                 </ScrollView>
                 {/* <Flex style={styles.mealBtnBox}>
                   <TouchableOpacity 
@@ -661,17 +664,6 @@ export default class ProductDetailPage extends RentApp {
           </Flex>
         </Modal>
         <Modal
-          visible={showNotCredit}
-          transparent
-          maskClosable={false}
-          // onClose={this.onClose('modal1')}
-          // title="Title"
-          footer={[{ text: 'Ok', onPress: () => { this.onClosesNotCredit() } }]}
-          // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
-        >
-          <Text>还没有授信，是否立刻去授信</Text>
-        </Modal>
-        <Modal
           popup
           maskClosable={true}
           onClose={() => { this.setState({ isShowCapital: false }) }}
@@ -679,10 +671,10 @@ export default class ProductDetailPage extends RentApp {
           animationType="slide-up"
         >
           <Flex direction="column" style={{ backgroundColor: '#fff', marginTop: 10, height: 400 }}>
-            <Flex justify="start" style={{ paddingBottom: 20, paddingHorizontal: 30, marginTop: 30 ,width: '100%', borderBottomWidth: 1, borderColor: '#f2f2f2'}}>
+            <Flex justify="start" style={{ paddingBottom: 20, paddingHorizontal: 30, marginTop: 30, width: '100%', borderBottomWidth: 1, borderColor: '#f2f2f2' }}>
               <Text>分期金额：</Text><Text>{capitalProdSelected.sum} 元</Text>
             </Flex>
-            <Flex style={{ flex: 1, width: '100%', paddingHorizontal: 30}} direction="column" justify="start">
+            <Flex style={{ flex: 1, width: '100%', paddingHorizontal: 30 }} direction="column" justify="start">
               {this.renderCapitalProdList(disposeCapitalProdList)}
             </Flex>
             <Flex>
@@ -710,7 +702,7 @@ export default class ProductDetailPage extends RentApp {
         <Modal
           title="提示"
           transparent
-          onClose={() => this.setState({ isShowEasyModal: false})}
+          onClose={() => this.setState({ isShowEasyModal: false })}
           maskClosable
           closable={false}
           visible={isShowEasyModal}
@@ -732,14 +724,14 @@ export default class ProductDetailPage extends RentApp {
 _renderImage = (data) => {
   if (!data || !(data instanceof Array)) return false
   return data.map((item, index) => {
-      return (
-        <View key={item.photoId || index} style={[styles.containerHorizontal]}>
-          <Image 
-            resizeMode="stretch"
-            style={{ width: WIDTH, height: WIDTH }}
-            source={{ uri: `${HTTP_IMG}${item.photoPath}` }}
-            />
-        </View>
+    return (
+      <View key={item.photoId || index} style={[styles.containerHorizontal]}>
+        <Image
+          resizeMode="stretch"
+          style={{ width: WIDTH, height: WIDTH }}
+          source={{ uri: `${HTTP_IMG}${item.photoPath}` }}
+        />
+      </View>
     )
   })
 }
