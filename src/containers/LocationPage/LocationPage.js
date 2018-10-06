@@ -69,12 +69,6 @@ export default class List extends RentApp {
     )
   }
 
-  goback(data) {
-    const { navigate, goBack, state } = this.props.navigation;
-    state.params.callback(data);
-    this.props.navigation.goBack();
-  }
-
   changedata = (item) => {
     const addressInfos = {
       crmProvName: item.crmProvName,
@@ -82,7 +76,7 @@ export default class List extends RentApp {
       cityCode: item.crmCityCode,
       provinceCode: item.crmProvCode,
     }
-    this.goback(addressInfos) 
+    this.GO_BACK(addressInfos) 
   }
 
   renderRow = ({ item }) => {
@@ -117,6 +111,7 @@ export default class List extends RentApp {
   }
   renderSectionHeader = (sectionData, sectionID) => {
     const { userAddressMsg } = this.state;
+    // console.log(userAddressMsg,"!!!!!!!!!!!!1")
     return (
       <Flex direction='column'  style={{padding: 8}}>
         <View style={styles.searchBox}>

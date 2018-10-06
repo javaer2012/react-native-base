@@ -83,7 +83,7 @@ export default class ProductDetailPage extends RentApp {
   async componentDidMount() {
     // '201807191036353330096584' || 
     const productId = "201807191036353330096584" || this.props.navigation.getParam('productId');
-    await this.getOpenIdAndUserId()
+    // await this.getOpenIdAndUserId()
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
     console.log(user,"====>缓存中读取的userInfo")
@@ -91,6 +91,7 @@ export default class ProductDetailPage extends RentApp {
       userInfos: user,
       productId
     })
+    
     try {
       await this.setState({ loading: true })
       const { data: queryGoodsDetailData } = await queryGoodsDetail({
@@ -143,7 +144,7 @@ export default class ProductDetailPage extends RentApp {
     }
     // capitalProdList
     const disposeCapitalProdList =  capitalProdList.map((item, index) => {
-      let sum = goodsBaseInfo.goodsPrice * (1 + item.monthFee * item.periods) + mealSelected.price;
+      let sum = (goodsBaseInfo.goodsPrice * (1 + item.monthFee * item.periods) + mealSelected.price).toFixed(2);
       const monthPay = (sum / item.periods).toFixed(2);
       return { ...item, monthPay, sum}
     })
@@ -240,6 +241,7 @@ export default class ProductDetailPage extends RentApp {
       var isCredited = userInfos.isCredited;
       // await AsyncStorage.multiSet([['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
       const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
+      console.log(isLoggedIn,"!!!!!!!!!!")
       if (isLoggedIn !== "1") {
         this.setState({
           isShowEasyModal: true,
@@ -250,7 +252,7 @@ export default class ProductDetailPage extends RentApp {
           }
         })
         return false;
-      } else if (isCredited === 0) {
+      } else if (isCredited !== 0) {
         this.setState({
           isShowEasyModal: true,
           EasyModalInfos: {

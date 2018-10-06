@@ -188,12 +188,13 @@ export default class App extends RentApp {
                     // const { data } = await setCrmCode(code)
                     // if (data && data.areaDict) {
                     // const { areaDict } = data;
+                    
                     var option = {};
 
                     for (var key in areaDict) {
                         //console.log("code：", code, "key：", key,)
                         if (key == code) {
-                            option["city"] = province;
+                            option["city"] = areaDict[key].crmCityName;
                             option["provinceCode"] = areaDict[key].crmProvCode;
                             option["cityCode"] = areaDict[key].crmCityCode;
                         }

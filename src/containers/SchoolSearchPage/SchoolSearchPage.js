@@ -130,26 +130,12 @@ export default class SchoolSearchPage extends RentApp {
       </TouchableOpacity>
     )
   }
-  goback(data) {
-    const { navigate, goBack, state } = this.props.navigation;
-    state.params.callback(data);
-    this.props.navigation.goBack();
-  }
-  // changedata = async (item) => {
-  //   const JS_STR_item = JSON.stringify(item)
-  //   await AsyncStorage.setItem('selectedSchool', JS_STR_item);
-  //   const backAction = NavigationActions.back({
-  //     // key: 'Profile'
-  //     selectedSchool: JS_STR_item
-  //   })
-  //   this.props.navigation.dispatch(backAction)
-  // }
   changedata = (item) => {
     const JS_STR_item = JSON.stringify(item)
     const addressInfos = {
       selectedSchool: JS_STR_item
     }
-    this.goback(addressInfos)
+    this.GO_BACK(addressInfos)
   }
   renderRow =  ({item}) => {
     return (
