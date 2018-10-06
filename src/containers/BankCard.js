@@ -73,7 +73,8 @@ export default class BankCard extends RentApp{
         return (
             <View>
                 <WhiteSpace size={"lg"}/>
-                {Object.keys(this.state.cardInfo).length  > 0 ? <View>
+                {Object.keys(this.state.cardInfo).length  > 0 ?
+                    <View>
                         <ImageBackground style={{width:'100%',height:190,borderRadius:6}}
                                          source={require('../images/bank/back.png')}>
                             <WingBlank size={"lg"}>
@@ -105,10 +106,12 @@ export default class BankCard extends RentApp{
                     <ImageBackground style={{width:'100%',height:179,borderRadius:6,resizeMode:'contain'}}
                                      source={require('../images/bank/border.png')}>
                         <WingBlank size={"lg"}>
-                            <Flex direction={"row"} justify={"center"} align={"center"}>
-                                <Image style={{width:30,height:30}} source={require('../images/bank/add.png')}/>
-                                <Text>添加银行卡</Text>
-                            </Flex>
+                            <TouchableOpacity>
+                                <Flex direction={"row"} justify={"center"} align={"center"}>
+                                    <Image style={{width:30,height:30}} source={require('../images/bank/add.png')}/>
+                                    <Text>添加银行卡</Text>
+                                </Flex>
+                            </TouchableOpacity>
                         </WingBlank>
                     </ImageBackground>
                     </View>:

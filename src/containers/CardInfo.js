@@ -95,6 +95,28 @@ export default class CardInfo extends RentApp{
             const {data} = rsp
             if(data.errcode === 1){
                 Toast.info('绑卡成功',1)
+
+                const userInfo = await AsyncStorage.getItem('userInfo'),
+                    userInfoJson = JSON.parse(userInfo),
+                    userParam = {
+                        userId,
+                        openId,
+                        cityCode:84401,
+                        provinceCode:844,
+                    },
+                    userRsp = await api.getUserInfo(userParam)
+
+
+                    const {data} = userRsp
+
+                    if(data.errcode === 1){
+
+                        const newUserInfo = {}
+                        Object.assign(newUserInfo,{...userInfoJson},{...data.userInfo})
+
+                        await AsyncStorage.setItem(['userInfo',JSON.stringify(newUserInfo)])
+                    }
+
                 this.props.navigation.navigation("ProductDetailPage",{
                     provinceCode:this.productId
                 })
