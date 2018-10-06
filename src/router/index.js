@@ -60,7 +60,7 @@ export default StackNavigator({
     RegisterPage: Register,
     ForgetPSWPage: ForgetPSW,
     ChangePSWPage: ChangePSW,
-    MyPage: My, 
+    MyPage: My,
     BadRecordPage:BadRecords,  // 负面记录
     AuthRecordPage:AuthRecords, // 授信纪录
     MyOrderPage:MyOrders, // 昊天的

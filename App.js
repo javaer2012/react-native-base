@@ -6,13 +6,11 @@
  * @flow
  */
 
-import React, {Component} from 'react';
+import React from 'react';
 import {Provider} from 'react-redux';
 import store from './src/store/store';
 import AppNavigator from './src/router';
-
-import { AsyncStorage, ActivityIndicator, View } from 'react-native';
-import {getToken} from "./src/service/api";
+import {AsyncStorage, Platform, Linking, Alert } from 'react-native';
 import api from './src/service/api'
 import config from './src/config';
 import DeviceInfo from 'react-native-device-info'
@@ -24,8 +22,6 @@ import RentApp from "./src/components/RentApp";
 import {
     isFirstTime,
     isRolledBack,
-    packageVersion,
-    currentVersion,
     checkUpdate,
     downloadUpdate,
     switchVersion,
@@ -140,18 +136,19 @@ export default class App extends RentApp {
     }
 
 
-    registerUser = async () => {
+    registerUser = async (option) => {
         try {
+           // await AsyncStorage.clear()
 
-            await AsyncStorage.removeItem('openId')
+           // await AsyncStorage.removeItem('openId')
             const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
 
             console.log(openId)
 
             if (!openId[0][1] || !openId[1][1]) {
                 const params = {
-                    provinceCode: this.provinceCode,
-                    cityCode: this.cityCode,
+                    provinceCode: option.provinceCode,
+                    cityCode: option.cityCode,
                     openId: DeviceInfo.getUniqueID()
                 }
                 const register = await registerUser(params);
@@ -202,7 +199,7 @@ export default class App extends RentApp {
                         }
                     }
                     await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
-                    this.registerUser()
+                    this.registerUser(option)
                     this.isOpen({
                         provinceCode: option["provinceCode"],
                         cityCode: option["cityCode"],

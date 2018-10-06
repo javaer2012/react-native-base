@@ -28,4 +28,6 @@ export default class RentApp extends Component{
 
         }
     }
+
+
 }

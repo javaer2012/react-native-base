@@ -9,7 +9,7 @@ export default ({ data }) => {
   const list = data.map((item, index) => {
     return (
       <Flex justify="center" key={index} style={{ flex: 1, height: 4, position: 'relative', top: 15, backgroundColor: item.active ? mainGreen : '#ccc'}}>
-        <Text style={{ textAlign: 'center', color: '#fff', color: '#fff', borderRadius: 15, overflow: 'hidden', lineHeight: 30, width: 30, height: 30, position: 'absolute', backgroundColor: item.active ? mainGreen : '#ccc' }}>{index}</Text>
+        <Text style={{ textAlign: 'center', color: '#fff', color: '#fff', borderRadius: 15, overflow: 'hidden', lineHeight: 30, width: 30, height: 30, position: 'absolute', backgroundColor: item.active ? mainGreen : '#ccc' }}>{index + 1}</Text>
         <Text style={{ position: 'absolute', top: 30}}>{item.text}</Text>
       </Flex>
     )

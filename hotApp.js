@@ -71,7 +71,7 @@ export default class hotApp extends Component {
         return (
             <View style={styles.container}>
                 <Text style={styles.welcome}>
-                    欢迎使用热更新服务，这是第二次测试的
+                    欢迎使用热更新服务，这是Android次测试的
                 </Text>
                 <Text style={styles.instructions}>
                     这是版本一 {'\n'}

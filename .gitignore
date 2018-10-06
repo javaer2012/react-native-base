@@ -58,3 +58,8 @@ buck-out/
 .update
 
 ios/bundle/
+<<<<<<< HEAD
+=======
+
+android/app/build
+>>>>>>> 10c65dbda34248d9dc802ea646d7154aab411319

@@ -178,12 +178,12 @@ export default class My extends RentApp {
         isLoggedIn: '0',
     }
 
+    _state = {...this.state}
+
     constructor(props) {
         super(props)
 
         console.log("Page My")
-
-        setTimeout(()=>this.initalState(),0)
 
     }
 
@@ -194,7 +194,9 @@ export default class My extends RentApp {
         })
         try {
             //await AsyncStorage.getItem('isLoggedIn')
-            const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
+            await this.getOpenIdAndUserId()
+            const userInfo = await AsyncStorage.getItem('userInfo'),
+            isLoggedIn = JSON.parse(userInfo).isLoggedIn
             console.log(isLoggedIn)
             const userId = this.userId,
                 openId = this.openId,
@@ -241,6 +243,8 @@ export default class My extends RentApp {
 
     componentDidMount(){
         console.log("Mount Again")
+        setTimeout(()=>this.initalState(),0)
+
     }
 
     componentWillUnmount(){
@@ -253,11 +257,11 @@ export default class My extends RentApp {
             canvas.height = 230;
         }
         const ctx = canvas.getContext('2d');
-        canvasScore(ctx, parseInt(this.state.userScore), this.state.lastScoreTime)
+        canvasScore(ctx, parseInt(this._state.userScore), this._state.lastScoreTime)
     }
 
     navigateWithLogin(pageName){
-        if(this.state.isLoggedIn === '0' || this.state.isLoggedIn === null){
+        if(this._state.isLoggedIn === '0' || this._state.isLoggedIn === null){
             Toast.info("请先登录",1)
         } else {
             this.props.navigation.navigate(pageName)
@@ -270,15 +274,25 @@ export default class My extends RentApp {
 
         const {navigation} = this.props
 
-        const paramsFromLogin = navigation.getParam('isLoggedIn',this.state.isLoggedIn)
+        const a = navigation.getParam('useNavParams'),
+            params = navigation.getParam('userInfo',{}),
+            paramsFromLogin = navigation.getParam('isLoggedIn',this.state.isLoggedIn),
+             _state = {...this._state}
+        if(a) {
+            Object.assign(_state,{...this.state,...params})
+        } else {
+            Object.assign(_state,{...this.state})
+        }
+        this._state = _state
+
         return (
             <ScrollView>
 
                 <Spinner visible={this.state.loading}/>
                 <Flex direction={"row"}>
                     <Flex.Item>
-                        <ImageBackground style={  paramsFromLogin !== '0' && this.state.isCredited !== '0'?styles.topBackground:styles.topBackground1} source={require('../images/my/background.png')}>
-                            {paramsFromLogin !== "1" &&  paramsFromLogin !== 1?
+                        <ImageBackground style={  _state.isLoggedIn !== '0' && _state.isCredited !== '0'?styles.topBackground:styles.topBackground1} source={require('../images/my/background.png')}>
+                            {_state.isLoggedIn !== "1" &&  _state.isLoggedIn !== 1?
                                 <Flex direction={"column"} justify={"center"} align={"center"}>
                                     <Image style={styles.userIcon}
                                            source={require('../images/imageNew/one/userIcon.png')}/>
@@ -288,7 +302,7 @@ export default class My extends RentApp {
                                     </Flex>
                                 </Flex> :
                                 <React.Fragment>
-                                    {this.state.isCredited === 1?
+                                    {_state.isCredited === 1?
                                         <Flex direction={"column"} align={"center"} justify={"center"}>
                                         <Canvas ref={this.handleCanvas.bind(this)}/>
                                         <Flex direction={"row"}>
@@ -296,7 +310,7 @@ export default class My extends RentApp {
                                                 <Flex direction={"row"} justify={"center"} align={"center"}>
                                                     <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
                                                             onClick={() => navigation.navigate('ScorePage',{
-                                                                score:this.state.userScore ? this.state.userScore : 0
+                                                                score:_state.userScore ? _state.userScore : 0
                                                             })}>晒晒我的信用分</Button>
                                                 </Flex>
                                             </Flex.Item>
@@ -305,7 +319,7 @@ export default class My extends RentApp {
                                                 <Flex direction={"row"} justify={"center"} align={"center"}>
                                                     <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
                                                             onClick={() => navigation.navigate('KnowScorePage', {
-                                                                score: this.state.userScore ? this.state.userScore : 0
+                                                                score: _state.userScore ? _state.userScore : 0
                                                             })}>了解我的信用分</Button>
                                                 </Flex>
                                             </Flex.Item>
@@ -401,7 +415,7 @@ export default class My extends RentApp {
                                         <Text>负面记录</Text>
                                         <WhiteSpace size={"sm"}/>
                                         {
-                                            this.state.negativeCount !== undefined && this.state.isCredited === 1 && <Text style={{color:'#07C1AE'}}>{`(${this.state.negativeCount }个)`}</Text>
+                                            _state.negativeCount !== undefined && this.state.isCredited === 1 && <Text style={{color:'#07C1AE'}}>{`(${this.state.negativeCount }个)`}</Text>
                                         }
                                         </Flex>
                                 </TouchableOpacity>

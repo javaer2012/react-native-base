@@ -24,9 +24,6 @@ export default class Login extends RentApp {
 
     constructor(props) {
         super(props);
-        school.getIdData();
-        school.schoolData()
-        school.schoolList()
     }
 
     async componentDidMount(){
@@ -49,14 +46,37 @@ export default class Login extends RentApp {
                 console.log(login)
                 const {data} = login;
                 if(data.errcode === 1){
+
                     const {userInfo} = data
-                    await AsyncStorage.multiSet([['userId',userInfo.userId],['openId',userInfo.openId],['isLoggedIn','1']])
-                    this.props.navigation.navigate("MyPage",{
-                        isLoggedIn:"1"
-                    })
+
+                    const uInfoParams = {
+                        userId:userInfo.userId,
+                        openId:userInfo.openId,
+                        cityCode:84401,
+                        provinceCode:844,
+                    }
+
+                    const uInfo = await api.getUserInfo(uInfoParams)
+
+                    console.log(uInfo)
+
+                    if(uInfo.data.errcode === 1){
+
+                        uInfo.data.userInfo.isLoggedIn = '1'
+
+                        const rsp =  await AsyncStorage.multiSet([['userInfo',JSON.stringify(uInfo.data.userInfo)],['userId',userInfo.userId],['openId',userInfo.openId],['isLoggedIn','1']])
+
+                        this.props.navigation.navigate("MyPage",{
+                            useNavParams:true,
+                            userInfo:uInfo.data.userInfo
+                        })
+                    }
+
+
                 } else {
                     Toast.info(data.errmsg,1)
                 }
+
             } catch (e) {
 
             }
