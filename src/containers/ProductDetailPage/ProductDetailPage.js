@@ -249,13 +249,14 @@ export default class ProductDetailPage extends RentApp {
           }
         })
         return false;
-      } else if (isCredited !== 0) {
+      } else if (isCredited == 0) {
         this.setState({
           isShowEasyModal: true,
           EasyModalInfos: {
             title: '提示',
             text: '您还没授信，是否立即授信?',
-            toPage: 'AuthSuccessPage' || "AuthApplyPage"
+            toPage: "AuthApplyPage"
+            // 'AuthSuccessPage' || 
           }
         })
         return false;
