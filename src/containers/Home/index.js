@@ -15,6 +15,7 @@ const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const BANNER_HEIGHT = WIDTH / 75 * 42
 import { getIdData, schoolList, schoolData } from '../../utils/school'
 import RentApp from "../../components/RentApp";
+import {updating} from "../../../App";
 
 
 export default class Home extends RentApp {
@@ -176,9 +177,6 @@ export default class Home extends RentApp {
         <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
           {/* <TabBarCom navigate={navigate}/> */}
           {/* <TabNavigator /> */}
-        </View>
-        <View style={{ flex: 1 }}>
-          <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
         </View>
       </View>
     )

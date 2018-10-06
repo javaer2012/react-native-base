@@ -139,9 +139,7 @@ export default class MyInstallmentPage extends RentApp {
         <Flex direction="column" style={styles.cardBox}>
           {(!!periodList && !!periodList.length) && this.renderListTest(periodList)}
         </Flex>
-        <View style={{ flex: 1 }}>
-          <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
-        </View>
+
       </Flex>
     )
   }

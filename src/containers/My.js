@@ -287,8 +287,6 @@ export default class My extends RentApp {
 
         return (
             <ScrollView>
-
-                <Spinner visible={this.state.loading}/>
                 <Flex direction={"row"}>
                     <Flex.Item>
                         <ImageBackground style={  _state.isLoggedIn !== '0' && _state.isCredited !== '0'?styles.topBackground:styles.topBackground1} source={require('../images/my/background.png')}>

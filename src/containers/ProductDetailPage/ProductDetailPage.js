@@ -612,9 +612,7 @@ export default class ProductDetailPage extends RentApp {
             goToPay={this.goToPayFun}
             data={0} />
         </View>
-        <View style={{ flex: 1 }}>
-          <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
-        </View>
+
         <Modal
           popup
           maskClosable={true}

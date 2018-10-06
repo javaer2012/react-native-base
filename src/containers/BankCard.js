@@ -68,7 +68,6 @@ export default class BankCard extends RentApp{
         const {cardInfo} = this.state
         return (
             <View>
-                <Spinner visible={this.state.loading} textContent={'正在加载'}/>
                 <WhiteSpace size={"lg"}/>
                 {this.state.cardInfo? <View>
                         <ImageBackground style={{width:'100%',height:190,borderRadius:6}}

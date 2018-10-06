@@ -175,8 +175,6 @@ export default class MyOrders extends RentApp{
 
         return (
             <ScrollView>
-
-                <Spinner visible={this.state.loading}/>
                 <WhiteSpace size={"lg"}/>
 
                 {orderList.length > 0?

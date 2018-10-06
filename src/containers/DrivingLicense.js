@@ -236,8 +236,6 @@ export default class DrivingLicense extends RentApp {
 
         return (
             <ScrollView>
-                <Spinner visible={this.state.loading}/>
-
                 <Flex direction={"column"} align={"center"}>
                     <WhiteSpace size={"xl"}/>
                     <Text style={{textAlign: 'center'}}>请拍摄驾驶证主页与副页，并录入信息</Text>

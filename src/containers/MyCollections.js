@@ -1,13 +1,13 @@
 import React from 'react'
 import {View, Text, AsyncStorage, FlatList,TouchableOpacity,Image,Dimensions,ActivityIndicator} from 'react-native'
-import {Flex,WingBlank,WhiteSpace} from 'antd-mobile-rn'
+import {Flex,WingBlank,WhiteSpace,Toast} from 'antd-mobile-rn'
 import RentApp from "../components/RentApp";
 import api, {HTTP_IMG} from "../service/api";
 import Spinner from 'react-native-loading-spinner-overlay'
 import Button from '../components/common/Button'
 
 
-
+const a = 0
 
 
 export default class MyCollections extends RentApp{
@@ -81,7 +81,7 @@ export default class MyCollections extends RentApp{
 
                        <Flex direction={"row"}  justify={"between"} style={{width:241}}>
                            <Text style={{width:100,color:'red',fontSize:20}}>{`￥${item.price}`}</Text>
-                           <TouchableOpacity>
+                           <TouchableOpacity onPress={()=>Toast.loading(`${a+1} hello`,0,null,false)}>
                                <Text style={{width:70,height:26,lineHeight:26,fontSize:10, textAlign:'center',borderColor:'#989898',borderRadius:4,borderWidth:1}}>取消收藏</Text>
                            </TouchableOpacity>
                        </Flex>
@@ -96,7 +96,6 @@ export default class MyCollections extends RentApp{
 
     render(){
         return <View>
-            <Spinner visible={this.state.loading} textContent={"正在加载"}/>
 
             {this.state.list.length >0 ?  <FlatList style={{backgroundColor:'white'}}
                                                     ItemSeparatorComponent={(h)=>

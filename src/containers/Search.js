@@ -211,7 +211,6 @@ export default class Search extends RentApp {
     render() {
         return (
             <View style={{width: '100%', backgroundColor: 'white'}}>
-                <Spinner visible={this.state.refreshing} textContent={"正在加载"}/>
 
                 <SearchBar style={{width: '100%', backgroundColor: 'white', color: 'black'}}
                            value={this.state.value} onChange={(value)=>this.setState({value})}

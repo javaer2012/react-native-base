@@ -196,9 +196,7 @@ export default class OrderDetail extends RentApp {
               </Button_>
             </Flex>
           </Flex>
-          <View style={{ flex: 1 }}>
-            <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
-          </View>
+
         </Flex>
         
       </ScrollView>

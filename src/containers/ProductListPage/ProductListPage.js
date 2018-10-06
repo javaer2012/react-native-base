@@ -213,11 +213,6 @@ export default class ProductListPage extends RentApp {
           ListFooterComponent={this.renderFooter}//尾巴
         />
         
-        
-        <View style={{ flex: 1 }}>
-          <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
-        </View>
-        
       </Flex>
       </Drawer>
     )

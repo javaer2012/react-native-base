@@ -3,24 +3,44 @@ import qs from 'qs';
 import moment from 'moment';
 import {AsyncStorage} from 'react-native';
 import config from '../config';
+import {Toast} from 'antd-mobile-rn'
 
+
+let httpCall = 0
 
 axios.defaults.timeout = 6000;
 
+axios.interceptors.request.use(function (config) {
+    // 在发送请求之前做些什么
+    if(httpCall === 0) Toast.loading("正在加载",0)
+    httpCall ++;
+
+    console.log("Config",config)
+    return config;
+}, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+});
+
 axios.interceptors.response.use(function (response) {
     // 对响应数据做点什么
+    if(httpCall > 0) httpCall --;
+    if(httpCall === 0) Toast.hide()
+    console.log("Response:",response)
     return response;
 }, function (error) {
     // 对响应错误做点什么
+    //发生错误时，请求数清零
+    httpCall = 0;
+    Toast.hide()
+    Toast.info("服务器开小差了，请稍后再试",1.5)
+    console.log("Error",error)
     return Promise.reject(error);
 });
 
 const url = 'https://mobile2.lychee-info.cn/cps-rest';
-const appUrl = 'https://mobile2.lychee-info.cn/app'
 
 export const HTTP_IMG = 'https://mobile2.lychee-info.cn/cps-rest/showImg?fileName='
-
-var sourceType = {sourceType: 3};
 
 // 高德地图web服务 key
 var amapKey = 'aadbcaa5c0767bc0e2c2dc8df80087c2';
@@ -150,7 +170,7 @@ export default {
                     }
                 }).then(res => {
                     resolve(res); //这里调resolve方法，则then方法会被调用
-                });
+                }).catch(err=>console.log(err));
             });
         })
     },

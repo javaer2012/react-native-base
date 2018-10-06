@@ -185,7 +185,6 @@ export default class CrmPage_2 extends RentApp {
     render() {
         return (
             <View size={"md"} style={{backgroundColor: 'white', height: '100%'}}>
-                <Spinner visible={this.state.loading}/>
                 <WhiteSpace size={"xl"}/>
                 <Flex direction={"column"} justify={"start"} align={"center"}>
                     <Flex direction={"row"} align={"center"} justify={"center"}>

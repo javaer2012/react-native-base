@@ -32,7 +32,7 @@ import {
 import _updateConfig from './update.json';
 
 const {appKey} = _updateConfig[Platform.OS];
-// this.registerUser();
+
 const {AmapRegeo, registerUser, isCityOpen, setCrmCode} = api
 
 export default class App extends RentApp {
@@ -69,7 +69,6 @@ export default class App extends RentApp {
 
     checkUpdate = ()=>{
 
-
         checkUpdate(appKey)
             .then(info=>{
 
@@ -91,11 +90,11 @@ export default class App extends RentApp {
                                 this.doUpdate(info)
                             }
                         },
-                        {text: '否',},
+                        {text: '否'},
                     ]);
                 }
             })
-            .catch(err=>Alert.alert(err.toString()))
+            .catch(err=>Alert.alert("检测版本更新失败，请稍后再试！"))
     }
 
     isOpen = async (params) => {
