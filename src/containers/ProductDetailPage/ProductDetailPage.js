@@ -1,22 +1,16 @@
-import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, TouchableHighlight, Dimensions, AsyncStorage } from 'react-native'
-import { Button, Carousel, List, Flex, Tabs, Modal, Popover } from 'antd-mobile-rn';
-import { ProductDetailPage_mock } from '../../mock/ProductDetailPage'
+import React from 'react'
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView,Alert, Dimensions, AsyncStorage } from 'react-native'
+import { Carousel,  Flex, Tabs, Modal } from 'antd-mobile-rn';
 import { flexRow, contentPadding, mainGray, mainPink } from '../../styles/common'
 import Color from '../../styles/var'
 import Collect from '../../components/Collect'
 import SelectedListHoc from '../../components/SelectedList'
-import NumberSelect from '../../components/NumberSelect'
 import PayBar from '../../components/PayBar'
-import ActionSheet from 'react-native-actionsheet'
 import api from '../.././service/api'
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
-import EasyModal from './components/EasyModal'
 import { authAppSecret } from '../../config'
-const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods, payment } = api
-import Spinner from 'react-native-loading-spinner-overlay';
-// const PRODUCT_ID = '201802241102330510355414'
+const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods } = api
 
 const storageItem = ({ data, itemData, onPress, subSkuId }) => {
   const boxStyle = [{
@@ -342,7 +336,7 @@ export default class ProductDetailPage extends RentApp {
     //绑卡判断
     if (capitalProdSelected && capitalProdSelected.isCreditCard == 1 && userInfos.isCreditCard == 0) {
       //需要绑卡并且还没有绑卡
-      th.setState({
+      this.setState({
         isShowBindCard: true
       })
       return false
@@ -435,7 +429,8 @@ export default class ProductDetailPage extends RentApp {
     }
   }
   bindCardFun = () => {
-
+    console.log("bindCard")
+    this.props.navigation.navigate("BackCardPage")
   }
 
   render() {
@@ -684,19 +679,26 @@ export default class ProductDetailPage extends RentApp {
             </Flex>
           </Flex>
         </Modal>
-        <Modal
-          title="提示"
-          transparent
-          onClose={this.bindCardFun}
-          maskClosable
-          visible={this.state.isShowBindCard}
-          closable
-          footer={footerButtons}
-        >
-          <View style={{ paddingVertical: 20 }}>
-            <Text style={{ textAlign: 'center' }}>您还绑定银行卡，是否立即绑定?</Text>t>
-          </View>
-        </Modal>
+
+          {this.state.isShowBindCard?Alert.alert("提示","您还绑定银行卡，是否立即绑定?",[
+              {
+                text:"是", onPress:()=>{this.bindCardFun()}
+              },
+              {text:"否"}
+          ]):null}
+        {/*<Modal*/}
+          {/*title="提示"*/}
+          {/*transparent*/}
+          {/*onClose={this.bindCardFun}*/}
+          {/*maskClosable*/}
+          {/*visible={this.state.isShowBindCard}*/}
+          {/*closable*/}
+          {/*footer={footerButtons}*/}
+        {/*>*/}
+          {/*<View style={{ paddingVertical: 20 }}>*/}
+            {/*<Text style={{ textAlign: 'center' }}>您还绑定银行卡，是否立即绑定?</Text>t>*/}
+          {/*</View>*/}
+        {/*</Modal>*/}
         <Modal
           title="提示"
           transparent

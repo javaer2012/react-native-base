@@ -37,6 +37,9 @@ export default class AddBankCard extends RentApp {
     constructor(props){
         super(props)
 
+        this.activeId = props.navigation.getParam('activeId',"")
+        this.productId = props.navigation.getParam('productId',"")
+
         this.getUserInfo()
     }
 
@@ -67,7 +70,9 @@ export default class AddBankCard extends RentApp {
                    this.props.navigation.navigate("CardInfoPage",{
                        info:{
                            ...info,
-                           cardNo
+                           cardNo,
+                           activeId:this.activeId,
+                           productId:this.productId
                        }
 
                    })
@@ -106,7 +111,7 @@ export default class AddBankCard extends RentApp {
                                    value={userName}
                                    onChange={(userName)=>this.setState({userName})}>持卡人</InputItem>
 
-                        <InputItem placeholder={"仅中国大陆身份证"} type={"bankCard"}
+                        <InputItem placeholder={"请输入银行卡号"} type={"bankCard"}
                                    value={cardNo} onChange={(cardNo)=>this.setState({cardNo})}>银行卡号</InputItem>
 
 

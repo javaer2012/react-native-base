@@ -19,6 +19,9 @@ export default class CardInfo extends RentApp{
         this.cardInfo = props.navigation.getParam('info',{})
         console.log(this.cardInfo)
 
+        this.activeId = props.navigation.getParam('activeId',"")
+        this.productId = props.navigation.getParam('productId',"")
+
         this.state = {
             phoneNo:'',
             ...this.cardInfo
@@ -44,7 +47,7 @@ export default class CardInfo extends RentApp{
                 bankName,
                 provCode:844,
                 cityCode:84401,
-                activeId:'524eaa42bfec4d00b77f50d56fd82fe5'
+                activeId:this.activeId || '524eaa42bfec4d00b77f50d56fd82fe5'
 
             }
             const rsp = await api.applyBindCardCode(params);
@@ -81,7 +84,7 @@ export default class CardInfo extends RentApp{
                 bankName,
                 provCode:844,
                 cityCode:84401,
-                activeId:'524eaa42bfec4d00b77f50d56fd82fe5',
+                activeId:this.activeId || '524eaa42bfec4d00b77f50d56fd82fe5',
                 signMsgSn,
                 verifyCode:111111
 
@@ -92,6 +95,9 @@ export default class CardInfo extends RentApp{
             const {data} = rsp
             if(data.errcode === 1){
                 Toast.info('绑卡成功',1)
+                this.props.navigation.navigation("ProductDetailPage",{
+                    provinceCode:this.productId
+                })
             } else {
                 Toast.info(data.errmsg,1)
             }

@@ -23,6 +23,9 @@ export default class BankCard extends RentApp{
 
     constructor(props){
         super(props)
+
+        this.activeId = props.navigation.getParam('activeId',"")
+        this.productId = props.navigation.getParam('productId',"")
     }
 
     componentDidMount(){
@@ -66,10 +69,11 @@ export default class BankCard extends RentApp{
     render(){
 
         const {cardInfo} = this.state
+        if(!cardInfo) return null
         return (
             <View>
                 <WhiteSpace size={"lg"}/>
-                {this.state.cardInfo? <View>
+                {Object.keys(this.state.cardInfo).length  > 0 ? <View>
                         <ImageBackground style={{width:'100%',height:190,borderRadius:6}}
                                          source={require('../images/bank/back.png')}>
                             <WingBlank size={"lg"}>
@@ -88,7 +92,9 @@ export default class BankCard extends RentApp{
                                     <Text style={{color:'#FFFFFF',height:14,lineHeight:14,fontSize:14,opacity:0.9}}>银行卡号</Text>
                                     <WhiteSpace size={"xl"}/>
 
-                                    <Text style={{color:'#FFFFFF',fontSize:18,height:18,lineHeight:18}}>{`**** **** **** ${cardInfo.cardNumber.substring(12,16)}`}</Text>
+                                    <Text
+                                        style={{color:'#FFFFFF',fontSize:18,height:18,lineHeight:18}}>
+                                        {`**** **** **** ${cardInfo && cardInfo.cardNumber && cardInfo.cardNumber.substring(12,16)}`}</Text>
                                     <WhiteSpace size={"xl"}/>
 
                                 </Flex>
@@ -116,7 +122,10 @@ export default class BankCard extends RentApp{
                         <WhiteSpace size={"lg"}/>
 
                         <ImageBackground style={{width:320,height:47,paddingTop: 8}} source={require('../images/backCard/dot.png')}>
-                            <TouchableOpacity onPress={()=>this.props.navigation.navigate("AddBankCardPage")}>
+                            <TouchableOpacity onPress={()=>this.props.navigation.navigate("AddBankCardPage",{
+                                activeId:this.activeId,
+                                productId:this.productId
+                            })}>
                                 <Flex direction={"row"} justify={"center"} align={"center"}>
                                     <Image style={{width:30,height:30}} source={require('../images/backCard/add.png')}/>
                                     <Text>添加银行卡</Text>
