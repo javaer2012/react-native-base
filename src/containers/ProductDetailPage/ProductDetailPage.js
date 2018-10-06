@@ -80,7 +80,8 @@ export default class ProductDetailPage extends RentApp {
 
   getData = async () => {
     // '201807191036353330096584' || 
-    const productId = "201807191036353330096584" || this.props.navigation.getParam('productId');
+    // "201807191036353330096584" ||
+    const productId = this.props.navigation.getParam('productId');
     await this.getOpenIdAndUserId()
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
@@ -244,7 +245,7 @@ export default class ProductDetailPage extends RentApp {
           EasyModalInfos: {
             title: '提示',
             text: '您还没登录，是否立即登录?',
-            toPage: "LoginPage"
+            toPage: "LoginPage",
           }
         })
         return false;
@@ -254,7 +255,7 @@ export default class ProductDetailPage extends RentApp {
           EasyModalInfos: {
             title: '提示',
             text: '您还没授信，是否立即授信?',
-            toPage: "AuthApplyPage"
+            toPage: 'AuthSuccessPage' || "AuthApplyPage"
           }
         })
         return false;
@@ -442,8 +443,10 @@ export default class ProductDetailPage extends RentApp {
         }
       },
       {
-        text: '确定', onPress: () => {
-          that.props.navigation.navigate(EasyModalInfos.toPage)
+        text: '确定', onPress: async () => {
+          // await AsyncStorage.multiSet(['fromPageName', 'fromPageParams']);
+          AsyncStorage.multiSet([['fromPageName', 'ProductDetail'], ['fromPageParams', JSON.stringify({productId: this.state.productId})]]);
+          that.props.navigation.navigate(EasyModalInfos.toPage,)
           this.setState({ isShowEasyModal: false })
         }
       },

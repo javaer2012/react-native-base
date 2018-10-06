@@ -38,9 +38,9 @@ export default class AuthSuccess extends RentApp{
     constructor(props){
         super(props)
 
-        this.max = props.navigation.getParam('maxCreditAmount')
-        this.score = props.navigation.getParam('creditScore')
-        this.monthFee = props.navigation.getParam('monthFee')
+        this.max = props.navigation.getParam('maxCreditAmount', 0)
+        this.score = props.navigation.getParam('creditScore', 0)
+        this.monthFee = props.navigation.getParam('monthFee', 0)
 
         this.saveData(this.max,this.score,this.monthFee)
     }
@@ -53,6 +53,7 @@ export default class AuthSuccess extends RentApp{
 
         try{
             const fromPage = await AsyncStorage.multiGet(['fromPageName','fromPageParams']);
+            // debugger
 
             this.fromPageName = fromPage[0][1] || 'MyPage' //默认跳转至我的页面
             this.fromPageParams = fromPage[1][1]?JSON.parse(fromPage[1][1]) : {} //默认没有参数
@@ -79,7 +80,7 @@ export default class AuthSuccess extends RentApp{
             }
 
         } catch (e) {
-
+            console.log(e,"!!!!")
         }
     }
 
