@@ -3,6 +3,7 @@ import RentApp from "../components/RentApp";
 import {View,Text,Image,StyleSheet,AsyncStorage} from 'react-native'
 import {Flex,WhiteSpace} from 'antd-mobile-rn'
 import Button from '../components/common/Button'
+import api from "../service/api";
 
 const styles = StyleSheet.create({
     container:{
@@ -49,10 +50,37 @@ export default class AuthSuccess extends RentApp{
     }
 
     async componentDidMount(){
-        const fromPage = await AsyncStorage.multiGet(['fromPageName','fromPageParams']);
 
-        this.fromPageName = fromPage[0][1] || 'MyPage' //默认跳转至我的页面
-        this.fromPageParams = fromPage[1][1]?JSON.parse(fromPage[1][1]) : {} //默认没有参数
+        try{
+            const fromPage = await AsyncStorage.multiGet(['fromPageName','fromPageParams']);
+
+            this.fromPageName = fromPage[0][1] || 'MyPage' //默认跳转至我的页面
+            this.fromPageParams = fromPage[1][1]?JSON.parse(fromPage[1][1]) : {} //默认没有参数
+
+            const userInfo = await AsyncStorage.getItem('userInfo'),
+                userInfoJson = JSON.parse(userInfo),
+                userParam = {
+                    userId:this.userId,
+                    openId:this.openId,
+                    cityCode:84401,
+                    provinceCode:844,
+                },
+                userRsp = await api.getUserInfo(userParam)
+
+
+            const {data} = userRsp
+
+            if(data.errcode === 1){
+
+                const newUserInfo = {}
+                Object.assign(newUserInfo,{...userInfoJson},{...data.userInfo})
+
+                await AsyncStorage.setItem(['userInfo',JSON.stringify(newUserInfo)])
+            }
+
+        } catch (e) {
+
+        }
     }
 
     render(){
