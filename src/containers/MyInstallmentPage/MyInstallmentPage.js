@@ -4,6 +4,7 @@ import { Button, Toast } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/ProductDetailPage'
 import { flexRow, mainGray } from '../../styles/common'
 import { Flex, List } from 'antd-mobile-rn';
+import Spinner from 'react-native-loading-spinner-overlay';
 import api from '../.././service/api'
 import RentApp from "../../components/RentApp";
 const { myStageList } = api
@@ -12,8 +13,9 @@ const Item = List.Item;
 
 export default class MyInstallmentPage extends RentApp {
   state = {
-    totalMoney:"111",
+    noRepayAmount:"111",
     periodList: [],
+    loading: false,
     // dataObj:{
     //   noRepayAmount:'100',
     //   stageId: '22',
@@ -33,6 +35,7 @@ export default class MyInstallmentPage extends RentApp {
   }
   
   async getData() {
+    await this.setState({ loading: true })
     const orderId = this.props.navigation.getParam('orderId');
 
     try {
@@ -47,13 +50,17 @@ export default class MyInstallmentPage extends RentApp {
         // 343164f313df40098c2e48d0a193de20
       }
       const { data } = await myStageList(params)
+      console.log(data,"datadatadatadatadata")
       if (data.errcode !== 1 && data.errmsg) Toast.info(data.errmsg);
       this.setState({
-        periodList: data.periodList
+        periodList: data.periodList,
+        noRepayAmount: data.noRepayAmount
       })
 
     } catch (error) {
       console.log(error, "error")
+    } finally {
+      this.setState({ loading: false })
     }
   }
 
@@ -116,20 +123,25 @@ export default class MyInstallmentPage extends RentApp {
   }
 
   render() {
-    const { totalMoney, periodList } = this.state
+    const { noRepayAmount, periodList, loading } = this.state
     return (
       <Flex direction="column" align="stretch">
         <Flex style={styles.totalMoneyStyle} direction="column" justify="center">
           <Text style={[styles.textBase]}>全部待还(元)</Text>
-          <Text style={[styles.textBase]}>{totalMoney}</Text>
-          <Text style={[ styles.advance]}>
-            提前还款
-          </Text>
+          <Text style={[styles.textBase]}>{noRepayAmount}</Text>
+          <TouchableOpacity style={[styles.advance]} onPress={() => this.showToast('敬请期待')}>
+            <Text>
+              提前还款
+            </Text>
+          </TouchableOpacity>
+          
         </Flex>
         <Flex direction="column" style={styles.cardBox}>
           {(!!periodList && !!periodList.length) && this.renderListTest(periodList)}
         </Flex>
-        
+        <View style={{ flex: 1 }}>
+          <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
+        </View>
       </Flex>
     )
   }
@@ -146,9 +158,11 @@ const styles = StyleSheet.create({
   advance:{
     position: 'absolute',
     height: advanceH,
-    lineHeight: advanceH,
+    // lineHeight: advanceH,
     bottom: 0 - advanceH / 2,
     // paddingVertical: 7,
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 60,
     backgroundColor: '#fff'
   },

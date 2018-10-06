@@ -31,8 +31,8 @@ export default class MyOrders extends RentApp{
             const params = {
                 userId:this.userId,
                 openId:this.openId,
-                cityCode:84401,
-                provinceCode:844
+                cityCode: this.cityCode,
+                provinceCode: this.provinceCode
             }
             console.log(params)
             const rsp = await api.myOrderList(params)
@@ -55,8 +55,12 @@ export default class MyOrders extends RentApp{
     }
 
     onFootClick = (item)=>{
-        Toast.info(item.goodsName,1)
-
+        
+        // Toast.info(item.goodsName,1)
+        const { navigate } = this.props.navigation
+        navigate('MyInstallmentPage', {
+            orderId: item.orderId
+        })
     }
 
     renderItem(item){

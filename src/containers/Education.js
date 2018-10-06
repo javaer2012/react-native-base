@@ -2,12 +2,29 @@ import React, { Component } from 'react';
 import { View,ScrollView, Text,TouchableOpacity,StyleSheet,Image } from 'react-native';
 import {List,InputItem,WingBlank,WhiteSpace,Flex} from 'antd-mobile-rn';
 import Button from "../components/common/Button";
+import { cityObj } from '../utils/areaSchool'
 
 export default class Education extends Component{
     static navigationOptions = {
         title:"学籍学历"
     }
+    state = {
+        cityId: ''
+    }
+    setCityIdFun = (data) => {
+        cityObj.forEach(element => {
+            if (data.crmProvName === element.province) {
+                this.setState({
+                    cityId: element.id
+                })
+            }
+        });
+    }
 
+    setSchoolFun = (data) => {
+        console.log(data,"!!!")
+
+    }
     render(){
 
         const Item = List.Item;
@@ -21,8 +38,15 @@ export default class Education extends Component{
                 </Flex>
                 <WhiteSpace size={"lg"}/>
                 <List >
-                    <Item arrow={"horizontal"}>地区</Item>
-                    <Item arrow={"horizontal"} onClick={()=>navigation.navigate("DrivingPage")}>院校名称</Item>
+                    <Item arrow={"horizontal"} onClick={
+                        () => navigation.navigate('LocationPage', {
+                            callback: (data) => this.setCityIdFun(data)
+                        })}>地区
+                    </Item>
+                    <Item arrow={"horizontal"} onClick={() => navigation.navigate("SchoolSearchPage",  {
+                        cityId: this.state.cityId,
+                        callback: (data) => this.setSchoolFun(data)
+                    })}>院校名称</Item>
                     <Item arrow={"horizontal"} onClick={()=>navigation.navigate("DrivingPage")}>当前状态</Item>
 
                 </List>

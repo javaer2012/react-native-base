@@ -7,66 +7,73 @@ import api from '../.././service/api'
 import RentApp from "../../components/RentApp";
 import ProudcuItem from '../../components/ProudcuItem'
 import Color from '../../styles/var'
+import Spinner from 'react-native-loading-spinner-overlay';
 const { staffOrderDetail } = api
-const Button_ = ({children}) => {
+const Button_ = ({ children, onPress}) => {
   return (
-    <TouchableOpacity style={{ flex: 1, justifyContent:'center', backgroundColor: Color.mainPink, paddingVertical: 13, height: 40 }}>
+    <TouchableOpacity onPress={onPress} style={{ flex: 1, justifyContent:'center', backgroundColor: Color.mainPink, paddingVertical: 13, height: 40 }}>
       <Text style={{ color: '#fff', textAlign: 'center' }} >{children}</Text>
     </TouchableOpacity>
   )
 }
 export default class OrderDetail extends RentApp {
   state = {
-    data: {
-      goodsInfo: {
-        goodsImagePath: '',
-        goodsName: '',
-        goodsDesc: '',
-        actualUsedAmount: '',
-        totalFirstAmount: '',
-        goodsSkus: ''
-      },
-      userInfo: {
-        userName: '',
-        phoneNo: '',
-        idCardNo: '',
-        creditAmount: '',
-        creditScore: '',
-      },
-      stageInfo: {
-        totalStageAmount: '',
-        capitalProdName: '',
-        stagePeriods: '',
-        stageMonthRate: '',
-        eachStageAmount: '',
-      },
-      contractMealInfo: {
-        mealId: '',
-        mealCode: '',
-        mealName: '',
-        mealPrice: '',
-        mealType: '',
-        mealAmount: ''
-      },
-      insureList: [
-        {
-          insureId: '',
-          insureName: '',
-          insureType: "",
-          policyNo: '',
-          insureAmount: '',
-          insureStartTime: '',
-          insureEndTime: '',
-          insureStatus: ''
-        }
-      ]
+    userInfo:{},  // 缓存获取的用户信息
+    goodsInfo: {
+      goodsImagePath: '',
+      goodsName: '',
+      goodsDesc: '',
+      actualUsedAmount: '',
+      totalFirstAmount: '',
+      goodsSkus: ''
+    },
+    orderUserInfo: {  // 接口获取的用户信息
+      userName: '',
+      phoneNo: '',
+      idCardNo: '',
+      creditAmount: '',
+      creditScore: '',
+    },
+    stageInfo: {
+      totalStageAmount: '',
+      capitalProdName: '',
+      stagePeriods: '',
+      stageMonthRate: '',
+      eachStageAmount: '',
+    },
+    contractMealInfo: {
+      mealId: '',
+      mealCode: '',
+      mealName: '',
+      mealPrice: '',
+      mealType: '',
+      mealAmount: ''
+    },
+    insureList: [
+      {
+        insureId: '',
+        insureName: '',
+        insureType: "",
+        policyNo: '',
+        insureAmount: '',
+        insureStartTime: '',
+        insureEndTime: '',
+        insureStatus: ''
+      }
+    ],
 
-    }
+    orderId: '',
+    loading: false
   }
 
   async componentDidMount() {
     try {
       await this.getOpenIdAndUserId()
+      const orderId = this.props.navigation.getParam('orderId');
+      console.log(orderId,"!!!!")
+      this.setState({
+        orderId
+      })
       this.getData()
     } catch (error) {
       console.log(error, "error")
@@ -75,47 +82,63 @@ export default class OrderDetail extends RentApp {
 
   async getData() {
     try {
-
-      const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
+      await this.setState({ loading: true })
+      let user = await AsyncStorage.getItem('userInfo')
+      user = { ...JSON.parse(user) }
       this.setState({
         userInfo: user
       })
-      console.log(user,"rrrrrrrrr")
-
+      const { orderId } = this.state
       const params = {
         userId: this.userId,
         openId: this.openId,
-        orderId: '31524c0b69a44ebbb163862094f412ec',
+        orderId,
         cityCode: this.cityCode,
-        provinceCode: this.provinceCode
-        // 3123123
+        provinceCode: this.provinceCode,
+        staffNo: 3123123 || user.staffNo
       }
-      // console.log(params, '=======》 params')
+      console.log(params, '=======》 params')
       const { data } = await staffOrderDetail(params)
-      console.log(data, "ggggggggggggggggggggggggggggggggggggg")
+      console.log(JSON.stringify(data), "ggggggggggggggggggggggggggggggggggggg")
       if (data.errcode === 1) {
-       
+        const { 
+          // orderUserInfo: userInfo, 
+          userInfo,
+          orderTime, 
+          stageInfo, 
+          insureList, 
+          contractMealInfo,
+          goodsInfo 
+        } = data
         this.setState({
-          // orderList: data.orderList
+          orderUserInfo: userInfo,
+          orderTime,
+          stageInfo,
+          insureList,
+          contractMealInfo,
+          goodsInfo 
         })
       }
 
       console.log(JSON.stringify(rsp), '=========>getData res')
     } catch (e) {
 
+    } finally {
+      this.setState({ loading: false })
     }
   }
   render() {
-    const { data: { userInfo, stageInfo, contractMealInfo } } = this.state
+    const { userInfo, stageInfo, contractMealInfo, orderUserInfo } = this.state
+    console.log(orderUserInfo,"userInfouserInfouserInfo")
     return (
       <ScrollView>
         <Flex direction="column">
           <Flex style={styles.cardBox} align="stretch">
             <Card title="用户信息">
               <Flex direction="column" align="start">
-                <Text style={styles.textBase}>姓名：{userInfo.userName}</Text>
-                <Text style={styles.textBase}>电话号码：{userInfo.phoneNo}</Text>
-                <Text style={styles.textBase}>身份证号：{userInfo.idCardNo}</Text>
+                <Text style={styles.textBase}>姓名：{orderUserInfo.userName}</Text>
+                <Text style={styles.textBase}>电话号码：{orderUserInfo.phoneNo}</Text>
+                <Text style={styles.textBase}>身份证号：{orderUserInfo.idCardNo}</Text>
               </Flex>
             </Card>
           </Flex>
@@ -160,17 +183,24 @@ export default class OrderDetail extends RentApp {
           </Flex>
           <Flex direction="column" align="stretch" style={{ paddingHorizontal: 10, flex: 1, width: '100%', backgroundColor:'#fff',paddingBottom: 80 }}>
             <Flex style={{ marginTop: 30 }}>
-              <Button_>
+              <Button_ onPress={() => { this.props.navigation.navigate('Home')}}>
                 {'回到首页'}
               </Button_>
             </Flex>
             <Flex style={{marginTop: 20}}>
-              <Button_>
-                {'营业员受理'}
+              <Button_ onPress={() => { this.props.navigation.navigate('Accept', {
+                orderId: this.state.orderId,
+                staffNo: userInfo.staffNo
+              }) }}>
+                {'营业员受理'}``
               </Button_>
             </Flex>
           </Flex>
+          <View style={{ flex: 1 }}>
+            <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
+          </View>
         </Flex>
+        
       </ScrollView>
     )
   }

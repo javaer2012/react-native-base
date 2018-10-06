@@ -6,6 +6,8 @@ import { flexRow } from '../../styles/common'
 import Color from '../../styles/var'
 import TabBarCom from '../../components/TabBarCom'
 import api from '../.././service/api'
+import { NavigationEvents } from 'react-navigation';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const {  getBannerAndNav, hotProducts, HTTP_IMG } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
@@ -25,6 +27,7 @@ export default class Home extends RentApp {
     addressMsg:{},
     value: [],
     pickerValue: [],
+    loading: false,
   }
 
   goToAddressPage = () => {
@@ -54,6 +57,7 @@ export default class Home extends RentApp {
 
   async componentDidMount() {
     try {
+      await this.setState({ loading: true })
       const { data: getBannerAndNavData , data: { bannerList, navList } } = await getBannerAndNav({})
      
       const { data: hotProductsData, data:{ hotMealList, hotPhoneList }} = await hotProducts({
@@ -68,6 +72,8 @@ export default class Home extends RentApp {
       })
     } catch (error) {
       console.error(error)
+    } finally {
+      await this.setState({ loading: false })
     }
   }
 
@@ -89,13 +95,33 @@ export default class Home extends RentApp {
       )
     })
   }
+  setAddressInfosFun = async (data) => {
+    console.log(data,"datadatadata")
+    // debugger
+    try {
+      await this.setState({
+        addressMsg: data
+      })
+      await this.setState({ loading: true })
+      await AsyncStorage.setItem('addressInfos', JSON.stringify(data));
+      const { data: { bannerList, navList } } = await getBannerAndNav({})
 
-  // 手动选择地址后，重新获取地址信息
-  uploadAddress = async () => {
-    const addressMsg = await this.getAddressMsg({})
-    this.setState({
-      addressMsg
-    })
+      const { data: { hotMealList, hotPhoneList } } = await hotProducts({
+        provinceCode: data.provinceCode,  // 测试用
+        cityCode: data.cityCode
+      })
+      this.setState({
+        bannerList,
+        navList,
+        hotPhoneList,
+        hotMealList,
+      })
+    } catch (error) {
+      console.error(error)
+    } finally {
+      await this.setState({ loading: false })
+    }
+    // const addressMsg = await this.getAddressMsg()
   }
 
   render() {
@@ -106,10 +132,14 @@ export default class Home extends RentApp {
     return (
       <View style={{ position: 'relative', height: '100%' }}>
         <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
-          <TouchableOpacity  onPress={() => navigate('LocationPage', {})}>
+          <TouchableOpacity  onPress={() => navigate('LocationPage', {
+            callback: (data) => {
+              this.setAddressInfosFun(data)
+            }
+          })}>
             <Text style={{color: '#fff'}}>{addressMsg && addressMsg.city}</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27}} onPress={() => navigate('LocationPage', {})}>
+          <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
             <Flex style={{backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20}}>
               <Text style={{color: '#ccc'}}>搜索商品</Text>
             </Flex>
@@ -146,6 +176,9 @@ export default class Home extends RentApp {
         <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
           {/* <TabBarCom navigate={navigate}/> */}
           {/* <TabNavigator /> */}
+        </View>
+        <View style={{ flex: 1 }}>
+          <Spinner visible={this.state.loading} textContent={"Loading..."} textStyle={{ color: '#FFF' }} />
         </View>
       </View>
     )

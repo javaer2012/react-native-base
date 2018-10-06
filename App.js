@@ -10,8 +10,8 @@ import React, {Component} from 'react';
 import {Provider} from 'react-redux';
 import store from './src/store/store';
 import AppNavigator from './src/router';
-import {AsyncStorage, Platform, Linking, Alert} from 'react-native';
-import {setData, getData} from './src/utils/storage'
+
+import { AsyncStorage, ActivityIndicator, View } from 'react-native';
 import {getToken} from "./src/service/api";
 import api from './src/service/api'
 import config from './src/config';

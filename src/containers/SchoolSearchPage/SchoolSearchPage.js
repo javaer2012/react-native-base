@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image, TouchableOpacity, Modal, AsyncStorage, Text, FlatList, TextInput, Platform, Dimensions, StyleSheet, Alert
+  View, Image, TouchableOpacity, Modal, AsyncStorage, Text, FlatList, TextInput, Dimensions, StyleSheet, Alert
 } from 'react-native';
 import { areaDict } from '../../utils/city1.json'
 import { Flex, SearchBar } from 'antd-mobile-rn';
@@ -23,16 +23,6 @@ var searchHeight = 35;//搜索框高度
 var searchHeightMargin = 2;//搜索框margin
 
 const schoolSingleDeck = [] // 单层地址数组
-// const schoolList = letters.map(item => {
-//   schoolSingleDeck.push(cityObj[item])
-//   // let tempObj = {};
-//   // let areaInfo = [];
-
-//   // tempObj.initial = initial;
-//   // tempObj.areaInfo = schoolArr.filter(
-//   //   schoolName => schoolName.initial == initial
-//   // );
-// })
 
 // function areaListFun() {
 //   let tempArr = [];
@@ -51,23 +41,15 @@ const schoolSingleDeck = [] // 单层地址数组
 //     }
 //   );
 
-//   // console.log('地区信息：',JSON.stringify(tempArr));
 //   return tempArr;
 // }
 
 // const areaList = areaListFun()
 
-
-const baseSchoolObjsFun = () => {
-  let ARR = []
-
-  schoolObjs.forEach(item => {
-    ARR = [...ARR, ...item.schoolInfo]
-  })
-  return ARR
-}
-
 export default class SchoolSearchPage extends RentApp {
+  static navigationOptions = {
+    title: "选择学校"
+  }
   state = {
     dataSource: [],
     addressMsg:{},
@@ -75,9 +57,27 @@ export default class SchoolSearchPage extends RentApp {
     searchText:'', // 选择地名称
     selectedLetters:'', // 选择 的首字母
     searchschoolObjs:[],
-    baseSchoolObjs: baseSchoolObjsFun()
+    citySchoolObjs:[]  // 当前城市学校对象
+    // baseSchoolObjs: baseSchoolObjsFun()
   }
+  areaListFun = (cityObj) => {
+    let tempArr = [];
 
+    letters.map(
+      initial => {
+        let tempObj = {};
+        let areaInfo = [];
+
+        tempObj.initial = initial;
+        tempObj.areaInfo = cityObj.filter(
+          city => city.initial == initial
+        );
+
+        tempArr.push(tempObj);
+      }
+    );
+    return tempArr;
+  }
   // setSchoolList = () => {
   //   const ARR = []
   //   areaList.map((areaItem, index) => {
@@ -95,28 +95,31 @@ export default class SchoolSearchPage extends RentApp {
   // }
   
   // 从缓存中取出位置信息对象
-  getAddressMsg = async () => {
-    try {
-      const value = await AsyncStorage.getItem('addressInfos');
-      if (value !== null) {
-        // We have data!!
-        return JSON.parse(value);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  }
+  // getAddressMsg = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('addressInfos');
+  //     if (value !== null) {
+  //       // We have data!!
+  //       return JSON.parse(value);
+  //     }
+  //   } catch (error) {
+  //     // Error retrieving data
+  //   }
+  // }
 
-  async componentDidMount(){
-    try {
-      const addressMsg = await this.getAddressMsg()
-      this.setState({
-        userAddressMsg: addressMsg,
-      }) 
-    } catch (error) {
-      console.error(error)
-    }
+  async componentDidMount() {
+   
   }
+  // async componentDidMount(){
+  //   try {
+  //     const addressMsg = await this.getAddressMsg()
+  //     this.setState({
+  //       userAddressMsg: addressMsg,
+  //     }) 
+  //   } catch (error) {
+  //     console.error(error)
+  //   }
+  // }
 
   renderLetters(letter, index) {
     return (
@@ -127,17 +130,28 @@ export default class SchoolSearchPage extends RentApp {
       </TouchableOpacity>
     )
   }
-  changedata = async (item) => {
+  goback(data) {
+    const { navigate, goBack, state } = this.props.navigation;
+    state.params.callback(data);
+    this.props.navigation.goBack();
+  }
+  // changedata = async (item) => {
+  //   const JS_STR_item = JSON.stringify(item)
+  //   await AsyncStorage.setItem('selectedSchool', JS_STR_item);
+  //   const backAction = NavigationActions.back({
+  //     // key: 'Profile'
+  //     selectedSchool: JS_STR_item
+  //   })
+  //   this.props.navigation.dispatch(backAction)
+  // }
+  changedata = (item) => {
     const JS_STR_item = JSON.stringify(item)
-    await AsyncStorage.setItem('selectedSchool', JS_STR_item);
-    const backAction = NavigationActions.back({
-      // key: 'Profile'
+    const addressInfos = {
       selectedSchool: JS_STR_item
-    })
-    this.props.navigation.dispatch(backAction)
+    }
+    this.goback(addressInfos)
   }
   renderRow =  ({item}) => {
-
     return (
       <TouchableOpacity
         key={item.short}
@@ -151,47 +165,12 @@ export default class SchoolSearchPage extends RentApp {
 
       </TouchableOpacity>
     )
-
-    // return item.map((element, index) => {
-    //   return (
-    //     <TouchableOpacity
-    //       key={index}
-    //       style={{
-    //         borderBottomColor: '#faf0e6',
-    //         borderBottomWidth: 0.5,
-    //         height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30
-    //       }}
-    //       onPress={() => { this.changedata(element) }}>
-    //       <View><Text style={styles.rowdatatext}>{element.schoolName}</Text></View>
-
-    //     </TouchableOpacity>
-    //   )
-    // });
-
-    return false
-
-    const { searchText } = this.state
-    if (searchText && item.crmCityName !== searchText) return false
-
-    return (
-      <TouchableOpacity
-        key={item.rowId}
-        style={{ 
-          borderBottomColor: '#faf0e6',
-          borderBottomWidth: 0.5,
-          height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30 }}
-          onPress={() => { this.changedata(item) }}>
-        <View><Text style={styles.rowdatatext}>{item.crmCityName}</Text></View>
-
-      </TouchableOpacity>
-    )
   }
   // 搜索
   changeText = (text) => {
     const { searchschoolObjs } = this.state
     const newSearchschoolObjs =[]
     schoolObjs.filter(item => {
-
        item.schoolInfo.filter(cItem => {
          if (cItem.schoolName.indexOf(text) !== -1 || cItem.initial.indexOf(text) !== -1 || cItem.short.indexOf(text) !== -1 || cItem.shorter.indexOf(text) !== -1  ) {
 
@@ -208,7 +187,7 @@ export default class SchoolSearchPage extends RentApp {
   renderSectionHeader = (sectionData, sectionID) => {
     const { userAddressMsg } = this.state;
     return (
-      <Flex direction='column'  style={{padding: 8, position: 'absolute', top: 0, width: '100%', zIndex: 10}}>
+      <Flex direction='column'  style={{padding: 8, position: 'absolute', top: 0, width: '100%', zIndex: 10, backgroundColor: '#fff'}}>
         <View style={styles.searchBox}>
           {/* <Image source={require('../res/image/search_bar_icon_normal.png')} style={styles.searchIcon} /> */}
           <TextInput 
@@ -238,15 +217,20 @@ export default class SchoolSearchPage extends RentApp {
   }
 
   render(){
-    const { searchschoolObjs, baseSchoolObjs } = this.state
+    const { searchschoolObjs, citySchoolObjs } = this.state
+    const cityId = this.props.navigation.getParam('cityId')
+    console.log(cityId,"!!!!!!!!1")
+    
+    // const { citySchoolObjs } =
     return (      
-        <View style={{ height: Dimensions.get('window').height, marginBottom: 10 }}>
+        <View style={{ height: Dimensions.get('window').height, marginBottom: 10, paddingTop: 60 }}>
           {this.renderSectionHeader()}
           <FlatList
             contentContainerStyle={styles.contentContainer}
             ref={listView => this._listView = listView}
             extraData={this.state}
-            data={(searchschoolObjs.length && searchschoolObjs) || baseSchoolObjs}
+            data={(searchschoolObjs.length && searchschoolObjs) || schoolObjs[cityId].schoolInfo}
+          
             renderItem={this.renderRow}
             // ListHeaderComponent={this.renderSectionHeader}
             onEndReachedThreshold={0.1}

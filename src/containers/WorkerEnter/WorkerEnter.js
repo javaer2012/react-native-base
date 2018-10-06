@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Alert } from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Alert, Dimensions } from 'react-native';
 import { Flex, List, Card, WhiteSpace, WingBlank, Tabs, SearchBar } from 'antd-mobile-rn';
 import api from '../.././service/api'
 // const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
+
 const { HTTP_IMG, orderList: orderList_ajax } = api
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 export default class WorkerEnter extends RentApp {
   state = {
@@ -39,6 +41,7 @@ export default class WorkerEnter extends RentApp {
       pageNum
     }
     const { data } = await orderList_ajax(params)
+    console.log(JSON.stringify(data),"!!!!!!!")
     if (!data || data.errcode !== 1) {
       throw data.errmsg || "data 获取数据失败"
       return
@@ -76,7 +79,13 @@ export default class WorkerEnter extends RentApp {
       } = item
       const { navigate } = this.props.navigation;
       return (
-        <TouchableOpacity key={index}  style={{marginBottom: 10}} onPress={() => navigate('MyInstallmentPage', {})}>
+        <TouchableOpacity 
+          key={index}  
+          style={{marginBottom: 10, backgroundColor: '#fff', paddingBottom: 20}} 
+          onPress={() => navigate('OrderDetail', {
+            orderId,
+          })}
+        >
           <Flex style={styles.orderBox}direction="column" align="start">
             <View style={styles.title}>
               <Text>订单流水号：{orderSn}</Text>
@@ -96,69 +105,62 @@ export default class WorkerEnter extends RentApp {
     const { notDoOrderList, hasDoOrderList } = this.state
     const { navigate } = this.props.navigation;
     const tabs = [
-      { title: '已受理' },
       { title: '未受理' },
+      { title: '已受理' },
+     
     ];
     const STYLE = {
-      alignItems: 'stretch',
+      alignItems: 'flex-start',
       justifyContent: 'center',
       flexGrow: 1,
-       backgroundColor: 'red'
       // backgroundColor: '#fff',, backgroundColor: '#fafafa'
     }
     return (
-        <ScrollView style={{backgroundColor: '#fff', flex: 1}}>
-          <Flex style={{ flexGrow: 1, height: '100%', position: 'relative', backgroundColor: '#fafafa' }} direction="column" align="stretch">
+        <ScrollView style={{ flex: 1, height: HEIGHT - 90 }}>
+          <Flex style={{ flexGrow: 1, height: '100%', position: 'relative',  }} direction="column" align="stretch">
               <Tabs tabs={tabs} initialPage={0}>
-                {/* <View style={style}>
-                    <Flex direction="column" align='stretch' >
-                      <SearchBar
-                        // style={{ border: 'none' }}
-                        showCancelButton={false}
-                        onSubmit={this.searchFun}
-                        defaultValue="初始值" placeholder="搜索所有订单" />
-                      <Flex style={{ backgroundColor: '#fff' }} direction="column" align="stretch">
-                        {(!!notDoOrderList && !!notDoOrderList.length) && this.renderOrders(notDoOrderList, 1)}
+                {(!!notDoOrderList && !!notDoOrderList.length)
+                  ? (
+                    <Flex direction="column" align="stretch">
+                      <Flex direction="column" align="stretch">
+                        <SearchBar
+                          // style={{ border: 'none' }}
+                          showCancelButton={false}
+                          onSubmit={this.searchFun}
+                          defaultValue="初始值" placeholder="搜索所有订单" />
                       </Flex>
+                      <ScrollView>
+                        {this.renderOrders(notDoOrderList, 1)}
+                      </ScrollView>
                     </Flex>
-                </View> */}
-                {
-              (!!notDoOrderList && !!notDoOrderList.length) ? (<View style={STYLE}>
-                    <TouchableOpacity onPress={() => navigate('MyInstallmentPage', {})}>
-                      <Flex direction="column" align='stretch' >
-                        <SearchBar
-                          // style={{ border: 'none' }}
-                          showCancelButton={false}
-                          onSubmit={this.searchFun}
-                          defaultValue="初始值" placeholder="搜索所有订单" />
-                        <Flex style={{ backgroundColor: '#fff' }} direction="column" align="stretch">
-                          {this.renderOrders(notDoOrderList, 1)}
-                        </Flex>
-                      </Flex>
-                    </TouchableOpacity>
-
-              </View>) : <Flex justify="center" align="center" style={{ paddingVertical: 34 }}>
-                  <Text>暂无订单</Text>
-                </Flex>
+                  ) 
+                  : (
+                    <Flex justify="center" align="center" style={{ flex: 1, height: HEIGHT - 140 }}>
+                      <Text style={{ color: '#888', fontSize: 14 }}>暂无订单</Text>
+                    </Flex>
+                  )
                 }
-                {
-              (!!hasDoOrderList && !!hasDoOrderList.length) ? (<View style={STYLE}>
-                    <TouchableOpacity onPress={() => navigate('MyInstallmentPage', {})}>
-                      <Flex direction="column" align='stretch' >
+
+                {(!!hasDoOrderList && !!hasDoOrderList.length)
+                  ? (
+                    <Flex direction="column" align="stretch">
+                      <Flex direction="column" align="stretch">
                         <SearchBar
                           // style={{ border: 'none' }}
                           showCancelButton={false}
                           onSubmit={this.searchFun}
                           defaultValue="初始值" placeholder="搜索所有订单" />
-                        <Flex style={{ backgroundColor: '#fff' }} direction="column" align="stretch">
-                        {this.renderOrders(hasDoOrderList, 2)}
-                        </Flex>
                       </Flex>
-                    </TouchableOpacity>
-                  
-              </View>) : <Flex justify="center" align="center" style={{ flex: 1 }}>
-                  <Text>暂无订单</Text>
-                </Flex>
+                      <ScrollView>
+                        {this.renderOrders(hasDoOrderList, 2)}
+                      </ScrollView>
+                    </Flex>
+                  )
+                  : (
+                    <Flex justify="center" align="center" style={{ flex: 1, height: HEIGHT - 140 }}>
+                      <Text style={{ color: '#888', fontSize: 14 }}>暂无订单</Text>
+                    </Flex>
+                  )
                 }
               </Tabs>
               

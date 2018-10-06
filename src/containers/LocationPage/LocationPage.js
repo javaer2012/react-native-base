@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image, TouchableOpacity, Modal, AsyncStorage, Text, FlatList, TextInput, Platform, Dimensions, StyleSheet, Alert
+  View, Image, TouchableOpacity, Modal, AsyncStorage, Text, FlatList, TextInput, Dimensions, StyleSheet, Alert
 } from 'react-native';
 import { areaDict } from '../../utils/city1.json'
 import { Flex, SearchBar } from 'antd-mobile-rn';
@@ -26,6 +26,7 @@ var searchHeight = 35;//搜索框高度
 var searchHeightMargin = 2;//搜索框margin
 
 export default class List extends RentApp {
+
   state = {
     dataSource: [],
     addressMsg:{},
@@ -67,21 +68,23 @@ export default class List extends RentApp {
       </TouchableOpacity>
     )
   }
-  changedata = async (item) => {
-    const addressinfos = {
+
+  goback(data) {
+    const { navigate, goBack, state } = this.props.navigation;
+    state.params.callback(data);
+    this.props.navigation.goBack();
+  }
+
+  changedata = (item) => {
+    const addressInfos = {
+      crmProvName: item.crmProvName,
       city: item.admCityName,
       cityCode: item.crmCityCode,
       provinceCode: item.crmProvCode,
     }
-    await AsyncStorage.setItem('addressInfos', JSON.stringify(item));
-    const backAction = NavigationActions.back({
-      // key: 'Profile'
-    })
-    this.props.navigation.dispatch(backAction)
-
-    // navigate('ProductDetail', { productId: item.id })
-    
+    this.goback(addressInfos) 
   }
+
   renderRow = ({ item }) => {
     const { searchText } = this.state
     if (searchText && item.crmCityName !== searchText) return false
@@ -99,6 +102,7 @@ export default class List extends RentApp {
       </TouchableOpacity>
     )
   }
+
   changeText = (text) => {
     this.setState({
       searchText: text
