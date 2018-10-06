@@ -76,7 +76,9 @@ export default class AuthSuccess extends RentApp{
                 const newUserInfo = {}
                 Object.assign(newUserInfo,{...userInfoJson},{...data.userInfo})
 
-                await AsyncStorage.setItem(['userInfo',JSON.stringify(newUserInfo)])
+                const userString = JSON.stringify(newUserInfo)
+
+                await AsyncStorage.setItem('userInfo',userString)
             }
 
         } catch (e) {

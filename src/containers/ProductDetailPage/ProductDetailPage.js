@@ -249,7 +249,7 @@ export default class ProductDetailPage extends RentApp {
           }
         })
         return false;
-      } else if (isCredited == 0) {
+      } else if (isCredited !== 0) {
         this.setState({
           isShowEasyModal: true,
           EasyModalInfos: {
