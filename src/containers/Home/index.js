@@ -151,16 +151,28 @@ export default class Home extends RentApp {
           automaticallyAdjustContentInsets={false}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-        >
-          <Carousel
-            style={styles.wrapper}
-            selectedIndex={2}
-            autoplay
-            infinite
-            afterChange={this.onHorizontalSelectedIndexChange}
-          >
-            {bannerList && this.renderBanner(bannerList)}
-          </Carousel>
+        > 
+          {
+            
+            bannerList.length !== 1 ? (
+              <View
+                style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
+              >
+                <Image resizeMode="stretch" style={{ width: WIDTH, height: BANNER_HEIGHT }} source={{ uri: `${HTTP_IMG}${bannerList[0].imgPath}` }} />
+              </View>
+            ) : (
+                <Carousel
+                  style={styles.wrapper}
+                  selectedIndex={2}
+                  autoplay
+                  infinite
+                  afterChange={this.onHorizontalSelectedIndexChange}
+                >
+                  {bannerList && this.renderBanner(bannerList)}
+                </Carousel>              
+            )
+          }
+          
           
           <View style={[styles.navBox]}>
             {navList && this.renderNavList(navList)}
