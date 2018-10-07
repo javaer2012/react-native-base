@@ -16,9 +16,9 @@ const BANNER_HEIGHT = WIDTH / 75 * 42
 import { getIdData, schoolList, schoolData } from '../../utils/school'
 import RentApp from "../../components/RentApp";
 import {updating} from "../../../App";
+import { connect } from 'react-redux'
 
-
-export default class Home extends RentApp {
+class Home extends RentApp {
   static navigationOptions = {
     title: "信用租机"
   }
@@ -33,27 +33,6 @@ export default class Home extends RentApp {
 
   goToAddressPage = () => {
 
-  }
-
-  getAddressMsg = async () => {
-    try {
-      const value = await AsyncStorage.getItem('addressInfos');
-      if (value !== null) {
-        // We have data!!
-        return JSON.parse(value);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
-  }
-
-  async componentWillMount(){
-    // await this.getOpenIdAndUserId()
-    const addressMsg = await this.getAddressMsg()
-    // const user = await AsyncStorage.getItem('userInfo')
-    this.setState({
-      addressMsg
-    })
   }
 
   async componentDidMount() {
@@ -78,6 +57,17 @@ export default class Home extends RentApp {
     }
   }
 
+
+  componentWillReceiveProps =(nextProps) => {
+    const addressMsg = nextProps.locationInfos
+
+    console.log(this.props, "redux 中拿出locationInfos")
+    // const user = await AsyncStorage.getItem('userInfo')
+    this.setState({
+      addressMsg
+    })
+  }
+
   // 渲染热销商品
   renderList = (data) => {
     const { navigate } = this.props.navigation;
@@ -97,11 +87,13 @@ export default class Home extends RentApp {
     })
   }
   setAddressInfosFun = async (data) => {
-    console.log(data,"datadatadata")
-    // debugger
     try {
       await this.setState({
         addressMsg: data
+      })
+      this.props.dispatch({
+        type: 'SET_LOCATION',
+        locationInfos: data
       })
       await this.setState({ loading: true })
       await AsyncStorage.setItem('addressInfos', JSON.stringify(data));
@@ -270,3 +262,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff'
   }
 });
+const mapStateToProps = state => {
+  return state.locationReducer
+}
+
+
+// , mapDispatchToProps, mergeProps
+export default connect(mapStateToProps)(Home)
+// , mapDispatchToProps, mergeProps

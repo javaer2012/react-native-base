@@ -6,6 +6,7 @@ import { areaDict } from '../../utils/city1.json'
 import { Flex, SearchBar } from 'antd-mobile-rn';
 import Color from '../../styles/var'
 import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
 import RentApp from "../../components/RentApp";
 
 const areaDictArr = Object.values(areaDict)
@@ -25,7 +26,7 @@ var totalNumber = 10;//总条数的数据
 var searchHeight = 35;//搜索框高度
 var searchHeightMargin = 2;//搜索框margin
 
-export default class List extends RentApp {
+class List extends RentApp {
 
   state = {
     dataSource: [],
@@ -34,31 +35,15 @@ export default class List extends RentApp {
     searchText:''
   }
   
-  // 从缓存中取出位置信息对象
-  getAddressMsg = async () => {
-    try {
-      const value = await AsyncStorage.getItem('addressInfos');
-      if (value !== null) {
-        // We have data!!
-        return JSON.parse(value);
-      }
-    } catch (error) {
-      // Error retrieving data
-    }
+  componentDidMount = () => {
+    const addressMsg = this.props.locationInfos
+    console.log(this.props, "redux 中拿出locationInfos")
+    // const user = await AsyncStorage.getItem('userInfo')
+    this.setState({
+      userAddressMsg: addressMsg
+    })
   }
 
-  async componentDidMount(){
-    try {
-      const addressMsg = await this.getAddressMsg()
-      this.setState({
-        userAddressMsg: addressMsg,
-        // dataSource: Object.values(areaDict)
-      }) 
-    } catch (error) {
-      console.error(error)
-    }
-  }
-  // render ringht index Letters
   renderLetters(letter, index) {
     return (
       <TouchableOpacity key={index} activeOpacity={0.6} onPress={() => { this.scrollTo(index) }}>
@@ -111,7 +96,6 @@ export default class List extends RentApp {
   }
   renderSectionHeader = (sectionData, sectionID) => {
     const { userAddressMsg } = this.state;
-    // console.log(userAddressMsg,"!!!!!!!!!!!!1")
     return (
       <Flex direction='column'  style={{padding: 8}}>
         <View style={styles.searchBox}>
@@ -227,3 +211,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 })
+
+const mapStateToProps = state => {
+  return state.locationReducer
+}
+
+export default connect(mapStateToProps)(List)
