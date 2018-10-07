@@ -53,7 +53,7 @@ export default class Count extends React.Component {
                     cityCode,
                     provinceCode,
                     openId: config.authAppId,
-                    phoneNo: this.props.username
+                    phoneNo: this.props.username.split(' ').join("")
                 }
                 const msg = await sendMsg(params)
 

@@ -153,7 +153,6 @@ export default class Home extends RentApp {
           showsVerticalScrollIndicator={false}
         > 
           {
-            
             bannerList.length !== 1 ? (
               <View
                 style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
