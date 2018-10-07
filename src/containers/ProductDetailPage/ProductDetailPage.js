@@ -75,6 +75,7 @@ export default class ProductDetailPage extends RentApp {
     EasyModalInfos: {},
     loading: false,
   }
+
   async componentDidMount() {
     this.getData()
   }
@@ -115,6 +116,7 @@ export default class ProductDetailPage extends RentApp {
       await this.setState({ loading: false })
     }
   }
+
   handleDataFun = (data) => {
     // console.log(JSON.stringify(data))
     const {
@@ -466,7 +468,10 @@ export default class ProductDetailPage extends RentApp {
         text: '确定', onPress: async () => {
           // await AsyncStorage.multiSet(['fromPageName', 'fromPageParams']);
           AsyncStorage.multiSet([['fromPageName', 'ProductDetail'], ['fromPageParams', JSON.stringify({productId: this.state.productId})]]);
-          that.props.navigation.navigate(EasyModalInfos.toPage,)
+          that.props.navigation.navigate(EasyModalInfos.toPage,{
+              fromPageName:"ProductDetail",
+              fromPageParams:{productId: this.state.productId}
+          })
           this.setState({ isShowEasyModal: false })
         }
       },

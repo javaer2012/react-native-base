@@ -222,12 +222,6 @@ export default class DrivingLicense extends RentApp {
             this.setState({loading:false})
         }
 
-
-
-
-
-
-
     }
 
     render() {
