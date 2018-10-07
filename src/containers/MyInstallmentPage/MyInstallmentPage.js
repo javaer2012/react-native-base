@@ -30,8 +30,22 @@ export default class MyInstallmentPage extends RentApp {
 
   async componentDidMount(){
     await this.getOpenIdAndUserId()
-    console.log(this.props.navigation.state.params,"=>>>>>>this.props.navigation.state.params")
     this.getData()
+  }
+  advanceReimbursement = () => {
+    const { noRepayAmount } = this.state
+    const { navigate } = this.props.navigation;
+    // const { orderSn, activeId, orderId } = this.props.navigation.state.params
+    const orderId = this.props.navigation.getParam('orderId');
+    const orderSn = this.props.navigation.getParam('orderSn');
+    const activeId = this.props.navigation.getParam('activeId');
+    navigate('Pay', {
+      amount: noRepayAmount,
+      orderId,
+      orderSn,
+      activeId,
+      payType: '3'
+    })
   }
   
   async getData() {
@@ -46,7 +60,7 @@ export default class MyInstallmentPage extends RentApp {
         cityCode,
         userId,
         provinceCode,
-        orderId,
+        orderId: '343164f313df40098c2e48d0a193de20',
         // 343164f313df40098c2e48d0a193de20
       }
       const { data } = await myStageList(params)
@@ -62,6 +76,24 @@ export default class MyInstallmentPage extends RentApp {
     } finally {
       this.setState({ loading: false })
     }
+  }
+  // 每条分期还款
+  reimbursement = (item) => {
+    if (item.accountStatus === 0) {
+      const { navigate } = this.props.navigation;
+      // const { orderSn, activeId, orderId } = this.props.navigation.state.params
+      const orderId = this.props.navigation.getParam('orderId');
+      const orderSn = this.props.navigation.getParam('orderSn');
+      const activeId = this.props.navigation.getParam('activeId');
+      navigate('Pay', {
+        amount: item.periodNoRepayAmount,
+        orderId,
+        orderSn,
+        activeId,
+        payType: '2'
+      })
+    }
+    
   }
 
   renderListTest = (list) => {
@@ -95,8 +127,8 @@ export default class MyInstallmentPage extends RentApp {
                 <Text style={{width: 100}}>
                   {item.accountTime.substring(4, 6)}月份
                 </Text>
-                <Text style={{ width: 100 }}>{item.actualRepayAmount} </Text>
-                <Text style={{ color: '#999999'}}>
+                <Text style={{ width: 100 }}>{item.periodNoRepayAmount} </Text>
+                <Text onPress={this.reimbursement.bind(this, item)} style={{ color: '#999999'}}>
                   {accountStatus === 0 && '未出账 >'}
                   {accountStatus === 1 && '已出账 >'}
                   {/* {repayStatus === 0 && '还款完成 >'}
@@ -128,8 +160,11 @@ export default class MyInstallmentPage extends RentApp {
       <Flex direction="column" align="stretch">
         <Flex style={styles.totalMoneyStyle} direction="column" justify="center">
           <Text style={[styles.textBase]}>全部待还(元)</Text>
-          <Text style={[styles.textBase]}>{noRepayAmount}</Text>
-          <TouchableOpacity style={[styles.advance]} onPress={() => this.showToast('敬请期待')}>
+          <Text style={[styles.textBase, {
+            fontSize: 24,
+            fontWeight: '600',
+          }]}>{noRepayAmount}</Text>
+          <TouchableOpacity style={[styles.advance]} onPress={() => this.advanceReimbursement()}>
             <Text>
               提前还款
             </Text>

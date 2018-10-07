@@ -34,7 +34,7 @@ export default class Pay extends RentApp {
   async componentDidMount() {
     const  pastDueTime = await AsyncStorage.getItem('pastDueTime')
     const passDueTime = moment(+pastDueTime).format("hh:mm")
-    const amount = this.props.navigation.getParam('amount');
+    const amount = this.props.navigation.getParam('amount', 0);
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
     await this.getOpenIdAndUserId()
@@ -47,6 +47,8 @@ export default class Pay extends RentApp {
     })
     const orderId = this.props.navigation.getParam('orderId');
     const activeId = this.props.navigation.getParam('activeId');
+    const payType = this.props.navigation.getParam('payType');
+    
     const params = {
       "amount": this.state.amount,
       "orderId": orderId,
@@ -55,7 +57,7 @@ export default class Pay extends RentApp {
       "openId": this.openId,
       "provCode": this.provinceCode,
       "cityCode": this.cityCode,
-      "payType": "1",
+      "payType": payType  || '1',
       "phoneNo": `${this.state.userInfo.phoneNo}`,
       "validCode": "",
     }
@@ -131,7 +133,7 @@ export default class Pay extends RentApp {
             需支付金额
           </Text>
           <Text>
-            ￥ {0} 
+            ￥ {amount || 0} 
           </Text>
         </Flex>
         <Flex direction='column' align="stretch">
