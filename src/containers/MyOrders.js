@@ -55,11 +55,14 @@ export default class MyOrders extends RentApp{
     }
 
     onFootClick = (item)=>{
+        console.log(JSON.stringify(item), '=======> 订单信息')
         
         // Toast.info(item.goodsName,1)
         const { navigate } = this.props.navigation
         navigate('MyInstallmentPage', {
-            orderId: item.orderId
+            orderId: item.orderId,
+            orderSn: item.orderSn,
+            activeId: item.activeId
         })
     }
 
