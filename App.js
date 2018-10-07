@@ -32,7 +32,7 @@ import {
 import _updateConfig from './update.json';
 
 const {appKey} = _updateConfig[Platform.OS];
-
+// this.registerUser();
 const {AmapRegeo, registerUser, isCityOpen, setCrmCode} = api
 
 export default class App extends RentApp {
@@ -60,7 +60,7 @@ export default class App extends RentApp {
 
         //Alert.alert(`Is First Time:${isFirstTime}`)
 
-        this.checkUpdate()
+        // this.checkUpdate()
 
 
         this.getOpenIdAndUserId()
@@ -68,6 +68,7 @@ export default class App extends RentApp {
     }
 
     checkUpdate = ()=>{
+
 
         checkUpdate(appKey)
             .then(info=>{
@@ -90,11 +91,11 @@ export default class App extends RentApp {
                                 this.doUpdate(info)
                             }
                         },
-                        {text: '否'},
+                        {text: '否',},
                     ]);
                 }
             })
-            .catch(err=>Alert.alert("检测版本更新失败，请稍后再试！"))
+            .catch(err=>Alert.alert(err.toString()))
     }
 
     isOpen = async (params) => {
@@ -217,7 +218,7 @@ export default class App extends RentApp {
     }
 
     beginWatch = async () => {
-        //await AsyncStorage.clear()
+        // await AsyncStorage.clear()
         const value1 = await AsyncStorage.getItem('Test')
         console.log("Test1", value1)
 

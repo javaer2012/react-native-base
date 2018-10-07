@@ -9,7 +9,8 @@ import PayBar from '../../components/PayBar'
 import api from '../.././service/api'
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
-import { authAppSecret } from '../../config'
+import data from '../../config'
+const { authAppSecret } = data
 const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods } = api
 
 const storageItem = ({ data, itemData, onPress, subSkuId }) => {
@@ -92,11 +93,13 @@ export default class ProductDetailPage extends RentApp {
     })
     try {
       await this.setState({ loading: true })
+      console.log(user.userId, "user.userId", authAppSecret)
       const { data: queryGoodsDetailData } = await queryGoodsDetail({
         provinceCode: this.provinceCode,
         cityCode: this.cityCode,
         goodsId: productId,
-        userId: user.userId || authAppSecret
+        userId:  authAppSecret
+        // user.userId ||
       })
       // console.log(JSON.stringify(queryGoodsDetailData), "mmmmmmmmmm")
       if (!queryGoodsDetailData || queryGoodsDetailData.errcode !== 1) {
@@ -127,7 +130,6 @@ export default class ProductDetailPage extends RentApp {
       paymentInfo, //  参数返回的支付信息
       bizTypeCode, // 业务类型编码
     } = data
-
     const mealSelected = telecomProdList[0]
     if (bizTypeCode == 'zq_rent_phone') {
       if (isTelConf == 1) {
@@ -140,6 +142,8 @@ export default class ProductDetailPage extends RentApp {
           // canStageAmount:  (goodsBaseInfo.goodsPrice + telecomProdList[0].price - this.state.realDownPayment).toFixed(2)
         })
       }
+    } else {
+      console.log("bizTypeCode !== zq_rent_phone")
     }
     // capitalProdList
     const disposeCapitalProdList = capitalProdList.map((item, index) => {
@@ -407,6 +411,8 @@ export default class ProductDetailPage extends RentApp {
       "paymentId": paymentInfo.paymentId,
       // "sourceType": 2
     }
+
+    console.log(params,"========> params")
     try {
       const { data } = await commitOrder(params)
       console.log(data, "=========》data")
@@ -417,13 +423,22 @@ export default class ProductDetailPage extends RentApp {
         this.showToast(data.errmsg)
         await AsyncStorage.setItem('pastDueTime', JSON.stringify((+new Date()) + 1800000))
         const { navigate } = this.props.navigation;
-        navigate('Pay', {
+        
+        navigate('OrderInfo', {
           amount: 0,
           orderId: data.orderId,
           orderSn: data.orderSn,
-          activeId: goodsBaseInfo.activeId
+          activeId: goodsBaseInfo.activeId,
+          fromPage: 'ProductDetail'
           // firstPay: data.firstPay
         })
+        // navigate('Pay', {
+        //   amount: 0,
+        //   orderId: data.orderId,
+        //   orderSn: data.orderSn,
+        //   activeId: goodsBaseInfo.activeId
+        //   // firstPay: data.firstPay
+        // })
       }
 
     } catch (error) {
@@ -568,6 +583,7 @@ export default class ProductDetailPage extends RentApp {
                   <Text>套餐</Text>
                 </Flex.Item>
                 <Flex.Item>
+                  {console.log(mealSelected,"!!!!!")}
                   <Flex direction="row" justify='between' align="center">
                     <Text style={{ color: '#888' }}>{mealSelected.prodName}</Text>
                     <Text>></Text>

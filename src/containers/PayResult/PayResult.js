@@ -20,14 +20,14 @@ export default class Pay extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
+    const { replace } = this.props.navigation;
     // const { completePay } = this.state
     return (
       <Result
         imgUrl={require('../../images/success.png')}
         buttonType="primary"
         buttonText="回到首页"
-        buttonClick={(e) => navigate("Home")}
+        onButtonClick={(e) => replace("Home")}
         title="支付成功"
         message="0元"
       />

@@ -30,14 +30,15 @@ export default class OrderInfo extends RentApp {
   }
 
   async componentDidMount() {
-    const orderId = '109aa832c2534d8c8512d8709024dc2d' || this.props.navigation.getParam('orderId');
-    const orderSn = '201810011834098838036560' || this.props.navigation.getParam('orderSn');
+    const orderId = this.props.navigation.getParam('orderId');
+    const orderSn = this.props.navigation.getParam('orderSn');
     const fromPage = this.props.navigation.getParam('fromPage') ||  '';
     this.setState({ fromPage })
     
     await this.getOpenIdAndUserId()
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
+    console.log(user, "====>缓存中读取的userInfo")
     // this.setState({
     //   userInfos: user,
     //   // productId
@@ -49,6 +50,8 @@ export default class OrderInfo extends RentApp {
         cityCode: this.cityCode,
         orderId
       })
+
+      console.log(JSON.stringify(queryOrderDetailData,"======>queryOrderDetailData"))
 
       if (!queryOrderDetailData || queryOrderDetailData.errcode !== 1) {
         throw queryOrderDetailData.errmsg || "queryOrderDetailData 获取数据失败"
@@ -74,6 +77,20 @@ export default class OrderInfo extends RentApp {
       hallList 
     })
     // queryOrderDetailData
+  }
+
+  goToPayFun = () => {
+    const { navigate } = this.props.navigation;
+    const orderId = this.props.navigation.getParam('orderId');
+    const orderSn = this.props.navigation.getParam('orderSn');
+    const { goodsInfo }= this.state
+    navigate('Pay', {
+      amount: goodsInfo.totalFirstAmount,
+      orderId,
+      orderSn,
+      activeId: goodsInfo.activeId
+      // firstPay: data.firstPay
+    })
   }
 
   render() {
@@ -123,10 +140,10 @@ export default class OrderInfo extends RentApp {
         {(!completePay && (fromPage !== 'MyPage')) && (
         <Flex direction="column" style={[styles.canBuyBox]}>
           <Text style={{ marginBottom: 10 }}>恭喜您获得购买资格</Text>
-          <Text>您仅需支付: ￥{700}</Text>
+            <Text>您仅需支付: ￥{goodsInfo.totalFirstAmount}</Text>
             <TouchableOpacity 
               style={{ padding: 20, backgroundColor: Color.mainPink, width: '100%'}}
-              onPress={() => this.selecteCapitalProdSure(this.state.capitalProdObj) }>
+              onPress={() => this.goToPayFun() }>
               <Text style={{ color: '#fff', textAlign: "center" }}>确定</Text>
             </TouchableOpacity>
         </Flex>)}
