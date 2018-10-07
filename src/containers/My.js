@@ -296,7 +296,7 @@ export default class My extends RentApp {
                                            source={require('../images/imageNew/one/userIcon.png')}/>
                                     <WhiteSpace size={"xl"}/>
                                     <Flex direction={"row"} justify={"around"}>
-                                        <Button onClick={() => navigation.navigate('LoginPage')}>登录</Button>
+                                        <Button style={{backgroundColor:null}} onClick={() => navigation.navigate('LoginPage')}>登录</Button>
                                     </Flex>
                                 </Flex> :
                                 <React.Fragment>
@@ -306,7 +306,7 @@ export default class My extends RentApp {
                                         <Flex direction={"row"}>
                                             <Flex.Item>
                                                 <Flex direction={"row"} justify={"center"} align={"center"}>
-                                                    <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
+                                                    <Button style={{height: 27, lineHeight: 27, fontSize: 12,backgroundColor:null}}
                                                             onClick={() => navigation.navigate('ScorePage',{
                                                                 score:_state.userScore ? _state.userScore : 0
                                                             })}>晒晒我的信用分</Button>
@@ -315,7 +315,7 @@ export default class My extends RentApp {
 
                                             <Flex.Item>
                                                 <Flex direction={"row"} justify={"center"} align={"center"}>
-                                                    <Button style={{height: 27, lineHeight: 27, fontSize: 12}}
+                                                    <Button style={{height: 27, lineHeight: 27, fontSize: 12,backgroundColor:null}}
                                                             onClick={() => navigation.navigate('KnowScorePage', {
                                                                 score: _state.userScore ? _state.userScore : 0
                                                             })}>了解我的信用分</Button>

@@ -50,6 +50,7 @@ export default class App extends RentApp {
 
     componentWillMount() {
 
+        //AsyncStorage.clear()
 
         if (isFirstTime) {
             //标记首次首次启动

@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {View, ScrollView, Text, TouchableOpacity, StyleSheet, Image, AsyncStorage} from 'react-native';
-import {List, InputItem, Button, WingBlank, WhiteSpace, Flex,Toast} from 'antd-mobile-rn';
+import {List, InputItem, WingBlank, WhiteSpace, Flex,Toast} from 'antd-mobile-rn';
 import logo from '../assets/logo.png';
 import api from '../service/api';
-import * as school from '../utils/school';
-import config from "../config";
+import Button from '../components/common/Button'
 import Count from '../components/Count';
 import RentApp from "../components/RentApp";
 
@@ -66,9 +65,13 @@ export default class Login extends RentApp {
 
                         const rsp =  await AsyncStorage.multiSet([['userInfo',JSON.stringify(uInfo.data.userInfo)],['userId',userInfo.userId],['openId',userInfo.openId],['isLoggedIn','1']])
 
-                        this.props.navigation.navigate("MyPage",{
+                        const fromPage = this.props.navigation.getParam('fromPageName',"MyPage")
+                        const fromPageParams = this.props.navigation.getParam('fromPageParams',{})
+
+                        this.props.navigation.navigate(fromPage,{
                             useNavParams:true,
-                            userInfo:uInfo.data.userInfo
+                            userInfo:uInfo.data.userInfo,
+                            ...fromPageParams
                         })
                     }
 
@@ -135,9 +138,11 @@ export default class Login extends RentApp {
 
                     </List>
                     <WhiteSpace size={"xl"}/>
-                    <Button type="primary" style={styles.btn} onClick={this.login.bind(this)}>
-                        <Text style={{color: 'white', fontSize: 20}}>登录</Text>
-                    </Button>
+                    <Flex direction={"row"} justify={"center"} align={"center"}>
+                        <Button style={styles.btn} onClick={this.login.bind(this)}>
+                            登录
+                        </Button>
+                    </Flex>
                     <WhiteSpace size={"xl"}/>
                     <Flex direction="row" justify="between">
                         <Flex.Item>
@@ -176,6 +181,7 @@ const styles = StyleSheet.create({
         height: 53,
     },
     btn: {
+        width:355,
         backgroundColor: '#06C1AE',
         borderColor: '#06C1AE'
     },
