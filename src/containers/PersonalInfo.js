@@ -43,7 +43,6 @@ export default class PersonalInfo extends Component{
                         <Text>{user.nickName || `昵称尚未设置`}</Text>
                         <Flex direction={"row"} justify={"between"} style={{height:50}}>
                             <Text>{user.phoneNo}</Text>
-                            <TouchableOpacity style={{marginLeft: 15}}><Text style={{color:'blue'}}>[解除绑定]</Text></TouchableOpacity>
                         </Flex>
                     </View>
                     <WhiteSpace size={"lg"}/>

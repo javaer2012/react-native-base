@@ -1,6 +1,6 @@
 import React from 'react'
 import {View,Text,AsyncStorage} from 'react-native'
-import {List,InputItem,WhiteSpace,Flex,Toast} from 'antd-mobile-rn'
+import {WingBlank, WhiteSpace, Flex, Toast, List, InputItem} from 'antd-mobile-rn'
 import RentApp from "../components/RentApp";
 import Count from "../components/Count";
 import Button from '../components/common/Button'
@@ -134,20 +134,22 @@ export default class CardInfo extends RentApp{
         return(
             <View style={{height: '100%'}}>
                 <WhiteSpace size={"md"}/>
-                <List renderHeader={
-                    <View>
-                        <WhiteSpace size={"sm"}/>
-                        <Text>银行卡信息</Text>
-                        <WhiteSpace size={"sm"}/>
-                    </View>
-                }>
+                <WingBlank size={"md"}>
+                    <List renderHeader={
+                        <View>
+                            <WhiteSpace size={"sm"}/>
+                            <Text>银行卡信息</Text>
+                            <WhiteSpace size={"sm"}/>
+                        </View>
+                    }>
 
-                    <InputItem value={this.cardInfo.bankName} disabled={true}>银行名称</InputItem>
-                    <InputItem value={"储蓄卡"} editable={false} disabled={true}>卡类型</InputItem>
-                    <InputItem value={phoneNo} onChange={(phoneNo)=>this.setState({phoneNo})}>预留手机</InputItem>
-                    <InputItem extra={<Count username={phoneNo} smsCall={this.smsCall}/>}>验证码</InputItem>
+                        <InputItem value={this.cardInfo.bankName} disabled={true}>银行名称</InputItem>
+                        <InputItem value={"储蓄卡"} editable={false} disabled={true}>卡类型</InputItem>
+                        <InputItem value={phoneNo} onChange={(phoneNo)=>this.setState({phoneNo})}>预留手机</InputItem>
+                        <InputItem extra={<Count username={phoneNo} smsCall={this.smsCall}/>}>验证码</InputItem>
 
-                </List>
+                    </List>
+                </WingBlank>
 
 
                 <WhiteSpace size={"md"}/>

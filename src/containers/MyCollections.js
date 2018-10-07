@@ -68,7 +68,28 @@ export default class MyCollections extends RentApp{
         }
     }
 
+    cancelCollect = async (item) =>{
+        console.log("click")
+        try{
+            const { data } = await api.collectGoods({
+                goodsId: item.goodsId,
+                cityCode:this.cityCode,
+                userId:this.userId,
+                provinceCode:this.provinceCode,
+            })
+
+            if(data.errcode === 1){
+                Toast.info("取消成功",1.5)
+                this.props.navigation.replace("MyCollectionsPage")
+            }
+        } catch (e) {
+
+        }
+    }
+
     renderCollection(item,index){
+
+        console.log(item)
         return <WingBlank size={"md"} >
             <Flex key={index} direction={"row"}>
                 <Image resizeMode={"contain"} style={{width:100,height:100}} source={{uri:`${HTTP_IMG}${item.imagePath}`}}/>
@@ -81,7 +102,7 @@ export default class MyCollections extends RentApp{
 
                        <Flex direction={"row"}  justify={"between"} style={{width:241}}>
                            <Text style={{width:100,color:'red',fontSize:20}}>{`￥${item.price}`}</Text>
-                           <TouchableOpacity onPress={()=>Toast.loading(`${a+1} hello`,0,null,false)}>
+                           <TouchableOpacity onPress={ ()=>this.cancelCollect(item)}>
                                <Text style={{width:70,height:26,lineHeight:26,fontSize:10, textAlign:'center',borderColor:'#989898',borderRadius:4,borderWidth:1}}>取消收藏</Text>
                            </TouchableOpacity>
                        </Flex>
