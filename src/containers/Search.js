@@ -201,10 +201,25 @@ export default class Search extends RentApp {
 
     }
 
-    searchGoodsFun = () => {
+    searchGoodsFun = async (key) => {
+
+        const latestString = await AsyncStorage.getItem('latestKeywords')
+        const latest = JSON.parse(latestString) || []
+
+        let dupplicate = false;
+        latest.forEach(item=>{
+            if(item.name === this.state.value) dupplicate = true
+        })
+        if(!dupplicate)
+            latest.push({
+                name:this.state.value
+            })
+        // console.log(latest,"@@@@@@22")
+        await AsyncStorage.setItem('latestKeywords',JSON.stringify(latest))
+
         const keyWord = this.state.value
         const { navigate } = this.props.navigation;
-        navigate('ProductListPage', { keyWord })
+        navigate('ProductListPage', { keyWord:key||keyWord })
     }
 
 
@@ -224,7 +239,11 @@ export default class Search extends RentApp {
                         <WhiteSpace size={"md"}/>
 
                         <Flex direction={"row"} justify={"start"} wrap={"wrap"}>
-                            {this.state.latest.map((item,index)=> <Text key={index} style={styles.tag}>{item.name}</Text>)}
+                            {this.state.latest.map((item,index)=>
+                               <TouchableOpacity key={index} onPress={()=>this.searchGoodsFun(item.name)}>
+                                   <Text key={index} style={styles.tag}>{item.name}</Text>
+                               </TouchableOpacity>
+                            )}
 
                         </Flex>
                     </WingBlank>:null}
@@ -238,7 +257,10 @@ export default class Search extends RentApp {
 
                         <Flex direction={"row"} justify={"start"} wrap={"wrap"}>
                             {this.state.keywords.map((item,index)=>
-                                <Text key={index} style={styles.tag}>{item.key_name}</Text>)}
+                                <TouchableOpacity key={index} onPress={()=>this.searchGoodsFun(item.key_name)}>
+                                    <Text key={index} style={styles.tag}>{item.key_name}</Text>
+                                </TouchableOpacity>
+                            )}
                         </Flex>
                     </WingBlank>:null}
                 </View>:
