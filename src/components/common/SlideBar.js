@@ -1,103 +1,117 @@
-import React,{Component} from 'react';
-import {Button, List} from "antd-mobile-rn";
-import {ScrollView, Text, View, TextInput, StyleSheet,ImageBackground,Image,TouchableOpacity} from "react-native";
+import React, {Component} from 'react';
+import {Button, List,InputItem} from "antd-mobile-rn";
+import {ScrollView, Text, View, TextInput, StyleSheet, Image, TouchableOpacity} from "react-native";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        position:'relative',
-        backgroundColor:'white'
+        position: 'relative',
+        backgroundColor: 'white'
     },
-    priceTag:{
-        color:'#888888',
-        fontSize:14,
-        width:82,
-        height:15,
+    priceTag: {
+        color: '#888888',
+        fontSize: 14,
+        width: 82,
+        height: 15,
         textAlign: "center",
         marginRight: 15
     },
-    priceRow:{
-        display:'flex',
-        flexDirection:'row'
+    priceRow: {
+        display: 'flex',
+        flexDirection: 'row'
     },
-    priceInput:{
-        width:82,
-        height:25,
-        backgroundColor:'#EAEEEF',
-        borderRadius:3,
+    priceInput: {
+        width: 82,
+        height: 25,
+        backgroundColor: '#EAEEEF',
+        borderRadius: 3,
         textAlign: 'center'
     },
-    priceOption:{
-        display:'flex',
-        flexDirection:'row'
+    priceOption: {
+        display: 'flex',
+        flexDirection: 'row'
     },
-    listContainer:{
+    listContainer: {
         minHeight: 603
     },
-    opContainer:{
+    opContainer: {
         display: 'flex',
         flexDirection: 'row',
-        flexWrap:'wrap',
+        flexWrap: 'wrap',
         justifyContent: 'flex-start',
     },
-    opContainerLong:{
+    opContainerLong: {
         display: 'flex',
         flexDirection: 'row',
-        flexWrap:'wrap',
+        flexWrap: 'wrap',
         justifyContent: 'flex-start',
     },
-    option:{
-        width:88,
-        height:33,
-        borderRadius:3,
+    option: {
+        width: 88,
+        height: 33,
+        borderRadius: 3,
         marginTop: 11,
         marginRight: 11,
-        backgroundColor:'#EAEEEF',
+        backgroundColor: '#EAEEEF',
     },
-    imgOp:{
-        width:88,
-        height:33,
-        borderRadius:3,
+    imgOp: {
+        width: 88,
+        height: 33,
+        borderRadius: 3,
         marginTop: 11,
         marginRight: 11,
-        backgroundColor:'#EAEEEF'
+        backgroundColor: '#EAEEEF'
     },
-    selected:{
-        width:88,
-        height:33,
-        borderRadius:3,
+    selected: {
+        width: 88,
+        height: 33,
+        borderRadius: 3,
         marginTop: 11,
         marginRight: 11,
-        backgroundColor:'pink',
-        position:'absolute',
+        backgroundColor: 'pink',
+        position: 'absolute',
         opacity: 0.8,
         zIndex: 10,
-        color:'pink'
+        color: 'pink'
     },
-    longOption:{
-        width:115,
-        height:33,
-        backgroundColor:'#EAEEEF',
-        borderRadius:3,
+    longOption: {
+        width: 115,
+        height: 33,
+        backgroundColor: '#EAEEEF',
+        borderRadius: 3,
         marginTop: 11
     }
 });
 
 //price input
-const PriceInput =()=>{
-    return(
+const PriceInput = (props) => {
+    const {maxPrice, minPrice, onChange} = props
+
+    return (
         <View>
             <List.Item>
-                <Text style={{color:'#888888'}}>价格</Text>
+                <Text style={{color: '#888888'}}>价格</Text>
             </List.Item>
             <List>
                 <List.Item style={styles.priceRow}>
 
                     <View style={styles.priceOption}>
                         <Text style={styles.priceTag}>价格区间(元)</Text>
-                        <TextInput type={"number"} style={styles.priceInput} placeholder={'最低价'}/>
-                        <Text>  -  </Text>
-                        <TextInput type={"number"} style={styles.priceInput} placeholder={'最高价'}/>
+                        <InputItem
+                            type={"number"}
+                            style={styles.priceInput}
+                            placeholder={'最低价'}
+                            value={minPrice}
+                            onChange={(text) => onChange(text, 'minPrice')}
+                        />
+                        <Text> - </Text>
+                        <InputItem
+                            type={"number"}
+                            style={styles.priceInput}
+                            placeholder={'最高价'}
+                            value={maxPrice}
+                            onChange={(text) => onChange(text, 'maxPrice')}
+                        />
                     </View>
                 </List.Item>
             </List>
@@ -105,15 +119,22 @@ const PriceInput =()=>{
     )
 }
 
-const SelectItem =(cateId,onSelect,id,selected,subName) =>{
-    const targetSelected =  selected.includes(id)
+const SelectItem = (cateId, onSelect, id, selected, subName) => {
+    const targetSelected = selected.includes(id)
 
     return (
-        <TouchableOpacity key={id} style={{position:'relative'}} onPress={()=>onSelect(id)}>
+        <TouchableOpacity key={id} style={{position: 'relative'}} onPress={() => onSelect(id)}>
             <View
-                  style={cateId === ""?styles.longOption:styles.option}>
+                style={cateId === "" ? styles.longOption : styles.option}>
                 <Text
-                    style={{backgroundColor:targetSelected?'#FFE4E4':'#EAEEEF',textAlign:'center',height:33,lineHeight:33,fontSize:14 ,color:targetSelected?'#DD2727':'black'}}>
+                    style={{
+                        backgroundColor: targetSelected ? '#FFE4E4' : '#EAEEEF',
+                        textAlign: 'center',
+                        height: 33,
+                        lineHeight: 33,
+                        fontSize: 14,
+                        color: targetSelected ? '#DD2727' : 'black'
+                    }}>
                     {subName}</Text>
             </View>
         </TouchableOpacity>
@@ -121,10 +142,10 @@ const SelectItem =(cateId,onSelect,id,selected,subName) =>{
 }
 
 //category item
-const renderSubContent = (cateId,subId,subName,selected,onSelect) =>{
+const renderSubContent = (cateId, subId, subName, selected, onSelect) => {
 
     let component = null;
-    switch(subName){
+    switch (subName) {
         // case "小米":
         //     component = (
         //        SelectItem( <ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/mi.png')}>
@@ -225,66 +246,78 @@ const renderSubContent = (cateId,subId,subName,selected,onSelect) =>{
         //     );            break; 8044413bbd154e7e89522c8cca0262ea
         default:
             component = (
-               SelectItem(cateId, onSelect,subId,selected,subName)
+                SelectItem(cateId, onSelect, subId, selected, subName)
             )
     }
     return component;
 }
 
 //categories
-const CateContent = (props)=>{
-    const {source,selected,onSelect} = props;
+const CateContent = (props) => {
+    const {source, selected, onSelect, maxPrice, minPrice, onChange} = props;
 
-   const list = source.map((category,index)=>{
-    const subContent = category.subCateList.map((subCate,subIndex)=>{
-        return  renderSubContent(category.cateId,subCate.subCateId,subCate.subCateName,selected,onSelect)
+    const list = source.map((category, index) => {
+        const subContent = category.subCateList.map((subCate, subIndex) => {
+            return renderSubContent(category.cateId, subCate.subCateId, subCate.subCateName, selected, onSelect)
+        })
+        return (
+            <View key={index}>
+                <List.Item key={category.cateId}>
+                    <Text style={{color: '#888888'}}>{category.cateName}</Text>
+                </List.Item>
+                <List>
+                    <List.Item>
+                        <View
+                            style={category.cateId === "8044413bbd154e7e89522c8cca0262ea" ? styles.opContainerLong : styles.opContainer}>
+                            {subContent}
+                        </View>
+                    </List.Item>
+                </List>
+            </View>
+        )
     })
     return (
-        <View key={index}>
-            <List.Item key={category.cateId}>
-                <Text style={{color: '#888888'}}>{category.cateName}</Text>
-            </List.Item>
-            <List>
-                <List.Item>
-                    <View
-                        style={category.cateId === "8044413bbd154e7e89522c8cca0262ea"?styles.opContainerLong:styles.opContainer}>
-                        {subContent}
-                    </View>
-                </List.Item>
-            </List>
+        <View>
+            <PriceInput maxPrice={maxPrice} minPrice={minPrice} onChange={onChange}/>
+            {list}
         </View>
     )
-})
-   return (
-       <View>
-           <PriceInput/>
-           {list}
-       </View>
-   )
 }
 
 
+export default class Sidebar extends Component {
 
-export default class Sidebar extends Component{
 
+    render() {
 
-    render(){
-
-        const {onReset,onConfirm,onSelect,selected,source} = this.props
+        const {onReset, onConfirm, onSelect, selected, source, maxPrice, minPrice, onChange} = this.props
 
         return (
             <View style={[styles.container]}>
                 <ScrollView>
                     <List>
-                        <CateContent source={source} selected={selected} onSelect={onSelect}/>
+                        <CateContent
+                            source={source}
+                            selected={selected}
+                            onSelect={onSelect}
+                            maxPrice={maxPrice}
+                            minPrice={minPrice}
+                            onChange={onChange}
+                        />
                     </List>
                 </ScrollView>
-                <View style={{position:'absolute',bottom:0, display:'flex',flexDirection:'row',justifyContent:'flex-start'}}>
-                    <Button style={{width:166,height:50,backgroundColor:'#FFE4E4'}} onClick={onReset}>
-                        <Text style={{color:'#F5475F',fontSize: 15}}>重置</Text>
+                <View style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'flex-start'
+                }}>
+                    <Button style={{width: 166, height: 50, backgroundColor: '#FFE4E4'}} onClick={onReset}>
+                        <Text style={{color: '#F5475F', fontSize: 15}}>重置</Text>
                     </Button>
-                    <Button style={{width:164,height:50,backgroundColor:'#F5475F'}} onClick={onConfirm}>
-                        <Text style={{color:'white',fontSize:15}}>完成</Text>
+                    <Button style={{width: 164, height: 50, backgroundColor: '#F5475F'}} onClick={onConfirm}>
+                        <Text style={{color: 'white', fontSize: 15}}>完成</Text>
                     </Button>
                 </View>
             </View>
