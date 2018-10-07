@@ -75,6 +75,7 @@ export default class ProductDetailPage extends RentApp {
     EasyModalInfos: {},
     loading: false,
   }
+
   async componentDidMount() {
     this.getData()
   }
@@ -115,6 +116,7 @@ export default class ProductDetailPage extends RentApp {
       await this.setState({ loading: false })
     }
   }
+
   handleDataFun = (data) => {
     // console.log(JSON.stringify(data))
     const {
