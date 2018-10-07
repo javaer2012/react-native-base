@@ -447,7 +447,11 @@ export default class ProductDetailPage extends RentApp {
   }
   bindCardFun = () => {
     console.log("bindCard")
-    this.props.navigation.navigate("BackCardPage")
+    const { productId, goodsBaseInfo: { activeId } } = this.state
+    this.props.navigation.navigate("BackCardPage",{
+      activeId,
+      productId
+    })
   }
 
   render() {
