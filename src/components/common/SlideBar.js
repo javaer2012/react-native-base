@@ -266,8 +266,6 @@ const CateContent = (props)=>{
 
 
 export default class Sidebar extends Component{
-
-
     render(){
 
         const {onReset,onConfirm,onSelect,selected,source} = this.props

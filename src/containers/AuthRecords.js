@@ -15,7 +15,8 @@ export default class AuthRecords extends RentApp {
         list: []
     }
 
-    componentDidMount(){
+    async componentDidMount(){
+        await this.getOpenIdAndUserId()
         setTimeout(()=>this.getAuthData(),0)
     }
 
@@ -25,8 +26,8 @@ export default class AuthRecords extends RentApp {
             const params = {
                 openId:this.openId,
                 userId:this.userId,
-                cityCode:844,
-                provinceCode:84401
+                cityCode: this.cityCode,
+                provinceCode: this.provinceCode
             }
 
             const rsp = await api.creditHistory(params)

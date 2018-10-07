@@ -206,8 +206,8 @@ export default class My extends RentApp {
             const params = {
                 userId,
                 openId,
-                cityCode:84401,
-                provinceCode:844,
+                cityCode: this.cityCode,
+                provinceCode: this.provinceCode,
             }
 
             const rsp = await api.getUserInfo(params)

@@ -82,8 +82,8 @@ export default class DrivingLicense extends RentApp {
             const params = {
                 userId:this.userId,
                 openId:this.openId,
-                cityCode:84401,
-                provinceCode:844
+                cityCode: this.provinceCode,
+                provinceCode: this.provinceCode
             }
             console.log(params)
             const rsp = await api.userInfo(params)
@@ -197,8 +197,8 @@ export default class DrivingLicense extends RentApp {
             const userParams = {
                 openId:this.openId,
                 userId:this.userId,
-                cityCode:84401,
-                provinceCode:844,
+                cityCode: this.cityCode,
+                provinceCode: this.provinceCode,
                 userInfoJson
             }
 

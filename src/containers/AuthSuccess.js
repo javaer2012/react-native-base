@@ -50,7 +50,7 @@ export default class AuthSuccess extends RentApp{
     }
 
     async componentDidMount(){
-
+        await this.getOpenIdAndUserId()
         try{
             const fromPage = await AsyncStorage.multiGet(['fromPageName','fromPageParams']);
             // debugger
@@ -63,8 +63,8 @@ export default class AuthSuccess extends RentApp{
                 userParam = {
                     userId:this.userId,
                     openId:this.openId,
-                    cityCode:84401,
-                    provinceCode:844,
+                    cityCode: this.cityCode,
+                    provinceCode: this.provinceCode
                 },
                 userRsp = await api.getUserInfo(userParam)
 
