@@ -33,15 +33,15 @@ export default class MyInstallmentPage extends RentApp {
     this.getData()
   }
   advanceReimbursement = () => {
-    const { noRepayAmount } = this.state
+    const { noRepayAmount, stageId } = this.state
     const { navigate } = this.props.navigation;
     // const { orderSn, activeId, orderId } = this.props.navigation.state.params
-    const orderId = this.props.navigation.getParam('orderId');
+    // const orderId = this.props.navigation.getParam('orderId');
     const orderSn = this.props.navigation.getParam('orderSn');
     const activeId = this.props.navigation.getParam('activeId');
     navigate('Pay', {
       amount: noRepayAmount,
-      orderId,
+      orderId: stageId,
       orderSn,
       activeId,
       payType: '3'
@@ -60,7 +60,7 @@ export default class MyInstallmentPage extends RentApp {
         cityCode,
         userId,
         provinceCode,
-        orderId: '343164f313df40098c2e48d0a193de20',
+        orderId,
         // 343164f313df40098c2e48d0a193de20
       }
       const { data } = await myStageList(params)
@@ -68,7 +68,8 @@ export default class MyInstallmentPage extends RentApp {
       if (data.errcode !== 1 && data.errmsg) Toast.info(data.errmsg);
       this.setState({
         periodList: data.periodList,
-        noRepayAmount: data.noRepayAmount
+        noRepayAmount: data.noRepayAmount,
+        stageId: data.stageId
       })
 
     } catch (error) {
@@ -82,12 +83,12 @@ export default class MyInstallmentPage extends RentApp {
     if (item.accountStatus === 0) {
       const { navigate } = this.props.navigation;
       // const { orderSn, activeId, orderId } = this.props.navigation.state.params
-      const orderId = this.props.navigation.getParam('orderId');
+      // const orderId = this.props.navigation.getParam('orderId');
       const orderSn = this.props.navigation.getParam('orderSn');
       const activeId = this.props.navigation.getParam('activeId');
       navigate('Pay', {
         amount: item.periodNoRepayAmount,
-        orderId,
+        orderId: item.detailId,
         orderSn,
         activeId,
         payType: '2'
