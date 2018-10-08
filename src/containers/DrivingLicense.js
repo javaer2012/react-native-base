@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {ScrollView, Text, TouchableOpacity, StyleSheet, Image, Dimensions, AsyncStorage,ImageBackground} from 'react-native';
 import {WhiteSpace, Flex, Toast} from 'antd-mobile-rn';
 import Button from '../components/common/Button'
- import api from "../service/api";
-import Spinner from 'react-native-loading-spinner-overlay'
+import api from "../service/api";
 import RentApp from "../components/RentApp";
+import ImagePicker from 'react-native-image-picker'
 
 const {WIDTH,HEIGHT} = Dimensions.get('window')
 

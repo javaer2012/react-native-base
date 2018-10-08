@@ -71,9 +71,9 @@ export default class AddBankCard extends RentApp {
                        info:{
                            ...info,
                            cardNo,
-                           activeId:this.activeId,
-                           productId:this.productId
-                       }
+                       },
+                       activeId:this.activeId,
+                       productId:this.productId
 
                    })
                } else {
@@ -122,7 +122,7 @@ export default class AddBankCard extends RentApp {
 
                     <WingBlank size={"md"}>
                         <Flex direction={"row"} justify={"center"}>
-                            <Button style={{width: 353, height: 50, lineHeight: 50, color: '#CBCBCB'}}
+                            <Button style={{width: 353, height: 50, lineHeight: 50, color: 'white'}}
                                 onClick={this.next}
                             >下一步</Button>
                         </Flex>

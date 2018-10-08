@@ -295,7 +295,7 @@ export default class Sidebar extends Component {
         return (
             <View style={[styles.container]}>
                 <ScrollView>
-                    <List>
+                    <List  style={{marginBottom: 50}}>
                         <CateContent
                             source={source}
                             selected={selected}
