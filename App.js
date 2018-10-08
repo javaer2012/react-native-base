@@ -137,7 +137,7 @@ export default class App extends RentApp {
     }
     registerUser = async (option) => {
         try {
-           await AsyncStorage.clear()
+        //    await AsyncStorage.clear()
 
            // await AsyncStorage.removeItem('openId')
             const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
@@ -199,6 +199,7 @@ export default class App extends RentApp {
                         }
                     }
                     await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
+                    // debugger
                     // console.log(store, "+++", store.dispatch)
                     store.dispatch({
                         type: 'SET_LOCATION',

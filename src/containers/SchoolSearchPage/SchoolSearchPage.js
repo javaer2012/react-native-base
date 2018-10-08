@@ -107,20 +107,6 @@ export default class SchoolSearchPage extends RentApp {
   //   }
   // }
 
-  async componentDidMount() {
-   
-  }
-  // async componentDidMount(){
-  //   try {
-  //     const addressMsg = await this.getAddressMsg()
-  //     this.setState({
-  //       userAddressMsg: addressMsg,
-  //     }) 
-  //   } catch (error) {
-  //     console.error(error)
-  //   }
-  // }
-
   renderLetters(letter, index) {
     return (
       <TouchableOpacity key={index} activeOpacity={0.6} onPress={() => { this.setState({ selectedLetters: letter }); this.scrollTo(index) }}>

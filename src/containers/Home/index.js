@@ -36,19 +36,14 @@ class Home extends RentApp {
   }
 
   async componentDidMount() {
+    console.log(this.props, "======> this.props")
     try {
       await this.setState({ loading: true })
       const { data: getBannerAndNavData , data: { bannerList, navList } } = await getBannerAndNav({})
-     
-      const { data: hotProductsData, data:{ hotMealList, hotPhoneList }} = await hotProducts({
-        provinceCode: this.provinceCode,  // 测试用
-        cityCode: this.cityCode
-      })
+
       this.setState({
         bannerList,
         navList,
-        hotPhoneList,
-        hotMealList: hotMealList
       })
     } catch (error) {
       console.error(error)
@@ -58,13 +53,21 @@ class Home extends RentApp {
   }
 
 
-  componentWillReceiveProps =(nextProps) => {
+  componentWillReceiveProps = async (nextProps) => {
     const addressMsg = nextProps.locationInfos
 
-    console.log(this.props, "redux 中拿出locationInfos")
+    console.log(addressMsg, "redux 中拿出locationInfos")
     // const user = await AsyncStorage.getItem('userInfo')
+    const { data: hotProductsData, data: { hotMealList, hotPhoneList } } = await hotProducts({
+      provinceCode: addressMsg.provinceCode,  // 测试用
+      cityCode: addressMsg.cityCode
+    })
+    console.log(hotProductsData, "home ======> hotProductsData")
+
     this.setState({
-      addressMsg
+      addressMsg,
+      hotPhoneList,
+      hotMealList: hotMealList
     })
   }
 
@@ -114,7 +117,6 @@ class Home extends RentApp {
     } finally {
       await this.setState({ loading: false })
     }
-    // const addressMsg = await this.getAddressMsg()
   }
 
   render() {
@@ -171,9 +173,6 @@ class Home extends RentApp {
           <View style={styles.productListBox}>
             <Text style={styles.listTitle}>推荐产品</Text>
             {this.renderList(hotPhoneList)}
-            {/* <ProductList 
-              data={hotPhoneList}
-            /> */}
           </View>
           
         </ScrollView>
