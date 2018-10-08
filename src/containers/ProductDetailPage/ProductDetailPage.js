@@ -109,6 +109,8 @@ export default class ProductDetailPage extends RentApp {
       }
       console.log(params,"=========> params")
       const { data: queryGoodsDetailData } = await queryGoodsDetail(params)
+
+      console.log(queryGoodsDetailData.goodsBaseInfo.collectStatus,"=======> collectStatus")
       if (!queryGoodsDetailData || queryGoodsDetailData.errcode !== 1) {
         throw queryGoodsDetailData.errmsg || "queryGoodsDetailData 获取数据失败"
         return
@@ -310,6 +312,18 @@ export default class ProductDetailPage extends RentApp {
 
   // 收藏状态切换
   toggleCollectFun = async () => {
+    const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
+    if (isLoggedIn !== "1") {
+      this.setState({
+        isShowEasyModal: true,
+        EasyModalInfos: {
+          title: '提示',
+          text: '您还没登录，是否立即登录?',
+          toPage: "LoginPage",
+        }
+      })
+      return false;
+    }
     try {
       const { cityCode, userId, provinceCode } = this
       const { productId, goodsBaseInfo } = this.state
@@ -323,6 +337,7 @@ export default class ProductDetailPage extends RentApp {
       this.setState({
         goodsBaseInfo: { ...goodsBaseInfo, collectStatus: data.status }
       })
+      console.log(data.status,"!!!data.status")
     } catch (error) {
       console.error(error, "!!!")
     }
@@ -579,29 +594,6 @@ export default class ProductDetailPage extends RentApp {
               </View>
             </View>
           }
-
-
-            {/* {
-              skuGroupList[1] && (
-                <View style={[styles.canSelectedBox]}>
-                  <View style={[flexRow, contentPadding, {
-                    backgroundColor: '#fff',
-                    padding: 10,
-                    alignItems: 'center'
-                  }]}>
-                    <Text style={{
-                      color: '#888',
-                      marginRight: 10
-                    }}> 颜色</Text>
-                    <View>
-                      <SelectedColorList
-                        data={skuGroupList[1].subSkuList}
-                        onPress={this.capacityId_color_fun.bind(this, 'colorId')}
-                      />
-                    </View>
-                  </View>
-                </View>
-              )} */}
             <Flex style={{ backgroundColor: '#fff', padding: 10 }} direction='row' align='center'>
               <Text style={{
                 color: '#888',

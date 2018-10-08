@@ -30,8 +30,9 @@ export default class ProductListPage extends RentApp {
         isShowSelected: false,
         cateList: [],
         loading: false,
-        maxPrice: 0,
-        minPrice: 0
+        maxPrice: false,
+        minPrice: false,
+        sortList: false,
     }
 
     async componentDidMount() {
@@ -40,46 +41,63 @@ export default class ProductListPage extends RentApp {
         this.getCateList()
     }
 
-    getData = async () => {
-        const {pageNum, pageSize, products, isLoreMoreing} = this.state
-        if (isLoreMoreing === 'LoreMoreEmpty') return false
-        const category = this.props.navigation.getParam('category');
-        const keyWord = this.props.navigation.getParam('keyWord');
+    getData = async (otherParams) => {
+      if (otherParams) {
+        await this.setState({
+          ...this.state,
+          ...otherParams
+        })
+      }
+      const { pageNum, pageSize, products, isLoreMoreing, selected, maxPrice, minPrice} = this.state
+      if (isLoreMoreing === 'LoreMoreEmpty') return false
 
+      const category = this.props.navigation.getParam('category');
+      const keyWord = this.props.navigation.getParam('keyWord');
+      
+      await this.setState({ loading: true })
+      try {
+        const user = await AsyncStorage.multiGet(['userId', 'openId', 'isLogin', 'addressInfos'])
+        const userId = this.userId,
+          openId = this.openId,
+          isLogin = user[2][1] || false,
+          cityCode = this.cityCode,
+          provinceCode = this.provinceCode;
 
-        await this.setState({loading: true})
-        try {
-            const user = await AsyncStorage.multiGet(['userId', 'openId', 'isLogin', 'addressInfos'])
-            const userId = this.userId,
-                openId = this.openId,
-                isLogin = user[2][1] || false,
-                cityCode = this.cityCode,
-                provinceCode = this.provinceCode;
+        const params = { userId, openId, provinceCode, cityCode, category, keyWord, pageNum, pageSize, ...otherParams }
 
-            const params = {userId, openId, provinceCode, cityCode, category, keyWord, pageNum, pageSize}
+        if (selected.length) params.queryCateList = JSON.stringify(selected)
 
-            const rsp = await queryGoodsList(params)
-            console.log("Products:", rsp)
-            const {data, data: {errcode, goodsList, totalPage}} = rsp || {}
-            if (errcode === 1 && goodsList.length) {
-                // const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
-                this.setState({
-                    products: [...products, ...goodsList],
-                    totalPage,
-                    refreshing: false,
-                    isLoreMoreing: 'LoreMoreing'
-                })
-            } else if (errcode === 1 && !goodsList.length) {
-                this.setState({
-                    isLoreMoreing: 'LoreMoreEmpty'
-                })
-            }
-        } catch (e) {
+        if (minPrice !== false) params.minPrice = minPrice
+        if (maxPrice !== false)params.maxPrice = maxPrice
 
-        } finally {
-            // doing = false
-            this.setState({loading: false})
+        console.log(params, '=========> params')
+
+        const rsp = await queryGoodsList(params)
+        console.log("Products:", rsp)
+        const { data } = rsp || {}
+        console.log(data, '======>data')
+
+        const { errcode, goodsList, totalPage } = data
+        if (errcode === 1 && goodsList.length) {
+          // const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
+          this.setState({
+            products: [...products, ...goodsList],
+            totalPage,
+            refreshing: false,
+            isLoreMoreing: 'LoreMoreing'
+          })
+        } else if (errcode === 1 && !goodsList.length) {
+          this.setState({
+            isLoreMoreing: 'LoreMoreEmpty'
+          })
+        } else if (errcode !== 1) {
+          this.showToast(data.errmsg)
         }
+      } catch (e) {
+        console.log(e,"========>err")
+      } finally {
+        this.setState({ loading: false })
+      }
     }
 
     async getCateList() {
@@ -103,12 +121,11 @@ export default class ProductListPage extends RentApp {
 
     throttleGetData = throttle(this.getData, 1000)
 
-    loadMoreFun = async (pageNum) => {
+    loadMoreFun = async () => {
         await this.setState({
-            pageNum,
             refreshing: true,
         })
-        this.throttleGetData()
+      this.throttleGetData({ pageNum: this.state.pageNum + 1})
     }
 
     _renderItem = ({item}) => {
@@ -163,22 +180,66 @@ export default class ProductListPage extends RentApp {
     }
 
     onPriceChange = (value, type) => {
+      // console.log(value,"dddddddddd", type)
         this.setState({
             [type]: value
         })
     }
 
-    onReset = () => {
-        this.setState({
-            maxPrice:0,
-            minPrice:0,
-            selected:[]
+    onReset = async () => {
+       await this.setState({
+            maxPrice:false,
+            minPrice:false,
+            selected:[],
+            pageNum: 1
         })
+      this.getData()
     }
+
+  onConfirm = async () => {
+    await this.setState({
+      products: []
+    })
+    this.getData({pageNum: 1})
+    this.drawer.closeDrawer()
+  }
+
+  sortFun = async () => {
+    let { sortList } = this.state
+    let newSortList = []
+    await this.setState({
+      products: [],
+    })
+    if (sortList === false) {  // 初始化状态,默认升序
+      newSortList.push({
+        paramName: 'price',
+        sortType: 'asc'
+      })
+    } else{
+      sortList = JSON.parse(sortList)
+      if (sortList[0] && sortList[0].sortType === 'asc') {
+        newSortList.push({
+          paramName: 'price',
+          sortType: 'desc'
+        })
+      }
+      if (sortList[0] && sortList[0].sortType === 'desc') {
+        newSortList.push({
+          paramName: 'price',
+          sortType: 'asc'
+        })
+      }
+    }
+    this.setState({ sortList: newSortList })
+    const params = { pageNum: 1 }
+    params.sortList = JSON.stringify(newSortList)
+
+    this.getData(params)
+  }
 
 
     render() {
-        console.log("New", this.state)
+        // console.log("New", this.state)
         let {products, pageNum, selected, cateList, maxPrice,minPrice, isLoreMoreing} = this.state
         const searchBtnStyle = [{
             paddingHorizontal: 36,
@@ -187,13 +248,16 @@ export default class ProductListPage extends RentApp {
 
         return (
             <Drawer
-                sidebar={<Sidebar source={cateList}
-                                  selected={selected}
-                                  onChange={this.onPriceChange}
-                                  onSelect={this.onSelect}
-                                  onReset={this.onReset}
-                                  maxPrice={maxPrice}
-                                  minPrice={minPrice}
+                sidebar={
+                  <Sidebar 
+                    source={cateList}
+                    selected={selected}
+                    onChange={this.onPriceChange}
+                    onSelect={this.onSelect}
+                    onReset={this.onReset}
+                    maxPrice={maxPrice}
+                    minPrice={minPrice}
+                    onConfirm={this.onConfirm}          
                 />}
                 position="right"
                 open={false}
@@ -218,7 +282,9 @@ export default class ProductListPage extends RentApp {
                             <TouchableOpacity style={[searchBtnStyle]}>
                                 <Text style={{color: selected === 1 ? Color.mainPink : '#333'}}>推荐</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[searchBtnStyle, {
+                            <TouchableOpacity 
+                              onPress={this.sortFun}
+                              style={[searchBtnStyle, {
                                 borderLeftWidth: 1,
                                 borderRightWidth: 1,
                                 borderColor: '#eee'
@@ -237,7 +303,7 @@ export default class ProductListPage extends RentApp {
                         style={{height: '100%'}}
                         onEndReached={() => {
                             if (isLoreMoreing !== 'LoreMoreEmpty') {
-                                this.loadMoreFun(pageNum + 1)
+                                this.loadMoreFun()
                             } else if (isLoreMoreing == 'LoreMoreing') {
                                 console.log('LoreMoreing')
                             }

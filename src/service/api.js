@@ -209,6 +209,7 @@ export default {
     //查询商品列表 ;
     queryGoodsList(params) {
         params["sourceType"] = 3;
+        // console.log(qs.stringify(params),"=???????????params")
         return new Promise((resolve, reject) => {
             getToken(token => {
                 axios.post(`${url}/goods/queryGoodsList`, qs.stringify(params), {
