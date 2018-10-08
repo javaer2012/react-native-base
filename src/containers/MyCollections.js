@@ -45,8 +45,8 @@ export default class MyCollections extends RentApp{
             const params = {
                 userId:this.userId,
                 openId:this.openId,
-                cityCode:84401,
-                provinceCode:844
+                cityCode: this.cityCode,
+                provinceCode: this.provinceCode
             }
             console.log(params)
             const rsp = await api.myCollect(params)

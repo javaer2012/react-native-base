@@ -1,8 +1,8 @@
 import { combineReducers, createStore } from "redux";
-import home from './home'
+import * as home from './home'
 
 const rootReducers = combineReducers({
-    home
+    ...home,
 });
 
 

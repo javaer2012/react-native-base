@@ -441,6 +441,7 @@ export default class ProductDetailPage extends RentApp {
         //   activeId: goodsBaseInfo.activeId
         //   // firstPay: data.firstPay
         // })
+        
       }
 
     } catch (error) {

@@ -34,8 +34,8 @@ export default class Find extends RentApp {
             const params = {
                 openId: this.openId,
                 userId: this.userId,
-                provinceCode: 844,
-                cityCode: 84401,
+                provinceCode: this.provinceCode,
+                cityCode: this.cityCode,
                 pageNum: this.state.pageNum,
                 pageSize: 10
             }

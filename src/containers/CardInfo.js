@@ -28,6 +28,10 @@ export default class CardInfo extends RentApp{
         }
     }
 
+    componentDidMount = () =>{
+        this.getOpenIdAndUserId()
+    }
+
     smsCall = async ()=>{
         const user = await AsyncStorage.getItem('userInfo')
         console.log(JSON.parse(user))
@@ -45,8 +49,8 @@ export default class CardInfo extends RentApp{
                 phoneNo:this.state.phoneNo,
                 bankCode,
                 bankName,
-                provCode:844,
-                cityCode:84401,
+                provCode: this.provinceCode,
+                cityCode: this.cityCode,
                 activeId:this.activeId || '524eaa42bfec4d00b77f50d56fd82fe5'
 
             }
@@ -82,8 +86,8 @@ export default class CardInfo extends RentApp{
                 phoneNo:this.state.phoneNo,
                 bankCode,
                 bankName,
-                provCode:844,
-                cityCode:84401,
+                provCode: this.provinceCode,
+                cityCode: this.cityCode,
                 activeId:this.activeId || '524eaa42bfec4d00b77f50d56fd82fe5',
                 signMsgSn,
                 verifyCode:111111
@@ -101,8 +105,8 @@ export default class CardInfo extends RentApp{
                     userParam = {
                         userId,
                         openId,
-                        cityCode:84401,
-                        provinceCode:844,
+                        cityCode: this.cityCode,
+                        provinceCode: this.provinceCode,
                     },
                     userRsp = await api.getUserInfo(userParam)
 

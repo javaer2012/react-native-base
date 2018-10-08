@@ -27,6 +27,7 @@ export default class Login extends RentApp {
 
     async componentDidMount(){
         await this.getOpenIdAndUserId()
+        await this.getOpenIdAndUserId()
     }
 
     async login() {
@@ -51,8 +52,8 @@ export default class Login extends RentApp {
                     const uInfoParams = {
                         userId:userInfo.userId,
                         openId:userInfo.openId,
-                        cityCode:84401,
-                        provinceCode:844,
+                        cityCode: this.cityCode,
+                        provinceCode: this.provinceCode,
                     }
 
                     const uInfo = await api.getUserInfo(uInfoParams)

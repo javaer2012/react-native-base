@@ -49,8 +49,8 @@ export default class App extends RentApp {
 
 
     componentWillMount() {
-
-        AsyncStorage.clear()
+        console.log(this.props,"ttt")
+        //AsyncStorage.clear()
 
         if (isFirstTime) {
             //标记首次首次启动
@@ -135,11 +135,9 @@ export default class App extends RentApp {
                 ]);
             })
     }
-
-
     registerUser = async (option) => {
         try {
-           // await AsyncStorage.clear()
+           await AsyncStorage.clear()
 
            // await AsyncStorage.removeItem('openId')
             const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
@@ -201,6 +199,11 @@ export default class App extends RentApp {
                         }
                     }
                     await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
+                    // console.log(store, "+++", store.dispatch)
+                    store.dispatch({
+                        type: 'SET_LOCATION',
+                        locationInfos: option
+                    })
                     this.registerUser(option)
                     this.isOpen({
                         provinceCode: option["provinceCode"],
@@ -220,8 +223,8 @@ export default class App extends RentApp {
 
     beginWatch = async () => {
         // await AsyncStorage.clear()
-        const value1 = await AsyncStorage.getItem('Test')
-        console.log("Test1", value1)
+        // const value1 = await AsyncStorage.getItem('Test')
+        // console.log("Test1", value1)
 
 
         navigator.geolocation.getCurrentPosition(

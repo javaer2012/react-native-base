@@ -54,8 +54,8 @@ export default class NegativeRecord extends RentApp{
             const params = {
                 openId:this.openId,
                 userId:this.userId,
-                cityCode:84401,
-                provinceCode:844
+                cityCode: this.cityCode,
+                provinceCode: this.provinceCode
             }
 
             //Toast.info(params.toString(),1)

@@ -30,7 +30,8 @@ export default class BadRecords extends RentApp {
         super(props)
     }
 
-    componentDidMount(){
+    async componentDidMount(){
+        await this.getOpenIdAndUserId()
         setTimeout(()=>this.getBadList(),0)
     }
 
@@ -65,8 +66,8 @@ export default class BadRecords extends RentApp {
             const params = {
                 openId:this.openId,
                 userId:this.userId,
-                cityCode:84401,
-                provinceCode:844
+                cityCode: this.cityCode,
+                provinceCode: this.provinceCode
             }
 
             const rsp = await api.negativeList(params)
