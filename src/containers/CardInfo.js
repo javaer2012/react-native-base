@@ -100,11 +100,12 @@ export default class CardInfo extends RentApp{
             if(data.errcode === 1){
                 Toast.info('绑卡成功',1)
 
-                const userInfo = await AsyncStorage.getItem('userInfo'),
-                    userInfoJson = JSON.parse(userInfo),
+                const userInfo = await AsyncStorage.getItem('userInfo');
+
+                const userInfoJson = JSON.parse(userInfo),
                     userParam = {
-                        userId,
-                        openId,
+                        userId:this.userId,
+                        openId:this.openId,
                         cityCode: this.cityCode,
                         provinceCode: this.provinceCode,
                     },
@@ -115,17 +116,30 @@ export default class CardInfo extends RentApp{
 
                     if(data.errcode === 1){
 
-                        const newUserInfo = {}
-                        Object.assign(newUserInfo,{...userInfoJson},{...data.userInfo})
+                       data.userInfo.isLoggedIn = '1'
 
-                        await AsyncStorage.setItem(['userInfo',JSON.stringify(newUserInfo)])
+
+                        console.log(data.userInfo)
+
+                        for (var p in data.user){
+                            if(data.userInfo[p] === null) data.userInfo[p] = '0'
+                        }
+
+                        AsyncStorage.setItem('userInfo',JSON.stringify(data.userInfo))
+                            .then(res=>{
+
+                                console.log("res")
+                                this.props.navigation.replace("ProductDetail",{
+                                    productId:this.productId
+                                })
+                            })
+
+
                     }
 
-                this.props.navigation.replace("ProductDetailPage",{
-                    productId:this.productId
-                })
+
             } else {
-                Toast.info(data.errmsg,1)
+                Toast.info(data.errmsg,1.5)
             }
         } catch (e) {
 

@@ -189,6 +189,8 @@ export default class My extends RentApp {
 
     async initalState() {
 
+
+
          this.setState({
             loading:true
         })
@@ -198,6 +200,17 @@ export default class My extends RentApp {
             const userInfo = await AsyncStorage.getItem('userInfo'),
             isLoggedIn = JSON.parse(userInfo).isLoggedIn
             console.log(isLoggedIn)
+
+            // const a = await api.unbindBankCard({
+            //     openId:this.openId,
+            //     userId: this.userId,
+            //     provCode:this.provinceCode,
+            //     cityCode:this.cityCode,
+            //     phoneNo:18501760527,
+            //     verifyCode:111111
+            // })
+
+            console.log("unsign",a)
             const userId = this.userId,
                 openId = this.openId,
                 cityCode = this.cityCode,
