@@ -15,14 +15,19 @@ const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods } = api
 
 const storageItem = ({ data, itemData, onPress, subSkuId }) => {
   const boxStyle = [{
-    paddingVertical: 5,
-    paddingHorizontal: 20,
+    paddingVertical: 3,
+    // paddingHorizontal: 13,
+    width: 60,
     borderRadius: 5,
     marginBottom: 1,
     borderWidth: 1,
-    boederColor: Color.mainPink
+    borderColor: Color.mainPink,
+    marginHorizontal: 6
   }]
-  const textStyle = []
+  const textStyle = [{
+    textAlign: 'center',
+    color: Color.mainPink,
+  }]
   if (subSkuId === itemData.subSkuId) {
     boxStyle.push({
       backgroundColor: Color.mainPink
@@ -77,32 +82,33 @@ export default class ProductDetailPage extends RentApp {
   }
 
   async componentDidMount() {
-    this.getData()
+    setTimeout(() => {
+      this.getData()
+    }, 0);
   }
 
   getData = async () => {
     // '201807191036353330096584' || 
     // "201807191036353330096584" ||
+    // debugger
     const productId = this.props.navigation.getParam('productId');
-    await this.getOpenIdAndUserId()
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
     console.log(user, "====>缓存中读取的userInfo")
-    this.setState({
+    await this.setState({
       userInfos: user,
       productId
     })
     try {
       await this.setState({ loading: true })
-      console.log(user.userId, "user.userId", authAppSecret)
-      const { data: queryGoodsDetailData } = await queryGoodsDetail({
+      const params = {
         provinceCode: this.provinceCode,
         cityCode: this.cityCode,
         goodsId: productId,
-        userId:  authAppSecret
-        // user.userId ||
-      })
-      // console.log(JSON.stringify(queryGoodsDetailData), "mmmmmmmmmm")
+        userId: authAppSecret
+      }
+      console.log(params,"=========> params")
+      const { data: queryGoodsDetailData } = await queryGoodsDetail(params)
       if (!queryGoodsDetailData || queryGoodsDetailData.errcode !== 1) {
         throw queryGoodsDetailData.errmsg || "queryGoodsDetailData 获取数据失败"
         return
@@ -543,8 +549,9 @@ export default class ProductDetailPage extends RentApp {
                 <Text style={{
                   // ...mainGray
                   color: '#888',
+                  marginRight: 10,
                 }}>容量</Text>
-                <View style={{ marginLeft: 10 }}>
+                <View>
                   <SelectedROMList
                     data={skuGroupList[0] ? skuGroupList[0].subSkuList : []}
                     onPress={this.capacityId_color_fun.bind(this, 'capacityId')}
@@ -552,12 +559,34 @@ export default class ProductDetailPage extends RentApp {
                 </View>
               </View>
             </View>
-            {
+            {skuGroupList[1] && <View style={[styles.canSelectedBox]}>
+              <View style={[flexRow, {
+                backgroundColor: '#fff',
+                padding: 10,
+                alignItems: 'center'
+              }]}>
+                <Text style={{
+                  // ...mainGray
+                  marginRight: 10,
+                  color: '#888',
+                }}>颜色</Text>
+                <View>
+                  <SelectedColorList
+                    data={skuGroupList[1].subSkuList}
+                    onPress={this.capacityId_color_fun.bind(this, 'colorId')}
+                  />
+                </View>
+              </View>
+            </View>
+          }
+
+
+            {/* {
               skuGroupList[1] && (
                 <View style={[styles.canSelectedBox]}>
                   <View style={[flexRow, contentPadding, {
                     backgroundColor: '#fff',
-                    paddingVertical: 10,
+                    padding: 10,
                     alignItems: 'center'
                   }]}>
                     <Text style={{
@@ -572,7 +601,7 @@ export default class ProductDetailPage extends RentApp {
                     </View>
                   </View>
                 </View>
-              )}
+              )} */}
             <Flex style={{ backgroundColor: '#fff', padding: 10 }} direction='row' align='center'>
               <Text style={{
                 color: '#888',
