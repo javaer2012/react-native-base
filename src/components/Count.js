@@ -24,6 +24,9 @@ export default class Count extends React.Component {
         if(this.props.smsCall){
 
             this.props.smsCall()
+            this.setState({
+                count:true
+            })
 
             timer = setInterval(() => {
                 this.setState({

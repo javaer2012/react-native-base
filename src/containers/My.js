@@ -185,6 +185,8 @@ export default class My extends RentApp {
 
         console.log("Page My")
 
+        props.navigation.popToTop()
+
     }
 
     async initalState() {
@@ -195,10 +197,17 @@ export default class My extends RentApp {
             loading:true
         })
         try {
-            //await AsyncStorage.getItem('isLoggedIn')
+            const isLoggedIn =  await AsyncStorage.getItem('isLoggedIn')
             await this.getOpenIdAndUserId()
-            const userInfo = await AsyncStorage.getItem('userInfo'),
-            isLoggedIn = JSON.parse(userInfo).isLoggedIn
+
+            await api.unbindBankCard({
+                userId:this.userId,
+                openId:this.openId,
+                cityCode:this.cityCode,
+                provCode:this.provinceCode,
+                phoneNo:'18501760527',
+                verifyCode:'111111'
+            })
             console.log(isLoggedIn)
 
             // const a = await api.unbindBankCard({
@@ -210,11 +219,8 @@ export default class My extends RentApp {
             //     verifyCode:111111
             // })
 
-            console.log("unsign",a)
             const userId = this.userId,
-                openId = this.openId,
-                cityCode = this.cityCode,
-                provinceCode = this.provinceCode;
+                openId = this.openId
 
             const params = {
                 userId,

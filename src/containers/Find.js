@@ -94,6 +94,8 @@ export default class Find extends RentApp {
 
         const {detailList,itemType} = item;
 
+        if(!detailList) return null
+
         if (detailList.length <= 0) {
             return null
         } else {
