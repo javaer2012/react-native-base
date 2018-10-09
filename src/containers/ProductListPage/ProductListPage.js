@@ -207,6 +207,7 @@ export default class ProductListPage extends RentApp {
   sortFun = async () => {
     let { sortList } = this.state
     let newSortList = []
+
     await this.setState({
       products: [],
     })
@@ -230,10 +231,21 @@ export default class ProductListPage extends RentApp {
         })
       }
     }
-    this.setState({ sortList: newSortList })
+    newSortList = JSON.stringify(newSortList)
+    await this.setState({ sortList: newSortList })
     const params = { pageNum: 1 }
-    params.sortList = JSON.stringify(newSortList)
+    params.sortList = newSortList
 
+    this.getData(params)
+  }
+
+  tuiJian = async () => {
+    let { sortList } = this.state
+    await this.setState({
+      products: [],
+      sortList: false,
+    })
+    const params = { pageNum: 1 }
     this.getData(params)
   }
 
@@ -279,7 +291,7 @@ export default class ProductListPage extends RentApp {
                         borderBottomWidth: 0.5
                     }}>
                         <Flex direction="row" justify="around" align="stretch">
-                            <TouchableOpacity style={[searchBtnStyle]}>
+                            <TouchableOpacity onPress={() => this.tuiJian()} style={[searchBtnStyle]}>
                                 <Text style={{color: selected === 1 ? Color.mainPink : '#333'}}>推荐</Text>
                             </TouchableOpacity>
                             <TouchableOpacity 
