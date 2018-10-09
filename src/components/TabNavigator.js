@@ -10,7 +10,7 @@ import Color from '../styles/var'
 
 export default createBottomTabNavigator(
   {
-    "首页": Home,
+    "Home": Home,
     "FindPage": Find,
     "MyPage": My,
   },
