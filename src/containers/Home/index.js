@@ -36,6 +36,7 @@ class Home extends RentApp {
   }
 
   async componentDidMount() {
+
     console.log(this.props, "======> this.props")
     try {
       await this.setState({ loading: true })

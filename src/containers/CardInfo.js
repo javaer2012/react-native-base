@@ -24,6 +24,7 @@ export default class CardInfo extends RentApp{
 
         this.state = {
             phoneNo:'',
+            verifyCode:'',
             ...this.cardInfo
         }
     }
@@ -148,7 +149,7 @@ export default class CardInfo extends RentApp{
 
     render(){
 
-        const {phoneNo} = this.state
+        const {phoneNo,verifyCode} = this.state
         return(
             <View style={{height: '100%'}}>
                 <WhiteSpace size={"md"}/>
@@ -164,7 +165,7 @@ export default class CardInfo extends RentApp{
                         <InputItem value={this.cardInfo.bankName} disabled={true}>银行名称</InputItem>
                         <InputItem value={"储蓄卡"} editable={false} disabled={true}>卡类型</InputItem>
                         <InputItem value={phoneNo} onChange={(phoneNo)=>this.setState({phoneNo})}>预留手机</InputItem>
-                        <InputItem extra={<Count username={phoneNo} smsCall={this.smsCall}/>}>验证码</InputItem>
+                        <InputItem value={verifyCode} onChange={(verifyCode)=>this.setState({verifyCode})} extra={<Count username={phoneNo} smsCall={this.smsCall}/>}>验证码</InputItem>
 
                     </List>
                 </WingBlank>

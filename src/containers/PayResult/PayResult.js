@@ -27,7 +27,7 @@ export default class Pay extends Component {
         imgUrl={require('../../images/success.png')}
         buttonType="primary"
         buttonText="回到首页"
-        onButtonClick={(e) => replace("Home")}
+        onButtonClick={(e) => replace("tab")}
         title="支付成功"
         message="0元"
       />

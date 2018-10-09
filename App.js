@@ -139,7 +139,6 @@ export default class App extends RentApp {
         try {
         //    await AsyncStorage.clear()
 
-           // await AsyncStorage.removeItem('openId')
             const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
 
             console.log(openId)
@@ -198,6 +197,7 @@ export default class App extends RentApp {
                             option["cityCode"] = areaDict[key].crmCityCode;
                         }
                     }
+
                     await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
                     // debugger
                     // console.log(store, "+++", store.dispatch)
@@ -227,15 +227,20 @@ export default class App extends RentApp {
         // const value1 = await AsyncStorage.getItem('Test')
         // console.log("Test1", value1)
 
+        console.log("Begin watch")
+
+        console.log(navigator)
+
 
         navigator.geolocation.getCurrentPosition(
             ({coords}) => {
+                console.log(coords)
                 const {latitude, longitude} = coords
                 this.getCityFun(latitude, longitude)
                 // var initialPosition = JSON.stringify(position);
                 // this.setState({ initialPosition });
             },
-            (error) => alert(error.message),
+            (error) => console.log(error.message),
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         )
 
