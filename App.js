@@ -223,7 +223,7 @@ export default class App extends RentApp {
     }
 
     beginWatch = async () => {
-        // await AsyncStorage.clear()
+        await AsyncStorage.clear()
         // const value1 = await AsyncStorage.getItem('Test')
         // console.log("Test1", value1)
 
