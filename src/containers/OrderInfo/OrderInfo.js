@@ -51,16 +51,17 @@ export default class OrderInfo extends RentApp {
         orderId
       })
 
-      console.log(JSON.stringify(queryOrderDetailData,"======>queryOrderDetailData"))
+      console.log(JSON.stringify(queryOrderDetailData), "======>queryOrderDetailData")
+      // debugger
 
       if (!queryOrderDetailData || queryOrderDetailData.errcode !== 1) {
         throw queryOrderDetailData.errmsg || "queryOrderDetailData 获取数据失败"
         return
       }
-      // this.showToast(queryOrderDetailData.errmsg)
       this.handleDataFun(queryOrderDetailData)
 
     } catch (error) {
+      // debugger
       this.showToast(error)
     }
   }
@@ -142,7 +143,7 @@ export default class OrderInfo extends RentApp {
           <Text style={{ marginBottom: 10 }}>恭喜您获得购买资格</Text>
             <Text>您仅需支付: ￥{goodsInfo.totalFirstAmount}</Text>
             <TouchableOpacity 
-              style={{ padding: 20, backgroundColor: Color.mainPink, width: '100%'}}
+              style={{ padding: 14, marginTop: 20, backgroundColor: Color.mainPink, width: '100%'}}
               onPress={() => this.goToPayFun() }>
               <Text style={{ color: '#fff', textAlign: "center" }}>确定</Text>
             </TouchableOpacity>
