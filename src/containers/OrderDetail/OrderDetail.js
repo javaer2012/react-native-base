@@ -192,7 +192,7 @@ export default class OrderDetail extends RentApp {
                 orderId: this.state.orderId,
                 staffNo: userInfo.staffNo
               }) }}>
-                {'营业员受理'}``
+                {'营业员受理'}
               </Button_>
             </Flex>
           </Flex>
