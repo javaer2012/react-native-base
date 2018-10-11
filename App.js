@@ -59,13 +59,9 @@ export default class App extends RentApp {
             Alert.alert("更新失败，回滚到上一个可用版本")
         }
 
-        //Alert.alert(`Is First Time:${isFirstTime}`)
-
-        // this.checkUpdate()
-
-
         this.getOpenIdAndUserId()
         this.beginWatch()
+        this.checkUpdate()
     }
 
     checkUpdate = ()=>{
@@ -223,14 +219,13 @@ export default class App extends RentApp {
     }
 
     beginWatch = async () => {
-        await AsyncStorage.clear()
+       // await AsyncStorage.clear()
         // const value1 = await AsyncStorage.getItem('Test')
         // console.log("Test1", value1)
 
         console.log("Begin watch")
 
         console.log(navigator)
-
 
         navigator.geolocation.getCurrentPosition(
             ({coords}) => {

@@ -64,9 +64,7 @@ export default class AuthRecords extends RentApp {
                    </Flex>
                    <Button
                        style={{borderColor:'#06C1AE', color: "white",borderRadius:4,fontSize: 10 ,width: 55, height: 21, lineHeight: 21}}
-                        onClick={()=>this.props.navigation.navigate("ProductDetail",{
-                            productId:item.activeId
-                        })}
+                        onClick={()=>this.props.navigation.replace("ProductListPage")}
                    >再次享用</Button>
                </Flex>
             </WingBlank>

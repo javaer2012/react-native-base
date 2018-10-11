@@ -43,6 +43,8 @@
 		841BC12921630B2C00EEEB46 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 841BC12821630B2C00EEEB46 /* libz.tbd */; };
 		841BC12B21630B3C00EEEB46 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 841BC12A21630B3C00EEEB46 /* libbz2.1.0.tbd */; };
 		846D727C214CE7040035E93F /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 846D7279214CE6C80035E93F /* libRNDeviceInfo.a */; };
+		84D824E8216E50410070D37A /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 84D824E6216E50410070D37A /* main.jsbundle */; };
+		84D824E9216E50410070D37A /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 84D824E7216E50410070D37A /* assets */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		C27AC50EF88848A989864821 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA014345D5554BA485037BE1 /* libRNImagePicker.a */; };
 		D26EBF2CEC7D4A68A0C1951B /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54137976064647769B3F93B9 /* libBVLinearGradient.a */; };
@@ -407,6 +409,8 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		841BC12821630B2C00EEEB46 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		841BC12A21630B3C00EEEB46 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
+		84D824E6216E50410070D37A /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = bundle/main.jsbundle; sourceTree = "<group>"; };
+		84D824E7216E50410070D37A /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = bundle/assets; sourceTree = "<group>"; };
 		8E3DFB9D881244E7A81255AF /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		AC5B111DDFBF4C6CADC27D19 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -559,6 +563,8 @@
 		13B07FAE1A68108700A75B9A /* myboy */ = {
 			isa = PBXGroup;
 			children = (
+				84D824E7216E50410070D37A /* assets */,
+				84D824E6216E50410070D37A /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -1259,6 +1265,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84D824E8216E50410070D37A /* main.jsbundle in Resources */,
+				84D824E9216E50410070D37A /* assets in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {AsyncStorage, Image, ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {View, Image, ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {List,InputItem,Button,WingBlank,WhiteSpace,Toast} from 'antd-mobile-rn';
 import api from "../service/api";
 import RentApp from "../components/RentApp";
+import Count from "../components/Count";
 
 
 export default class ChangePSW extends RentApp{
@@ -19,21 +20,22 @@ export default class ChangePSW extends RentApp{
     }
 
     async changePsw(){
-        try{
 
+        try{
             const params = {
                 openId:this.openId,
                 userId : this.userId,
-                password:this.state.oPSW,
-                newPassword:this.state.nPSW
+                provCode:this.provinceCode,
+                cityCode:this.cityCode,
+                ...this.state
             }
 
-            const rsp = await api.appModifyPSW(params);
+            const rsp = await api.unbindBankCard(params);
             console.log(rsp)
             const {data} = rsp
             if(data.errcode === 1){
-                Toast.info("修改密码成功",1)
-                setTimeout(()=>this.props.navigation.navigate("LoginPage"),2000)
+                Toast.info("解绑成功",1.5)
+                setTimeout(()=>this.props.navigation.replace("BackCardPage"),1500)
             } else {
                 Toast.info(data.errmsg)
             }
@@ -45,28 +47,30 @@ export default class ChangePSW extends RentApp{
 
     render(){
 
-        const {oPSW,nPSW} = this.state;
+        const {phoneNo,verifyCode} = this.state;
         const {navigation} = this.props;
 
         return(
             <ScrollView>
                 <WingBlank size="md">
-                    <List renderHeader={()=>""} >
-                        <InputItem type="password" value={oPSW}
-                                   onChange={(oPSW)=>this.setState({oPSW})}
-                                   placeholder={"请输入旧密码"}>
+                    <List renderHeader={()=><View><Text>银行卡信息</Text></View>} >
+                        <InputItem type="number" value={phoneNo}
+                                   onChange={(phoneNo)=>this.setState({phoneNo})}
+                                   placeholder={"银行预留手机号"}>
                             <Image
                                 style={styles.icon}
-                                source={oPSW?
-                                    require('../assets/selectPsw.png'):
-                                    require('../assets/defaultPsw.png')}/>
+                                source={phoneNo?
+                                    require('../assets/copyUser.png'):
+                                    require('../assets/defaultUser.png')}/>
                         </InputItem>
-                        <InputItem type="password" value={nPSW}
-                                   onChange={(nPSW)=>this.setState({nPSW})}
-                                   placeholder={"请输入新密码"}>
+                        <InputItem type="password" value={verifyCode}
+                                   onChange={(verifyCode)=>this.setState({verifyCode})}
+                                   extra={<Count username={this.state.phoneNo}/>}
+
+                                   placeholder={"请输入验证码"}>
                             <Image
                                 style={styles.icon}
-                                source={nPSW?
+                                source={verifyCode?
                                     require('../assets/confirmSelect.png'):
                                     require('../assets/confirmDefault.png')}/>
                         </InputItem>

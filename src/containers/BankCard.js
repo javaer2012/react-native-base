@@ -1,10 +1,8 @@
 import React from 'react'
 import {View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, AsyncStorage} from 'react-native'
-import {Flex, WhiteSpace, WingBlank} from 'antd-mobile-rn'
+import {Flex, WhiteSpace, WingBlank,Toast} from 'antd-mobile-rn'
 import RentApp from "../components/RentApp";
-import Spinner from 'react-native-loading-spinner-overlay'
 import api from "../service/api";
-import LinearGradient from 'react-native-linear-gradient';
 
 
 const styles = StyleSheet.create({
@@ -78,6 +76,7 @@ export default class BankCard extends RentApp {
         }
     }
 
+
     render() {
 
         const {cardInfo} = this.state
@@ -100,7 +99,9 @@ export default class BankCard extends RentApp {
                                             fontSize: 14,
                                             opacity: 0.9
                                         }}>发卡银行</Text>
-                                        <Text style={styles.unbind}>解除绑定</Text>
+                                       <TouchableOpacity onPress={()=>this.props.navigation.navigate('ChangePSWPage')}>
+                                           <Text style={styles.unbind}>解除绑定</Text>
+                                       </TouchableOpacity>
 
                                     </Flex>
                                     <WhiteSpace size={"xl"}/>
@@ -135,7 +136,7 @@ export default class BankCard extends RentApp {
                         <ImageBackground style={{width: '100%', height: 179, borderRadius: 6, resizeMode: 'contain'}}
                                          source={require('../images/bank/border.png')}>
                             <WingBlank size={"lg"}>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={()=>this.props.navigation.navigate("AddBankCardPage")}>
                                     <Flex direction={"row"} justify={"center"} align={"center"}>
                                         <Image style={{width: 30, height: 30}}
                                                source={require('../images/bank/add.png')}/>

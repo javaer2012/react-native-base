@@ -191,8 +191,6 @@ export default class My extends RentApp {
 
     async initalState() {
 
-
-
          this.setState({
             loading:true
         })
@@ -261,13 +259,7 @@ export default class My extends RentApp {
     }
 
     componentDidMount(){
-        console.log("Mount Again")
         setTimeout(()=>this.initalState(),0)
-
-    }
-
-    componentWillUnmount(){
-        console.log("UnMount")
     }
 
     handleCanvas(canvas) {
@@ -463,6 +455,19 @@ export default class My extends RentApp {
                                     </Flex>
                                 </TouchableOpacity>
                             </Flex.Item>
+
+                            {_state.isCreditCard === 1?  <Flex.Item>
+                                <TouchableOpacity onPress={() => this.navigateWithLogin("BackCardPage")}>
+                                    <Flex direction={"column"}>
+                                        <WhiteSpace size={"sm"}/>
+                                        <Image style={{width: 30, height: 30}}
+                                               source={require('../images/myCard.png')}/>
+                                        <WhiteSpace size={"sm"}/>
+                                        <Text>我的银行卡</Text>
+                                        <WhiteSpace size={"sm"}/>
+                                    </Flex>
+                                </TouchableOpacity>
+                            </Flex.Item>:null}
                         </Flex>
                         <WhiteSpace size={"sm"}/>
 
