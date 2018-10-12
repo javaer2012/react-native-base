@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator, TextInput, Dimensions, AsyncStorage } from 'react-native'
-import { Flex, List, ImagePicker, Button, WhiteSpace, InputItem } from 'antd-mobile-rn';
+import { Flex, List, ImagePicker, Toast, Button, WhiteSpace, InputItem } from 'antd-mobile-rn';
 // import { orderInfo_mock } from '../../mock/ProductDetailPage'
 import Color from '../../styles/var'
 import Progress from '../../components/Progress'
@@ -29,6 +29,7 @@ export default class Pay extends RentApp {
     amount:0,
     code:'', //验证码
     phoneNumber:'',
+    orderId:'',
   }
 
   async componentDidMount() {
@@ -38,7 +39,27 @@ export default class Pay extends RentApp {
     let user = await AsyncStorage.getItem('userInfo')
     user = { ...JSON.parse(user) }
     await this.getOpenIdAndUserId()
-    this.setState({ passDueTime, userInfo: user, amount })
+    const orderId = this.props.navigation.getParam('orderId');
+    this.setState({ passDueTime, userInfo: user, amount, orderId })
+  }
+
+  check=()=>{
+    const { phoneNumber, code } = this.state;
+    var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+    // if (!myreg.test($poneInput.val())) {
+    //   return false;
+    // }
+    if (!phoneNumber) {
+      Toast.info("手机号不能为空")
+      return
+    } else if (!code) {
+      Toast.info("验证码不能为空")
+      return false
+    } else if (!myreg.test(phoneNumber)) {
+      Toast.info("手机号格式有误")
+      return false
+    } 
+    return true
   }
 
   goToPay = async () => {
@@ -58,11 +79,16 @@ export default class Pay extends RentApp {
       "provCode": this.provinceCode,
       "cityCode": this.cityCode,
       "payType": payType  || '1',
-      "phoneNo": `${this.state.userInfo.phoneNo}`,
-      "validCode": "",
+      "phoneNo": `${this.state.phoneNumber}`,
+      "validCode": this.state.code,
     }
     console.log(params, '========> params')
-    
+    if (!this.check()) {
+      await this.setState({
+        animating: false
+      })
+      return false
+    }
     try {
       const { data } = await payment(params)
       if (data.errcode !== 1 && data.errmsg) {
@@ -72,7 +98,8 @@ export default class Pay extends RentApp {
         this.showToast(data.errmsg)
         const { navigate } = this.props.navigation;
         navigate('PayResult', {
-            result: 'success'
+            result: 'success',
+            orderId: this.state.orderId
          })
       }
      

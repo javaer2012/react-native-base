@@ -499,7 +499,7 @@ export default class My extends RentApp {
                 <WhiteSpace size={"sm"}/>
 
                 {this.state.isStaff === 1 ? <List style={{backgroundColor: 'white'}} renderHeader={
-                        <View>
+                    <TouchableOpacity onPress={() => this.navigateWithLogin('WorkerEnter')}>
                             <WhiteSpace size={"sm"}/>
                             <Flex direction={"row"}>
                                 <View style={{width: 2, height: 12, backgroundColor: '#06C1AE', marginRight: 5}}/>
@@ -517,7 +517,7 @@ export default class My extends RentApp {
                             </TouchableOpacity>
                             <WhiteSpace size={"md"}/>
 
-                        </View>
+                    </TouchableOpacity>
                     }></List> :
                     null
                 }

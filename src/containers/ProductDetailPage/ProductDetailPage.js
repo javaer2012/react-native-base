@@ -105,12 +105,12 @@ export default class ProductDetailPage extends RentApp {
         provinceCode: this.provinceCode,
         cityCode: this.cityCode,
         goodsId: productId,
-        userId: authAppSecret
+        userId: this.userId
       }
       console.log(params,"=========> params")
       const { data: queryGoodsDetailData } = await queryGoodsDetail(params)
 
-      console.log(queryGoodsDetailData.goodsBaseInfo.collectStatus,"=======> collectStatus")
+      console.log(JSON.stringify(queryGoodsDetailData),"=======> queryGoodsDetailData")
       if (!queryGoodsDetailData || queryGoodsDetailData.errcode !== 1) {
         throw queryGoodsDetailData.errmsg || "queryGoodsDetailData 获取数据失败"
         return
@@ -658,7 +658,6 @@ export default class ProductDetailPage extends RentApp {
             goToPay={this.goToPayFun}
             data={0} />
         </View>
-
         <Modal
           popup
           maskClosable={true}
@@ -667,31 +666,10 @@ export default class ProductDetailPage extends RentApp {
           animationType="slide-up"
         >
           <Flex style={{ backgroundColor: '#fff', marginTop: 10, paddingHorizontal: 10 }}>
-            <Tabs tabs={tabs} initialPage={0}>
-              <View style={{ height: 400, padding: 10, position: 'relative' }}>
-                <ScrollView style={{ height: 350 }}>
-                  {this.renderMealList(telecomProdList)}
-                </ScrollView>
-                {/* <Flex style={styles.mealBtnBox}>
-                  <TouchableOpacity 
-                    style={{ padding: 14, backgroundColor: Color.mainPink, width: '100%'}}
-                    onPress={() => this.selecteCapitalProdSure(this.state.capitalProdObj) }>
-                    <Text style={{ color: '#fff', textAlign: "center" }}>确定</Text>
-                  </TouchableOpacity>
-                </Flex> */}
-              </View>
-            </Tabs>
-          </Flex>
-        </Modal>
-        <Modal
-          popup
-          maskClosable={true}
-          onClose={() => { this.setState({ isShowPackage: false }) }}
-          visible={isShowPackage}
-          animationType="slide-up"
-        >
-          <Flex style={{ backgroundColor: '#fff', marginTop: 10, paddingHorizontal: 10 }}>
-            <Tabs tabs={tabs} initialPage={0}>
+            <Tabs 
+              tabBarUnderlineStyle={{ backgroundColor:'#06C1AE'}}
+              tabBarTextStyle={{ color: '#06C1AE'}}
+              tabs={tabs} initialPage={0}>
               <View style={{ height: 400, padding: 10, position: 'relative' }}>
                 <ScrollView style={{ height: 350 }}>
                   {this.renderMealList(telecomProdList)}
