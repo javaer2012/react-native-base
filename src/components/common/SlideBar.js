@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Button, List,InputItem} from "antd-mobile-rn";
-import {ScrollView, Text, View, TextInput, StyleSheet, Image, TouchableOpacity} from "react-native";
+import {Button, List,InputItem,Flex} from "antd-mobile-rn";
+import {ScrollView, Text, View, StyleSheet, Image, TouchableOpacity} from "react-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         width: 82,
         height: 15,
+        lineHeight:15,
         textAlign: "center",
         marginRight: 15
     },
@@ -95,7 +96,7 @@ const PriceInput = (props) => {
             <List>
                 <List.Item style={styles.priceRow}>
 
-                    <View style={styles.priceOption}>
+                    <Flex direction={"row"} align={"center"}>
                         <Text style={styles.priceTag}>价格区间(元)</Text>
                         <InputItem
                             type={"number"}
@@ -112,7 +113,7 @@ const PriceInput = (props) => {
                             value={maxPrice}
                             onChange={(text) => onChange(text, 'maxPrice')}
                         />
-                    </View>
+                    </Flex>
                 </List.Item>
             </List>
         </View>
@@ -295,7 +296,7 @@ export default class Sidebar extends Component {
         return (
             <View style={[styles.container]}>
                 <ScrollView>
-                    <List  style={{marginBottom: 50}}>
+                    <List  style={{marginBottom: 65}}>
                         <CateContent
                             source={source}
                             selected={selected}
@@ -313,12 +314,24 @@ export default class Sidebar extends Component {
                     flexDirection: 'row',
                     justifyContent: 'flex-start'
                 }}>
-                    <Button style={{width: 166, height: 50, backgroundColor: '#FFE4E4'}} onClick={onReset}>
-                        <Text style={{color: '#F5475F', fontSize: 15}}>重置</Text>
-                    </Button>
-                    <Button style={{width: 164, height: 50, backgroundColor: '#F5475F'}} onClick={onConfirm}>
-                        <Text style={{color: 'white', fontSize: 15}}>完成</Text>
-                    </Button>
+                    <Flex direction={"row"} style={{width:'100%',height:50}}>
+                        <Flex.Item>
+                            <TouchableOpacity onPress={onReset}>
+                                <Text style={{color: '#F5475F',height:50,lineHeight:50, fontSize: 15,textAlign:'center',backgroundColor: '#FFE4E4'}}>重置</Text>
+                            </TouchableOpacity>
+                        </Flex.Item>
+                        <Flex.Item>
+                            <TouchableOpacity onPress={onConfirm}>
+                                <Text style={{color: 'white', height:50,lineHeight:50,fontSize: 15,textAlign:'center',backgroundColor: '#F5475F'}}>完成</Text>
+                            </TouchableOpacity>
+                        </Flex.Item>
+                    </Flex>
+                    {/*<Button style={{width: 166, height: 50, backgroundColor: '#FFE4E4'}} onClick={onReset}>*/}
+                        {/*<Text style={{color: '#F5475F', fontSize: 15}}>重置</Text>*/}
+                    {/*</Button>*/}
+                    {/*<Button style={{width: 164, height: 50, backgroundColor: '#F5475F'}} onClick={onConfirm}>*/}
+                        {/*<Text style={{color: 'white', fontSize: 15}}>完成</Text>*/}
+                    {/*</Button>*/}
                 </View>
             </View>
         )

@@ -220,7 +220,7 @@ export default class Find extends RentApp {
 
         const {data} = this.state
 
-        if (data.length === 0) return null
+        if (data &&  data.length === 0) return null
 
         return (
             <View style={{width: '100%'}}>

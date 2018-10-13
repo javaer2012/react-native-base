@@ -197,17 +197,6 @@ export default class My extends RentApp {
         try {
             const isLoggedIn =  await AsyncStorage.getItem('isLoggedIn')
             await this.getOpenIdAndUserId()
-
-            await api.unbindBankCard({
-                userId:this.userId,
-                openId:this.openId,
-                cityCode:this.cityCode,
-                provCode:this.provinceCode,
-                phoneNo:'18501760527',
-                verifyCode:'111111'
-            })
-            console.log(isLoggedIn)
-
             // const a = await api.unbindBankCard({
             //     openId:this.openId,
             //     userId: this.userId,
@@ -302,12 +291,14 @@ export default class My extends RentApp {
                     <Flex.Item>
                         <ImageBackground style={  _state.isLoggedIn !== '0' && _state.isCredited !== '0'?styles.topBackground:styles.topBackground1} source={require('../images/my/background.png')}>
                             {_state.isLoggedIn !== "1" &&  _state.isLoggedIn !== 1?
-                                <Flex direction={"column"} justify={"center"} align={"center"}>
+                                <Flex direction={"column"} style={{width:'100%'}} justify={"center"} align={"center"}>
                                     <Image style={styles.userIcon}
                                            source={require('../images/imageNew/one/userIcon.png')}/>
                                     <WhiteSpace size={"xl"}/>
-                                    <Flex direction={"row"} justify={"around"}>
-                                        <Button style={{backgroundColor:null}} onClick={() => navigation.navigate('LoginPage')}>登录</Button>
+                                    <Flex direction={"row"} justify={"around"} style={{width:126,height:45}}>
+                                        <Button
+                                            style={{backgroundColor:null}}
+                                            onClick={() => navigation.navigate('LoginPage')}>登录</Button>
                                     </Flex>
                                 </Flex> :
                                 <React.Fragment>

@@ -7,8 +7,11 @@ import Button from '../components/common/Button'
 import Count from '../components/Count';
 import RentApp from "../components/RentApp";
 
+
 const {appLogin,sendMsg} = api
 let timer = null;
+
+
 
 export default class Login extends RentApp {
     static navigationOptions = {
@@ -26,6 +29,7 @@ export default class Login extends RentApp {
     }
 
     async componentDidMount(){
+        console.log(newStyle)
         await this.getOpenIdAndUserId()
         await this.getOpenIdAndUserId()
     }
@@ -122,7 +126,7 @@ export default class Login extends RentApp {
                                    onChange={(password) => this.setState({password})}>
                             <Image
                                 style={styles.icon}
-                                source={password ?
+                      font          source={password ?
                                     require('../assets/selectPsw.png') :
                                     require('../assets/defaultPsw.png')}/>
                         </InputItem>
@@ -182,7 +186,8 @@ const styles = StyleSheet.create({
         height: 53,
     },
     btn: {
-        width:355,
+        fontSize:20,
+        width:'100%',
         backgroundColor: '#06C1AE',
         borderColor: '#06C1AE'
     },

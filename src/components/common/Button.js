@@ -10,7 +10,7 @@ const Button = props =>{
         cusStyle = props.style || {};
 
     return (
-        <TouchableOpacity onPress={click}>
+        <TouchableOpacity onPress={click} style={{width:'100%'}}>
             <Text style={{...defaultStyle,...cusStyle}}>
                 {props.children}
             </Text>

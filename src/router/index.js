@@ -99,7 +99,7 @@ export default StackNavigator({
     CrmPage_2,
     SchoolSearchPage
 }, {
-    // initialRouteName:"PayResult",
+    //initialRouteName:"AuthApplyPage",
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
