@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, ScrollView, StyleSheet, Image, AsyncStorage} from 'react-native';
-import {Button, InputItem, List, Toast, WhiteSpace, WingBlank} from "antd-mobile-rn";
-import {Flex} from "antd-mobile-rn/lib/flex/index.native";
+import {ScrollView, StyleSheet, Image} from 'react-native';
+import {InputItem, List, Toast, WhiteSpace, WingBlank, Flex} from "antd-mobile-rn";
 import api from '../service/api';
-import config from "../config";
 import Count from "../components/Count";
 import RentApp from "../components/RentApp";
-
-const {appLogin, appCheckSMSCode} = api
+import Button from '../components/common/Button'
+import {passwordCheck, phoneCheck} from "../utils/inputCheck";
 
 
 export default class ForgetPSW extends RentApp {
@@ -17,7 +15,7 @@ export default class ForgetPSW extends RentApp {
     state = {
         username: "",
         code: "",
-        password:'',
+        password: '',
         loading: false
     }
 
@@ -25,23 +23,42 @@ export default class ForgetPSW extends RentApp {
         super(props)
     }
 
-    async changePsw(){
-        try{
+    async changePsw() {
+        try {
+            if (!this.state.password) {
+                Toast.info("密码不能为空", 1.5)
+                return
+            }
+
+            if (!phoneCheck(this.state.username)) {
+                Toast.info("请输入大陆手机号", 1.5)
+                return
+            }
+
+            if (!passwordCheck(this.state.password)) {
+                Toast.info("密码8位以上，包含数字、大小写和特殊字符", 1.5)
+                return
+            }
+
+            if (!this.state.code) {
+                Toast.info("验证码", 1.5)
+                return
+            }
 
             const params = {
-                openId:this.openId,
-                userId : this.userId,
-                password:this.state.password,
-                verifyCode:this.state.code,
-                phoneNo:this.state.username
+                openId: this.openId,
+                userId: this.userId,
+                password: this.state.password,
+                verifyCode: this.state.code,
+                phoneNo: this.state.username
             }
 
             const rsp = await api.appModifyPSW(params);
             console.log(rsp)
             const {data} = rsp
-            if(data.errcode === 1){
-                Toast.info("修改密码成功",1)
-                setTimeout(()=>this.props.navigation.navigate("LoginPage"),2000)
+            if (data.errcode === 1) {
+                Toast.info("修改密码成功", 1)
+                setTimeout(() => this.props.navigation.navigate("LoginPage"), 2000)
             } else {
                 Toast.info(data.errmsg)
             }
@@ -52,8 +69,7 @@ export default class ForgetPSW extends RentApp {
 
     render() {
 
-        const {username, code,password} = this.state;
-        const {navigation} = this.props;
+        const {username, code, password} = this.state;
 
         return (
             <ScrollView>
@@ -83,7 +99,9 @@ export default class ForgetPSW extends RentApp {
 
                         <InputItem type="password" value={code}
                                    extra={<Count username={this.state.username}/>}
-                                   onChange={(code) => this.setState({code})}>
+                                   onChange={(code) => this.setState({code})}
+                                   placeholder={"请输入验证码"}
+                        >
                             <Image
                                 style={styles.icon}
                                 source={code ?
@@ -93,7 +111,9 @@ export default class ForgetPSW extends RentApp {
 
                     </List>
                     <WhiteSpace size={"xl"}/>
-                    <Button onClick={this.changePsw.bind(this)}>提交</Button>
+                    <Flex direction={"row"} justify={"center"} align={"center"}>
+                        <Button style={styles.btn} onClick={this.changePsw.bind(this)}>提交</Button>
+                    </Flex>
                 </WingBlank>
             </ScrollView>
         )
@@ -112,6 +132,9 @@ const styles = StyleSheet.create({
         height: 53,
     },
     btn: {
+        fontSize: 20,
+        width: '100%',
+        color: 'white',
         backgroundColor: '#06C1AE',
         borderColor: '#06C1AE'
     },

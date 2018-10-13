@@ -1,11 +1,14 @@
 import React,{Component} from 'react';
 import {Image, View, StyleSheet, Text} from 'react-native';
-import {List,InputItem,Button,WingBlank,WhiteSpace,Toast,ActivityIndicator} from 'antd-mobile-rn';
+import {List, InputItem, WingBlank, WhiteSpace, Toast, ActivityIndicator, Flex} from 'antd-mobile-rn';
+import Button from '../components/common/Button'
+
 import api from '../service/api';
 import {AsyncStorage} from 'react-native';
 import config from '../config';
 import Count from "../components/Count";
 import RentApp from "../components/RentApp";
+import {passwordCheck, phoneCheck} from "../utils/inputCheck";
 
 const {registerAndBind} = api;
 
@@ -38,9 +41,25 @@ export default class Register extends RentApp{
 
     async register(){
         try{
-            await this.setState({
-                loading:true
-            })
+            if (!this.state.username || !this.state.password) {
+                Toast.info("用户名和密码不能为空", 1.5)
+                return
+            }
+
+            if (!phoneCheck(this.state.username)) {
+                Toast.info("请输入大陆手机号", 1.5)
+                return
+            }
+
+            if (!passwordCheck(this.state.password)) {
+                Toast.info("密码8位以上，包含数字、大小写和特殊字符", 1.5)
+                return
+            }
+
+            if(!this.state.verifyCode){
+                Toast.info("请输入验证码", 1.5)
+                return
+            }
 
             const params = {
                 sourceType:3,
@@ -93,7 +112,9 @@ export default class Register extends RentApp{
                                     require('../assets/defaultUser.png')}/>
                         </InputItem>
                         <InputItem type="password" value={password}
-                                   onChange={(password)=>this.setState({password})}>
+                                   onChange={(password)=>this.setState({password})}
+                                   placeholder={"请输入密码"}
+                        >
                             <Image
                                 style={styles.icon}
                                 source={password?
@@ -112,7 +133,9 @@ export default class Register extends RentApp{
 
                     </List>
                     <WhiteSpace size={"xl"}/>
-                    <Button onClick={()=>this.register()}>注册</Button>
+                    <Flex direction={"row"} justify={"center"} align={"center"}>
+                        <Button style={styles.btn} onClick={()=>this.register()}>注册</Button>
+                    </Flex>
                     <WhiteSpace size={"xl"}/>
 
                 </WingBlank>
@@ -132,9 +155,12 @@ const styles = StyleSheet.create({
     input:{
         height:53,
     },
-    btn:{
+    btn: {
+        fontSize: 20,
+        width: '100%',
+        color:'white',
         backgroundColor: '#06C1AE',
-        borderColor:'#06C1AE'
+        borderColor: '#06C1AE'
     },
     sms:{
         color:'#F5475F'

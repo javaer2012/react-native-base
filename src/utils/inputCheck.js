@@ -10,7 +10,7 @@ export const phoneCheck = phone =>{
 }
 
 export const passwordCheck = psw =>{
-    const pswReg = /^[\w]{6,12}$/
+    const pswReg = /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[~!@#$%^&*._])[\da-zA-Z~!@#$%^&*._]{8,12}$/
     return pswReg.test(psw)
 
 }

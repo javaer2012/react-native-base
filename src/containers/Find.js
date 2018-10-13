@@ -55,7 +55,7 @@ export default class Find extends RentApp {
             }
         }
         catch (e) {
-
+            Toast.info("服务器开小差了，请稍后再试",1.5)
         }
     }
 

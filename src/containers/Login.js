@@ -1,16 +1,15 @@
 import React, {Component} from 'react';
 import {View, ScrollView, Text, TouchableOpacity, StyleSheet, Image, AsyncStorage} from 'react-native';
-import {List, InputItem, WingBlank, WhiteSpace, Flex,Toast} from 'antd-mobile-rn';
+import {List, InputItem, WingBlank, WhiteSpace, Flex, Toast} from 'antd-mobile-rn';
 import logo from '../assets/logo.png';
 import api from '../service/api';
 import Button from '../components/common/Button'
 import Count from '../components/Count';
 import RentApp from "../components/RentApp";
+import {passwordCheck, phoneCheck} from "../utils/inputCheck";
 
 
-const {appLogin,sendMsg} = api
-let timer = null;
-
+const {appLogin} = api
 
 
 export default class Login extends RentApp {
@@ -20,74 +19,82 @@ export default class Login extends RentApp {
     state = {
         username: "",
         password: "",
-        code:null,
-        loading:false
+        code: null,
+        loading: false
     }
 
     constructor(props) {
         super(props);
     }
 
-    async componentDidMount(){
-        console.log(newStyle)
-        await this.getOpenIdAndUserId()
+    async componentDidMount() {
         await this.getOpenIdAndUserId()
     }
 
     async login() {
-        if (!this.state.username || !this.state.password){
-            Toast.info("用户名和密码不能为空",1)
-        } else {
-            try{
-                const {username,password,code} = this.state;
-                const params = {
-                    openId:this.openId,
-                    password,
-                    phoneNo:username,
-                    verifyCode:code
-                }
-                const login = await appLogin(params);
-                console.log(login)
-                const {data} = login;
-                if(data.errcode === 1){
+        if (!this.state.username || !this.state.password) {
+            Toast.info("用户名和密码不能为空", 1.5)
+            return
+        }
 
-                    const {userInfo} = data
+        if (!phoneCheck(this.state.username)) {
+            Toast.info("请输入大陆手机号", 1.5)
+            return
+        }
 
-                    const uInfoParams = {
-                        userId:userInfo.userId,
-                        openId:userInfo.openId,
-                        cityCode: this.cityCode,
-                        provinceCode: this.provinceCode,
-                    }
-
-                    const uInfo = await api.getUserInfo(uInfoParams)
-
-                    console.log(uInfo)
-
-                    if(uInfo.data.errcode === 1){
-
-                        uInfo.data.userInfo.isLoggedIn = '1'
-
-                        const rsp =  await AsyncStorage.multiSet([['userInfo',JSON.stringify(uInfo.data.userInfo)],['userId',userInfo.userId],['openId',userInfo.openId],['isLoggedIn','1']])
-
-                        const fromPage = this.props.navigation.getParam('fromPageName',"MyPage")
-                        const fromPageParams = this.props.navigation.getParam('fromPageParams',{})
-
-                        this.props.navigation.navigate(fromPage,{
-                            useNavParams:true,
-                            userInfo:uInfo.data.userInfo,
-                            ...fromPageParams
-                        })
-                    }
-
-
-                } else {
-                    Toast.info(data.errmsg,1)
-                }
-
-            } catch (e) {
-
+        if (!passwordCheck(this.state.password)) {
+            Toast.info("密码8位以上，包含数字、大小写和特殊字符", 1.5)
+            return
+        }
+        try {
+            const {username, password, code} = this.state;
+            const params = {
+                openId: this.openId,
+                password,
+                phoneNo: username,
+                verifyCode: code
             }
+            const login = await appLogin(params);
+            console.log(login)
+            const {data} = login;
+            if (data.errcode === 1) {
+
+                const {userInfo} = data
+
+                const uInfoParams = {
+                    userId: userInfo.userId,
+                    openId: userInfo.openId,
+                    cityCode: this.cityCode,
+                    provinceCode: this.provinceCode,
+                }
+
+                const uInfo = await api.getUserInfo(uInfoParams)
+
+                console.log(uInfo)
+
+                if (uInfo.data.errcode === 1) {
+
+                    uInfo.data.userInfo.isLoggedIn = '1'
+
+                    const rsp = await AsyncStorage.multiSet([['userInfo', JSON.stringify(uInfo.data.userInfo)], ['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
+
+                    const fromPage = this.props.navigation.getParam('fromPageName', "MyPage")
+                    const fromPageParams = this.props.navigation.getParam('fromPageParams', {})
+
+                    this.props.navigation.navigate(fromPage, {
+                        useNavParams: true,
+                        userInfo: uInfo.data.userInfo,
+                        ...fromPageParams
+                    })
+                }
+
+
+            } else {
+                Toast.info(data.errmsg, 1)
+            }
+
+        } catch (e) {
+
         }
 
 
@@ -96,7 +103,7 @@ export default class Login extends RentApp {
 
     render() {
 
-        const {username, password,code} = this.state;
+        const {username, password, code} = this.state;
         const {navigation} = this.props;
 
         return (
@@ -123,21 +130,23 @@ export default class Login extends RentApp {
                         </InputItem>
                         <InputItem type="password" value={password}
                                    style={{fontSize: 20}}
-                                   onChange={(password) => this.setState({password})}>
+                                   onChange={(password) => this.setState({password})}
+                                   placeholder={"请输入密码"}
+                        >
                             <Image
                                 style={styles.icon}
-                      font          source={password ?
-                                    require('../assets/selectPsw.png') :
-                                    require('../assets/defaultPsw.png')}/>
+                                font source={password ?
+                                require('../assets/selectPsw.png') :
+                                require('../assets/defaultPsw.png')}/>
                         </InputItem>
 
                         <InputItem type="number" value={code}
-                                   onChange={(code)=>this.setState({code})} placeholder={"请输入验证码"}
+                                   onChange={(code) => this.setState({code})} placeholder={"请输入验证码"}
                                    extra={<Count username={this.state.username}/>}>
                             <Image
                                 style={styles.icon}
-                                source={code?
-                                    require('../assets/codeSelect.png'):
+                                source={code ?
+                                    require('../assets/codeSelect.png') :
                                     require('../assets/codeDefault.png')}/>
                         </InputItem>
 
@@ -186,8 +195,8 @@ const styles = StyleSheet.create({
         height: 53,
     },
     btn: {
-        fontSize:20,
-        width:'100%',
+        fontSize: 20,
+        width: '100%',
         backgroundColor: '#06C1AE',
         borderColor: '#06C1AE'
     },
@@ -196,7 +205,7 @@ const styles = StyleSheet.create({
         color: '#989898',
         fontSize: 13,
         height: 15,
-        lineHeight:15
+        lineHeight: 15
     },
     textRight: {
         textAlign: 'right',

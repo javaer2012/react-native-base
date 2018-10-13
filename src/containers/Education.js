@@ -178,6 +178,17 @@ export default class Education extends RentApp {
 
     }
 
+    selectSchool = ()=>{
+        if(!this.state.cityId){
+            Toast.info("请先选择城市",1.5)
+            return
+        }
+        this.props.navigation.navigate("SchoolSearchPage", {
+            cityId: this.state.cityId,
+            callback: (data) => this.setSchoolFun(data)
+        })
+    }
+
     render() {
 
         const Item = List.Item;
@@ -202,10 +213,7 @@ export default class Education extends RentApp {
                           extra={this.state.cityName ? <Text>{this.state.cityName}</Text> : null}
                     >地区
                     </Item>
-                    <Item arrow={"horizontal"} onClick={() => navigation.navigate("SchoolSearchPage", {
-                        cityId: this.state.cityId,
-                        callback: (data) => this.setSchoolFun(data)
-                    })}
+                    <Item arrow={"horizontal"} onClick={() => this.selectSchool()}
                           extra={this.state.school ? <Text>{this.state.school}</Text> : null}
                     >院校名称</Item>
 

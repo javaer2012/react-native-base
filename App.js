@@ -133,11 +133,12 @@ export default class App extends RentApp {
     }
     registerUser = async (option) => {
         try {
-        //    await AsyncStorage.clear()
+            // await AsyncStorage.clear()
 
             const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
 
             console.log(openId)
+            console.log(DeviceInfo.getUniqueID())
 
             if (!openId[0][1] || !openId[1][1]) {
                 const params = {
@@ -194,6 +195,9 @@ export default class App extends RentApp {
                         }
                     }
 
+                    console.log("register:",option)
+                    this.registerUser(option)
+
                     await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
                     // debugger
                     // console.log(store, "+++", store.dispatch)
@@ -201,7 +205,7 @@ export default class App extends RentApp {
                         type: 'SET_LOCATION',
                         locationInfos: option
                     })
-                    this.registerUser(option)
+
                     this.isOpen({
                         provinceCode: option["provinceCode"],
                         cityCode: option["cityCode"],
