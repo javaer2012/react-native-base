@@ -134,13 +134,15 @@ export default class App extends RentApp {
     registerUser = async (option) => {
         try {
             // await AsyncStorage.clear()
-
-            const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
-
-            console.log(openId)
+            console.log("Start Retister User")
             console.log(DeviceInfo.getUniqueID())
 
-            if (!openId[0][1] || !openId[1][1]) {
+            const openId = await AsyncStorage.getItem('openId');
+
+            console.log(openId)
+
+
+            if (!openId) {
                 const params = {
                     provinceCode: option.provinceCode,
                     cityCode: option.cityCode,

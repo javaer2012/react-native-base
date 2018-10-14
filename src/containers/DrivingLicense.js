@@ -6,8 +6,6 @@ import api from "../service/api";
 import RentApp from "../components/RentApp";
 import ImagePicker from 'react-native-image-picker'
 
-const {WIDTH,HEIGHT} = Dimensions.get('window')
-
 const submitDrivingLicense = {
     openId:'',
     userId:'',
@@ -111,6 +109,11 @@ export default class DrivingLicense extends RentApp {
             quality: 1.0,
             maxWidth: 500,
             maxHeight: 500,
+            title:"选择照片",
+
+            cancelButtonTitle:"取消",
+            takePhotoButtonTitle:"拍照",
+            chooseFromLibraryButtonTitle:'从相册中选择',
             storageOptions: {
                 skipBackup: true
             }

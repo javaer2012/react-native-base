@@ -56,7 +56,7 @@ export default class Register extends RentApp{
                 return
             }
 
-            if(!this.state.verifyCode){
+            if(!this.state.code){
                 Toast.info("请输入验证码", 1.5)
                 return
             }

@@ -1,5 +1,6 @@
 import React from 'react';
 import {TouchableOpacity,Text} from 'react-native';
+import {Flex} from 'antd-mobile-rn'
 
 const Button = props =>{
 
@@ -11,9 +12,11 @@ const Button = props =>{
 
     return (
         <TouchableOpacity onPress={click} style={{width:'100%'}}>
-            <Text style={{...defaultStyle,...cusStyle}}>
-                {props.children}
-            </Text>
+           <Flex direction={"row"} justify={"center"}>
+               <Text style={{...defaultStyle,...cusStyle}}>
+                   {props.children}
+               </Text>
+           </Flex>
         </TouchableOpacity>
     )
 }

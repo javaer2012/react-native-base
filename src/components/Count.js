@@ -46,7 +46,7 @@ export default class Count extends React.Component {
             console.log("Send Message")
 
             try {
-                await this.setState({
+                this.setState({
                     count: true
                 })
                 timer = setInterval(() => {
