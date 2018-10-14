@@ -40,7 +40,7 @@ export default createBottomTabNavigator(
         // icon component from react-native-vector-icons
         // return <Ionicons name={iconName} size={25} color={tintColor} />;
         return iconName
-      },
+      }
     }),
     tabBarOptions: {
       activeTintColor: Color.mainGreen,

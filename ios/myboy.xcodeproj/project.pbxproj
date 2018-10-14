@@ -659,7 +659,7 @@
 				13B07FAE1A68108700A75B9A /* myboy */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* myboyTests */,
-				83CBBA001A601CBA00E9B192 /* Products */,
+				83CBBA001A601CBA00E9B192 /* Resources */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				84C9A30D2145242600D91106 /* Recovered References */,
 			);
@@ -668,7 +668,7 @@
 			tabWidth = 2;
 			usesTabs = 0;
 		};
-		83CBBA001A601CBA00E9B192 /* Products */ = {
+		83CBBA001A601CBA00E9B192 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				13B07F961A680F5B00A75B9A /* myboy.app */,
@@ -676,7 +676,7 @@
 				2D02E47B1E0B4A5D006451C7 /* myboy-tvOS.app */,
 				2D02E4901E0B4A5D006451C7 /* myboy-tvOSTests.xctest */,
 			);
-			name = Products;
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		841BC0F821630AB300EEEB46 /* Products */ = {
@@ -854,7 +854,7 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
-			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
+			productRefGroup = 83CBBA001A601CBA00E9B192 /* Resources */;
 			projectDirPath = "";
 			projectReferences = (
 				{

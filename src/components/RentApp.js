@@ -13,7 +13,8 @@ export default class RentApp extends Component{
     }
     GO_BACK(data) {
         const { navigate, goBack, state } = this.props.navigation;
-        state.params.callback(data);
+        // debugger
+        state.params && state.params.callback && state.params.callback(data);
         this.props.navigation.goBack();
     }
 

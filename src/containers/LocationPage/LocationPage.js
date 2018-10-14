@@ -3,6 +3,8 @@ import {
   View, Image, TouchableOpacity, Modal, AsyncStorage, Text, FlatList, TextInput, Dimensions, StyleSheet, Alert
 } from 'react-native';
 import { areaDict } from '../../utils/city1.json'
+import letterPlaceJson from '../../utils/city1014.json'
+
 import { Flex, SearchBar } from 'antd-mobile-rn';
 import Color from '../../styles/var'
 import { NavigationActions } from 'react-navigation'
@@ -46,6 +48,30 @@ export default class List extends RentApp {
       // Error retrieving data
     }
   }
+  renderPlaceList = ({item, index}) => {
+    const { searchText } = this.state
+    const renderCitys = (cityInfo) => {
+      return cityInfo.map((item, index) => {
+        if (searchText && item.city !== searchText) return false
+        return (
+          <TouchableOpacity
+            key={item.rowId}
+            style={{ borderBottomColor: '#faf0e6', borderBottomWidth: 0.5, width: '100%',height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30,}}
+            onPress={() => { this.changedata(item) }}>
+            <View><Text style={styles.rowdatatext}>{item.city}</Text></View>
+          </TouchableOpacity>
+        )
+      })
+    }
+    return (
+      <Flex style={{flex: 1}} direction='column' justify='start' align='stretch' key={index}>
+        <Flex style={styles.letterBoxStyle}><Text style={{color: '#808080'}}>{item.initial}</Text></Flex>
+        <Flex direction='column'> 
+          {renderCitys(item.cityInfo)}
+        </Flex>
+      </Flex>
+    )
+  }
 
   async componentDidMount(){
     try {
@@ -69,12 +95,13 @@ export default class List extends RentApp {
     )
   }
 
-  changedata = (item) => {
+  changedata = ({ id, provincecode, city, code, initial }) => {
+    // debugger
     const addressInfos = {
-      crmProvName: item.crmProvName,
-      city: item.admCityName,
-      cityCode: item.crmCityCode,
-      provinceCode: item.crmProvCode,
+      // crmProvName: item.crmProvName,
+      city,
+      cityCode: code,
+      provinceCode: provincecode
     }
     this.GO_BACK(addressInfos) 
   }
@@ -104,7 +131,7 @@ export default class List extends RentApp {
   }
   //touch right indexLetters, scroll the left
   scrollTo = (index) => {
-    let position = index * 40;
+    let position = index * 40; 
     this._listView.scrollToIndex({
       index
     })
@@ -150,8 +177,8 @@ export default class List extends RentApp {
             ref={listView => this._listView = listView}
             
             extraData={this.state}
-            data={areaDictArr}
-            renderItem={this.renderRow}
+            data={letterPlaceJson}
+            renderItem={this.renderPlaceList}
             ListHeaderComponent={this.renderSectionHeader}
             // renderSectionHeader={this.renderSectionHeader}
             onEndReachedThreshold={0.1}
@@ -168,6 +195,7 @@ export default class List extends RentApp {
 }
 
 const styles = StyleSheet.create({
+  letterBoxStyle: {backgroundColor: '#f2f2f2', borderRadius: 6, overflow: 'hidden', flex: 1, paddingHorizontal: 20, paddingVertical: 5, },
   contentContainer: {
     width: width,
     backgroundColor: 'white',

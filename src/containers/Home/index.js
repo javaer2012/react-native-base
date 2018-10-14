@@ -4,7 +4,6 @@ import { Button, Carousel, List, Flex } from 'antd-mobile-rn';
 import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
 import Color from '../../styles/var'
-import TabBarCom from '../../components/TabBarCom'
 import api from '../.././service/api'
 import { NavigationEvents } from 'react-navigation';
 import Spinner from 'react-native-loading-spinner-overlay';
@@ -13,14 +12,12 @@ const {  getBannerAndNav, hotProducts, HTTP_IMG } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 const BANNER_HEIGHT = WIDTH / 75 * 42
-import { getIdData, schoolList, schoolData } from '../../utils/school'
 import RentApp from "../../components/RentApp";
-import {updating} from "../../../App";
 import { connect } from 'react-redux'
 
 class Home extends RentApp {
   static navigationOptions = {
-    title: "信用租机"
+    title: "首页"
   }
   state = {
     bannerList: [1, 2, 3],
@@ -28,7 +25,7 @@ class Home extends RentApp {
     addressMsg:{},
     value: [],
     pickerValue: [],
-    loading: false,
+    loading: true,
   }
 
   goToAddressPage = () => {
@@ -46,6 +43,7 @@ class Home extends RentApp {
         bannerList,
         navList,
       })
+      console.log(JSON.stringify(getBannerAndNavData), "==>getBannerAndNavData")
     } catch (error) {
       console.error(error)
     } finally {
@@ -83,7 +81,7 @@ class Home extends RentApp {
             <Button 
               onClick={() => navigate('ProductDetail', {productId: item.id})} 
               style={{ width: 66, backgroundColor: Color.mainPink }} size='small'>
-              <Text style={{ color: '#fff' }}>去购买</Text>
+              <Text style={{ color: '#fff' }}>去租机</Text>
             </Button>
           </ProudcuItem>
         </View>
@@ -124,19 +122,23 @@ class Home extends RentApp {
     const { bannerList, navList, hotPhoneList, addressMsg } = this.state
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
-
+    if (!addressMsg.provinceCode) {
+      return false
+    }
     return (
       <View style={{ position: 'relative', height: '100%' }}>
         <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
-          <TouchableOpacity  onPress={() => navigate('LocationPage', {
+          <TouchableOpacity style={styles.leftAddressBox}  onPress={() => navigate('LocationPage', {
             callback: (data) => {
               this.setAddressInfosFun(data)
             }
           })}>
-            <Text style={{color: '#fff'}}>{addressMsg && addressMsg.city}</Text>
+            <Text style={{ color: '#fff' ,marginRight: 4}}>{addressMsg && addressMsg.city}</Text>
+            <View style={styles.triangle}></View>
           </TouchableOpacity>
           <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
             <Flex style={{backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20}}>
+              <Image style={{width: 14, height: 14, marginRight: 4}} source={require("../../images/imageNew/one/search.png")} />
               <Text style={{color: '#ccc'}}>搜索商品</Text>
             </Flex>
           </TouchableOpacity>
@@ -148,7 +150,7 @@ class Home extends RentApp {
           showsVerticalScrollIndicator={false}
         > 
           {
-            bannerList.length !== 1 ? (
+            bannerList.length === 1 ? (
               <View
                 style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
               >
@@ -178,7 +180,6 @@ class Home extends RentApp {
           
         </ScrollView>
         <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-          {/* <TabBarCom navigate={navigate}/> */}
           {/* <TabNavigator /> */}
         </View>
       </View>
@@ -186,13 +187,20 @@ class Home extends RentApp {
   }
 
   renderBanner = (list) => {
+    const { navigate } = this.props.navigation
     return list.map((item, index) =>{ 
+      let productId = item.linkUrl.match(/\?id=(\S*)/)
+      productId = productId && productId[1];
+
       return (
         <View
           key={item.id || index}
           style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
         > 
-          <Image resizeMode="stretch" style={{ width: WIDTH, height: BANNER_HEIGHT }} source={{ uri: `${HTTP_IMG}${item.imgPath}`}}/>
+          <TouchableOpacity onPress={() => navigate('ProductDetail', {productId})}>
+            <Image resizeMode="stretch" style={{ width: WIDTH, height: BANNER_HEIGHT }} source={{ uri: `${HTTP_IMG}${item.imgPath}` }} />
+          </TouchableOpacity>
+         
         </View>
       )
     }
@@ -222,6 +230,18 @@ class Home extends RentApp {
 const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#fff',
+  },
+  leftAddressBox:{
+    alignItems: 'flex-end',
+    // justifyContent: 'center',
+    flexDirection: 'row'
+  },
+  triangle:{
+    width: 0,
+    height: 0,
+    borderWidth: 4,
+    borderColor: 'transparent',
+    borderTopColor: '#fff'
   },
   containerHorizontal: {
     flexGrow: 1,
