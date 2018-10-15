@@ -57,7 +57,9 @@ import RentOrderDetail from '../containers/RentOrderDetail/RentOrderDetail'  // 
 
 
 export default StackNavigator({
-    tab: TabNavigator,
+    tab: {
+        screen:TabNavigator,
+    },
     LoginPage: Login,
     Home: Home,
     RegisterPage: Register,
