@@ -15,7 +15,7 @@ import api from './src/service/api'
 import config from './src/config';
 import DeviceInfo from 'react-native-device-info'
 import {areaDict} from './src/utils/city1.json'
-import {cityObj, localCodeInfo} from './src/utils/city'
+import { localCodeInfo} from './src/utils/city'
 import RentApp from "./src/components/RentApp";
 
 
@@ -49,7 +49,6 @@ export default class App extends RentApp {
 
 
     componentWillMount() {
-        console.log(this.props,"ttt")
         //AsyncStorage.clear()
 
         if (isFirstTime) {

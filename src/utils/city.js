@@ -720,10 +720,6 @@ const cityObjs = [{ "id": "105", "provincecode": "340000", "city": "安庆", "co
 //城检索的首字母
 // var searchLetter = ["A", "B", "C", "D", "E", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "W", "X", "Y", "Z"]
 
-var searchLetter2=[];
-// function searchLetter() {
-//     return searchLetter;
-// }
 
 //对城信息进行分组
 function cityList() {
@@ -755,6 +751,7 @@ function searchLetterList(){
         searchLetter2.push(cityObjs[i].initial);
     }
     searchLetter2=unique(searchLetter2);
+
     return searchLetter2;
     // console.log('searchLetter2:',searchLetter2);
 }

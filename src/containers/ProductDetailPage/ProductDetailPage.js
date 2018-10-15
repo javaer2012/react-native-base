@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView,Alert, Dimensions, AsyncStorage } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, Alert, Dimensions, AsyncStorage, WebView } from 'react-native'
 import { Carousel,  Flex, Tabs, Modal } from 'antd-mobile-rn';
 import { flexRow, contentPadding, mainGray, mainPink } from '../../styles/common'
 import Color from '../../styles/var'
@@ -49,6 +49,7 @@ const tabs = [
   // { title: '单产品套餐', sub: '2' },
 ];
 
+
 export default class ProductDetailPage extends RentApp {
   static navigationOptions = {
     title: "商品详情"
@@ -65,7 +66,6 @@ export default class ProductDetailPage extends RentApp {
     insureList: [], // 保险列表
     skuGroupList: [], // sku分组列表
     paymentInfo: {}, //  接口返回的支付信息
-    computedPaymentInfo: {},
     mealSelected: {}, //用户选择的套餐；
     capitalProdSelected: {}, // 已选择分期
     isShowPackage: false, // 套餐窗口的展示
@@ -79,6 +79,7 @@ export default class ProductDetailPage extends RentApp {
     isShowEasyModal: false,
     EasyModalInfos: {},
     loading: false,
+    selectedProductSkuDetail: {} // 根据颜色内存选择已选择的sku产品信息
   }
 
   async componentDidMount() {
@@ -141,6 +142,7 @@ export default class ProductDetailPage extends RentApp {
       bizTypeCode, // 业务类型编码
     } = data
     const mealSelected = telecomProdList[0]
+    
     if (bizTypeCode == 'zq_rent_phone') {
       if (isTelConf == 1) {
         mealSelected.selectMealIndex = 0	//套餐选中的列
@@ -161,6 +163,31 @@ export default class ProductDetailPage extends RentApp {
       return { ...item, monthPay, sum }
     })
 
+
+    // 处理富文本图文详情
+
+    const HTML = `
+      <!DOCTYPE html> \n
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+          <meta name="format-detection" content="telephone=no" />
+          <style type="text/css">
+            * { margin: 0, padding: 0 }
+            // body { background: #ccc; }
+            p { text-align: center }
+          </style>
+          <title>Document</title>
+        </head>
+        <body>
+           ${goodsBaseInfo.goodsDetailText}
+        </body>
+        </html>
+      `;
+    goodsBaseInfo.goodsDetailText = HTML
     this.setState({
       photoList, // 图片列表
       telecomProdList, // 电信套餐列表
@@ -243,7 +270,7 @@ export default class ProductDetailPage extends RentApp {
     } else {
       this.setState({ [type]: subSkuId })
     }
-
+    this.selectedProductFun()
   }
 
   check = async () => {
@@ -337,7 +364,6 @@ export default class ProductDetailPage extends RentApp {
       this.setState({
         goodsBaseInfo: { ...goodsBaseInfo, collectStatus: data.status }
       })
-      console.log(data.status,"!!!data.status")
     } catch (error) {
       console.error(error, "!!!")
     }
@@ -351,7 +377,6 @@ export default class ProductDetailPage extends RentApp {
     const {
       productId,
       userInfos,
-      computedPaymentInfo,
       paymentInfo,
       capitalProdSelected,
       mealSelected,
@@ -359,6 +384,7 @@ export default class ProductDetailPage extends RentApp {
       skuDetailList,
       capacityId,
       colorId,
+      selectedProductSkuDetail
     } = this.state
 
 
@@ -376,13 +402,8 @@ export default class ProductDetailPage extends RentApp {
     }
 
     // 根据颜色 内存容量确定机器
-    let goodsSkuId = ''
-    skuDetailList.filter((item) => {
-      const unionId = JSON.parse(item.skuJsonStr).unionId
-      if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1) {
-        goodsSkuId = item.skuId
-      }
-    })
+    let goodsSkuId = selectedProductSkuDetail.skuId
+    
     console.log(goodsSkuId, "===========>goodsSkuId")
 
 
@@ -435,39 +456,15 @@ export default class ProductDetailPage extends RentApp {
       // "sourceType": 2
     }
 
+    this.props.navigation.navigate('RentOrderDetail', {
+      params,
+      userInfos: _userInfo,
+      goodsInfo: _goodsInfo,
+      goodsBaseInfo
+    })
+
     console.log(params,"========> params")
-    try {
-      const { data } = await commitOrder(params)
-      console.log(data, "=========》data")
-      if (data.errcode !== 1 && data.errmsg) {
-        this.showToast(data.errmsg)
-        return false
-      } else if (data.errcode === 1) {
-        this.showToast(data.errmsg)
-        await AsyncStorage.setItem('pastDueTime', JSON.stringify((+new Date()) + 1800000))
-        const { navigate } = this.props.navigation;
-        
-        navigate('OrderInfo', {
-          amount: 0,
-          orderId: data.orderId,
-          orderSn: data.orderSn,
-          activeId: goodsBaseInfo.activeId,
-          fromPage: 'ProductDetail'
-          // firstPay: data.firstPay
-        })
-        // navigate('Pay', {
-        //   amount: 0,
-        //   orderId: data.orderId,
-        //   orderSn: data.orderSn,
-        //   activeId: goodsBaseInfo.activeId
-        //   // firstPay: data.firstPay
-        // })
-        
-      }
-
-    } catch (error) {
-
-    }
+    
   }
   bindCardFun = () => {
     console.log("bindCard")
@@ -475,6 +472,17 @@ export default class ProductDetailPage extends RentApp {
     this.props.navigation.navigate("BackCardPage",{
       activeId,
       productId
+    })
+  }
+
+  selectedProductFun =()=>{
+    const { skuDetailList, capacityId, colorId } = this.state
+    skuDetailList.filter((item) => {
+      const unionId = JSON.parse(item.skuJsonStr).unionId
+      if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1) {
+        // goodsSkuId = item.skuId
+        this.setState({ selectedProductSkuDetail: item })
+      }
     })
   }
 
@@ -511,15 +519,14 @@ export default class ProductDetailPage extends RentApp {
       insureList, // 保险列表
       skuGroupList, // sku分组列表
       paymentInfo, //  支付信息
-      computedPaymentInfo,
       mealSelected,
       capitalProdSelected,
       isShowPackage,
       isShowCapital,
       EasyModalInfos,
       isShowEasyModal,
-      loading
-
+      loading,
+      selectedProductSkuDetail
     } = this.state
     if (!photoList) return false
     const { goodsName, goodsDesc, goodsDetailText, goodsPrice } = goodsBaseInfo || {}
@@ -546,7 +553,8 @@ export default class ProductDetailPage extends RentApp {
             <View style={styles.infoStyle}>
               <Text style={[]}>{goodsName} {goodsDesc}</Text>
               <View style={styles.btnBox}>
-                <Text style={[{ color: Color.mainPink }, { fontWeight: '600' }]}>￥ {goodsPrice}</Text>
+                {console.log(selectedProductSkuDetail,"mmselectedProductSkuDetail")}
+                <Text style={[{ color: Color.mainPink }, { fontWeight: '600' }]}>￥ {selectedProductSkuDetail.shopPrice || goodsPrice}</Text>
                 <View>
                   <Collect
                     onTollectCollect={this.toggleCollectFun}
@@ -614,7 +622,6 @@ export default class ProductDetailPage extends RentApp {
                   <Text>套餐</Text>
                 </Flex.Item>
                 <Flex.Item>
-                  {console.log(mealSelected,"!!!!!")}
                   <Flex direction="row" justify='between' align="center">
                     <Text style={{ color: '#888' }}>{mealSelected.prodName}</Text>
                     <Text>></Text>
@@ -648,7 +655,12 @@ export default class ProductDetailPage extends RentApp {
                 <Text>图文详情</Text>
               </View>
               <View style={styles.photoDetail}>
-                {renderDetailImage(photoList)}
+                {/* {renderDetailImage(photoList)} */}
+                <WebView
+                  originWhitelist={['*']}
+                  style={{ width: WIDTH, height: 100 }}
+                  source={{ html: goodsDetailText }}
+                />
               </View>
             </Flex>
           </View>
@@ -656,7 +668,7 @@ export default class ProductDetailPage extends RentApp {
         <View style={[styles.paybarStyle]}>
           <PayBar
             goToPay={this.goToPayFun}
-            data={0} />
+            data={mealSelected.initPayment || 0} />
         </View>
         <Modal
           popup
@@ -708,26 +720,12 @@ export default class ProductDetailPage extends RentApp {
             </Flex>
           </Flex>
         </Modal>
-
-          {this.state.isShowBindCard?Alert.alert("提示","您还绑定银行卡，是否立即绑定?",[
-              {
-                text:"是", onPress:()=>{this.bindCardFun()}
-              },
-              {text:"否"}
-          ]):null}
-        {/*<Modal*/}
-          {/*title="提示"*/}
-          {/*transparent*/}
-          {/*onClose={this.bindCardFun}*/}
-          {/*maskClosable*/}
-          {/*visible={this.state.isShowBindCard}*/}
-          {/*closable*/}
-          {/*footer={footerButtons}*/}
-        {/*>*/}
-          {/*<View style={{ paddingVertical: 20 }}>*/}
-            {/*<Text style={{ textAlign: 'center' }}>您还绑定银行卡，是否立即绑定?</Text>t>*/}
-          {/*</View>*/}
-        {/*</Modal>*/}
+        {this.state.isShowBindCard?Alert.alert("提示","您还绑定银行卡，是否立即绑定?",[
+            {
+              text:"是", onPress:()=>{this.bindCardFun()}
+            },
+            {text:"否"}
+        ]):null}
         <Modal
           title="提示"
           transparent
@@ -809,7 +807,7 @@ const styles = StyleSheet.create({
     // height: 150
   },
   photoDetail: {
-
+    paddingBottom: 100
   },
   mealBtnBox: {
     position: 'absolute',

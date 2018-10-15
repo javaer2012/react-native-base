@@ -139,7 +139,7 @@ export default class ProductListPage extends RentApp {
                 <ProudcuItem imageStyle={{width: 100, height: 100}} data={item}>
                     <Button onClick={() => navigate('ProductDetail', {productId: item.id})}
                             style={{width: 80, backgroundColor: Color.mainPink}} size='small'>
-                        <Text style={{color: '#fff'}}>去购买</Text>
+                        <Text style={{color: '#fff'}}>去租机</Text>
                     </Button>
                 </ProudcuItem>
             </TouchableOpacity>

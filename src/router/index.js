@@ -50,6 +50,9 @@ import NegativeRecord from '../containers/NegativeRecord'
 import OrderDetail from '../containers/OrderDetail/OrderDetail';
 import CrmPage_2 from '../containers/crmPage_2'
 import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
+import RentOrderDetail from '../containers/RentOrderDetail/RentOrderDetail'  // 确认订单
+
+
 
 
 
@@ -97,9 +100,10 @@ export default StackNavigator({
     FindDetailPage:FindDetail,
     NegativeRecord,
     CrmPage_2,
-    SchoolSearchPage
+    SchoolSearchPage,
+    RentOrderDetail
 }, {
-    //initialRouteName:"SearchPage",
+    // initialRouteName:"LocationPage",
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
