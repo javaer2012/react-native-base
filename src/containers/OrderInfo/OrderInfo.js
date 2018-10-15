@@ -26,14 +26,11 @@ export default class OrderInfo extends RentApp {
     insureList:[],
     goodsInfo:{},
     hallList:[],
-    fromPage:''
   }
 
   async componentDidMount() {
     const orderId = this.props.navigation.getParam('orderId');
     const orderSn = this.props.navigation.getParam('orderSn');
-    const fromPage = this.props.navigation.getParam('fromPage') ||  '';
-    this.setState({ fromPage })
     
     await this.getOpenIdAndUserId()
     let user = await AsyncStorage.getItem('userInfo')
@@ -96,24 +93,20 @@ export default class OrderInfo extends RentApp {
 
   render() {
     const { 
-      completePay, userInfo, fromPage,qrCodePath, orderTime, orderSn, stageInfo, insureList, goodsInfo, hallList 
+      completePay, userInfo,qrCodePath, orderTime, orderSn, stageInfo, insureList, goodsInfo, hallList 
     } =this.state
     return (
       <Flex direction="column">
-        {
-          (!completePay && (fromPage === 'MyPage') ) && (
-            <Flex direction="column" justify="center" style={styles.QRCode}>
-              <Image
-                style={{ width: 150, height: 150 }}
-                source={require('../../images/find.png')}
-                source={{ uri: `${HTTP_IMG}${qrCodePath}` }} 
-              />
-              <Text style={{marginTop: 10}}>
-                凭此二维码到营业厅按理业务
+        <Flex direction="column" justify="center" style={styles.QRCode}>
+          <Image
+            style={{ width: 150, height: 150 }}
+            source={require('../../images/find.png')}
+            source={{ uri: `${HTTP_IMG}${qrCodePath}` }}
+          />
+          <Text style={{ marginTop: 10 }}>
+            凭此二维码到营业厅按理业务
               </Text>
-            </Flex>
-          )
-        }
+        </Flex>
         
         <Flex style={styles.titleBox} direction="row" justify="start" align="start">
           <Text style={styles.title}>用户信息</Text>
@@ -138,7 +131,7 @@ export default class OrderInfo extends RentApp {
             }} />
           </Flex>
         </Flex>
-        {(!completePay && (fromPage !== 'MyPage')) && (
+        {/* {(!completePay && (fromPage !== 'MyPage')) && (
         <Flex direction="column" style={[styles.canBuyBox]}>
           <Text style={{ marginBottom: 10 }}>恭喜您获得购买资格</Text>
             <Text>您仅需支付: ￥{goodsInfo.totalFirstAmount}</Text>
@@ -147,7 +140,7 @@ export default class OrderInfo extends RentApp {
               onPress={() => this.goToPayFun() }>
               <Text style={{ color: '#fff', textAlign: "center" }}>确定</Text>
             </TouchableOpacity>
-        </Flex>)}
+        </Flex>)} */}
         
         
       </Flex>

@@ -103,62 +103,68 @@ export default class MyOrders extends RentApp{
             renderHeader={()=><Text style={{height:46,lineHeight:46,fontSize:15,paddingHorizontal: 15}}>{`订单流水号:${item.orderSn}`}</Text>}
             style={{backgroundColor:'white',borderRadius:4,marginBottom:15}}>
             <Item>
-                <Flex direction={"row"} align={"start"}>
-                    <ImageBackground style={{backgroundColor:'#F4F3F4',width:81,height:100}}>
-                        <Flex justify={"center"} align={"center"} style={{height:100}}>
-                            <Image style={{width:68,height:78}} source={{uri:`${HTTP_IMG}${item.goodsImage}`}}/>
-
-                        </Flex>
-                    </ImageBackground>
-
-                    <WingBlank size={"md"}>
-                        <Flex direction={"column"} justify={"start"} align={"start"}>
-                            <WhiteSpace size={"sm"}/>
-                            <Text numberOfLines={2} style={{width:241}}>{`${item.goodsName}`}</Text>
-                            <WhiteSpace size={"sm"}/>
-
-                            {goosSku.skuJson.map((item,index)=><Text key={index}>{`${item.pSkuName}:${item.cSkuName}`}</Text>)}
-                            <WhiteSpace size={"sm"}/>
-
-                            <Text>{`价格:￥${item.goodsPrice}`}</Text>
-                            <WhiteSpace size={"sm"}/>
-
-                            <View style={{borderBottomWidth:1,borderBottomColor:'#E9E8E8',width:'100%'}}></View>
-
-                            <WhiteSpace size={"sm"}/>
-
-                            <Text>{`首付总金额:￥${item.totalFirstAmount}`}</Text>
-                            <WhiteSpace size={"sm"}/>
-
-
-                            <Text>{`分期利率:${item.stageMonthRate}`}</Text>
-                            <WhiteSpace size={"sm"}/>
-
-
-
-                            <Text>{`分期金额:￥${item.eachStageAmount}x${item.stagePeriods}`}</Text>
-                            <WhiteSpace size={"sm"}/>
-
-                            <Text>{`应还款总金额:￥${item.totalStageAmount}`}</Text>
-                            <WhiteSpace size={"sm"}/>
-
-                            <Flex direction={"row"}>
-                                <Text>支付状态:</Text>
-                               <Text style={{color:'#E75B89'}}>{`${payText}`}</Text>
-                            </Flex>
-                            <WhiteSpace size={"sm"}/>
-
-                            <Flex direction={"row"}>
-                                <Text>订单状态:</Text>
-                                <Text style={{color:'#E75B89'}}>{`${ordertext}`}</Text>
+                <TouchableOpacity onPress={() => this.props.navigation.navigate('OrderInfo',{
+                    orderId: item.orderId,
+                    orderSn: item.orderSn
+                })}>
+                    <Flex direction={"row"} align={"start"}>
+                        <ImageBackground style={{ backgroundColor: '#F4F3F4', width: 81, height: 100 }}>
+                            <Flex justify={"center"} align={"center"} style={{ height: 100 }}>
+                                <Image style={{ width: 68, height: 78 }} source={{ uri: `${HTTP_IMG}${item.goodsImage}` }} />
 
                             </Flex>
+                        </ImageBackground>
+
+                        <WingBlank size={"md"}>
+                            <Flex direction={"column"} justify={"start"} align={"start"}>
+                                <WhiteSpace size={"sm"} />
+                                <Text numberOfLines={2} style={{ width: 241 }}>{`${item.goodsName}`}</Text>
+                                <WhiteSpace size={"sm"} />
+
+                                {goosSku.skuJson.map((item, index) => <Text key={index}>{`${item.pSkuName}:${item.cSkuName}`}</Text>)}
+                                <WhiteSpace size={"sm"} />
+
+                                <Text>{`价格:￥${item.goodsPrice}`}</Text>
+                                <WhiteSpace size={"sm"} />
+
+                                <View style={{ borderBottomWidth: 1, borderBottomColor: '#E9E8E8', width: '100%' }}></View>
+
+                                <WhiteSpace size={"sm"} />
+
+                                <Text>{`首付总金额:￥${item.totalFirstAmount}`}</Text>
+                                <WhiteSpace size={"sm"} />
 
 
-                        </Flex>
-                    </WingBlank>
+                                <Text>{`分期利率:${item.stageMonthRate}`}</Text>
+                                <WhiteSpace size={"sm"} />
 
-                </Flex>
+
+
+                                <Text>{`分期金额:￥${item.eachStageAmount}x${item.stagePeriods}`}</Text>
+                                <WhiteSpace size={"sm"} />
+
+                                <Text>{`应还款总金额:￥${item.totalStageAmount}`}</Text>
+                                <WhiteSpace size={"sm"} />
+
+                                <Flex direction={"row"}>
+                                    <Text>支付状态:</Text>
+                                    <Text style={{ color: '#E75B89' }}>{`${payText}`}</Text>
+                                </Flex>
+                                <WhiteSpace size={"sm"} />
+
+                                <Flex direction={"row"}>
+                                    <Text>订单状态:</Text>
+                                    <Text style={{ color: '#E75B89' }}>{`${ordertext}`}</Text>
+
+                                </Flex>
+
+
+                            </Flex>
+                        </WingBlank>
+
+                    </Flex>
+                </TouchableOpacity>
+               
             </Item>
             {item.payStatus ===  1 ?<Item arrow={"horizontal"} onClick={()=>this.onFootClick(item)}>
                 立即支付

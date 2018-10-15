@@ -122,67 +122,76 @@ class Home extends RentApp {
     const { bannerList, navList, hotPhoneList, addressMsg } = this.state
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
-    if (!addressMsg.provinceCode) {
-      return false
-    }
+    // if (addressMsg.provinceCode) {
+    //   // debugger
+    //   return <Text>1</Text> 
+    // } 
     return (
-      <View style={{ position: 'relative', height: '100%' }}>
-        <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
-          <TouchableOpacity style={styles.leftAddressBox}  onPress={() => navigate('LocationPage', {
-            callback: (data) => {
-              this.setAddressInfosFun(data)
-            }
-          })}>
-            <Text style={{ color: '#fff' ,marginRight: 4}}>{addressMsg && addressMsg.city}</Text>
-            <View style={styles.triangle}></View>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
-            <Flex style={{backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20}}>
-              <Image style={{width: 14, height: 14, marginRight: 4}} source={require("../../images/imageNew/one/search.png")} />
-              <Text style={{color: '#ccc'}}>搜索商品</Text>
-            </Flex>
-          </TouchableOpacity>
+      <Flex>
+        {!addressMsg.provinceCode 
+          ? (<Flex justify='center' align='center' style={{height:HEIGHT, width: WIDTH}}>
+            <Text style={{width: 90,textAlign: 'center', color: '#666', fontSize: 14,lineHeight: 20}}>该城市暂未开通信用租机业务，目前已开通江苏无锡市，请切换到相应地市试试...</Text>
+          </Flex>) 
+          : <View style={{ position: 'relative', height: '100%' }}>
+            <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
+              <TouchableOpacity style={styles.leftAddressBox} onPress={() => navigate('LocationPage', {
+                callback: (data) => {
+                  this.setAddressInfosFun(data)
+                }
+              })}>
+                <Text style={{ color: '#fff', marginRight: 4 }}>{addressMsg && addressMsg.city}</Text>
+                <View style={styles.triangle}></View>
+              </TouchableOpacity>
+              <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
+                <Flex style={{ backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20 }}>
+                  <Image style={{ width: 14, height: 14, marginRight: 4 }} source={require("../../images/imageNew/one/search.png")} />
+                  <Text style={{ color: '#ccc' }}>搜索商品</Text>
+                </Flex>
+              </TouchableOpacity>
 
-        </Flex>
-        <ScrollView
-          automaticallyAdjustContentInsets={false}
-          showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
-        > 
-          {
-            bannerList.length === 1 ? (
-              <View
-                style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
-              >
-                <Image resizeMode="stretch" style={{ width: WIDTH, height: BANNER_HEIGHT }} source={{ uri: `${HTTP_IMG}${bannerList[0].imgPath}` }} />
+            </Flex>
+            <ScrollView
+              automaticallyAdjustContentInsets={false}
+              showsHorizontalScrollIndicator={false}
+              showsVerticalScrollIndicator={false}
+            >
+              {
+                bannerList.length === 1 ? (
+                  <View
+                    style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
+                  >
+                    <Image resizeMode="stretch" style={{ width: WIDTH, height: BANNER_HEIGHT }} source={{ uri: `${HTTP_IMG}${bannerList[0].imgPath}` }} />
+                  </View>
+                ) : (
+                    <Carousel
+                      style={styles.wrapper}
+                      selectedIndex={2}
+                      autoplay
+                      infinite
+                      afterChange={this.onHorizontalSelectedIndexChange}
+                    >
+                      {bannerList && this.renderBanner(bannerList)}
+                    </Carousel>
+                  )
+              }
+
+
+              <View style={[styles.navBox]}>
+                {navList && this.renderNavList(navList)}
               </View>
-            ) : (
-                <Carousel
-                  style={styles.wrapper}
-                  selectedIndex={2}
-                  autoplay
-                  infinite
-                  afterChange={this.onHorizontalSelectedIndexChange}
-                >
-                  {bannerList && this.renderBanner(bannerList)}
-                </Carousel>              
-            )
-          }
-          
-          
-          <View style={[styles.navBox]}>
-            {navList && this.renderNavList(navList)}
+              <View style={styles.productListBox}>
+                <Text style={styles.listTitle}>推荐产品</Text>
+                {this.renderList(hotPhoneList)}
+              </View>
+
+            </ScrollView>
+            <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
+              {/* <TabNavigator /> */}
+            </View>
           </View>
-          <View style={styles.productListBox}>
-            <Text style={styles.listTitle}>推荐产品</Text>
-            {this.renderList(hotPhoneList)}
-          </View>
-          
-        </ScrollView>
-        <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-          {/* <TabNavigator /> */}
-        </View>
-      </View>
+        }
+      </Flex>
+      
     )
   }
 
@@ -197,7 +206,7 @@ class Home extends RentApp {
           key={item.id || index}
           style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
         > 
-          <TouchableOpacity onPress={() => navigate('ProductDetail', {productId})}>
+          <TouchableOpacity onPress={() => navigate('ProductDetail', { productId})}>
             <Image resizeMode="stretch" style={{ width: WIDTH, height: BANNER_HEIGHT }} source={{ uri: `${HTTP_IMG}${item.imgPath}` }} />
           </TouchableOpacity>
          

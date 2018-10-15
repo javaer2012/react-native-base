@@ -116,7 +116,7 @@ export default class List extends RentApp {
     if (addressData) {
       // addressData
       const addressInfos = {
-        // crmProvName: item.crmProvName,
+        crmProvName: addressData.crmProvName,
         city,
         cityCode: addressData.crmCityCode,
         provinceCode: addressData.crmProvCode

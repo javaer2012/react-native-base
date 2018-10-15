@@ -103,7 +103,7 @@ export default StackNavigator({
     SchoolSearchPage,
     RentOrderDetail
 }, {
-    // initialRouteName:"LocationPage",
+    // initialRouteName:"EducationPage",
     /* The header config from HomeScreen is now here */
     navigationOptions: {
         headerStyle: {
