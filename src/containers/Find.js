@@ -55,7 +55,7 @@ export default class Find extends RentApp {
             }
         }
         catch (e) {
-
+            Toast.info("服务器开小差了，请稍后再试",1.5)
         }
     }
 
@@ -220,7 +220,7 @@ export default class Find extends RentApp {
 
         const {data} = this.state
 
-        if (data.length === 0) return null
+        if (data &&  data.length === 0) return null
 
         return (
             <View style={{width: '100%'}}>

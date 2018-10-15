@@ -14,22 +14,12 @@ const bgf = {
 }
 
 
-export default class OrderInfo extends RentApp {
+export default class RentOrderDetail extends RentApp {
   state = {
     params:{}, 
     userInfos:{}, 
     goodsInfo:{},
-    // completePay: false,
-    // userInfo: {},
-    // qrCodePath: '',
-    // orderTime: '',
-    // orderSn: '',
-    // stageInfo: {},
-    // insureList: [],
-    // goodsInfo: {},
-    // hallList: [],
-    // fromPage: ''
-    
+    goodsBaseInfo:{},
   }
 
   async componentDidMount() {
@@ -38,9 +28,9 @@ export default class OrderInfo extends RentApp {
     const params = this.props.navigation.getParam('params');
     const userInfos = this.props.navigation.getParam('userInfos');
     const goodsInfo = this.props.navigation.getParam('goodsInfo');
-    this.setState({ params, userInfos, goodsInfo })
-
-    return false
+    const goodsBaseInfo = this.props.navigation.getParam('goodsBaseInfo');
+    
+    this.setState({ params, userInfos, goodsInfo, goodsBaseInfo })
   }
 
   goToPayFun = async () => {
@@ -55,14 +45,15 @@ export default class OrderInfo extends RentApp {
         this.showToast(data.errmsg)
         await AsyncStorage.setItem('pastDueTime', JSON.stringify((+new Date()) + 1800000))
         const { navigate } = this.props.navigation;
-
-        navigate('Pay', {
-          amount: goodsInfo.totalFirstAmount,
-          orderId: params.orderId,
-          orderSn,
-          activeId: params.activeId
-          // firstPay: data.firstPay
-        })
+        setTimeout(() => {
+          navigate('Pay', {
+            amount: goodsInfo.totalFirstAmount,
+            orderId: data.orderId,
+            orderSn: data.orderSn,
+            activeId: params.activeId
+            // firstPay: data.firstPay
+          })
+        }, 800);
       }
 
     } catch (error) {
@@ -71,16 +62,16 @@ export default class OrderInfo extends RentApp {
   }
 
   render() {
-    const { params, userInfos, goodsInfo } = this.state
+    const { params, userInfos, goodsInfo, goodsBaseInfo } = this.state
     return (
       <Flex direction="column">
         <Flex style={styles.titleBox} direction="row" justify="start" align="start">
           <Text style={styles.title}>用户信息</Text>
         </Flex>
         <Flex direction="column" style={styles.mainContentBox}>
-          <Text style={[styles.base]}>姓名: {userInfo.userName}</Text>
-          <Text style={[styles.base]}>手机号码: {userInfo.phoneNo}</Text>
-          <Text style={[styles.base]}>身份证号: {userInfo.idCardNo}</Text>
+          <Text style={[styles.base]}>姓名: {userInfos.userName}</Text>
+          <Text style={[styles.base]}>手机号码: {userInfos.phoneNo}</Text>
+          <Text style={[styles.base]}>身份证号: {userInfos.idCardNo}</Text>
         </Flex>
         <Flex direction="column" align="start" style={styles.bottomMainBox}>
           <Flex style={styles.titleBox} direction="row" justify="start" align="start">
@@ -89,17 +80,17 @@ export default class OrderInfo extends RentApp {
           <Flex style={{ backgroundColor: '#fff' }}>
             <ProudcuItem data={{
               // "id": "1",
-              "imgPath": goodsInfo.goodsImagePath,
-              "phoneName": goodsInfo.goodsName,
+              "imgPath": goodsBaseInfo.goodsImagePath,
+              "phoneName": goodsBaseInfo.goodsName,
               // "phoneDesc": "全网通4G+64G 双卡双待手机 金色",
-              "price": goodsInfo.goodsPrice,
+              "price": goodsBaseInfo.goodsPrice,
               // "linkUrl": "/pages/productDetail/productDetail"
             }} />
           </Flex>
         </Flex>
         <Flex direction="column" style={[styles.canBuyBox]}>
           <Text style={{ marginBottom: 10 }}>恭喜您获得购买资格</Text>
-          <Text>您仅需支付: ￥{goodsInfo.totalFirstAmount}</Text>
+          <Text>您仅需支付: ￥{goodsInfo.totalFirstAmount || 0}</Text>
           <TouchableOpacity
             style={{ padding: 14, marginTop: 20, backgroundColor: Color.mainPink, width: '100%' }}
             onPress={() => this.goToPayFun()}>

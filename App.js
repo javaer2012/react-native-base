@@ -58,13 +58,9 @@ export default class App extends RentApp {
             Alert.alert("更新失败，回滚到上一个可用版本")
         }
 
-        //Alert.alert(`Is First Time:${isFirstTime}`)
-
-        // this.checkUpdate()
-
-
         this.getOpenIdAndUserId()
         this.beginWatch()
+        this.checkUpdate()
     }
 
     checkUpdate = ()=>{
@@ -136,13 +132,16 @@ export default class App extends RentApp {
     }
     registerUser = async (option) => {
         try {
-        //    await AsyncStorage.clear()
+            // await AsyncStorage.clear()
+            console.log("Start Retister User")
+            console.log(DeviceInfo.getUniqueID())
 
-            const openId = await AsyncStorage.multiGet(['openId', 'userId', 'isLoggedIn']);
+            const openId = await AsyncStorage.getItem('openId');
 
             console.log(openId)
 
-            if (!openId[0][1] || !openId[1][1]) {
+
+            if (!openId) {
                 const params = {
                     provinceCode: option.provinceCode,
                     cityCode: option.cityCode,
@@ -197,6 +196,9 @@ export default class App extends RentApp {
                         }
                     }
 
+                    console.log("register:",option)
+                    this.registerUser(option)
+
                     await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
                     // debugger
                     // console.log(store, "+++", store.dispatch)
@@ -204,7 +206,7 @@ export default class App extends RentApp {
                         type: 'SET_LOCATION',
                         locationInfos: option
                     })
-                    this.registerUser(option)
+
                     this.isOpen({
                         provinceCode: option["provinceCode"],
                         cityCode: option["cityCode"],
@@ -222,14 +224,13 @@ export default class App extends RentApp {
     }
 
     beginWatch = async () => {
-        await AsyncStorage.clear()
+       // await AsyncStorage.clear()
         // const value1 = await AsyncStorage.getItem('Test')
         // console.log("Test1", value1)
 
         console.log("Begin watch")
 
         console.log(navigator)
-
 
         navigator.geolocation.getCurrentPosition(
             ({coords}) => {

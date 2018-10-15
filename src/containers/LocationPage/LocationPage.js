@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  View, Image, TouchableOpacity, Modal, AsyncStorage, Text, FlatList, TextInput, Dimensions, StyleSheet, Alert
+  View, Image, TouchableOpacity, Modal, ScrollView, AsyncStorage, Text, FlatList, TextInput, Dimensions, StyleSheet, Alert
 } from 'react-native';
 import { areaDict } from '../../utils/city1.json'
 import letterPlaceJson from '../../utils/city1014.json'
@@ -10,7 +10,7 @@ import Color from '../../styles/var'
 import { NavigationActions } from 'react-navigation'
 import RentApp from "../../components/RentApp";
 
-const areaDictArr = Object.values(areaDict)
+// const areaDictArr = Object.values(areaDict)
 
 import _ from 'lodash';
 const { width, height } = Dimensions.get('window')
@@ -27,8 +27,13 @@ var totalNumber = 10;//总条数的数据
 var searchHeight = 35;//搜索框高度
 var searchHeightMargin = 2;//搜索框margin
 
-export default class List extends RentApp {
 
+
+ let scrollToArr = []
+export default class List extends RentApp {
+  static navigationOptions = {
+    title: "选择地址"
+  }
   state = {
     dataSource: [],
     addressMsg:{},
@@ -48,29 +53,41 @@ export default class List extends RentApp {
       // Error retrieving data
     }
   }
-  renderPlaceList = ({item, index}) => {
+  renderPlaceList = (item, letterIndex) => {
+ 
+    // letterIndex
+    scrollToArr[letterIndex] = (item.cityInfo.length + 1)* 40
     const { searchText } = this.state
     const renderCitys = (cityInfo) => {
-      return cityInfo.map((item, index) => {
+      const citys = []
+      cityInfo.filter((item, index) => {
         if (searchText && item.city !== searchText) return false
-        return (
+        const CITY = (
           <TouchableOpacity
             key={item.rowId}
-            style={{ borderBottomColor: '#faf0e6', borderBottomWidth: 0.5, width: '100%',height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30,}}
+            style={{ borderBottomColor: '#faf0e6', borderBottomWidth: 0.5, width: '100%', height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30, }}
             onPress={() => { this.changedata(item) }}>
             <View><Text style={styles.rowdatatext}>{item.city}</Text></View>
           </TouchableOpacity>
         )
+        citys.push(CITY)
       })
+
+      return citys
     }
-    return (
-      <Flex style={{flex: 1}} direction='column' justify='start' align='stretch' key={index}>
+    const CITYS = renderCitys(item.cityInfo)
+
+    if (CITYS.length) {
+      return (
+      <Flex  direction='column' justify='start' align='stretch' key={letterIndex}>
         <Flex style={styles.letterBoxStyle}><Text style={{color: '#808080'}}>{item.initial}</Text></Flex>
         <Flex direction='column'> 
-          {renderCitys(item.cityInfo)}
+            {CITYS}
         </Flex>
       </Flex>
     )
+    }
+    
   }
 
   async componentDidMount(){
@@ -78,7 +95,6 @@ export default class List extends RentApp {
       const addressMsg = await this.getAddressMsg()
       this.setState({
         userAddressMsg: addressMsg,
-        // dataSource: Object.values(areaDict)
       }) 
     } catch (error) {
       console.error(error)
@@ -96,14 +112,21 @@ export default class List extends RentApp {
   }
 
   changedata = ({ id, provincecode, city, code, initial }) => {
-    // debugger
-    const addressInfos = {
-      // crmProvName: item.crmProvName,
-      city,
-      cityCode: code,
-      provinceCode: provincecode
+    const addressData = areaDict[code] // 选中的地址的crm数据
+    if (addressData) {
+      // addressData
+      const addressInfos = {
+        // crmProvName: item.crmProvName,
+        city,
+        cityCode: addressData.crmCityCode,
+        provinceCode: addressData.crmProvCode
+      }
+      this.GO_BACK(addressInfos) 
+    } else {
+      this.showToast("地址暂未查询到")
     }
-    this.GO_BACK(addressInfos) 
+    
+    
   }
 
   renderRow = ({ item }) => {
@@ -131,16 +154,20 @@ export default class List extends RentApp {
   }
   //touch right indexLetters, scroll the left
   scrollTo = (index) => {
+    let sum = 0;
+    (scrollToArr.slice(0, index)).forEach(function (val, index) {
+      sum += val;
+    })
     let position = index * 40; 
-    this._listView.scrollToIndex({
-      index
+    this._listView.scrollTo({
+      y: sum
     })
   }
   renderSectionHeader = (sectionData, sectionID) => {
     const { userAddressMsg } = this.state;
     
     return (
-      <Flex direction='column'  style={{padding: 8}}>
+      <Flex direction='column'  style={{padding: 8, backgroundColor: '#fff'}}>
         <View style={styles.searchBox}>
           {/* <Image source={require('../res/image/search_bar_icon_normal.png')} style={styles.searchIcon} /> */}
           <TextInput 
@@ -169,22 +196,28 @@ export default class List extends RentApp {
     )
   }
 
+  renderList = (letterPlaceJson ) =>{
+    return letterPlaceJson.map((item, index) => {
+      return (
+        <Flex key={item.id || index} direction="column" align='stretch' style={{flex: 1}}>
+          {this.renderPlaceList(item, index)}
+        </Flex>
+      )
+    })
+  }
+
   render(){
     return (      
-        <View style={{ height: Dimensions.get('window').height, marginBottom: 10 }}>
-          <FlatList
-            contentContainerStyle={styles.contentContainer}
+      <View style={{flex: 1, paddingBottom: 40 }}>
+        {this.renderSectionHeader()}
+          <ScrollView 
             ref={listView => this._listView = listView}
-            
-            extraData={this.state}
-            data={letterPlaceJson}
-            renderItem={this.renderPlaceList}
-            ListHeaderComponent={this.renderSectionHeader}
-            // renderSectionHeader={this.renderSectionHeader}
-            onEndReachedThreshold={0.1}
-            style={{ height: '100%' }}
+            style={{backgroundColor: '#fff', flex: 1}}>
+            <Flex direction="column" align='stretch' style={{flex: 1}}>
+              {this.renderList(letterPlaceJson)}
+            </Flex>
+          </ScrollView>
 
-          />
           <View style={styles.letters}>
             {letters.map((letter, index) => this.renderLetters(letter, index))}
           </View>
@@ -195,7 +228,7 @@ export default class List extends RentApp {
 }
 
 const styles = StyleSheet.create({
-  letterBoxStyle: {backgroundColor: '#f2f2f2', borderRadius: 6, overflow: 'hidden', flex: 1, paddingHorizontal: 20, paddingVertical: 5, },
+  letterBoxStyle: {backgroundColor: '#f2f2f2', borderRadius: 6, overflow: 'hidden', flex: 1, paddingHorizontal: 20, height: 40 },
   contentContainer: {
     width: width,
     backgroundColor: 'white',
@@ -215,8 +248,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',   // 水平排布
     // width: '100%',
     flexGrow: 1,
-    backgroundColor: '#FFF',
-    borderWidth: 0.8,
+    backgroundColor: '#e5e5e5',
+    borderWidth: 0,
     borderRadius: 10,
     borderColor: 'gray',
     alignItems: 'center',
@@ -229,14 +262,15 @@ const styles = StyleSheet.create({
 
   },
   letter: {
-    height: height * 3.3 / 100,
+    height: height * 3 / 100,
     width: width * 3 / 50,
     justifyContent: 'center',
     alignItems: 'center',
   },
   letterText: {
     textAlign: 'center',
-    fontSize: height * 1.1 / 50,
+    // fontSize: height * 1.1 / 50,
+    fontSize: 10,
     color: 'rgb(40,169,185)'
   },
   rowdata: {
@@ -248,6 +282,7 @@ const styles = StyleSheet.create({
   },
   inputText: {//搜索框
     backgroundColor: 'transparent',
+    borderColor: '#fff',
     fontSize: 13,
     paddingBottom: 0,
     paddingTop: 0,

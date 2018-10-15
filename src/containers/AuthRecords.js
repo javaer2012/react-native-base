@@ -62,7 +62,10 @@ export default class AuthRecords extends RentApp {
                            <Text style={{fontSize:12,color:'#565656'}}>{`更新时间:${item.lastUpdateTime.substring(0,9)}`}</Text>
                        </Flex>
                    </Flex>
-                   <Button style={{borderColor:'#06C1AE', color: "#06C1AE",borderRadius:4,fontSize: 10 ,width: 55, height: 21, lineHeight: 21}}>再次享用</Button>
+                   <Button
+                       style={{borderColor:'#06C1AE', color: "white",borderRadius:4,fontSize: 10 ,width: 55, height: 21, lineHeight: 21}}
+                        onClick={()=>this.props.navigation.replace("ProductListPage")}
+                   >再次享用</Button>
                </Flex>
             </WingBlank>
             <WhiteSpace size={"lg"}/>

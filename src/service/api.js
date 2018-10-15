@@ -772,7 +772,7 @@ export default {
         params['sourceType'] = 3
         return new Promise((resolve, reject) => {
             getToken(token => {
-                axios.post(`${url}/app/modifyPassword`, JSON.stringify(params), {
+                axios.post(`${url}/app/resetPassword`, JSON.stringify(params), {
                     headers: {
                         'Content-Type': 'application/json;charset=UTF-8',
                         'Authorization': 'Bearer ' + token

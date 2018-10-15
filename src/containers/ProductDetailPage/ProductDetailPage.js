@@ -456,10 +456,11 @@ export default class ProductDetailPage extends RentApp {
       // "sourceType": 2
     }
 
-    navigate('RentOrderDetail', {
+    this.props.navigation.navigate('RentOrderDetail', {
       params,
       userInfos: _userInfo,
-      goodsInfo: _goodsInfo
+      goodsInfo: _goodsInfo,
+      goodsBaseInfo
     })
 
     console.log(params,"========> params")
