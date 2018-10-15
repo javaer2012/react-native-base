@@ -1,10 +1,10 @@
 import React from 'react';
-import {ScrollView, View, Text, FlatList, AsyncStorage, StyleSheet, TouchableOpacity} from 'react-native';
-import {Flex, Icon, WhiteSpace, WingBlank, SearchBar} from 'antd-mobile-rn';
+import { View, Text, FlatList, AsyncStorage, StyleSheet, TouchableOpacity} from 'react-native';
+import {Flex, WhiteSpace, WingBlank, SearchBar} from 'antd-mobile-rn';
 import api from "../service/api";
 import ProudcuItem from "../components/ProudcuItem";
-import Spinner from 'react-native-loading-spinner-overlay'
 import RentApp from "../components/RentApp";
+import {connect} from 'react-redux'
 
 
 const styles = StyleSheet.create({
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default class Search extends RentApp {
+ class Search extends RentApp {
     static navigationOptions = {
         title: "搜索"
     }
@@ -210,12 +210,11 @@ export default class Search extends RentApp {
         latest.forEach(item=>{
             if(item.name === this.state.value) dupplicate = true
         })
-        if(!dupplicate)
-            latest.push({
-                name:this.state.value
-            })
-        // console.log(latest,"@@@@@@22")
-        await AsyncStorage.setItem('latestKeywords',JSON.stringify(latest))
+       this.props.dispatch({
+           type:"ADD_HISTORY_KEYS",
+           payload:this.state.value
+       })
+        //await AsyncStorage.setItem('latestKeywords',JSON.stringify(latest))
 
         const keyWord = this.state.value
         const { navigate } = this.props.navigation;
@@ -224,6 +223,8 @@ export default class Search extends RentApp {
 
 
     render() {
+
+        console.log("Search",this.props)
         return (
             <View style={{width: '100%', backgroundColor: 'white'}}>
 
@@ -233,15 +234,15 @@ export default class Search extends RentApp {
                     onSubmit={() => this.searchGoodsFun() } />
 
                 {this.state.products.length === 0? <View>
-                    {this.state.latest.length >0?<WingBlank size={"md"} style={{backgroundColor: 'white'}}>
+                    {this.props.historyKeys.length >0?<WingBlank size={"md"} style={{backgroundColor: 'white'}}>
                         <WhiteSpace size={"xl"}/>
                         <Text>历史搜索</Text>
                         <WhiteSpace size={"md"}/>
 
                         <Flex direction={"row"} justify={"start"} wrap={"wrap"}>
-                            {this.state.latest.map((item,index)=>
-                               <TouchableOpacity key={index} onPress={()=>this.searchGoodsFun(item.name)}>
-                                   <Text key={index} style={styles.tag}>{item.name}</Text>
+                            {Array.from(this.props.historyKeys).reverse().map((item,index)=>
+                               <TouchableOpacity key={index} onPress={()=>this.searchGoodsFun(item)}>
+                                   <Text key={index} style={styles.tag}>{item}</Text>
                                </TouchableOpacity>
                             )}
 
@@ -282,3 +283,9 @@ export default class Search extends RentApp {
         )
     }
 }
+
+const stateToProps = state =>({
+    historyKeys:state.historyKey.keys
+})
+
+export default connect(stateToProps)(Search)

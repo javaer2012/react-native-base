@@ -149,6 +149,9 @@ class My extends RentApp {
 
     logout = async ()=>{
         try{
+            this.props.dispatch({
+                type:'LOGOUT'
+            })
 
             const rsp = await AsyncStorage.removeItem('isLoggedIn')
             const rsp1 = await AsyncStorage.removeItem('userInfo')

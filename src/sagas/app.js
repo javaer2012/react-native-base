@@ -20,3 +20,18 @@ export function* app(action){
     }
 
 }
+
+export function* logout(action) {
+
+    try {
+
+        yield AsyncStorage.removeItem('historyKeys')
+        put({
+            type:'INIT_HISTORY_KEYS',
+            payload:[]
+        })
+    } catch (e) {
+
+    }
+
+}

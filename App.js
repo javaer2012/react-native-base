@@ -64,6 +64,29 @@ export default class App extends RentApp {
         this.getOpenIdAndUserId()
         this.beginWatch()
         this.checkUpdate()
+        this.searchKeyWord()
+    }
+
+    searchKeyWord = async () =>{
+        try {
+
+            const keyword = await AsyncStorage.getItem('historyKeys')
+            if(keyword){
+                const historyKeys = JSON.parse(keyword)
+                store.dispatch({
+                    type:"INIT_HISTORY_KEYS",
+                    payload:historyKeys
+                })
+            } else {
+                store.dispatch({
+                    type:"INIT_HISTORY_KEYS",
+                    payload:[]
+                })
+            }
+
+        } catch (e) {
+
+        }
     }
 
     checkUpdate = ()=>{
@@ -133,6 +156,7 @@ export default class App extends RentApp {
                 ]);
             })
     }
+
     registerUser = async (option) => {
         try {
             // await AsyncStorage.clear()
