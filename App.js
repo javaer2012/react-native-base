@@ -58,6 +58,8 @@ export default class App extends RentApp {
             Alert.alert("更新失败，回滚到上一个可用版本")
         }
 
+        store.dispatch({type:'APP_STATUS'})
+
         this.getOpenIdAndUserId()
         this.beginWatch()
         this.checkUpdate()
@@ -227,22 +229,26 @@ export default class App extends RentApp {
        // await AsyncStorage.clear()
         // const value1 = await AsyncStorage.getItem('Test')
         // console.log("Test1", value1)
+      try{
+          console.log("Start GEO")
 
-        console.log("Begin watch")
+          const geo = await api.AmapIpGeoCode()
+          console.log("AMap",geo)
 
-        console.log(navigator)
-
-        navigator.geolocation.getCurrentPosition(
-            ({coords}) => {
-                console.log(coords)
-                const {latitude, longitude} = coords
-                this.getCityFun(latitude, longitude)
-                // var initialPosition = JSON.stringify(position);
-                // this.setState({ initialPosition });
-            },
-            (error) => console.log(error.message),
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-        )
+          navigator.geolocation.getCurrentPosition(
+              ({coords}) => {
+                  console.log(coords)
+                  const {latitude, longitude} = coords
+                  this.getCityFun(latitude, longitude)
+                  // var initialPosition = JSON.stringify(position);
+                  // this.setState({ initialPosition });
+              },
+              (error) => console.log(error.message),
+              {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+          )
+      } catch (e) {
+          console.log(e.message)
+      }
 
     }
 

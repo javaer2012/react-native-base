@@ -5289,7 +5289,7 @@ promzard@^0.3.0:
   dependencies:
     read "1"
 
-prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1:
+prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.6.2"
   resolved "http://registry.npm.taobao.org/prop-types/download/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -5447,6 +5447,10 @@ react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.4:
 react-native-actionsheet@^2.4.2:
   version "2.4.2"
   resolved "http://registry.npm.taobao.org/react-native-actionsheet/download/react-native-actionsheet-2.4.2.tgz#6a00dd51a75ef2c8974312130e405af73191500f"
+
+react-native-baidu-map@^0.6.0:
+  version "0.6.0"
+  resolved "http://registry.npm.taobao.org/react-native-baidu-map/download/react-native-baidu-map-0.6.0.tgz#cb4937181e8e0cd2125d347a5b87ca13971647dd"
 
 react-native-camera-roll-picker@^1.2.1:
   version "1.2.3"
