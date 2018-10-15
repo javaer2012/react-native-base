@@ -1,8 +1,12 @@
 import { combineReducers, createStore } from "redux";
 import * as home from './home'
+import {myPageReducer} from './myPage'
+import {appReducer} from "./appReducer";
 
 const rootReducers = combineReducers({
-    ...home,
+    my:myPageReducer,
+    app:appReducer,
+    ...home
 });
 
 

@@ -695,6 +695,10 @@ export default {
             });
         });
     },
+    AmapIpGeoCode(){
+        return axios.get(`https://restapi.amap.com/v3/ip?key=${amapKey}`)
+    },
+
     // 坐标转换
     AmapConvert(lat, lon) {
         return axios.get(`https://restapi.amap.com/v3/assistant/coordinate/convert?key=${amapKey}&locations=${lon},${lat}&output=json&coordsys=gps`);

@@ -16,6 +16,7 @@ import Canvas from 'react-native-canvas';
 import api from "../service/api";
 import RentApp from "../components/RentApp";
 import {canvasScore} from '../utils/canvas'
+import {connect} from 'react-redux'
 
 const {WIDTH, HEIGHT} = Dimensions.get('window')
 
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
 })
 
 
-export default class My extends RentApp {
+class My extends RentApp {
     static navigationOptions = {
         title: "我的"
     }
@@ -124,6 +125,8 @@ export default class My extends RentApp {
     }
 
     componentDidMount() {
+
+        this.props.dispatch({type:'MYPAGE_INIT',payload:"Hello"})
         setTimeout(() => this.initalState(), 0)
     }
 
@@ -157,6 +160,8 @@ export default class My extends RentApp {
 
     render() {
 
+        console.log("Props ~~~~~~",this.props)
+
         console.log(this.state)
 
         const {navigation} = this.props
@@ -177,7 +182,7 @@ export default class My extends RentApp {
                 <Flex direction={"row"}>
                     <Flex.Item>
                         <ImageBackground
-                            style={_state.isLoggedIn === '1' ? (_state.isCredit?styles.topBackground:styles.topBackground2) : styles.topBackground1}
+                            style={_state.isLoggedIn === '1' ? (_state.isCredited?styles.topBackground:styles.topBackground2) : styles.topBackground1}
                             source={require('../images/my/background.png')}>
                             {_state.isLoggedIn !== "1" && _state.isLoggedIn !== 1 ?
                                 <Flex direction={"column"} style={{width: '100%'}} justify={"center"} align={"center"}>
@@ -313,7 +318,7 @@ export default class My extends RentApp {
                             width: 127,
                             height: 65,
                             paddingTop: 15,
-                            borderLeftWidth: 1,
+                            borderLeftWidth: 0,
                             borderTop: 5,
                             borderBottom: 5,
                             borderLeftColor: '#989898'
@@ -476,3 +481,12 @@ export default class My extends RentApp {
     }
 
 }
+
+const stateToProps =(state)=>{
+    console.log(state)
+    return {
+        isLoggedIn:state.app.isLoggedIn
+    }
+}
+
+export default connect(stateToProps)(My)
