@@ -279,8 +279,6 @@ export default class App extends RentApp {
                   const longitude = (+arr[0] + +arr[2]) / 2
                   this.getCityFun(latitude, longitude)
               }
-              
-              console.log("AMap", geo)
           }
       } catch (e) {
           console.log(e.message)
