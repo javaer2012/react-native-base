@@ -11,6 +11,9 @@ const bgf = {
 
 
 export default class Pay extends Component {
+  static navigationOptions = {
+    title: "支付结果"
+  }
   state = {
     completePay: false,
     orderId:''

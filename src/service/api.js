@@ -695,8 +695,10 @@ export default {
             });
         });
     },
-    AmapIpGeoCode(){
+    AmapIpGeoCode(params){
         return axios.get(`https://restapi.amap.com/v3/ip?key=${amapKey}`)
+        // ip = ${ params.ip }
+        // https://restapi.amap.com/v3/ip?ip=114.247.50.2&output=xml&key=
     },
 
     // 坐标转换

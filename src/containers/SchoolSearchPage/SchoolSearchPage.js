@@ -22,18 +22,19 @@ var searchHeightMargin = 2;//搜索框margin
 
 
 
- let scrollToArr = []
-const letterArr = [] // 字母数组
 export default class SchoolSearchPage extends RentApp {
   static navigationOptions = {
     title: "选择学校"
   }
+  letterArr = [] // 字母数组
+  scrollToArr = []
   state = {
     dataSource: [],
     addressMsg:{},
     userAddressMsg:{},
     searchText:'',
-    schoolObjs:{},
+    searchSchoolObjs: [], //  searchSchoolObjs 和 schoolObjs 格式不同
+    schoolObjs:[],
   }
   
   // 从缓存中取出位置信息对象
@@ -54,7 +55,7 @@ export default class SchoolSearchPage extends RentApp {
     const _schoolObjs = schoolObjs.filter(item => item.id == cityId )[0]
 
      this.setState({
-       schoolObjs: _schoolObjs
+       schoolObjs: _schoolObjs.schoolInfo
      })  
   }
   // render ringht index Letters
@@ -76,38 +77,24 @@ export default class SchoolSearchPage extends RentApp {
     this.GO_BACK(addressInfos)
   }
 
-  renderRow = ({ item }) => {
-    const { searchText } = this.state
-    if (searchText && item.crmCityName !== searchText) return false
-
-    return (
-      <TouchableOpacity
-        key={item.rowId}
-        style={{ 
-          borderBottomColor: '#faf0e6',
-          borderBottomWidth: 0.5,
-          height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30 }}
-          onPress={() => { this.changedata(item) }}>
-        <View><Text style={styles.rowdatatext}>{item.crmCityName}</Text></View>
-
-      </TouchableOpacity>
-    )
-  }
-
   changeText = (text) => {
+    const { searchSchoolObjs, schoolObjs } = this.state
+    const newSearchschoolObjs = []
+    schoolObjs.filter(cItem => {
+      if (cItem.schoolName.indexOf(text) !== -1 || cItem.initial.indexOf(text) !== -1 || cItem.short.indexOf(text) !== -1 || cItem.shorter.indexOf(text) !== -1) {
+        newSearchschoolObjs.push(cItem)
+      }
+    })
+
     this.setState({
-      searchText: text
+      searchText: text,
+      searchSchoolObjs: newSearchschoolObjs
     })
   }
   //touch right indexLetters, scroll the left
-  scrollTo = (index) => {
-    let sum = 0;
-    (scrollToArr.slice(0, index)).forEach(function (val, index) {
-      sum += val;
-    })
-    let position = index * 40; 
+  scrollTo = (index) => { 
     this._listView.scrollTo({
-      y: sum
+      y: this.scrollToArr[index]
     })
   }
   renderSectionHeader = (sectionData, sectionID) => {
@@ -143,24 +130,17 @@ export default class SchoolSearchPage extends RentApp {
     )
   }
 
-  scrollTo = (index) => {
-    let sum = 0;
-    (scrollToArr.slice(0, index)).forEach(function (val, index) {
-      sum += val;
-    })
-    let position = index * 40;
-    this._listView.scrollTo({
-      y: sum
-    })
-  }
-
   renderList = (list) =>{
     let lastLetter = ''
+    let lastTop = 0 //  距离
+    this.scrollToArr = []
     return list.map((item, index) => {
       if (lastLetter !== item.initial) {
         // scrollToArr[index] = (item.cityInfo.length + 1) * 40
+        this.scrollToArr.push(lastTop)
+        lastTop = lastTop + 80
         lastLetter = item.initial
-        letterArr.push(item.initial)
+        this.letterArr.push(item.initial)
         return (
           <Flex key={index} direction="column" align='stretch' style={{ flex: 1 }}>
             <Flex style={styles.letterBoxStyle}><Text style={{ color: '#808080' }}>{item.initial}</Text></Flex>
@@ -174,6 +154,7 @@ export default class SchoolSearchPage extends RentApp {
           </Flex>
         )
       }
+      lastTop = lastTop + 40
       return (
         <Flex key={index} direction="column" align='stretch' style={{flex: 1}}>
           <TouchableOpacity
@@ -188,7 +169,7 @@ export default class SchoolSearchPage extends RentApp {
   }
 
   render(){
-    const { schoolObjs } = this.state
+    const { schoolObjs, searchSchoolObjs, searchText } = this.state
     return (      
       <View style={{flex: 1, paddingBottom: 40 }}>
         {this.renderSectionHeader()}
@@ -196,12 +177,12 @@ export default class SchoolSearchPage extends RentApp {
           ref={listView => this._listView = listView}
           style={{backgroundColor: '#fff', flex: 1}}>
           <Flex direction="column" align='stretch' style={{flex: 1}}>
-            {schoolObjs.schoolInfo && this.renderList(schoolObjs.schoolInfo)}
+            {schoolObjs && this.renderList(!!searchText ? searchSchoolObjs : schoolObjs)}
           </Flex>
         </ScrollView>
 
         <View style={styles.letters}>
-          {letterArr.map((letter, index) => this.renderLetters(letter, index))}
+          {this.letterArr.map((letter, index) => this.renderLetters(letter, index))}
         </View>
       </View>
 
@@ -211,7 +192,6 @@ export default class SchoolSearchPage extends RentApp {
 
 const styles = StyleSheet.create({
   letterBoxStyle: { backgroundColor: '#f2f2f2', borderRadius: 6, overflow: 'hidden', flex: 1, paddingHorizontal: 20, height: 40 },
-  letterBoxStyle: {backgroundColor: '#f2f2f2', borderRadius: 6, overflow: 'hidden', flex: 1, paddingHorizontal: 20, height: 40 },
   contentContainer: {
     width: width,
     backgroundColor: 'white',

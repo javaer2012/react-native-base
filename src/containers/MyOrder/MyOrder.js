@@ -5,6 +5,9 @@ import api from '../.././service/api'
 import RentApp from "../../components/RentApp";
 const { myOrderList } = api
 export default class MyOrder extends RentApp {
+  static navigationOption = {
+    title: '我的订单'
+  }
   state = {
     orderList:[{
       orderSn:'订单流水号',

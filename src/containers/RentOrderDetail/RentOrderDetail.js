@@ -15,6 +15,9 @@ const bgf = {
 
 
 export default class RentOrderDetail extends RentApp {
+  static navigationOption = {
+    title: '租机信息'
+  }
   state = {
     params:{}, 
     userInfos:{}, 

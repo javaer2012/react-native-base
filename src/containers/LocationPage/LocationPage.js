@@ -15,17 +15,14 @@ import RentApp from "../../components/RentApp";
 import _ from 'lodash';
 const { width, height } = Dimensions.get('window')
 const SECTIONHEIGHT = 30, ROWHEIGHT = 40
-//这是利用lodash的range和数组的map画出26个英文字母
-const letters = _
-  .range('A'.charCodeAt(0), 'Z'.charCodeAt(0) + 1)
-  .map(n => String.fromCharCode(n).substr(0))
-_.pull(letters, 'O', 'V')//去掉o和V,这两个下面没有城市
+
+
 let city = []//城市的数组
 var totalheight = [];//每个字母对应的城市和字母的总高度
 var that = null
 var totalNumber = 10;//总条数的数据
 var searchHeight = 35;//搜索框高度
-var searchHeightMargin = 2;//搜索框margin
+var searchHeightMargin = 4;//搜索框margin
 
 
 
@@ -40,6 +37,8 @@ export default class List extends RentApp {
     userAddressMsg:{},
     searchText:''
   }
+
+  letters = []
   
   // 从缓存中取出位置信息对象
   getAddressMsg = async () => {
@@ -54,7 +53,6 @@ export default class List extends RentApp {
     }
   }
   renderPlaceList = (item, letterIndex) => {
- 
     // letterIndex
     scrollToArr[letterIndex] = (item.cityInfo.length + 1)* 40
     const { searchText } = this.state
@@ -64,7 +62,7 @@ export default class List extends RentApp {
         if (searchText && item.city !== searchText) return false
         const CITY = (
           <TouchableOpacity
-            key={item.rowId}
+            key={index}
             style={{ borderBottomColor: '#faf0e6', borderBottomWidth: 0.5, width: '100%', height: ROWHEIGHT, justifyContent: 'center', paddingLeft: 20, paddingRight: 30, }}
             onPress={() => { this.changedata(item) }}>
             <View><Text style={styles.rowdatatext}>{item.city}</Text></View>
@@ -78,16 +76,16 @@ export default class List extends RentApp {
     const CITYS = renderCitys(item.cityInfo)
 
     if (CITYS.length) {
+      this.letters.push(item.initial)
       return (
-      <Flex  direction='column' justify='start' align='stretch' key={letterIndex}>
-        <Flex style={styles.letterBoxStyle}><Text style={{color: '#808080'}}>{item.initial}</Text></Flex>
-        <Flex direction='column'> 
-            {CITYS}
+        <Flex  direction='column' justify='start' align='stretch' key={letterIndex}>
+          <Flex style={styles.letterBoxStyle}><Text style={{color: '#808080'}}>{item.initial}</Text></Flex>
+          <Flex direction='column'> 
+              {CITYS}
+          </Flex>
         </Flex>
-      </Flex>
-    )
+      )
     }
-    
   }
 
   async componentDidMount(){
@@ -165,9 +163,8 @@ export default class List extends RentApp {
   }
   renderSectionHeader = (sectionData, sectionID) => {
     const { userAddressMsg } = this.state;
-    
     return (
-      <Flex direction='column'  style={{padding: 8, backgroundColor: '#fff'}}>
+      <Flex direction='column'  style={{padding: 8, backgroundColor: '#fff', height: 105}}>
         <View style={styles.searchBox}>
           {/* <Image source={require('../res/image/search_bar_icon_normal.png')} style={styles.searchIcon} /> */}
           <TextInput 
@@ -176,10 +173,11 @@ export default class List extends RentApp {
             underlineColorAndroid='transparent' //设置下划线背景色透明 达到去掉下划线的效果
             placeholder='请输入城市名称或拼音' />
         </View>
-        <Flex direction='column' justify="start" align='start' style={{flex: 1, width: '100%', paddingLeft: 10}}>
+        <Flex direction='row' justify="between" align='start' style={{flex: 1, width: '100%', paddingHorizontal: 10,}}>
           <Text style={{
             textAlign: 'left',
-            marginTop: 10
+            marginTop: 14,
+            color:'#888'
           }}>当前选择城市</Text>
           <Text style={{
             textAlign: 'left', 
@@ -197,9 +195,10 @@ export default class List extends RentApp {
   }
 
   renderList = (letterPlaceJson ) =>{
+    this.letters = []
     return letterPlaceJson.map((item, index) => {
       return (
-        <Flex key={item.id || index} direction="column" align='stretch' style={{flex: 1}}>
+        <Flex key={index} direction="column" align='stretch' style={{flex: 1}}>
           {this.renderPlaceList(item, index)}
         </Flex>
       )
@@ -208,8 +207,8 @@ export default class List extends RentApp {
 
   render(){
     return (      
-      <View style={{flex: 1, paddingBottom: 40 }}>
-        {this.renderSectionHeader()}
+      <View style={{flex: 1 }}>
+          {this.renderSectionHeader()}
           <ScrollView 
             ref={listView => this._listView = listView}
             style={{backgroundColor: '#fff', flex: 1}}>
@@ -219,7 +218,7 @@ export default class List extends RentApp {
           </ScrollView>
 
           <View style={styles.letters}>
-            {letters.map((letter, index) => this.renderLetters(letter, index))}
+            {this.letters.map((letter, index) => this.renderLetters(letter, index))}
           </View>
         </View>
 
@@ -247,8 +246,8 @@ const styles = StyleSheet.create({
     height: searchHeight,
     flexDirection: 'row',   // 水平排布
     // width: '100%',
-    flexGrow: 1,
-    backgroundColor: '#e5e5e5',
+    // flexGrow: 1,
+    backgroundColor: '#f2f2f2',
     borderWidth: 0,
     borderRadius: 10,
     borderColor: 'gray',
