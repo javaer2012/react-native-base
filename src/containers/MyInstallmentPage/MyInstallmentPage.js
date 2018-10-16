@@ -12,8 +12,11 @@ const { myStageList } = api
 const Item = List.Item;
 
 export default class MyInstallmentPage extends RentApp {
+  static navigationOption = {
+    title: '我的分期'
+  }
   state = {
-    noRepayAmount:"111",
+    noRepayAmount:"-",
     periodList: [],
     loading: false,
     // dataObj:{

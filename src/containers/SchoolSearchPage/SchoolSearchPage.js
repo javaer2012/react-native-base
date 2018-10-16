@@ -33,7 +33,8 @@ export default class SchoolSearchPage extends RentApp {
     addressMsg:{},
     userAddressMsg:{},
     searchText:'',
-    schoolObjs:{},
+    searchSchoolObjs: [], //  searchSchoolObjs 和 schoolObjs 格式不同
+    schoolObjs:[],
   }
   
   // 从缓存中取出位置信息对象
@@ -54,7 +55,7 @@ export default class SchoolSearchPage extends RentApp {
     const _schoolObjs = schoolObjs.filter(item => item.id == cityId )[0]
 
      this.setState({
-       schoolObjs: _schoolObjs
+       schoolObjs: _schoolObjs.schoolInfo
      })  
   }
   // render ringht index Letters
@@ -77,8 +78,17 @@ export default class SchoolSearchPage extends RentApp {
   }
 
   changeText = (text) => {
+    const { searchSchoolObjs, schoolObjs } = this.state
+    const newSearchschoolObjs = []
+    schoolObjs.filter(cItem => {
+      if (cItem.schoolName.indexOf(text) !== -1 || cItem.initial.indexOf(text) !== -1 || cItem.short.indexOf(text) !== -1 || cItem.shorter.indexOf(text) !== -1) {
+        newSearchschoolObjs.push(cItem)
+      }
+    })
+
     this.setState({
-      searchText: text
+      searchText: text,
+      searchSchoolObjs: newSearchschoolObjs
     })
   }
   //touch right indexLetters, scroll the left
@@ -159,7 +169,7 @@ export default class SchoolSearchPage extends RentApp {
   }
 
   render(){
-    const { schoolObjs } = this.state
+    const { schoolObjs, searchSchoolObjs, searchText } = this.state
     return (      
       <View style={{flex: 1, paddingBottom: 40 }}>
         {this.renderSectionHeader()}
@@ -167,7 +177,7 @@ export default class SchoolSearchPage extends RentApp {
           ref={listView => this._listView = listView}
           style={{backgroundColor: '#fff', flex: 1}}>
           <Flex direction="column" align='stretch' style={{flex: 1}}>
-            {schoolObjs.schoolInfo && this.renderList(schoolObjs.schoolInfo)}
+            {schoolObjs && this.renderList(!!searchText ? searchSchoolObjs : schoolObjs)}
           </Flex>
         </ScrollView>
 

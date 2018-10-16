@@ -17,6 +17,9 @@ const Button_ = ({ children, onPress}) => {
   )
 }
 export default class OrderDetail extends RentApp {
+  static navigationOption = {
+    title: '订单详情'
+  }
   state = {
     userInfo:{},  // 缓存获取的用户信息
     goodsInfo: {

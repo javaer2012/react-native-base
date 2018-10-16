@@ -21,6 +21,9 @@ const bgf = {
 // orderSn: "201810012110058120796604"
 
 export default class Pay extends RentApp {
+  static navigationOptions = {
+    title: "支付"
+  }
   state = {
     completePay: false,
     passDueTime:'',
@@ -121,8 +124,10 @@ export default class Pay extends RentApp {
             clear
             type="phone"
             // error
+            labelNumber={8}
             onErrorPress={() => alert('clicked me')}
             value={this.state.phoneNumber}
+            style={{fontSize: 13}}
             onChange={(value) => {
               this.setState({
                 phoneNumber: value,

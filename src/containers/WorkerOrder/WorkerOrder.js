@@ -7,6 +7,9 @@ import RentApp from "../../components/RentApp";
 const { HTTP_IMG, orderList: orderList_ajax } = api
 
 export default class WorkerOrder extends RentApp {
+  static navigationOption = {
+    title: '营业员'
+  }
   state = {
     // orderList:[],
     notDoOrderList: [],

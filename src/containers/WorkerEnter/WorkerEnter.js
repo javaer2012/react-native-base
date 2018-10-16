@@ -9,6 +9,9 @@ const { HTTP_IMG, orderList: orderList_ajax } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 export default class WorkerEnter extends RentApp {
+  static navigationOption = {
+    title: '营业员'
+  }
   state = {
     // orderList:[],
     notDoOrderList:[],

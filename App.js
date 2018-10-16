@@ -193,6 +193,7 @@ export default class App extends RentApp {
         var city;
         try {
             const {data} = await AmapRegeo(lat, lon)
+            console.log(data,"datadatadatadatadatadata")
             let {
                 status,
                 infocode,
@@ -226,7 +227,6 @@ export default class App extends RentApp {
                     this.registerUser(option)
 
                     await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
-                    // debugger
                     // console.log(store, "+++", store.dispatch)
                     store.dispatch({
                         type: 'SET_LOCATION',
@@ -256,20 +256,31 @@ export default class App extends RentApp {
       try{
           console.log("Start GEO")
 
-          const geo = await api.AmapIpGeoCode()
-          console.log("AMap",geo)
-
-          navigator.geolocation.getCurrentPosition(
-              ({coords}) => {
-                  console.log(coords)
-                  const {latitude, longitude} = coords
+          if (Platform.OS === 'ios') {
+              navigator.geolocation.getCurrentPosition(
+                  ({ coords }) => {
+                      console.log(coords)
+                      const { latitude, longitude } = coords
+                      this.getCityFun(latitude, longitude)
+                      // var initialPosition = JSON.stringify(position);
+                      // this.setState({ initialPosition });
+                  },
+                  (error) => console.log(error.message),
+                  { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+              )
+          } else {
+              const { data, status } = await api.AmapIpGeoCode()
+              if (data.status === '1') {
+                const { rectangle } = data
+                  const harfData = rectangle.split(';')
+                  const arr = [...harfData[0].split(','), ...harfData[1].split(',') ] 
+                  const latitude = (+arr[1] + +arr[3]) / 2
+                  const longitude = (+arr[0] + +arr[2]) / 2
                   this.getCityFun(latitude, longitude)
-                  // var initialPosition = JSON.stringify(position);
-                  // this.setState({ initialPosition });
-              },
-              (error) => console.log(error.message),
-              {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-          )
+              }
+              
+              console.log("AMap", geo)
+          }
       } catch (e) {
           console.log(e.message)
       }

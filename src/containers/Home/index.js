@@ -132,7 +132,7 @@ class Home extends RentApp {
           ? (<Flex justify='center' align='center' style={{height:HEIGHT, width: WIDTH}}>
             <Text style={{width: 90,textAlign: 'center', color: '#666', fontSize: 14,lineHeight: 20}}>该城市暂未开通信用租机业务，目前已开通江苏无锡市，请切换到相应地市试试...</Text>
           </Flex>) 
-          : <View style={{ position: 'relative', height: '100%' }}>
+          : <View style={{ position: 'relative', height: '100%', paddingBottom: 60 }}>
             <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
               <TouchableOpacity style={styles.leftAddressBox} onPress={() => navigate('LocationPage', {
                 callback: (data) => {
@@ -140,6 +140,7 @@ class Home extends RentApp {
                 }
               })}>
                 <Text style={{ color: '#fff', marginRight: 4 }}>{addressMsg && addressMsg.city}</Text>
+                {console.log(addressMsg,"!!!!!!")}
                 <View style={styles.triangle}></View>
               </TouchableOpacity>
               <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
