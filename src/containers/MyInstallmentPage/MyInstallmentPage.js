@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
     padding: 30,
+    overflow: 'visible',
     backgroundColor: '#2FCBC3',
   },
   advance:{
