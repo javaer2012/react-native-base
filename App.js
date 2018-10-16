@@ -9,7 +9,7 @@
 import React from 'react';
 import {Provider} from 'react-redux';
 import store from './src/store/store';
-import AppNavigator from './src/router';
+import AppNavigator,{appNav} from './src/router';
 import {AsyncStorage, Platform, Linking, Alert } from 'react-native';
 import api from './src/service/api'
 import config from './src/config';
@@ -17,6 +17,7 @@ import DeviceInfo from 'react-native-device-info'
 import {areaDict} from './src/utils/city1.json'
 import { localCodeInfo} from './src/utils/city'
 import RentApp from "./src/components/RentApp";
+
 
 
 import {

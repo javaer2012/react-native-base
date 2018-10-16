@@ -1,6 +1,6 @@
 // import {StackNavigator} from 'react-navigation';
 import React from 'react';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator ,createStackNavigator,createBottomTabNavigator} from 'react-navigation';
 import Home from '../containers/Home'
 import Login from "../containers/Login";
 import Register from "../containers/Register";
@@ -53,13 +53,8 @@ import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
 import RentOrderDetail from '../containers/RentOrderDetail/RentOrderDetail'  // 确认订单
 
 
-
-
-
 export default StackNavigator({
-    tab: {
-        screen:TabNavigator,
-    },
+    tab: TabNavigator,
     LoginPage: Login,
     Home: Home,
     RegisterPage: Register,
@@ -75,7 +70,7 @@ export default StackNavigator({
     DrivingPage:DrivingLicense, // 驾驶证件
     EducationPage:Education, // 学籍学历
     SearchPage:Search, // 搜索页面
-    FindPage:Find, // 发现页面
+    //FindPage:Find, // 发现页面
     ScorePage:Score, // 晒晒分
     KnowScorePage:KnowScore, // 了解信用分
     ProductDetail: ProductDetailPage, //商品详情
@@ -117,3 +112,4 @@ export default StackNavigator({
         },
     }
 })
+
