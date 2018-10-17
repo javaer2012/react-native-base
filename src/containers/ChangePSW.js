@@ -57,6 +57,8 @@ class ChangePSW extends RentApp {
             if (data.errcode === 1) {
                 Toast.info("解绑成功", 1.5)
                 this.props.dispatch({type:"MYPAGE_INIT"})
+                this.props.dispatch({type:"CLEAR_BANK_CARD"})
+                this.props.dispatch({type:"INIT_BANK_CARD"})
                 setTimeout(() => this.props.navigation.replace("BackCardPage"), 1500)
             } else {
                 Toast.info(data.errmsg)
