@@ -27,6 +27,10 @@ const styles = StyleSheet.create({
 export default class BankCard extends RentApp {
 
 
+    static navigationOptions = {
+        title:'我的银行卡'
+    }
+
     state = {
         loading: false
     }

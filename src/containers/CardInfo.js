@@ -5,7 +5,10 @@ import RentApp from "../components/RentApp";
 import Count from "../components/Count";
 import Button from '../components/common/Button'
 import api from "../service/api";
-export default class CardInfo extends RentApp{
+import {connect} from 'react-redux';
+
+
+class CardInfo extends RentApp{
 
     static navigationOptions = {
         title:'绑定银行卡'
@@ -99,45 +102,13 @@ export default class CardInfo extends RentApp{
 
             const {data} = rsp
             if(data.errcode === 1){
-                Toast.info('绑卡成功',1)
+                Toast.info('绑卡成功',1.5)
 
-                const userInfo = await AsyncStorage.getItem('userInfo');
+                this.props.dispatch({type:'MYPAGE_INIT'})
 
-                const userInfoJson = JSON.parse(userInfo),
-                    userParam = {
-                        userId:this.userId,
-                        openId:this.openId,
-                        cityCode: this.cityCode,
-                        provinceCode: this.provinceCode,
-                    },
-                    userRsp = await api.getUserInfo(userParam)
-
-
-                    const {data} = userRsp
-
-                    if(data.errcode === 1){
-
-                       data.userInfo.isLoggedIn = '1'
-
-
-                        console.log(data.userInfo)
-
-                        for (var p in data.user){
-                            if(data.userInfo[p] === null) data.userInfo[p] = '0'
-                        }
-
-                        AsyncStorage.setItem('userInfo',JSON.stringify(data.userInfo))
-                            .then(res=>{
-
-                                console.log("res")
-                                this.props.navigation.replace("ProductDetail",{
-                                    productId:this.productId
-                                })
-                            })
-
-
-                    }
-
+                this.props.navigation.replace("ProductDetail",{
+                    productId:this.productId
+                })
 
             } else {
                 Toast.info(data.errmsg,1.5)
@@ -181,3 +152,15 @@ export default class CardInfo extends RentApp{
         )
     }
 }
+
+const stateToProps =(state)=>{
+    console.log(state)
+    return {
+        provinceCode: state.locationReducer.locationInfos.provinceCode,
+        cityCode: state.locationReducer.locationInfos.cityCode,
+        openId: state.app.openId,
+        userId: state.app.userId
+    }
+}
+
+export default connect(stateToProps)(CardInfo)

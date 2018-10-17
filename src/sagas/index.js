@@ -9,6 +9,6 @@ export default function* rootSagas() {
     yield takeEvery('INCREMENT_ASYNC', homeSagas.incrementAsync)
     yield takeEvery('SET_LOCATION_ASYNC', homeSagas.setLocationFun)
     yield takeEvery('ADD_HISTORY_KEYS',historySaga.historyKeys)
-    yield takeEvery("MYPAGE_INIT", mySaga.myPageInit)
+    yield takeEvery("MYPAGE_INIT", mySaga.getUserInfo)
     yield takeEvery("LOGOUT",appSaga.logout)
 }

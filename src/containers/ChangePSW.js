@@ -5,11 +5,12 @@ import api from "../service/api";
 import RentApp from "../components/RentApp";
 import Count from "../components/Count";
 import {phoneCheck} from "../utils/inputCheck";
+import {connect} from 'react-redux'
 
 
-export default class ChangePSW extends RentApp {
+class ChangePSW extends RentApp {
     static navigationOptions = {
-        title: "修改密码"
+        title: "银行卡解绑"
     }
     state = {
         oPSW: "",
@@ -43,10 +44,10 @@ export default class ChangePSW extends RentApp {
             }
 
             const params = {
-                openId: this.openId,
-                userId: this.userId,
-                provCode: this.provinceCode,
-                cityCode: this.cityCode,
+                openId: this.props.openId,
+                userId: this.props.userId,
+                provCode: this.props.provinceCode,
+                cityCode: this.props.cityCode,
                 ...this.state
             }
 
@@ -55,6 +56,7 @@ export default class ChangePSW extends RentApp {
             const {data} = rsp
             if (data.errcode === 1) {
                 Toast.info("解绑成功", 1.5)
+                this.props.dispatch({type:"MYPAGE_INIT"})
                 setTimeout(() => this.props.navigation.replace("BackCardPage"), 1500)
             } else {
                 Toast.info(data.errmsg)
@@ -73,7 +75,12 @@ export default class ChangePSW extends RentApp {
         return (
             <ScrollView>
                 <WingBlank size="md">
-                    <List renderHeader={() => <View><Text>银行卡信息</Text></View>}>
+                    <List renderHeader={() => <View>
+                        <WhiteSpace size={'md'}/>
+                        <Text>银行卡信息</Text>
+                        <WhiteSpace size={'md'}/>
+
+                        </View>}>
                         <InputItem type="number" value={phoneNo}
                                    onChange={(phoneNo) => this.setState({phoneNo})}
                                    placeholder={"银行预留手机号"}>
@@ -118,3 +125,12 @@ const styles = StyleSheet.create({
         borderColor: '#06C1AE'
     }
 })
+
+const stateToProps = state =>({
+    provinceCode: state.locationReducer.locationInfos.provinceCode,
+    cityCode: state.locationReducer.locationInfos.cityCode,
+    openId: state.app.openId,
+    userId: state.app.userId
+})
+
+export default connect(stateToProps)(ChangePSW)

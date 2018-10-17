@@ -1,6 +1,6 @@
 // import {StackNavigator} from 'react-navigation';
 import React from 'react';
-import { StackNavigator ,createStackNavigator,createBottomTabNavigator} from 'react-navigation';
+import {StackNavigator, createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 import Home from '../containers/Home'
 import Login from "../containers/Login";
 import Register from "../containers/Register";
@@ -50,8 +50,116 @@ import NegativeRecord from '../containers/NegativeRecord'
 import OrderDetail from '../containers/OrderDetail/OrderDetail';
 import CrmPage_2 from '../containers/crmPage_2'
 import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
-import RentOrderDetail from '../containers/RentOrderDetail/RentOrderDetail'  // 确认订单
+import RentOrderDetail from '../containers/RentOrderDetail/RentOrderDetail'
+import {Image} from "react-native";
+import Color from "../styles/var";  // 确认订单
 
+
+const HomeStack = createStackNavigator({
+    Home: Home,
+    SearchPage: Search, // 搜索页面
+    ProductDetail: ProductDetailPage, //商品详情
+    ProductParameterPage: ProductParameterPage,  // 商品参数详情
+    ProductListPage: ProductListPage,
+    OrderDetail, // 从WorkerEnter进入受理订单页面
+    Accept: Accept,  // 受理：crm信息回填
+    UploadImg: UploadImg,
+    Pay,
+    PayResult,
+    LocationPage,
+})
+
+const FindStack = createStackNavigator({
+    FindPage: Find,
+    FindDetailPage: FindDetail,
+
+})
+
+const MyStack = createStackNavigator({
+    MyPage: My,
+    LoginPage: Login,
+    RegisterPage: Register,
+    ForgetPSWPage: ForgetPSW,
+    ChangePSWPage: ChangePSW,
+    BadRecordPage: BadRecords,  // 负面记录
+    AuthRecordPage: AuthRecords, // 授信纪录
+    MyOrderPage: MyOrders, // 昊天的
+    PersonalInfoPage: PersonalInfo,  // 个人信息 学历驾驶证
+    AuthApplyPage: AuthApply, // 填写信用租机信息
+    TermPage: Term, // 信息条款说明
+    DrivingPage: DrivingLicense, // 驾驶证件
+    EducationPage: Education, // 学籍学历
+    ScorePage: Score, // 晒晒分
+    KnowScorePage: KnowScore, // 了解信用分
+    OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
+    MyInstallmentPage: MyInstallmentPage, // 我的分期
+    MyOrder: MyOrder, // 孟令禹 我的订单
+    WorkerEnter: WorkerEnter, // 营业员入口
+    WorkerOrder: WorkerOrder, // 啥都没有
+    WaitPage: Wait,
+    AuthSuccessPage: AuthSuccess,
+    BackCardPage: BankCard,
+    AddBankCardPage: AddBankCard,
+    MyCollectionsPage: MyCollections,
+    CardInfoPage: CardInfo,
+    NegativeRecord,
+    CrmPage_2,
+    SchoolSearchPage,
+    RentOrderDetail
+})
+
+
+// export default createBottomTabNavigator({
+//         Home:HomeStack,
+//         FindPage:FindStack,
+//         MyPage:MyStack
+//     },
+//     {
+//         navigationOptions: ({ navigation }) => {
+//             const { routeName } = navigation.state.routes ?
+//                 navigation.state.routes[navigation.state.index]:
+//                 navigation.state;
+//             let headerTitle = "信用租机"
+//
+//             if(routeName === "FindPage") headerTitle = "发现"
+//             if(routeName === "MyPage") headerTitle = "我的"
+//
+//             // You can do whatever you like here to pick the title based on the route name
+//
+//
+//             return {
+//                 tabBarIcon: ({ focused, tintColor }) => {
+//                     const { routeName } = navigation.state;
+//                     //console.log("Haha, I'm back")
+//                     let iconName;
+//                     if (routeName === 'Home') {
+//                         // iconName = `ios-information-circle${focused ? '' : '-outline'}`;
+//                         iconName =( !focused
+//                                 ? <Image style={{ width: 20, height: 20 }} source={require('../images/home.png')} />
+//                                 : <Image style={{ width: 20, height: 20 }} source={require('../images/homeActive.png')} />
+//                         )
+//                     } else if (routeName === 'FindPage') {
+//                         iconName =( !focused
+//                             ? <Image style={{ width: 22, height: 22 }} source={require('../images/find.png')} />
+//                             : <Image style={{ width: 22, height: 22 }} source={require('../images/findActive.png')} />)
+//                     } else if (routeName === 'MyPage') {
+//                         iconName =( !focused
+//                             ? <Image style={{ width: 20, height: 20 }} source={require('../images/my.png')} />
+//                             : <Image style={{ width: 20, height: 20 }} source={require('../images/myActive.png')} />)
+//                     }
+//
+//                     // You can return any component that you like here! We usually use an
+//                     // icon component from react-native-vector-icons
+//                     // return <Ionicons name={iconName} size={25} color={tintColor} />;
+//                     return iconName
+//                 }
+//             }
+//         },
+//         tabBarOptions: {
+//             activeTintColor: Color.mainGreen,
+//             inactiveTintColor: 'gray',
+//         },
+//     })
 
 export default StackNavigator({
     tab: TabNavigator,
@@ -61,18 +169,18 @@ export default StackNavigator({
     ForgetPSWPage: ForgetPSW,
     ChangePSWPage: ChangePSW,
     MyPage: My,
-    BadRecordPage:BadRecords,  // 负面记录
-    AuthRecordPage:AuthRecords, // 授信纪录
-    MyOrderPage:MyOrders, // 昊天的
-    PersonalInfoPage:PersonalInfo,  // 个人信息 学历驾驶证
-    AuthApplyPage:AuthApply, // 填写信用租机信息
-    TermPage:Term, // 信息条款说明
-    DrivingPage:DrivingLicense, // 驾驶证件
-    EducationPage:Education, // 学籍学历
-    SearchPage:Search, // 搜索页面
+    BadRecordPage: BadRecords,  // 负面记录
+    AuthRecordPage: AuthRecords, // 授信纪录
+    MyOrderPage: MyOrders, // 昊天的
+    PersonalInfoPage: PersonalInfo,  // 个人信息 学历驾驶证
+    AuthApplyPage: AuthApply, // 填写信用租机信息
+    TermPage: Term, // 信息条款说明
+    DrivingPage: DrivingLicense, // 驾驶证件
+    EducationPage: Education, // 学籍学历
+    SearchPage: Search, // 搜索页面
     //FindPage:Find, // 发现页面
-    ScorePage:Score, // 晒晒分
-    KnowScorePage:KnowScore, // 了解信用分
+    ScorePage: Score, // 晒晒分
+    KnowScorePage: KnowScore, // 了解信用分
     ProductDetail: ProductDetailPage, //商品详情
     ProductParameterPage: ProductParameterPage,  // 商品参数详情
     ProductListPage: ProductListPage,
@@ -86,15 +194,15 @@ export default StackNavigator({
     UploadImg: UploadImg,
     Pay,
     PayResult,
-    TakePicturePage:TakePicture,
-    WaitPage:Wait,
-    AuthSuccessPage:AuthSuccess,
-    BackCardPage:BankCard,
-    AddBankCardPage:AddBankCard,
-    MyCollectionsPage:MyCollections,
-    CardInfoPage:CardInfo,
+    TakePicturePage: TakePicture,
+    WaitPage: Wait,
+    AuthSuccessPage: AuthSuccess,
+    BackCardPage: BankCard,
+    AddBankCardPage: AddBankCard,
+    MyCollectionsPage: MyCollections,
+    CardInfoPage: CardInfo,
     LocationPage,
-    FindDetailPage:FindDetail,
+    FindDetailPage: FindDetail,
     NegativeRecord,
     CrmPage_2,
     SchoolSearchPage,

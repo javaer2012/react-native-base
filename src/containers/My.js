@@ -67,80 +67,26 @@ class My extends RentApp {
 
     constructor(props) {
         super(props)
-
-        console.log("Page My")
-
-        props.navigation.popToTop()
-
-    }
-
-    async initalState() {
-
-        this.setState({
-            loading: true
-        })
-        try {
-            const isLoggedIn = await AsyncStorage.getItem('isLoggedIn')
-            await this.getOpenIdAndUserId()
-
-            const userId = this.userId,
-                openId = this.openId
-
-            const params = {
-                userId,
-                openId,
-                cityCode: this.cityCode,
-                provinceCode: this.provinceCode,
-            }
-
-            const rsp = await api.getUserInfo(params)
-
-            const {data} = rsp
-
-            console.log(data)
-
-            if (data.errcode === 1) {
-
-                const newState = {
-                    isLoggedIn,
-                    ...data.userInfo
-                }
-
-                console.log(newState)
-
-                this.setState(newState, async () => {
-                    console.log("setState")
-                    await AsyncStorage.multiSet([['openId', openId], ['userId', userId], ['userInfo', JSON.stringify(newState)]])
-                })
-            }
-
-            console.log(rsp)
-        } catch (e) {
-
-        } finally {
-            this.setState({
-                loading: false
-            })
-        }
     }
 
     componentDidMount() {
 
-        this.props.dispatch({type:'MYPAGE_INIT',payload:"Hello"})
-        setTimeout(() => this.initalState(), 0)
+        this.props.dispatch({type:'MYPAGE_INIT'})
     }
 
-    handleCanvas(canvas) {
+    handleCanvas = (canvas) => {
         if (!canvas) return
         if (canvas) {
             canvas.height = 230;
         }
         const ctx = canvas.getContext('2d');
-        canvasScore(ctx, parseInt(this._state.userScore), this._state.lastScoreTime)
+
+        const {userInfo} = this.props
+        canvasScore(ctx, parseInt(userInfo.userScore), userInfo.lastScoreTime)
     }
 
     navigateWithLogin(pageName) {
-        if (this._state.isLoggedIn === '0' || this._state.isLoggedIn === null) {
+        if (this.props.isLoggedIn === '0' || this.props.isLoggedIn === null) {
             Toast.info("请先登录", 1)
         } else {
             this.props.navigation.navigate(pageName)
@@ -153,8 +99,7 @@ class My extends RentApp {
                 type:'LOGOUT'
             })
 
-            const rsp = await AsyncStorage.removeItem('isLoggedIn')
-            const rsp1 = await AsyncStorage.removeItem('userInfo')
+           
             this.props.navigation.replace('tab')
         } catch (e) {
 
@@ -163,31 +108,21 @@ class My extends RentApp {
 
     render() {
 
-        console.log("Props ~~~~~~",this.props)
-
-        console.log(this.state)
-
         const {navigation} = this.props
 
-        const a = navigation.getParam('useNavParams'),
-            params = navigation.getParam('userInfo', {}),
-            paramsFromLogin = navigation.getParam('isLoggedIn', this.state.isLoggedIn),
-            _state = {...this._state}
-        if (a) {
-            Object.assign(_state, {...this.state, ...params})
-        } else {
-            Object.assign(_state, {...this.state})
-        }
-        this._state = _state
+        console.log(this.props)
+
+        const {userInfo,isLoggedIn} = this.props
+        if(!userInfo) return null
 
         return (
             <ScrollView>
                 <Flex direction={"row"}>
                     <Flex.Item>
                         <ImageBackground
-                            style={_state.isLoggedIn === '1' ? (_state.isCredited?styles.topBackground:styles.topBackground2) : styles.topBackground1}
+                            style={isLoggedIn === '1' ? (userInfo.isCredited?styles.topBackground:styles.topBackground2) : styles.topBackground1}
                             source={require('../images/my/background.png')}>
-                            {_state.isLoggedIn !== "1" && _state.isLoggedIn !== 1 ?
+                            {isLoggedIn !== "1" && isLoggedIn !== 1 ?
                                 <Flex direction={"column"} style={{width: '100%'}} justify={"center"} align={"center"}>
                                     <Image style={styles.userIcon}
                                            source={require('../images/imageNew/one/userIcon.png')}/>
@@ -199,7 +134,7 @@ class My extends RentApp {
                                     </Flex>
                                 </Flex> :
                                 <React.Fragment>
-                                    {_state.isCredited === 1 ?
+                                    {userInfo.isCredited === 1 ?
                                         <Flex direction={"column"} align={"center"} justify={"center"}>
                                             <Flex direction={"row"}
                                                   justify={"end"}>
@@ -235,7 +170,7 @@ class My extends RentApp {
                                                             backgroundColor: null
                                                         }}
                                                                 onClick={() => navigation.navigate('ScorePage', {
-                                                                    score: _state.userScore ? _state.userScore : 0
+                                                                    score: _state.userScore ? userInfo.userScore : 0
                                                                 })}>晒晒我的信用分</Button>
                                                     </Flex>
                                                 </Flex.Item>
@@ -249,7 +184,7 @@ class My extends RentApp {
                                                             backgroundColor: null
                                                         }}
                                                                 onClick={() => navigation.navigate('KnowScorePage', {
-                                                                    score: _state.userScore ? _state.userScore : 0
+                                                                    score: userInfo.userScore ? userInfo.userScore : 0
                                                                 })}>了解我的信用分</Button>
                                                     </Flex>
                                                 </Flex.Item>
@@ -378,8 +313,8 @@ class My extends RentApp {
                                         <Text>负面记录</Text>
                                         <WhiteSpace size={"sm"}/>
                                         {
-                                            _state.isLoggedIn === '0' && _state.isLoggedIn === null && _state.negativeCount !== undefined && this.state.isCredited === 1 &&
-                                            <Text style={{color: '#07C1AE'}}>{`(${this.state.negativeCount }个)`}</Text>
+                                            isLoggedIn === '0' && isLoggedIn === null && userInfo.negativeCount !== undefined && userInfo.isCredited === 1 &&
+                                            <Text style={{color: '#07C1AE'}}>{`(${userInfo.negativeCount }个)`}</Text>
                                         }
                                     </Flex>
                                 </TouchableOpacity>
@@ -411,7 +346,7 @@ class My extends RentApp {
                                 </TouchableOpacity>
                             </Flex.Item>
 
-                            {_state.isCreditCard === 1 ? <Flex.Item>
+                            {userInfo.isCreditCard === 1 && isLoggedIn === "1" ? <Flex.Item>
                                 <TouchableOpacity onPress={() => this.navigateWithLogin("BackCardPage")}>
                                     <Flex direction={"column"}>
                                         <WhiteSpace size={"sm"}/>
@@ -453,7 +388,7 @@ class My extends RentApp {
 
                 <WhiteSpace size={"sm"}/>
 
-                {this.state.isStaff === 1 ? <List style={{backgroundColor: 'white'}} renderHeader={
+                {userInfo.isStaff === 1 ? <List style={{backgroundColor: 'white'}} renderHeader={
                         <TouchableOpacity onPress={() => this.navigateWithLogin('WorkerEnter')}>
                             <WhiteSpace size={"sm"}/>
                             <Flex direction={"row"}>
@@ -488,7 +423,12 @@ class My extends RentApp {
 const stateToProps =(state)=>{
     console.log(state)
     return {
-        isLoggedIn:state.app.isLoggedIn
+        isLoggedIn:state.app.isLoggedIn,
+        userInfo:state.my.userInfo,
+        provinceCode: state.locationReducer.locationInfos.provinceCode,
+        cityCode: state.locationReducer.locationInfos.cityCode,
+        openId: state.app.openId,
+        userId: state.app.userId
     }
 }
 

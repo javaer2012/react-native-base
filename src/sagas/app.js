@@ -26,9 +26,17 @@ export function* logout(action) {
     try {
 
         yield AsyncStorage.removeItem('historyKeys')
-        put({
+        yield AsyncStorage.removeItem('isLoggedIn')
+        yield AsyncStorage.removeItem('userInfo')
+        yield put({
             type:'INIT_HISTORY_KEYS',
             payload:[]
+        })
+        yield put({
+            type:'CLEAR_LOGGEDIN'
+        })
+        yield put({
+            type:'USER_INFO'
         })
     } catch (e) {
 
