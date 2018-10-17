@@ -220,11 +220,16 @@ export default class Find extends RentApp {
 
         const {data} = this.state
 
-        if (data &&  data.length === 0) return null
+        if (!data) return null
 
         return (
             <View style={{width: '100%'}}>
+            {data.length === 0?
+                <Flex direction={"row"} justify={'center'} align={"center"}>
+                    <Text>暂无发现内容</Text>
+                </Flex>:
                 <FlatList data={data} renderItem={this.renderItem.bind(this)} style={{width: '100%'}} />
+            }
             </View>
         )
     }
