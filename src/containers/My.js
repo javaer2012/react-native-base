@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     Image,
+    DeviceEventEmitter,
     ImageBackground,
     Platform,
     AsyncStorage, Dimensions
@@ -156,6 +157,7 @@ class My extends RentApp {
             const rsp = await AsyncStorage.removeItem('isLoggedIn')
             const rsp1 = await AsyncStorage.removeItem('userInfo')
             this.props.navigation.replace('tab')
+            DeviceEventEmitter.emit('refreshDataHome')
         } catch (e) {
 
         }

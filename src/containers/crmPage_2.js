@@ -6,6 +6,7 @@ import RentApp from "../components/RentApp";
 import Button from '../components/common/Button'
 import Progress from '../components/Progress'
 import Spinner from 'react-native-loading-spinner-overlay'
+import { connect } from 'react-redux'
 import api from "../service/api";
 const { staffCommitOrder } = api
 
@@ -25,7 +26,7 @@ const data = [
         text: '上传并签协议'
     }
 ]
-export default class CrmPage_2 extends RentApp {
+class CrmPage_2 extends RentApp {
 
     static navigationOptons = {
         title: 'crm信息回填'
@@ -34,6 +35,10 @@ export default class CrmPage_2 extends RentApp {
     state = {
         fromAcceptDate:{},
         loading: false,
+    }
+
+    componentWillReceiveProps = (nextProps) => {
+        const { openId, userId } = nextProps
     }
 
 
@@ -330,3 +335,10 @@ export default class CrmPage_2 extends RentApp {
         )
     }
 }
+
+const mapStateToProps = state => ({
+    openId: state.app.openId,
+    userId: state.app.userId
+})
+
+export default connect(mapStateToProps)(CrmPage_2)

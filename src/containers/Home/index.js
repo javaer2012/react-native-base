@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, ScrollView, AsyncStorage, Dimensions } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, ScrollView, AsyncStorage, Dimensions, DeviceEventEmitter } from 'react-native'
 import { Button, Carousel, List, Flex } from 'antd-mobile-rn';
 import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
@@ -20,7 +20,7 @@ class Home extends RentApp {
     title: "首页"
   }
   state = {
-    bannerList: [1, 2, 3],
+    bannerList: [],
     hotPhoneList: [],
     addressMsg:{},
     value: [],
@@ -28,46 +28,47 @@ class Home extends RentApp {
     loading: true,
   }
 
-  goToAddressPage = () => {
-
-  }
-
   async componentDidMount() {
-
+    this.subscription = DeviceEventEmitter.addListener('refreshDataHome', this.refreshData)
     console.log(this.props, "======> this.props")
-    try {
-      await this.setState({ loading: true })
-      const { data: getBannerAndNavData , data: { bannerList, navList } } = await getBannerAndNav({})
-
-      this.setState({
-        bannerList,
-        navList,
-      })
-      console.log(JSON.stringify(getBannerAndNavData), "==>getBannerAndNavData")
-    } catch (error) {
-      console.error(error)
-    } finally {
-      await this.setState({ loading: false })
-    }
+    // this.getBannerNavData()
   }
 
 
   componentWillReceiveProps = async (nextProps) => {
+    const {
+      bannerList,
+      navList,
+      hotMealList,
+      hotPhoneList
+    } = nextProps.homeData
+
+    
     const addressMsg = nextProps.locationInfos
+    if (!hotPhoneList || JSON.stringify(hotPhoneList) === "{}") {
+      this.props.dispatch({
+        type: 'home/GET_HOME_PRODUCTS',
+        params: addressMsg
+      })
+    }
+    if (!bannerList) {
+      this.props.dispatch({
+        type: 'home/GET_BANNER_AND_NAV'
+      })
+    }
+
+    if (addressMsg) { this.setState({ addressMsg }) }
+    if (hotPhoneList) { this.setState({ hotPhoneList }) }
+    if (bannerList) { this.setState({ bannerList, navList }) }
 
     console.log(addressMsg, "redux 中拿出locationInfos")
-    // const user = await AsyncStorage.getItem('userInfo')
-    const { data: hotProductsData, data: { hotMealList, hotPhoneList } } = await hotProducts({
-      provinceCode: addressMsg.provinceCode,  // 测试用
-      cityCode: addressMsg.cityCode
-    })
-    console.log(hotProductsData, "home ======> hotProductsData")
+  }
 
-    this.setState({
-      addressMsg,
-      hotPhoneList,
-      hotMealList: hotMealList
+  refreshData = () => {
+    const addressMsg = this.props.locationInfos
+    this.props.dispatch({type: 'home/GET_HOME_PRODUCTS', params: addressMsg
     })
+    this.props.dispatch({ type: 'home/GET_BANNER_AND_NAV', })
   }
 
   // 渲染热销商品
@@ -127,12 +128,12 @@ class Home extends RentApp {
     //   return <Text>1</Text> 
     // } 
     return (
-      <Flex>
+      <Flex style={{flex: 1, width:WIDTH}}>
         {!addressMsg.provinceCode 
           ? (<Flex justify='center' align='center' style={{height:HEIGHT, width: WIDTH}}>
             <Text style={{width: 90,textAlign: 'center', color: '#666', fontSize: 14,lineHeight: 20}}>该城市暂未开通信用租机业务，目前已开通江苏无锡市，请切换到相应地市试试...</Text>
           </Flex>) 
-          : <View style={{ position: 'relative', height: '100%', paddingBottom: 60 }}>
+          : <View style={{ position: 'relative', height: '100%', width: WIDTH}}>
             <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
               <TouchableOpacity style={styles.leftAddressBox} onPress={() => navigate('LocationPage', {
                 callback: (data) => {
@@ -140,7 +141,6 @@ class Home extends RentApp {
                 }
               })}>
                 <Text style={{ color: '#fff', marginRight: 4 }}>{addressMsg && addressMsg.city}</Text>
-                {console.log(addressMsg,"!!!!!!")}
                 <View style={styles.triangle}></View>
               </TouchableOpacity>
               <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
@@ -184,6 +184,9 @@ class Home extends RentApp {
                 <Text style={styles.listTitle}>推荐产品</Text>
                 {this.renderList(hotPhoneList)}
               </View>
+              <View style={{height: 60}}>
+              {/* 占位 */}
+              </View>
 
             </ScrollView>
             <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
@@ -191,6 +194,7 @@ class Home extends RentApp {
             </View>
           </View>
         }
+        
       </Flex>
       
     )
@@ -293,7 +297,10 @@ const styles = StyleSheet.create({
   }
 });
 const mapStateToProps = state => {
-  return state.locationReducer
+  return {
+    locationInfos: state.locationReducer.locationInfos, 
+    homeData: state.homeDataReducer
+  }
 }
 
 
