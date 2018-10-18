@@ -3,7 +3,7 @@ import * as mySaga from './my'
 import * as appSaga from './app'
 import * as historySaga from './historyKeys'
 import * as bankSaga from './bankCard'
-
+import * as findSaga from './find'
 import {takeEvery} from 'redux-saga'
 
 export default function* rootSagas() {
@@ -14,4 +14,6 @@ export default function* rootSagas() {
     yield takeEvery("MYPAGE_INIT", mySaga.getUserInfo)
     yield takeEvery("LOGOUT",appSaga.logout)
     yield takeEvery("INIT_BANK_CARD",bankSaga.initBankCard)
+    yield takeEvery("QUERY_FIND_LIST",findSaga.find)
+
 }

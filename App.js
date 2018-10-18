@@ -271,8 +271,6 @@ export default class App extends RentApp {
         // const value1 = await AsyncStorage.getItem('Test')
         // console.log("Test1", value1)
       try{
-          console.log("Start GEO")
-
           if (Platform.OS === 'ios') {
               navigator.geolocation.getCurrentPosition(
                   ({ coords }) => {
@@ -299,7 +297,6 @@ export default class App extends RentApp {
       } catch (e) {
           console.log(e.message)
       }
-
     }
 
     render() {
