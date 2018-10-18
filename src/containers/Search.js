@@ -9,8 +9,8 @@ import {connect} from 'react-redux'
 
 const styles = StyleSheet.create({
     tag: {
-        paddingVertical: 11,
-        paddingHorizontal: 20,
+        paddingVertical: 5,
+        paddingHorizontal: 15,
         backgroundColor: '#F4F4F4',
         borderRadius: 4,
         marginVertical: 5,

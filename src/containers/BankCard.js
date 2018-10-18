@@ -3,6 +3,7 @@ import {View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, AsyncS
 import {Flex, WhiteSpace, WingBlank,Toast} from 'antd-mobile-rn'
 import RentApp from "../components/RentApp";
 import api from "../service/api";
+import { connect } from "react-redux";
 
 
 const styles = StyleSheet.create({
@@ -24,8 +25,11 @@ const styles = StyleSheet.create({
     }
 })
 
-export default class BankCard extends RentApp {
+class BankCard extends RentApp {
 
+    static navigationOptions = {
+        title:'我的银行卡'
+    }
 
     state = {
         loading: false
@@ -39,52 +43,21 @@ export default class BankCard extends RentApp {
     }
 
     componentDidMount() {
-        setTimeout(() => this.queryBankCard(), 0)
+
+        this.props.dispatch({
+            type:'INIT_BANK_CARD'
+        })
+
     }
-
-    queryBankCard = async () => {
-        try {
-            await this.setState({
-                loading: true
-            })
-
-            await AsyncStorage.getItem('userInfo')
-
-            const params = {
-                openId: this.openId,
-                userId: this.userId
-            }
-
-            const rsp = await api.queryMyBank(params)
-
-            console.log(rsp)
-
-            const {data} = rsp
-
-            if (data.errcode === 1) {
-                this.setState({
-                    cardInfo: data.cardInfo
-                })
-            }
-
-        } catch (e) {
-
-        } finally {
-            this.setState({
-                loading: false
-            })
-        }
-    }
-
 
     render() {
 
-        const {cardInfo} = this.state
+        const {cardInfo} = this.props
         if (!cardInfo) return null
         return (
             <View>
                 <WhiteSpace size={"lg"}/>
-                {Object.keys(this.state.cardInfo).length > 0 ?
+                {Object.keys(cardInfo).length > 0 ?
                     <View>
                         <ImageBackground style={{width: '100%', height: 190, borderRadius: 6}}
                                          source={require('../images/bank/back.png')}>
@@ -173,3 +146,16 @@ export default class BankCard extends RentApp {
         )
     }
 }
+
+const stateToProps =(state)=>{
+    console.log(state)
+    return {
+        provinceCode: state.locationReducer.locationInfos.provinceCode,
+        cityCode: state.locationReducer.locationInfos.cityCode,
+        openId: state.app.openId,
+        userId: state.app.userId,
+        cardInfo:state.bankCard.cardInfo
+    }
+}
+
+export default connect(stateToProps)(BankCard)

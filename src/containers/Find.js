@@ -1,13 +1,15 @@
 import React from 'react';
-import {ScrollView, View, Text, FlatList, AsyncStorage, Image,ImageBackground,TouchableOpacity} from 'react-native';
-import {Flex, Icon, WhiteSpace, WingBlank, Toast, Carousel} from 'antd-mobile-rn';
+import { ScrollView, View, Text, FlatList, AsyncStorage, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { Flex, Icon, WhiteSpace, WingBlank, Toast, Carousel } from 'antd-mobile-rn';
 import RentApp from "../components/RentApp";
 import api from "../service/api";
+import { connect } from 'react-redux'
+import { NavigationEvents } from 'react-navigation'
 
 
 const imgUrl = "https://mobile2.lychee-info.cn/cps-rest/showImg?fileName="
 
-export default class Find extends RentApp {
+class Find extends RentApp {
 
 
     static navigationOptions = {
@@ -16,7 +18,7 @@ export default class Find extends RentApp {
 
     state = {
         data: [],
-        pageNum:1
+        pageNum: 1
     }
 
     constructor(props) {
@@ -44,7 +46,7 @@ export default class Find extends RentApp {
 
             console.log(rsp)
 
-            const {data} = rsp
+            const { data } = rsp
             if (data.errcode === 0) {
                 Toast.info(data.errmsg, 2)
             } else {
@@ -55,12 +57,12 @@ export default class Find extends RentApp {
             }
         }
         catch (e) {
-            Toast.info("服务器开小差了，请稍后再试",1.5)
+            Toast.info("服务器开小差了，请稍后再试", 1.5)
         }
     }
 
-    getDetail = async (detailId,itemType)=>{
-        try{
+    getDetail = async (detailId, itemType) => {
+        try {
 
             const params = {
                 openId: this.openId,
@@ -77,11 +79,11 @@ export default class Find extends RentApp {
 
             console.log(rsp)
 
-            const {data} = rsp
+            const { data } = rsp
 
-            if(data.errcode === 1){
-                this.props.navigation.navigate('FindDetailPage',{
-                    detail:data.detailInfo
+            if (data.errcode === 1) {
+                this.props.navigation.navigate('FindDetailPage', {
+                    detail: data.detailInfo
                 })
             }
 
@@ -92,48 +94,48 @@ export default class Find extends RentApp {
 
     renderCarousel(item) {
 
-        const {detailList,itemType} = item;
+        const { detailList, itemType } = item;
 
-        if(!detailList) return null
+        if (!detailList) return null
 
         if (detailList.length <= 0) {
             return null
         } else {
             return (
                 <React.Fragment>
-                    {detailList.length === 1? <TouchableOpacity style={{width: '100%', height: 200}}
-                                                                onPress={()=>this.getDetail(detailList[0].detailId,itemType)}>
-                        <Image resizeMode={'stretch'} style={{width: '100%', height: 190}}
-                               source={{uri: `${imgUrl}${detailList[0].imagePath}`}}/>
-                    </TouchableOpacity>:
+                    {detailList.length === 1 ? <TouchableOpacity style={{ width: '100%', height: 200 }}
+                        onPress={() => this.getDetail(detailList[0].detailId, itemType)}>
+                        <Image resizeMode={'stretch'} style={{ width: '100%', height: 190 }}
+                            source={{ uri: `${imgUrl}${detailList[0].imagePath}` }} />
+                    </TouchableOpacity> :
                         <Carousel selectedIndex={2}
-                                                         autoplay
-                                                         infinite
-                                                         afterChange={this.onHorizontalSelectedIndexChange}
-                                                         style={{width: '100%', height: 190}}>
-                        {
-                            detailList.map((item, index) => {
-                                return (
+                            autoplay
+                            infinite
+                            afterChange={this.onHorizontalSelectedIndexChange}
+                            style={{ width: '100%', height: 190 }}>
+                            {
+                                detailList.map((item, index) => {
+                                    return (
 
-                                    <TouchableOpacity style={{width: '100%', height: 200}}
-                                                      onPress={()=>this.getDetail(item.detailId,itemType)}>
-                                        <Image resizeMode={'stretch'} style={{width: '100%', height: 190}}
-                                               source={{uri: `${imgUrl}${item.imagePath}`}}/>
-                                    </TouchableOpacity>
-                                )
-                            })
+                                        <TouchableOpacity style={{ width: '100%', height: 200 }}
+                                            onPress={() => this.getDetail(item.detailId, itemType)}>
+                                            <Image resizeMode={'stretch'} style={{ width: '100%', height: 190 }}
+                                                source={{ uri: `${imgUrl}${item.imagePath}` }} />
+                                        </TouchableOpacity>
+                                    )
+                                })
 
-                        }
-                    </Carousel>}
+                            }
+                        </Carousel>}
 
-                    <WhiteSpace size={"md"}/>
+                    <WhiteSpace size={"md"} />
                 </React.Fragment>
             )
         }
     }
 
     renderArtical(item) {
-        const {detailList,itemType} = item;
+        const { detailList, itemType } = item;
 
         if (detailList.length === 0) return null
 
@@ -141,48 +143,48 @@ export default class Find extends RentApp {
 
         return (
 
-            <TouchableOpacity style={{width: '100%', backgroundColor: 'white',borderBottomColor:'#EAEEEF',borderBottomWidth: 10}}
-                              onPress={()=>this.getDetail(content.detailId,itemType)}>
-                <WhiteSpace size={"md"}/>
+            <TouchableOpacity style={{ width: '100%', backgroundColor: 'white', borderBottomColor: '#EAEEEF', borderBottomWidth: 10 }}
+                onPress={() => this.getDetail(content.detailId, itemType)}>
+                <WhiteSpace size={"md"} />
                 <WingBlank size={"md"}>
                     <Flex direction={"row"} justify={"around"}>
-                        <Text style={{width: 216}}>{content.leftText}</Text>
-                        <Image resizeMode={"stretch"} style={{width: 120, height: 70}}
-                               source={{uri: `${imgUrl}/${content.imagePath}`}}></Image>
+                        <Text style={{ width: 216 }}>{content.leftText}</Text>
+                        <Image resizeMode={"stretch"} style={{ width: 120, height: 70 }}
+                            source={{ uri: `${imgUrl}/${content.imagePath}` }}></Image>
                     </Flex>
                 </WingBlank>
-                <WhiteSpace size={"md"}/>
+                <WhiteSpace size={"md"} />
 
             </TouchableOpacity>
         )
     }
 
-    renderPictures(item){
-        const {imageList,textList,itemType} = item;
+    renderPictures(item) {
+        const { imageList, textList, itemType } = item;
 
-        return(
-            <TouchableOpacity style={{width:'100%',backgroundColor:'white',borderBottomColor:'#EAEEEF',borderBottomWidth: 10}}
-                              onPress={()=>this.getDetail(textList[0].detailId,itemType)}>
-                <WhiteSpace size={"md"}/>
+        return (
+            <TouchableOpacity style={{ width: '100%', backgroundColor: 'white', borderBottomColor: '#EAEEEF', borderBottomWidth: 10 }}
+                onPress={() => this.getDetail(textList[0].detailId, itemType)}>
+                <WhiteSpace size={"md"} />
                 <WingBlank size={"md"}>
-                    <Flex style={{width:'100%'}} direction={"column"}>
-                        <Text style={{width:'100%',textAlign: 'left'}}>{textList[0].topText}</Text>
-                        <WhiteSpace size={"md"}/>
-                        <Flex style={{width:'100%'}} direction={"row"} justify={"between"}>
+                    <Flex style={{ width: '100%' }} direction={"column"}>
+                        <Text style={{ width: '100%', textAlign: 'left' }}>{textList[0].topText}</Text>
+                        <WhiteSpace size={"md"} />
+                        <Flex style={{ width: '100%' }} direction={"row"} justify={"between"}>
                             {
-                                imageList.map((item,index)=>{
-                                    if(index <= 2){
-                                       if(index === 2){
-                                           return <ImageBackground resizeMode={"contain"}
-                                                                   style={{width:115,height:70,position:'relative'}}
-                                                                   source={{uri:`${imgUrl}/${item.imagePath}`}}>
-                                               <Text style={{color:'white',position:'absolute',right:10,bottom:5}}>{`${imageList.length} 图`}</Text>
-                                           </ImageBackground>
-                                       }
+                                imageList.map((item, index) => {
+                                    if (index <= 2) {
+                                        if (index === 2) {
+                                            return <ImageBackground resizeMode={"contain"}
+                                                style={{ width: 115, height: 70, position: 'relative' }}
+                                                source={{ uri: `${imgUrl}/${item.imagePath}` }}>
+                                                <Text style={{ color: 'white', position: 'absolute', right: 10, bottom: 5 }}>{`${imageList.length} 图`}</Text>
+                                            </ImageBackground>
+                                        }
                                         return (
                                             <Image resizeMode={"contain"}
-                                                   style={{width:115,height:70}}
-                                                   source={{uri:`${imgUrl}/${item.imagePath}`}}/>
+                                                style={{ width: 115, height: 70 }}
+                                                source={{ uri: `${imgUrl}/${item.imagePath}` }} />
                                         )
                                     }
                                 })
@@ -191,26 +193,22 @@ export default class Find extends RentApp {
                     </Flex>
 
                 </WingBlank>
-                <WhiteSpace size={"md"}/>
+                <WhiteSpace size={"md"} />
 
             </TouchableOpacity>
         )
     }
 
-    componentDidMount() {
-        setTimeout(() => this.getData(), 0)
-    }
-
-    renderItem(Item){
-        const {item} = Item
-        console.log("Item",item)
+    renderItem(Item) {
+        const { item } = Item
+        console.log("Item", item)
         if (item.itemType === 1) {
             return this.renderCarousel(item)
         }
         if (item.itemType === 2) {
             return this.renderArtical(item)
         }
-        if(item.itemType === 3){
+        if (item.itemType === 3) {
             return this.renderPictures(item)
         }
     }
@@ -218,14 +216,36 @@ export default class Find extends RentApp {
 
     render() {
 
-        const {data} = this.state
+        const { find } = this.props
 
-        if (data &&  data.length === 0) return null
+        if (this.props.isFocused) {
+           
+        }
+
 
         return (
-            <View style={{width: '100%'}}>
-                <FlatList data={data} renderItem={this.renderItem.bind(this)} style={{width: '100%'}} />
+            <View style={{ width: '100%' }}>
+                <NavigationEvents
+                    onWillFocus={payload =>  this.props.dispatch({
+                        type: "QUERY_FIND_LIST"
+                    })}
+                    onDidFocus={payload => console.log('did focus', payload)}
+                    onWillBlur={payload => console.log('will blur', payload)}
+                    onDidBlur={payload => console.log('did blur', payload)}
+                />
+                {find.length === 0 ?
+                    <Flex direction={"row"} justify={'center'} align={"center"}>
+                        <Text>暂无发现内容</Text>
+                    </Flex> :
+                    <FlatList data={find} renderItem={this.renderItem.bind(this)} style={{ width: '100%' }} />
+                }
             </View>
         )
     }
 }
+
+const stateToProps = state => ({
+    find: state.find.data
+})
+
+export default connect(stateToProps)(Find)

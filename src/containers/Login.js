@@ -7,12 +7,12 @@ import Button from '../components/common/Button'
 import Count from '../components/Count';
 import RentApp from "../components/RentApp";
 import {passwordCheck, phoneCheck} from "../utils/inputCheck";
+import {connect} from 'react-redux'
 
 
 const {appLogin} = api
 
-
-export default class Login extends RentApp {
+class Login extends RentApp {
     static navigationOptions = {
         title: "登录"
     }
@@ -59,34 +59,20 @@ export default class Login extends RentApp {
             const {data} = login;
             if (data.errcode === 1) {
 
-                const {userInfo} = data
+                this.props.dispatch({
+                    type:'MYPAGE_INIT'
+                })
+                this.props.dispatch({
+                    type:'LOGGEDIN'
+                })
+                const rsp = await AsyncStorage.multiSet([['isLoggedIn', '1']])
 
-                const uInfoParams = {
-                    userId: userInfo.userId,
-                    openId: userInfo.openId,
-                    cityCode: this.cityCode,
-                    provinceCode: this.provinceCode,
-                }
+                const fromPage = this.props.navigation.getParam('fromPageName', "MyPage")
+                const fromPageParams = this.props.navigation.getParam('fromPageParams', {})
 
-                const uInfo = await api.getUserInfo(uInfoParams)
-
-                console.log(uInfo)
-
-                if (uInfo.data.errcode === 1) {
-
-                    uInfo.data.userInfo.isLoggedIn = '1'
-
-                    const rsp = await AsyncStorage.multiSet([['userInfo', JSON.stringify(uInfo.data.userInfo)], ['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
-
-                    const fromPage = this.props.navigation.getParam('fromPageName', "MyPage")
-                    const fromPageParams = this.props.navigation.getParam('fromPageParams', {})
-
-                    this.props.navigation.navigate(fromPage, {
-                        useNavParams: true,
-                        userInfo: uInfo.data.userInfo,
-                        ...fromPageParams
-                    })
-                }
+                this.props.navigation.navigate(fromPage, {
+                    ...fromPageParams
+                })
 
 
             } else {
@@ -215,3 +201,16 @@ const styles = StyleSheet.create({
         lineHeight: 15
     }
 })
+
+
+const stateToProps =(state)=>{
+    console.log(state)
+    return {
+        provinceCode: state.locationReducer.locationInfos.provinceCode,
+        cityCode: state.locationReducer.locationInfos.cityCode,
+        openId: state.app.openId,
+        userId: state.app.userId
+    }
+}
+
+export default connect(stateToProps)(Login)

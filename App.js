@@ -164,6 +164,7 @@ export default class App extends RentApp {
             console.log(DeviceInfo.getUniqueID())
 
             const openId = await AsyncStorage.getItem('openId');
+            const userId = await AsyncStorage.getItem('userId');
 
             console.log(openId)
 
@@ -180,9 +181,24 @@ export default class App extends RentApp {
                 const {data} = register;
                 if (data.errcode === 1) {
                     const {openId, userId} = data;
+                    store.dispatch({
+                        type:"OPEN_ID_USER_ID",
+                        payload:{
+                            openId,
+                            userId
+                        }
+                    })
                     await AsyncStorage.multiSet([['openId', openId], ['userId', userId]])
                 }
                 console.log(register)
+            } else {
+                store.dispatch({
+                    type:"OPEN_ID_USER_ID",
+                    payload:{
+                        openId,
+                        userId
+                    }
+                })
             }
 
         } catch (e) {
@@ -255,8 +271,6 @@ export default class App extends RentApp {
         // const value1 = await AsyncStorage.getItem('Test')
         // console.log("Test1", value1)
       try{
-          console.log("Start GEO")
-
           if (Platform.OS === 'ios') {
               navigator.geolocation.getCurrentPosition(
                   ({ coords }) => {
@@ -283,7 +297,6 @@ export default class App extends RentApp {
       } catch (e) {
           console.log(e.message)
       }
-
     }
 
     render() {
