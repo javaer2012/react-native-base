@@ -24,7 +24,7 @@ export default class FindDetail extends React.Component{
         return(
             <WebView
                      originWhitelist={['*']}
-                     source={{ html: detailInfo.content }}
+                     source={{ html: detailInfo.content ,baseUrl:''}}
             />
         )
     }
