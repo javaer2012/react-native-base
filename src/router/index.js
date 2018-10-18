@@ -112,6 +112,7 @@ const MyStack = createStackNavigator({
     AuthRecordPage: AuthRecords, // 授信纪录
     MyOrderPage: MyOrders, // 昊天的
     PersonalInfoPage: PersonalInfo,  // 个人信息 学历驾驶证
+    AuthApplyPage: AuthApply, // 填写信用租机信息
 
     TermPage: Term, // 信息条款说明
     DrivingPage: DrivingLicense, // 驾驶证件
@@ -133,9 +134,7 @@ const MyStack = createStackNavigator({
     CrmPage_2,
     SchoolSearchPage,
     RentOrderDetail,
-    ProductDetail: ProductDetailPage, //商品详情
-    ProductParameterPage: ProductParameterPage,  // 商品参数详情
-    ProductListPage: ProductListPage,
+    
 }, {
         navigationOptions: {
             headerStyle: {
