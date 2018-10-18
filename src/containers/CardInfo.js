@@ -76,10 +76,9 @@ class CardInfo extends RentApp{
 
     sign = async ()=>{
         const user = await AsyncStorage.getItem('userInfo')
-        console.log(JSON.parse(user))
         try{
 
-            const {bankCode,bankName,cardNo,signMsgSn} = this.state
+            const {bankCode,bankName,cardNo,signMsgSn,verifyCode} = this.state
             const params = {
                 openId:this.openId,
                 userId:this.userId,
@@ -94,7 +93,7 @@ class CardInfo extends RentApp{
                 cityCode: this.cityCode,
                 activeId:this.activeId || '524eaa42bfec4d00b77f50d56fd82fe5',
                 signMsgSn,
-                verifyCode:111111
+                verifyCode
 
             }
             const rsp = await api.applyBindCard(params);

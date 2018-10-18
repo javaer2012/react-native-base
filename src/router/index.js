@@ -132,7 +132,10 @@ const MyStack = createStackNavigator({
     NegativeRecord,
     CrmPage_2,
     SchoolSearchPage,
-    RentOrderDetail
+    RentOrderDetail,
+    ProductDetail: ProductDetailPage, //商品详情
+    ProductParameterPage: ProductParameterPage,  // 商品参数详情
+    ProductListPage: ProductListPage,
 }, {
         navigationOptions: {
             headerStyle: {
