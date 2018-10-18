@@ -17,7 +17,8 @@ import { connect } from 'react-redux'
 
 class Home extends RentApp {
   static navigationOptions = {
-    title: "首页"
+    title: "首页",
+    
   }
   state = {
     bannerList: [1, 2, 3],

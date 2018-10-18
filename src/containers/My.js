@@ -100,7 +100,7 @@ class My extends RentApp {
             })
 
            
-            this.props.navigation.replace('tab')
+            this.props.navigation.replace('MyPage')
         } catch (e) {
 
         }
