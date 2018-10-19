@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     Image,
+    DeviceEventEmitter,
     ImageBackground,
     Platform,
     AsyncStorage, Dimensions
@@ -98,8 +99,7 @@ class My extends RentApp {
             this.props.dispatch({
                 type:'LOGOUT'
             })
-
-           
+            // DeviceEventEmitter.emit('refreshDataHome')           
             this.props.navigation.replace('MyPage')
         } catch (e) {
 

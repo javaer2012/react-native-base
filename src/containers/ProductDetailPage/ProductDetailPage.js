@@ -18,10 +18,10 @@ const storageItem = ({ data, itemData, onPress, subSkuId }) => {
     paddingVertical: 3,
     // paddingHorizontal: 13,
     width: 60,
-    borderRadius: 5,
+    borderRadius: 3,
     marginBottom: 1,
     borderWidth: 1,
-    borderColor: Color.mainPink,
+    borderColor: '#f2f2f2',
     marginHorizontal: 6
   }]
   const textStyle = [{
@@ -30,7 +30,8 @@ const storageItem = ({ data, itemData, onPress, subSkuId }) => {
   }]
   if (subSkuId === itemData.subSkuId) {
     boxStyle.push({
-      backgroundColor: Color.mainPink
+      backgroundColor: Color.mainPink,
+      borderColor: Color.mainPink
     })
     textStyle.push({
       color: '#fff'
@@ -396,13 +397,30 @@ export default class ProductDetailPage extends RentApp {
       })
       return false
     }
-    // 判断是否选择套餐了
-    if (!capitalProdSelected.sum) {
+
+    // mealSelected
+    // 判断是否选择分期了
+    if (!mealSelected.prodName) {
       this.showToast('请选择套餐')
+      return false
+    }
+    if (!capitalProdSelected.sum) {
+      this.showToast('请选择分期')
+      return false
+    }
+
+    if (!mealSelected.prodName) {
+      this.showToast('请选择套餐')
+      return false
     }
 
     // 根据颜色 内存容量确定机器
     let goodsSkuId = selectedProductSkuDetail.skuId
+
+    if (!goodsSkuId) {
+      this.showToast('请选择内存和颜色')
+      return false
+    }
     
     console.log(goodsSkuId, "===========>goodsSkuId")
 
@@ -553,7 +571,6 @@ export default class ProductDetailPage extends RentApp {
             <View style={styles.infoStyle}>
               <Text style={[]}>{goodsName} {goodsDesc}</Text>
               <View style={styles.btnBox}>
-                {console.log(selectedProductSkuDetail,"mmselectedProductSkuDetail")}
                 <Text style={[{ color: Color.mainPink }, { fontWeight: '600' }]}>￥ {selectedProductSkuDetail.shopPrice || goodsPrice}</Text>
                 <View>
                   <Collect
@@ -564,11 +581,7 @@ export default class ProductDetailPage extends RentApp {
               </View>
             </View>
             <View style={[styles.canSelectedBox]}>
-              <View style={[flexRow, {
-                backgroundColor: '#fff',
-                padding: 10,
-                alignItems: 'center'
-              }]}>
+              <View style={[flexRow, styles.blockTitle]}>
                 <Text style={{
                   // ...mainGray
                   color: '#888',
@@ -583,11 +596,7 @@ export default class ProductDetailPage extends RentApp {
               </View>
             </View>
             {skuGroupList[1] && <View style={[styles.canSelectedBox]}>
-              <View style={[flexRow, {
-                backgroundColor: '#fff',
-                padding: 10,
-                alignItems: 'center'
-              }]}>
+              <View style={[flexRow, styles.blockTitle]}>
                 <Text style={{
                   // ...mainGray
                   marginRight: 10,
@@ -602,7 +611,7 @@ export default class ProductDetailPage extends RentApp {
               </View>
             </View>
           }
-            <Flex style={{ backgroundColor: '#fff', padding: 10 }} direction='row' align='center'>
+            <Flex style={{ backgroundColor: '#fff', ...styles.blockTitle}} direction='row' align='center'>
               <Text style={{
                 color: '#888',
                 marginRight: 10
@@ -617,42 +626,41 @@ export default class ProductDetailPage extends RentApp {
               ></NumberSelect> */}
             </Flex>
             <TouchableOpacity onPress={this.togglePackageFun.bind(this, true)}>
-              <Flex style={[contentPadding, { backgroundColor: '#fff', marginBottom: 1 }]} direction='row' justify='between' align='center' >
-                <Flex.Item style={{ flex: 0, paddingVertical: 14, paddingRight: 10 }}>
+              <Flex style={[styles.blockTitle, { backgroundColor: '#fff', marginBottom: 1, }]} direction='row' justify='between' align='center' >
+                <Flex.Item style={{ flex: 0}}>
                   <Text>套餐</Text>
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#888' }}>{mealSelected.prodName}</Text>
-                    <Text>></Text>
+                    <Text style={{ color: '#888',marginLeft: 10 }}>{mealSelected.prodName}</Text>
+                    <Image style={{width: 10, height: 10}} source={require('../../images/imageNew/one/right.png')} />
                   </Flex>
                 </Flex.Item>
               </Flex>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this.toggleCapitalFun.bind(this, true)}>
-              <Flex style={[contentPadding, { backgroundColor: '#fff' }]} direction='row' justify='between' align='center' >
-                <Flex.Item style={{ flex: 0, paddingVertical: 14, paddingRight: 10 }}>
+            <TouchableOpacity style={{ marginBottom: 10 }} onPress={this.toggleCapitalFun.bind(this, true)}>
+              <Flex style={[styles.blockTitle, { backgroundColor: '#fff' }]} direction='row' justify='between' align='center' >
+                <Flex.Item style={{ flex: 0}}>
                   <Text>分期</Text>
                 </Flex.Item>
                 <Flex.Item>
                   <Flex direction="row" justify='between' align="center">
-                    <Text style={{ color: '#888' }}>{capitalProdSelected.prodName || '请选择分期'}</Text>
-                    {/* {console.log(capitalProdSelected,"!!!!!")} */}
-                    <Text>></Text>
+                    <Text style={{ color: '#888',marginLeft: 10 }}>{capitalProdSelected.prodName || '请选择分期'}</Text>
+                    <Image style={{ width: 10, height: 10 }} source={require('../../images/imageNew/one/right.png')} />
                   </Flex>
                 </Flex.Item>
               </Flex>
             </TouchableOpacity>
-            <Flex style={[{ marginTop: 10, backgroundColor: '#fff' }, styles.basePadding]}>
-              <TouchableOpacity onPress={this.toggleDetailInfosFun.bind(this, true)}>
+            <Flex style={[{ backgroundColor: '#f2f2f2', height: 20 }, styles.basePadding]}>
+              {/* <TouchableOpacity onPress={this.toggleDetailInfosFun.bind(this, true)}>
                 <Flex direction="row" justify='between' align="center">
                   <Text>产品参数</Text>
                 </Flex>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
             </Flex>
-            <Flex direction='column' style={{ backgroundColor: '#fff' }}>
-              <View>
-                <Text>图文详情</Text>
+            <Flex direction='column' align='stretch' style={{ backgroundColor: '#fff' }}>
+              <View style={{paddingVertical: 10, alignItems:'flex-start', }}>
+                <Text style={{paddingLeft: 15}}>图文详情</Text>
               </View>
               <View style={styles.photoDetail}>
                 {/* {renderDetailImage(photoList)} */}
@@ -835,5 +843,6 @@ const styles = StyleSheet.create({
     borderColor: '#f2f2f2',
     borderRadius: 5,
     padding: 10
-  }
+  },
+  blockTitle: { backgroundColor: '#fff', ...contentPadding, paddingVertical: 10, alignItems: 'center' }
 });
