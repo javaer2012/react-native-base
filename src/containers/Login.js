@@ -58,14 +58,20 @@ class Login extends RentApp {
             console.log(login)
             const {data} = login;
             if (data.errcode === 1) {
+                this.props.dispatch({
+                    type:'LOGGEDIN',
+                    payload:data.userInfo
+                })
 
                 this.props.dispatch({
                     type:'MYPAGE_INIT'
                 })
-                this.props.dispatch({
-                    type:'LOGGEDIN'
-                })
-                const rsp = await AsyncStorage.multiSet([['isLoggedIn', '1']])
+                
+                await AsyncStorage.setItem('isLoggedIn','1')
+                await AsyncStorage.setItem('openId',data.userInfo.openId)
+
+                await AsyncStorage.setItem('userId',data.userInfo.userId)
+
 
                 const fromPage = this.props.navigation.getParam('fromPageName', "MyPage")
                 const fromPageParams = this.props.navigation.getParam('fromPageParams', {})

@@ -279,7 +279,7 @@ class My extends RentApp {
                     </Flex.Item>
                 </Flex>
 
-                <WhiteSpace size={'lg'}/>
+                <WhiteSpace size={'sm'}/>
 
                 <View style={{backgroundColor: 'white'}}>
                     <WingBlank size={"sm"}>

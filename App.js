@@ -163,6 +163,9 @@ export default class App extends RentApp {
             console.log("Start Retister User")
             console.log(DeviceInfo.getUniqueID())
 
+            await AsyncStorage.removeItem('openId');
+            await AsyncStorage.removeItem('userId');
+
             const openId = await AsyncStorage.getItem('openId');
             const userId = await AsyncStorage.getItem('userId');
 

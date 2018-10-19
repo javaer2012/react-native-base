@@ -23,8 +23,6 @@ class Find extends RentApp {
 
     constructor(props) {
         super(props)
-
-
     }
 
     getData = async () => {
