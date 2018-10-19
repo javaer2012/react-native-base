@@ -5,8 +5,8 @@ import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
 import Color from '../../styles/var'
 import api from '../.././service/api'
-import { NavigationEvents } from 'react-navigation';
-import Spinner from 'react-native-loading-spinner-overlay';
+// import { NavigationEvents } from 'react-navigation';
+// import Spinner from 'react-native-loading-spinner-overlay';
 
 const {  getBannerAndNav, hotProducts, HTTP_IMG } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
@@ -30,46 +30,29 @@ class Home extends RentApp {
   }
 
   async componentDidMount() {
+
+    this.props.dispatch({ type: 'home/GET_HOME_PRODUCTS', })
+    this.props.dispatch({
+      type: 'home/GET_BANNER_AND_NAV'
+    })
+
     this.subscription = DeviceEventEmitter.addListener('refreshDataHome', this.refreshData)
     console.log(this.props, "======> this.props")
-    // this.getBannerNavData()
   }
-
 
   componentWillReceiveProps = async (nextProps) => {
-    const {
-      bannerList,
-      navList,
-      hotMealList,
-      hotPhoneList
-    } = nextProps.homeData
-
-    
-    const addressMsg = nextProps.locationInfos
-    if (!hotPhoneList || JSON.stringify(hotPhoneList) === "{}") {
-      this.props.dispatch({
-        type: 'home/GET_HOME_PRODUCTS',
-        params: addressMsg
+    if (locationInfos && locationInfos.provinceCode !== this.props.locationInfos.provinceCode) {
+      const { locationInfos } = nextProps
+      this.setState({
+        addressMsg: locationInfos
       })
     }
-    if (!bannerList) {
-      this.props.dispatch({
-        type: 'home/GET_BANNER_AND_NAV'
-      })
-    }
-
-    if (addressMsg) { this.setState({ addressMsg }) }
-    if (hotPhoneList) { this.setState({ hotPhoneList }) }
-    if (bannerList) { this.setState({ bannerList, navList }) }
-
-    console.log(addressMsg, "redux 中拿出locationInfos")
-  }
+    // console.log(addressMsg, "redux 中拿出locationInfos")
+  } 
 
   refreshData = () => {
-    const addressMsg = this.props.locationInfos
-    this.props.dispatch({type: 'home/GET_HOME_PRODUCTS', params: addressMsg
-    })
-    this.props.dispatch({ type: 'home/GET_BANNER_AND_NAV', })
+    this.props.dispatch({type: 'home/GET_HOME_PRODUCTS'})
+    this.props.dispatch({ type: 'home/GET_BANNER_AND_NAV' })
   }
 
   // 渲染热销商品
@@ -122,12 +105,9 @@ class Home extends RentApp {
 
   render() {
     const { bannerList, navList, hotPhoneList, addressMsg } = this.state
+    // const { locationInfos: addressMsg } =this.props
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
-    // if (addressMsg.provinceCode) {
-    //   // debugger
-    //   return <Text>1</Text> 
-    // } 
     return (
       <Flex style={{flex: 1, width:WIDTH}}>
         {!addressMsg.provinceCode 
