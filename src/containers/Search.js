@@ -1,10 +1,10 @@
 import React from 'react';
-import { View, Text, FlatList, AsyncStorage, StyleSheet, TouchableOpacity} from 'react-native';
-import {Flex, WhiteSpace, WingBlank, SearchBar} from 'antd-mobile-rn';
+import { View, Text, FlatList, AsyncStorage, StyleSheet, TouchableOpacity } from 'react-native';
+import { Flex, WhiteSpace, WingBlank, SearchBar } from 'antd-mobile-rn';
 import api from "../service/api";
 import ProudcuItem from "../components/ProudcuItem";
 import RentApp from "../components/RentApp";
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 
 const styles = StyleSheet.create({
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     }
 })
 
- class Search extends RentApp {
+class Search extends RentApp {
     static navigationOptions = {
         title: "搜索"
     }
@@ -26,38 +26,38 @@ const styles = StyleSheet.create({
     state = {
         value: '',
         products: [],
-        keywords:[],
-        latest:[],
-        pageNum:1,
-        pageSize:10,
-        refreshing:false,
-        loadMore:''
+        keywords: [],
+        latest: [],
+        pageNum: 1,
+        pageSize: 10,
+        refreshing: false,
+        loadMore: ''
     }
 
 
-    async componentDidMount(){
+    async componentDidMount() {
         await this.getOpenIdAndUserId()
         this.getHotKeywords()
         this.getLatestKeyword()
     }
 
-    getLatestKeyword = async()=>{
-        try{
+    getLatestKeyword = async () => {
+        try {
 
             const rsp = await AsyncStorage.getItem("latestKeywords")
-            if(rsp !== null){
+            if (rsp !== null) {
                 this.setState({
-                    latest:JSON.parse(rsp)
+                    latest: JSON.parse(rsp)
                 })
             }
             console.log(rsp)
-        }catch (e) {
+        } catch (e) {
 
         }
     }
 
     getHotKeywords = async () => {
-        try{
+        try {
             //await AsyncStorage.removeItem('latestKeywords')
 
             const params = {
@@ -69,11 +69,11 @@ const styles = StyleSheet.create({
 
             console.log(rsp)
 
-            const {data} = rsp;
+            const { data } = rsp;
 
-            if(data.errcode === 1){
+            if (data.errcode === 1) {
                 this.setState({
-                    keywords:data.hotWordList
+                    keywords: data.hotWordList
                 })
             }
 
@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
         }
     }
 
-    queryGoodsByKeyWords = async (clean)=>{
-        try{
+    queryGoodsByKeyWords = async (clean) => {
+        try {
             await this.setState({
                 refreshing: true,
             })
@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
             const params = {
                 cityCode: this.cityCode,
                 provinceCode: this.provinceCode,
-                keyWord:this.state.value,
-                pageNum:clean?1:this.state.pageNum,
-                pageSize:this.state.pageSize
+                keyWord: this.state.value,
+                pageNum: clean ? 1 : this.state.pageNum,
+                pageSize: this.state.pageSize
             }
 
             const rsp = await api.queryGoodsByKeyWord(params)
@@ -104,37 +104,37 @@ const styles = StyleSheet.create({
             const latest = JSON.parse(latestString) || []
 
             let dupplicate = false;
-            latest.forEach(item=>{
-                if(item.name === this.state.value) dupplicate = true
+            latest.forEach(item => {
+                if (item.name === this.state.value) dupplicate = true
             })
-            if(!dupplicate)
+            if (!dupplicate)
                 latest.push({
-                    name:this.state.value
+                    name: this.state.value
                 })
             // console.log(latest,"@@@@@@22")
-            await AsyncStorage.setItem('latestKeywords',JSON.stringify(latest))
+            await AsyncStorage.setItem('latestKeywords', JSON.stringify(latest))
 
             const { data: { errcode, goodsList, totalPage } } = rsp || {}
             if (errcode === 1) {
                 const loadMore = goodsList.length > 0 ? 'loadMore' : 'loadMoreEmpty';
 
-                const newGoods = clean?[...goodsList]:[...this.state.products,...goodsList]
+                const newGoods = clean ? [...goodsList] : [...this.state.products, ...goodsList]
                 this.setState({
                     products: newGoods,
                     totalPage,
                     loadMore
                 })
-            } else{
+            } else {
                 // throw('出错')
             }
 
 
 
-        }catch (e) {
+        } catch (e) {
 
         } finally {
             await this.setState({
-                refreshing:false
+                refreshing: false
             })
         }
     }
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
         return (
             <TouchableOpacity
                 key={item.id}
-                onPress={() => this.props.navigation.navigate('ProductListPage',{})}
+                onPress={() => this.props.navigation.navigate('ProductListPage', {})}
             >
                 <ProudcuItem imageStyle={{ width: 100, height: 100 }} data={item}>
                     {/* <Button style={{ width: 80, backgroundColor: Color.mainPink }} size='small'>
@@ -207,75 +207,76 @@ const styles = StyleSheet.create({
         const latest = JSON.parse(latestString) || []
 
         let dupplicate = false;
-        latest.forEach(item=>{
-            if(item.name === this.state.value) dupplicate = true
+        latest.forEach(item => {
+            if (item.name === this.state.value) dupplicate = true
         })
-       this.props.dispatch({
-           type:"ADD_HISTORY_KEYS",
-           payload:this.state.value
-       })
+        this.props.dispatch({
+            type: "ADD_HISTORY_KEYS",
+            payload: this.state.value
+        })
         //await AsyncStorage.setItem('latestKeywords',JSON.stringify(latest))
 
         const keyWord = this.state.value
         const { navigate } = this.props.navigation;
-        navigate('ProductListPage', { keyWord:key||keyWord })
+        navigate('ProductListPage', { keyWord: key || keyWord })
     }
 
 
     render() {
 
-        console.log("Search",this.props)
+        console.log("Search", this.props)
         return (
-            <View style={{width: '100%', backgroundColor: 'white'}}>
+            <View style={{ width: '100%', backgroundColor: 'white' }}>
 
-                <SearchBar style={{width: '100%', backgroundColor: 'white', color: 'black'}}
-                           value={this.state.value} onChange={(value)=>this.setState({value})}
-                        //    onSubmit={()=>this.queryGoodsByKeyWords(true)}/>
-                    onSubmit={() => this.searchGoodsFun() } />
+                <SearchBar style={{ width: '100%', backgroundColor: 'white', color: 'black' }}
+                    value={this.state.value}
+                    onChange={(value) => this.setState({ value })}
+                    onSubmit={() => this.searchGoodsFun()} 
+                    onCancel={()=>this.setState({value:''})}/>
 
-                {this.state.products.length === 0? <View>
-                    {this.props.historyKeys.length >0?<WingBlank size={"md"} style={{backgroundColor: 'white'}}>
-                        <WhiteSpace size={"xl"}/>
+                {this.state.products.length === 0 ? <View>
+                    {this.props.historyKeys.length > 0 ? <WingBlank size={"md"} style={{ backgroundColor: 'white' }}>
+                        <WhiteSpace size={"xl"} />
                         <Text>历史搜索</Text>
-                        <WhiteSpace size={"md"}/>
+                        <WhiteSpace size={"md"} />
 
                         <Flex direction={"row"} justify={"start"} wrap={"wrap"}>
-                            {Array.from(this.props.historyKeys).reverse().map((item,index)=>
-                               <TouchableOpacity key={index} onPress={()=>this.searchGoodsFun(item)}>
-                                   <Text key={index} style={styles.tag}>{item}</Text>
-                               </TouchableOpacity>
+                            {Array.from(this.props.historyKeys).reverse().map((item, index) =>
+                                <TouchableOpacity key={index} onPress={() => this.searchGoodsFun(item)}>
+                                    <Text key={index} style={styles.tag}>{item}</Text>
+                                </TouchableOpacity>
                             )}
 
                         </Flex>
-                    </WingBlank>:null}
+                    </WingBlank> : null}
 
-                    <WhiteSpace size={"xl"}/>
+                    <WhiteSpace size={"xl"} />
 
-                    {this.state.keywords.length >0 ?<WingBlank size={"md"} style={{backgroundColor: 'white'}}>
-                        <WhiteSpace size={"xl"}/>
+                    {this.state.keywords.length > 0 ? <WingBlank size={"md"} style={{ backgroundColor: 'white' }}>
+                        <WhiteSpace size={"xl"} />
                         <Text>热门搜索</Text>
-                        <WhiteSpace size={"md"}/>
+                        <WhiteSpace size={"md"} />
 
                         <Flex direction={"row"} justify={"start"} wrap={"wrap"}>
-                            {this.state.keywords.map((item,index)=>
-                                <TouchableOpacity key={index} onPress={()=>this.searchGoodsFun(item.key_name)}>
+                            {this.state.keywords.map((item, index) =>
+                                <TouchableOpacity key={index} onPress={() => this.searchGoodsFun(item.key_name)}>
                                     <Text key={index} style={styles.tag}>{item.key_name}</Text>
                                 </TouchableOpacity>
                             )}
                         </Flex>
-                    </WingBlank>:null}
-                </View>:
-                    <FlatList style={{backgroundColor: 'white',width:'100%'}}
-                              data={this.state.products}
-                              extraData={this.state}
-                              renderItem={this._renderItem}
-                              onEndReached={() => {
-                                  if (this.hasDo) {
-                                      return false
-                                  }
-                                  this.loadMoreFun( this.state.pageNum + 1)
-                              }}
-                              ListFooterComponent={this.renderFooter}//尾巴
+                    </WingBlank> : null}
+                </View> :
+                    <FlatList style={{ backgroundColor: 'white', width: '100%' }}
+                        data={this.state.products}
+                        extraData={this.state}
+                        renderItem={this._renderItem}
+                        onEndReached={() => {
+                            if (this.hasDo) {
+                                return false
+                            }
+                            this.loadMoreFun(this.state.pageNum + 1)
+                        }}
+                        ListFooterComponent={this.renderFooter}//尾巴
 
                     ></FlatList>
                 }
@@ -284,8 +285,8 @@ const styles = StyleSheet.create({
     }
 }
 
-const stateToProps = state =>({
-    historyKeys:state.historyKey.keys
+const stateToProps = state => ({
+    historyKeys: state.historyKey.keys
 })
 
 export default connect(stateToProps)(Search)

@@ -3,6 +3,10 @@ import {WebView,View,Text} from 'react-native'
 
 export default class FindDetail extends React.Component{
 
+    static navigationOptions = {
+        title:"发现详情"
+    }
+
     constructor(props){
         super(props)
 

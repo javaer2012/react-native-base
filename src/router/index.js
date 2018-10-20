@@ -73,6 +73,7 @@ const HomeStack = createStackNavigator({
     AddBankCardPage: AddBankCard,
     CardInfoPage: CardInfo,
     ChangePSWPage: ChangePSW,//银行卡解绑
+    RentOrderDetail
 
 }, {
         navigationOptions: {
@@ -134,6 +135,15 @@ const MyStack = createStackNavigator({
     CrmPage_2,
     SchoolSearchPage,
     RentOrderDetail,
+    ProductDetail: ProductDetailPage, //商品详情
+    ProductParameterPage: ProductParameterPage,  // 商品参数详情
+    ProductListPage: ProductListPage,
+    Pay,
+    PayResult,
+    LoginPage: Login,
+    BackCardPage: BankCard,
+    AddBankCardPage: AddBankCard,
+    CardInfoPage: CardInfo,
     
 }, {
         navigationOptions: {
