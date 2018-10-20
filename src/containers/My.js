@@ -60,6 +60,7 @@ class My extends RentApp {
         title: "我的"
     }
 
+
     constructor(props) {
         super(props)
     }
@@ -124,7 +125,7 @@ class My extends RentApp {
                                     <Flex direction={"row"} justify={"around"} style={{width: 126, height: 45}}>
                                         <Button
                                             style={{backgroundColor: null}}
-                                            onClick={() => navigation.navigate('LoginPage')}>登录</Button>
+                                            onClick={() => navigation.replace('LoginPage')}>登录</Button>
                                     </Flex>
                                 </Flex> :
                                 <React.Fragment>

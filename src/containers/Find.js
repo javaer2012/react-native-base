@@ -217,14 +217,14 @@ class Find extends RentApp {
         const { find } = this.props
 
         if (this.props.isFocused) {
-           
+
         }
 
 
         return (
             <View style={{ width: '100%' }}>
                 <NavigationEvents
-                    onWillFocus={payload =>  this.props.dispatch({
+                    onWillFocus={payload => this.props.dispatch({
                         type: "QUERY_FIND_LIST"
                     })}
                     onDidFocus={payload => console.log('did focus', payload)}
@@ -232,8 +232,12 @@ class Find extends RentApp {
                     onDidBlur={payload => console.log('did blur', payload)}
                 />
                 {find.length === 0 ?
-                    <Flex direction={"row"} justify={'center'} align={"center"}>
-                        <Text>暂无发现内容</Text>
+                    <Flex direction={"column"} justify={'center'} align={"center"}>
+                        <WhiteSpace size={"lg"} />
+
+                        <Image resizeMode={"stretch"} style={{ width: 153, height: 160 }} source={require('../images/imageNew/one/gift.png')} />
+                        <WhiteSpace size={"md"} />
+                        <Text style={{ width: 200,color:'gray'}}>该城市暂无发现内容，请切换城市后重试</Text>
                     </Flex> :
                     <FlatList data={find} renderItem={this.renderItem.bind(this)} style={{ width: '100%' }} />
                 }
