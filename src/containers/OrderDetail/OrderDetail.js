@@ -130,6 +130,12 @@ export default class OrderDetail extends RentApp {
       this.setState({ loading: false })
     }
   }
+
+  goHome = ()=>{
+    this.props.navigation.popToTop()
+    this.props.navigation.navigate('Home')
+  }
+
   render() {
     const { userInfo, stageInfo, contractMealInfo, orderUserInfo } = this.state
     console.log(orderUserInfo,"userInfouserInfouserInfo")
@@ -186,7 +192,7 @@ export default class OrderDetail extends RentApp {
           </Flex>
           <Flex direction="column" align="stretch" style={{ paddingHorizontal: 10, flex: 1, width: '100%', backgroundColor:'#fff',paddingBottom: 80 }}>
             <Flex style={{ marginTop: 30 }}>
-              <Button_ onPress={() => { this.props.navigation.navigate('Home')}}>
+              <Button_ onPress={() =>this.goHome()}>
                 {'回到首页'}
               </Button_>
             </Flex>

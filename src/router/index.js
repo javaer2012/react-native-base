@@ -144,6 +144,7 @@ const MyStack = createStackNavigator({
     BackCardPage: BankCard,
     AddBankCardPage: AddBankCard,
     CardInfoPage: CardInfo,
+    OrderDetail, // 从WorkerEnter进入受理订单页面
     
 }, {
         navigationOptions: {
