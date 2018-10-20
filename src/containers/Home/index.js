@@ -30,22 +30,18 @@ class Home extends RentApp {
   }
 
   async componentDidMount() {
-
-    this.props.dispatch({ type: 'home/GET_HOME_PRODUCTS', })
-    this.props.dispatch({
-      type: 'home/GET_BANNER_AND_NAV'
-    })
-
-    this.subscription = DeviceEventEmitter.addListener('refreshDataHome', this.refreshData)
-    console.log(this.props, "======> this.props")
+    // this.subscription = DeviceEventEmitter.addListener('refreshDataHome', this.refreshData)
+    // console.log(this.props, "======> this.props")
   }
 
   componentWillReceiveProps = async (nextProps) => {
-    if (locationInfos && locationInfos.provinceCode !== this.props.locationInfos.provinceCode) {
-      const { locationInfos } = nextProps
+    const { locationInfos } = nextProps
+    if (locationInfos && locationInfos.provinceCode !== this.state.addressMsg.provinceCode) {
       this.setState({
         addressMsg: locationInfos
       })
+      this.props.dispatch({ type: 'HOME_GET_HOME_PRODUCTS', })
+      this.props.dispatch({ type: 'HOME_GET_BANNER_AND_NAV' })
     }
     // console.log(addressMsg, "redux 中拿出locationInfos")
   } 
@@ -75,27 +71,18 @@ class Home extends RentApp {
   }
   setAddressInfosFun = async (data) => {
     try {
-      await this.setState({
-        addressMsg: data
-      })
+      // await this.setState({
+      //   addressMsg: data
+      // })
+      
+      // this.refreshData()
       this.props.dispatch({
         type: 'SET_LOCATION',
         locationInfos: data
       })
       await this.setState({ loading: true })
       await AsyncStorage.setItem('addressInfos', JSON.stringify(data));
-      const { data: { bannerList, navList } } = await getBannerAndNav({})
-
-      const { data: { hotMealList, hotPhoneList } } = await hotProducts({
-        provinceCode: data.provinceCode,  // 测试用
-        cityCode: data.cityCode
-      })
-      this.setState({
-        bannerList,
-        navList,
-        hotPhoneList,
-        hotMealList,
-      })
+      
     } catch (error) {
       console.error(error)
     } finally {
@@ -104,8 +91,8 @@ class Home extends RentApp {
   }
 
   render() {
-    const { bannerList, navList, hotPhoneList, addressMsg } = this.state
-    // const { locationInfos: addressMsg } =this.props
+    const { addressMsg } = this.state
+    const { hotPhoneList, bannerList, navList } =this.props
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     return (
@@ -138,7 +125,7 @@ class Home extends RentApp {
               showsVerticalScrollIndicator={false}
             >
               {
-                bannerList.length === 1 ? (
+                (bannerList && bannerList.length) === 1 ? (
                   <View
                     style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
                   >
@@ -278,9 +265,15 @@ const styles = StyleSheet.create({
   }
 });
 const mapStateToProps = state => {
+  console.log(state,"FFFF")
+  const { hotMealList, hotPhoneList, bannerList, navList } = state.homeDataReducer
   return {
     locationInfos: state.locationReducer.locationInfos, 
-    homeData: state.homeDataReducer
+    // homeData: state.homeDataReducer
+    hotMealList,
+    hotPhoneList,
+    bannerList,
+    navList
   }
 }
 

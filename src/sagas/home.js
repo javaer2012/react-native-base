@@ -6,13 +6,16 @@ import api from '../service/api'
 const { getBannerAndNav, hotProducts } = api
 
 export function* getHotProductsAsync(action) {
+  // debugger
   try {
-    const params = yield select(state=>({
-      openId:state.app.openId,
-      userId:state.app.userId,
-      provinceCode: state.locationReducer.locationInfos.provinceCode,
-      cityCode: state.locationReducer.locationInfos.cityCode,
-    }))
+    const params = yield select(state=>{
+      return ({
+        openId: state.app.openId,
+        userId: state.app.userId,
+        provinceCode: state.locationReducer.locationInfos.provinceCode,
+        cityCode: state.locationReducer.locationInfos.cityCode,
+      })
+    })
     const response= yield call(hotProducts, params);
     yield put({ type: 'GET_HOT_PRODUCTS_SUCCESS', response: response.data });
 
@@ -22,12 +25,12 @@ export function* getHotProductsAsync(action) {
 }
 export function* getBannerAndListAsync(action) {
   try {
-    // const params = yield select(state=>({
-    //   openId:state.app.openId,
-    //   userId:state.app.userId,
-    //   provinceCode: state.locationReducer.locationInfos.provinceCode,
-    //   cityCode: state.locationReducer.locationInfos.cityCode,
-    // }))
+    const params = yield select(state=>({
+      openId:state.app.openId,
+      userId:state.app.userId,
+      // provinceCode: state.locationReducer.locationInfos.provinceCode,
+      // cityCode: state.locationReducer.locationInfos.cityCode,
+    }))
     const response = yield call(getBannerAndNav, {})
     yield put({ type: 'GET_BANNER_AND_NAV_SUCCESS', response: response.data });
   } catch (error) {
