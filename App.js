@@ -1,21 +1,21 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+// /**
+//  * Sample React Native App
+//  * https://github.com/facebook/react-native
+//  *
+//  * @format
+//  * @flow
+//  */
 
-import React from 'react';
-import {Provider} from 'react-redux';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
 import store from './src/store/store';
-import AppNavigator,{appNav} from './src/router';
-import {AsyncStorage, Platform, Linking, Alert } from 'react-native';
+import AppNavigator, { appNav } from './src/router';
+import { AsyncStorage, Platform, Linking, Alert } from 'react-native';
 import api from './src/service/api'
 import config from './src/config';
 import DeviceInfo from 'react-native-device-info'
-import {areaDict} from './src/utils/city1.json'
-import { localCodeInfo} from './src/utils/city'
+import { areaDict } from './src/utils/city1.json'
+import { localCodeInfo } from './src/utils/city'
 import RentApp from "./src/components/RentApp";
 
 
@@ -231,7 +231,7 @@ export default class App extends RentApp {
                     // const { data } = await setCrmCode(code)
                     // if (data && data.areaDict) {
                     // const { areaDict } = data;
-                    
+
                     var option = {};
 
                     for (var key in areaDict) {
@@ -312,4 +312,3 @@ export default class App extends RentApp {
     }
 
 }
-

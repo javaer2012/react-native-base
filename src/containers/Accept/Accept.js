@@ -31,7 +31,7 @@ export default class Accept extends Component {
       crm,
       client,
       orderId,
-      staffNo: "312",
+      // staffNo: "312",
       // firstPay: data.firstPay
     })
   }
