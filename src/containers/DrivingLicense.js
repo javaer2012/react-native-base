@@ -1,33 +1,33 @@
-import React, {Component} from 'react';
-import {ScrollView, Text, TouchableOpacity, StyleSheet, Image, Dimensions, AsyncStorage,ImageBackground} from 'react-native';
-import {WhiteSpace, Flex, Toast} from 'antd-mobile-rn';
+import React, { Component } from 'react';
+import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Image, Dimensions, AsyncStorage, ImageBackground } from 'react-native';
+import { WhiteSpace, Flex, Toast } from 'antd-mobile-rn';
 import Button from '../components/common/Button'
 import api from "../service/api";
 import RentApp from "../components/RentApp";
 import ImagePicker from 'react-native-image-picker'
 
 const submitDrivingLicense = {
-    openId:'',
-    userId:'',
-    cityCode:'',
-    provinceCode:'',
-    userInfoJson:{
-        itemId:'',
-        itemCode:'drivingLicence',
-        subItemList:[{
-            subItemId:'',
-            subItemCode:'driver_licence_front',
-            subItemName:'驾驶证正面',
-            subItemOrderNo:1,
-            subItemValue:''//get from rsp
+    openId: '',
+    userId: '',
+    cityCode: '',
+    provinceCode: '',
+    userInfoJson: {
+        itemId: '',
+        itemCode: 'drivingLicence',
+        subItemList: [{
+            subItemId: '',
+            subItemCode: 'driver_licence_front',
+            subItemName: '驾驶证正面',
+            subItemOrderNo: 1,
+            subItemValue: ''//get from rsp
         },
-            {
-                subItemId:'',
-                subItemCode:'driver_licence_follower',
-                subItemName:'驾驶证附页',
-                subItemOrderNo:2,
-                subItemValue:''//get from rsp
-            }]
+        {
+            subItemId: '',
+            subItemCode: 'driver_licence_follower',
+            subItemName: '驾驶证附页',
+            subItemOrderNo: 2,
+            subItemValue: ''//get from rsp
+        }]
 
     }
 }
@@ -65,21 +65,21 @@ export default class DrivingLicense extends RentApp {
         back: null
     }
 
-    componentDidMount(){
-        setTimeout(()=>this.initData(),0)
+    componentDidMount() {
+        setTimeout(() => this.initData(), 0)
     }
 
-    async initData(){
-        try{
+    async initData() {
+        try {
 
             await this.setState({
-                loading:true
+                loading: true
             })
             const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
 
             const params = {
-                userId:this.userId,
-                openId:this.openId,
+                userId: this.userId,
+                openId: this.openId,
                 cityCode: this.provinceCode,
                 provinceCode: this.provinceCode
             }
@@ -88,17 +88,17 @@ export default class DrivingLicense extends RentApp {
 
             console.log(rsp)
 
-            const {data} = rsp
-            if(data.errcode === 1){
+            const { data } = rsp
+            if (data.errcode === 1) {
                 this.setState({
-                    cateList:data.cateList
+                    cateList: data.cateList
                 })
             }
         } catch (e) {
             console.log(e)
         } finally {
             await this.setState({
-                loading:false
+                loading: false
             })
         }
     }
@@ -109,11 +109,11 @@ export default class DrivingLicense extends RentApp {
             quality: 1.0,
             maxWidth: 500,
             maxHeight: 500,
-            title:"选择照片",
+            title: "选择照片",
 
-            cancelButtonTitle:"取消",
-            takePhotoButtonTitle:"拍照",
-            chooseFromLibraryButtonTitle:'从相册中选择',
+            cancelButtonTitle: "取消",
+            takePhotoButtonTitle: "拍照",
+            chooseFromLibraryButtonTitle: '从相册中选择',
             storageOptions: {
                 skipBackup: true
             }
@@ -132,14 +132,14 @@ export default class DrivingLicense extends RentApp {
                 console.log('User tapped custom button: ', response.customButton);
             }
             else {
-                let source = {uri: response.uri};
+                let source = { uri: response.uri };
 
                 // You can also display the image using data:
                 // let source = { uri: 'data:image/jpeg;base64,' + response.data };
 
                 this.setState({
                     [id]: source,
-                    [`${id}base64`]:response.data
+                    [`${id}base64`]: response.data
                 });
             }
         });
@@ -147,7 +147,7 @@ export default class DrivingLicense extends RentApp {
 
     uploadImages = async () => {
 
-        const {main, back,cateList} = this.state;
+        const { main, back, cateList } = this.state;
         if (main === null) {
             Toast.info("请选择驾照正面照", 2);
             return
@@ -158,14 +158,14 @@ export default class DrivingLicense extends RentApp {
         }
 
         this.setState({
-            loading:true
+            loading: true
         })
 
 
-        cateList.forEach(item=>{
-            if(item.cateCode === 'base_info'){
-                item.creditItemList.forEach(creditItem=>{
-                    if(creditItem.itemCode === 'drivingLicence'){
+        cateList.forEach(item => {
+            if (item.cateCode === 'base_info') {
+                item.creditItemList.forEach(creditItem => {
+                    if (creditItem.itemCode === 'drivingLicence') {
                         //拿到驾照item 响应的 id
                         this.itemInfo = creditItem
                     }
@@ -175,31 +175,31 @@ export default class DrivingLicense extends RentApp {
 
         let formData = new FormData(),
             backData = new FormData(),
-            mainImage = {uri: main.uri, type: 'image/png', name: 'DrivingLicenseFront.png'},
-            backImage = {uri: back.uri, type: 'image/png', name: 'DrivingLicenseBack.png'}
+            mainImage = { uri: main.uri, type: 'image/png', name: 'front.png' },
+            backImage = { uri: back.uri, type: 'image/png', name: 'back.png' }
 
         formData.append("file", mainImage)
 
         backData.append("file", backImage)
 
-        try{
+        try {
 
-            const rsp = await  Promise.all([api.uploadImage(formData,'drivingLicense'),api.uploadImage(backData,"drivingLicense")]);
+            const rsp = await Promise.all([api.uploadImage(formData, 'drivingLicense'), api.uploadImage(backData, "drivingLicense")]);
 
-            const [font,back] = rsp;
+            const [font, back] = rsp;
             console.log(rsp)
 
-            if(font.data.errcode === 0 || back.data.errcode === 0) throw "图片上传失败！"
+            if (font.data.errcode === 0 || back.data.errcode === 0) throw "图片上传失败！"
 
             console.log(this.itemInfo)
 
             this.itemInfo.subItemList[0].subItemValue = font.data.filePath
             this.itemInfo.subItemList[1].subItemValue = back.data.filePath
-            const userInfoJson = JSON.stringify({...this.itemInfo}).toString()
+            const userInfoJson = JSON.stringify({ ...this.itemInfo }).toString()
 
             const userParams = {
-                openId:this.openId,
-                userId:this.userId,
+                openId: this.openId,
+                userId: this.userId,
                 cityCode: this.cityCode,
                 provinceCode: this.provinceCode,
                 userInfoJson
@@ -208,57 +208,57 @@ export default class DrivingLicense extends RentApp {
 
             const setUser = await api.submitUserInfo(userParams)
 
-            if(setUser.data.errcode === 1){
-                Toast.info("驾照信息提交成功！",1)
-                setTimeout(()=> {this.props.navigation.replace('PersonalInfoPage')},2000)
+            if (setUser.data.errcode === 1) {
+                Toast.info("驾照信息提交成功！", 1)
+                setTimeout(() => { this.props.navigation.replace('PersonalInfoPage') }, 2000)
             } else {
-                Toast.info(setUser.data.errmsg,1)
+                Toast.info(setUser.data.errmsg, 1)
             }
             //
             console.log(setUser)
 
 
         } catch (e) {
-            Toast.info(e,1)
+            Toast.info(e, 1)
 
         } finally {
-            this.setState({loading:false})
+            this.setState({ loading: false })
         }
 
     }
 
     render() {
         console.log("Render")
-        const {navigation} = this.props
+        const { navigation } = this.props
 
         return (
             <ScrollView>
                 <Flex direction={"column"} align={"center"}>
-                    <WhiteSpace size={"xl"}/>
-                    <Text style={{textAlign: 'center'}}>请拍摄驾驶证主页与副页，并录入信息</Text>
-                    <WhiteSpace size={"xl"}/>
+                    <WhiteSpace size={"xl"} />
+                    <Text style={{ textAlign: 'center' }}>请拍摄驾驶证主页与副页，并录入信息</Text>
+                    <WhiteSpace size={"xl"} />
                     <TouchableOpacity onPress={() => this.selectPhotoTapped('main')}>
                         {this.state.main ?
-                            <Image style={{width: 335, height: 217}}
-                                   source={this.state.main}/> :
-                            <ImageBackground style={{width: 335, height: 217}}
-                                             source={require('../images/driving/font.png')}>
-                                <Flex direction={"row"} justify={"center"} align={"center"} style={{height:217}}>
-                                    <Image style={{width:88,height:88}} source={require('../images/driving/camera.png')}/>
+                            <Image style={{ width: 335, height: 217 }}
+                                source={this.state.main} /> :
+                            <ImageBackground style={{ width: 335, height: 217 }}
+                                source={require('../images/driving/font.png')}>
+                                <Flex direction={"row"} justify={"center"} align={"center"} style={{ height: 217 }}>
+                                    <Image style={{ width: 88, height: 88 }} source={require('../images/driving/camera.png')} />
                                 </Flex>
                             </ImageBackground>}
 
                     </TouchableOpacity>
-                    <WhiteSpace size={"xl"}/>
+                    <WhiteSpace size={"xl"} />
 
                     <TouchableOpacity onPress={() => this.selectPhotoTapped('back')}>
                         {this.state.back ?
-                            <Image style={{width: 335, height: 217}}
-                                   source={this.state.back}/> :
-                            <ImageBackground style={{width: 335, height: 217}}
-                                             source={require('../images/driving/back.png')}>
-                                <Flex justify={"center"} align={"center"} style={{height:217}}>
-                                    <Image style={{width:88,height:88}} source={require('../images/driving/camera.png')}/>
+                            <Image style={{ width: 335, height: 217 }}
+                                source={this.state.back} /> :
+                            <ImageBackground style={{ width: 335, height: 217 }}
+                                source={require('../images/driving/back.png')}>
+                                <Flex justify={"center"} align={"center"} style={{ height: 217 }}>
+                                    <Image style={{ width: 88, height: 88 }} source={require('../images/driving/camera.png')} />
                                 </Flex>
                             </ImageBackground>
                         }
@@ -266,12 +266,14 @@ export default class DrivingLicense extends RentApp {
                     </TouchableOpacity>
                 </Flex>
 
-                <WhiteSpace size={"lg"}/>
+                <WhiteSpace size={"lg"} />
 
                 <Flex direction={"row"} justify={"center"}>
-                    <Button style={{backgroundColor: "#06C1AE", width: 355, height: 36, lineHeight: 36, color: "white"}}
+                    <View style={{ width: '90%' }}>
+                        <Button style={{ backgroundColor: "#06C1AE", width: 355, height: 36, lineHeight: 36, color: "white" }}
                             onClick={() => this.uploadImages()}
-                    >完成</Button>
+                        >完成</Button>
+                    </View>
                 </Flex>
 
             </ScrollView>

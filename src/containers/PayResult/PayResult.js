@@ -25,8 +25,13 @@ export default class Pay extends Component {
     this.setState({ orderId })
   }
 
+  goHome = () =>{
+    this.props.navigation.popToTop()
+    this.props.navigation.navigate('Home')
+  }
+
   render() {
-    const { replace } = this.props.navigation;
+    const { navigate } = this.props.navigation;
     const { orderId } = this.state
     return (
       <View style={{backgroundColor: '#fff', flex: 1}}>
@@ -39,12 +44,13 @@ export default class Pay extends Component {
           message="0元"
         />
         <Flex direction="row" justify="around" style={{marginTop: 20}}>
-          <Button style={{ backgroundColor: Color.mainPink}} style={{ backgroundColor: Color.mainPink }} onClick={() => replace("OrderInfo", {orderId})}>
+          <Button style={{ backgroundColor: Color.mainPink}} style={{ backgroundColor: Color.mainPink }} 
+          onClick={() => replace("OrderInfo", {orderId})}>
             <Text style={{color: '#fff'}}>
               查看订单
             </Text>
           </Button>
-          <Button style={{ backgroundColor: Color.mainPink}} onClick={() => replace("tab")}>
+          <Button style={{ backgroundColor: Color.mainPink}} onClick={this.goHome}>
             <Text style={{ color: '#fff' }}>
               回到首页
             </Text>

@@ -58,7 +58,7 @@ export default class Pay extends RentApp {
     } else if (!code) {
       Toast.info("验证码不能为空")
       return false
-    } else if (!myreg.test(phoneNumber)) {
+    } else if (!myreg.test(phoneNumber.split(' ').join(''))) {
       Toast.info("手机号格式有误")
       return false
     } 
@@ -82,7 +82,7 @@ export default class Pay extends RentApp {
       "provCode": this.provinceCode,
       "cityCode": this.cityCode,
       "payType": payType  || '1',
-      "phoneNo": `${this.state.phoneNumber}`,
+      "phoneNo": `${this.state.phoneNumber.split(' ').join('')}`,
       "validCode": this.state.code,
     }
     console.log(params, '========> params')
