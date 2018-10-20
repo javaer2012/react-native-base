@@ -175,8 +175,8 @@ export default class DrivingLicense extends RentApp {
 
         let formData = new FormData(),
             backData = new FormData(),
-            mainImage = {uri: main.uri, type: 'image/png', name: '驾照正面.png'},
-            backImage = {uri: back.uri, type: 'image/png', name: '驾照背面.png'}
+            mainImage = {uri: main.uri, type: 'image/png', name: 'DrivingLicenseFront.png'},
+            backImage = {uri: back.uri, type: 'image/png', name: 'DrivingLicenseBack.png'}
 
         formData.append("file", mainImage)
 

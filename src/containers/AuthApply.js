@@ -205,7 +205,7 @@ export default class AuthApply extends RentApp {
 
                                 <Picker
                                     data={RELATION}
-                                    cols={3}
+                                    cols={1}
                                     value={familyRelation}
                                     onChange={(v) => this.setState({ familyRelation: v })}
                                     onPickerChange={(v) => this.setState({ familyRelation: v })}

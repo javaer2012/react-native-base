@@ -219,7 +219,7 @@ export default class Education extends RentApp {
 
                     <Picker
                         data={STATUS}
-                        cols={2}
+                        cols={1}
                         value={this.state.pickerValue}
                         onChange={(v) => this.setState({pickerValue: v})}
                         onPickerChange={(v) => this.setState({pickerValue: v})}

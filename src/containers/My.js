@@ -59,12 +59,6 @@ class My extends RentApp {
     static navigationOptions = {
         title: "我的"
     }
-    state = {
-        loading: false,
-        isLoggedIn: '0',
-    }
-
-    _state = {...this.state}
 
     constructor(props) {
         super(props)
@@ -170,7 +164,7 @@ class My extends RentApp {
                                                             backgroundColor: null
                                                         }}
                                                                 onClick={() => navigation.navigate('ScorePage', {
-                                                                    score: _state.userScore ? userInfo.userScore : 0
+                                                                    score: userInfo.userScore ? userInfo.userScore : 0
                                                                 })}>晒晒我的信用分</Button>
                                                     </Flex>
                                                 </Flex.Item>
