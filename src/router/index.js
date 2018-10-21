@@ -65,7 +65,7 @@ const HomeStack = createStackNavigator({
     ProductDetail: ProductDetailPage, //商品详情
     ProductParameterPage: ProductParameterPage,  // 商品参数详情
     ProductListPage: ProductListPage,
-    OrderDetail, // 从WorkerEnter进入受理订单页面
+    // OrderDetail, // 从WorkerEnter进入受理订单页面
     Accept: Accept,  // 受理：crm信息回填
     UploadImg: UploadImg,
     Pay,
@@ -149,7 +149,8 @@ const MyStack = createStackNavigator({
     BackCardPage: BankCard,
     AddBankCardPage: AddBankCard,
     CardInfoPage: CardInfo,
-
+    OrderDetail, // 从WorkerEnter进入受理订单页面
+    
 }, {
         navigationOptions: {
             headerStyle: {

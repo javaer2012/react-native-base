@@ -105,10 +105,7 @@ class CardInfo extends RentApp{
 
                 this.props.dispatch({type:'MYPAGE_INIT'})
 
-                this.props.navigation.replace("ProductDetail",{
-                    productId:this.productId
-                })
-
+                this.props.navigation.pop(3)
             } else {
                 Toast.info(data.errmsg,1.5)
             }

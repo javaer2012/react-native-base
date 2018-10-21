@@ -86,7 +86,7 @@ export default class Pay extends RentApp {
       "provCode": this.provinceCode,
       "cityCode": this.cityCode,
       "payType": payType  || '1',
-      "phoneNo": `${this.state.phoneNumber}`,
+      "phoneNo": `${this.state.phoneNumber.split(' ').join('')}`,
       "validCode": this.state.code,
     }
     console.log(params, '========> params')

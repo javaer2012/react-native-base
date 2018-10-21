@@ -48,8 +48,8 @@ export default class Wait extends RentApp{
                 //成功
                 this.props.navigation.replace("AuthSuccessPage",{...data})
             } else{
-                Toast.info(data.errmsg,3)
-                setTimeout(()=>this.props.navigation.replace('AuthApplyPage'),3000)
+                Toast.info(data.errmsg,1.5)
+                setTimeout(()=>this.props.navigation.replace('AuthApplyPage'),1.5)
             }
 
         } catch (e) {
