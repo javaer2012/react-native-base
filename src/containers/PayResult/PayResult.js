@@ -31,7 +31,7 @@ export default class Pay extends Component {
   }
 
   render() {
-    const { navigate } = this.props.navigation;
+    const { navigate,replace } = this.props.navigation;
     const { orderId } = this.state
     return (
       <View style={{backgroundColor: '#fff', flex: 1}}>

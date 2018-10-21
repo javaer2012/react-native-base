@@ -73,7 +73,8 @@ const HomeStack = createStackNavigator({
     AddBankCardPage: AddBankCard,
     CardInfoPage: CardInfo,
     ChangePSWPage: ChangePSW,//银行卡解绑
-    RentOrderDetail
+    RentOrderDetail,
+    OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
 
 }, {
         navigationOptions: {
