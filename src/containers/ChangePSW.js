@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import {View, Image, ScrollView, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import {List, InputItem, Button, WingBlank, WhiteSpace, Toast} from 'antd-mobile-rn';
+import React, { Component } from 'react';
+import { View, Image, ScrollView, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { Flex,List, InputItem, WingBlank, WhiteSpace, Toast } from 'antd-mobile-rn';
 import api from "../service/api";
 import RentApp from "../components/RentApp";
 import Count from "../components/Count";
-import {phoneCheck} from "../utils/inputCheck";
-import {connect} from 'react-redux'
+import { phoneCheck } from "../utils/inputCheck";
+import { connect } from 'react-redux'
+import Button from '../components/common/Button'
 
 
 class ChangePSW extends RentApp {
@@ -53,12 +54,12 @@ class ChangePSW extends RentApp {
 
             const rsp = await api.unbindBankCard(params);
             console.log(rsp)
-            const {data} = rsp
+            const { data } = rsp
             if (data.errcode === 1) {
                 Toast.info("解绑成功", 1.5)
-                this.props.dispatch({type:"MYPAGE_INIT"})
-                this.props.dispatch({type:"CLEAR_BANK_CARD"})
-                this.props.dispatch({type:"INIT_BANK_CARD"})
+                this.props.dispatch({ type: "MYPAGE_INIT" })
+                this.props.dispatch({ type: "CLEAR_BANK_CARD" })
+                this.props.dispatch({ type: "INIT_BANK_CARD" })
                 this.props.navigation.pop(1)
             } else {
                 Toast.info(data.errmsg)
@@ -71,43 +72,46 @@ class ChangePSW extends RentApp {
 
     render() {
 
-        const {phoneNo, verifyCode} = this.state;
-        const {navigation} = this.props;
+        const { phoneNo, verifyCode } = this.state;
+        const { navigation } = this.props;
 
         return (
             <ScrollView>
                 <WingBlank size="md">
                     <List renderHeader={() => <View>
-                        <WhiteSpace size={'md'}/>
+                        <WhiteSpace size={'md'} />
                         <Text>银行卡信息</Text>
-                        <WhiteSpace size={'md'}/>
+                        <WhiteSpace size={'md'} />
 
-                        </View>}>
+                    </View>}>
                         <InputItem type="number" value={phoneNo}
-                                   onChange={(phoneNo) => this.setState({phoneNo})}
-                                   placeholder={"银行预留手机号"}>
+                            onChange={(phoneNo) => this.setState({ phoneNo })}
+                            placeholder={"银行预留手机号"}>
                             <Image
                                 style={styles.icon}
                                 source={phoneNo ?
                                     require('../assets/copyUser.png') :
-                                    require('../assets/defaultUser.png')}/>
+                                    require('../assets/defaultUser.png')} />
                         </InputItem>
                         <InputItem type="password" value={verifyCode}
-                                   onChange={(verifyCode) => this.setState({verifyCode})}
-                                   extra={<Count username={this.state.phoneNo}/>}
+                            onChange={(verifyCode) => this.setState({ verifyCode })}
+                            extra={<Count username={this.state.phoneNo} />}
 
-                                   placeholder={"请输入验证码"}>
+                            placeholder={"请输入验证码"}>
                             <Image
                                 style={styles.icon}
                                 source={verifyCode ?
                                     require('../assets/confirmSelect.png') :
-                                    require('../assets/confirmDefault.png')}/>
+                                    require('../assets/confirmDefault.png')} />
                         </InputItem>
 
                     </List>
-                    <WhiteSpace size={"xl"}/>
-                    <Button style={styles.btn} onClick={this.changePsw.bind(this)}>完成</Button>
-
+                    <WhiteSpace size={"xl"} />
+                    <Flex>
+                        <View style={{ width: '100%' }}>
+                            <Button style={styles.btn} onClick={this.changePsw.bind(this)}>完成</Button>
+                        </View>
+                    </Flex>
                 </WingBlank>
             </ScrollView>
         )
@@ -123,12 +127,14 @@ const styles = StyleSheet.create({
     },
 
     btn: {
+        width:'100%',
         backgroundColor: '#06C1AE',
-        borderColor: '#06C1AE'
+        borderColor: '#06C1AE',
+        color: 'white'
     }
 })
 
-const stateToProps = state =>({
+const stateToProps = state => ({
     provinceCode: state.locationReducer.locationInfos.provinceCode,
     cityCode: state.locationReducer.locationInfos.cityCode,
     openId: state.app.openId,

@@ -210,10 +210,13 @@ class Search extends RentApp {
         latest.forEach(item => {
             if (item.name === this.state.value) dupplicate = true
         })
-        this.props.dispatch({
-            type: "ADD_HISTORY_KEYS",
-            payload: this.state.value
-        })
+        if(this.state.value){
+            this.props.dispatch({
+                type: "ADD_HISTORY_KEYS",
+                payload: this.state.value
+            })
+        }
+        
         //await AsyncStorage.setItem('latestKeywords',JSON.stringify(latest))
 
         const keyWord = this.state.value

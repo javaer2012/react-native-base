@@ -14,6 +14,11 @@ export function* app(action){
         } else {
            yield put({type:'ANONIMOUS'})
         }
+        const userInfo = yield AsyncStorage.getItem('userInfo')
+        yield put({
+            type:'SET_USERINFO',
+            payload:JSON.parse(userInfo)
+        })
 
     } catch (e) {
 

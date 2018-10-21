@@ -8,7 +8,7 @@ import api from '../.././service/api'
 // import { NavigationEvents } from 'react-navigation';
 // import Spinner from 'react-native-loading-spinner-overlay';
 
-const {  getBannerAndNav, hotProducts, HTTP_IMG } = api
+const { getBannerAndNav, hotProducts, HTTP_IMG } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
 const BANNER_HEIGHT = WIDTH / 75 * 42
@@ -18,18 +18,18 @@ import { connect } from 'react-redux'
 class Home extends RentApp {
   static navigationOptions = {
     title: "首页",
-    
+
   }
   state = {
     bannerList: [],
     hotPhoneList: [],
-    addressMsg:{},
+    addressMsg: {},
     value: [],
     pickerValue: [],
     loading: true,
   }
 
-  componentWillMount =() =>{
+  componentWillMount = () => {
   }
 
   async componentDidMount() {
@@ -47,10 +47,10 @@ class Home extends RentApp {
       this.props.dispatch({ type: 'HOME_GET_BANNER_AND_NAV' })
     }
     // console.log(addressMsg, "redux 中拿出locationInfos")
-  } 
+  }
 
   refreshData = () => {
-    this.props.dispatch({type: 'home/GET_HOME_PRODUCTS'})
+    this.props.dispatch({ type: 'home/GET_HOME_PRODUCTS' })
     this.props.dispatch({ type: 'home/GET_BANNER_AND_NAV' })
     this.props.dispatch({
       type: 'IS_OPEN_ASYNC',
@@ -66,8 +66,8 @@ class Home extends RentApp {
       return (
         <View key={item.id || index}>
           <ProudcuItem data={item}>
-            <Button 
-              onClick={() => navigate('ProductDetail', {productId: item.id})} 
+            <Button
+              onClick={() => navigate('ProductDetail', { productId: item.id })}
               style={{ width: 66, backgroundColor: Color.mainPink }} size='small'>
               <Text style={{ color: '#fff' }}>去租机</Text>
             </Button>
@@ -86,9 +86,9 @@ class Home extends RentApp {
         locationInfos: data
       })
       await this.setState({ loading: true })
-       this.refreshData()
+      this.refreshData()
       await AsyncStorage.setItem('addressInfos', JSON.stringify(data));
-      
+
     } catch (error) {
       console.error(error)
     } finally {
@@ -98,35 +98,36 @@ class Home extends RentApp {
 
   render() {
     const { addressMsg } = this.state
-    const { hotPhoneList, bannerList, navList, isOpen } =this.props
+    const { hotPhoneList, bannerList, navList, isOpen } = this.props
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     return (
-      <Flex style={{flex: 1, width:WIDTH}}>
-        {isOpen === '0'
-          ? (<Flex direction='column' justify='center' align='center' style={{height:HEIGHT, width: WIDTH, backgroundColor:'#fff'}}>
-            <Image style={{ width: 60, height: 60 }} source={require('../../images/imageNew/one/gift.png')}></Image>
+      <Flex style={{ flex: 1, width: WIDTH }}>
+        <View style={{ position: 'relative', height: '100%', width: WIDTH }}>
+          {/**Search head start */}
+          <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
+            <TouchableOpacity style={styles.leftAddressBox} onPress={() => navigate('LocationPage', {
+              callback: (data) => {
+                this.setAddressInfosFun(data)
+              }
+            })}>
+              <Text style={{ color: '#fff', marginRight: 4 }}>{addressMsg && addressMsg.city}</Text>
+              <View style={styles.triangle}></View>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
+              <Flex style={{ backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20 }}>
+                <Image style={{ width: 14, height: 14, marginRight: 4 }} source={require("../../images/imageNew/one/search.png")} />
+                <Text style={{ color: '#ccc' }}>搜索商品</Text>
+              </Flex>
+            </TouchableOpacity>
+          </Flex>
+          {/**Search head end */}
+          {isOpen === '0' ?
+            (<Flex direction='column' justify='start' align='center' style={{paddingTop:100, height: HEIGHT, width: WIDTH, backgroundColor: '#fff' }}>
+              <Image resizeMode={"stretch"} style={{ width: 80, height: 60 }} source={require('../../images/imageNew/one/gift.png')}></Image>
 
-            <Text style={{width: 200, marginTop: 20,textAlign: 'center', color: '#666', fontSize: 14,lineHeight: 20}}>该城市暂未开通信用租机业务，目前已开通江苏无锡市，请切换到相应地市试试...</Text>
-          </Flex>) 
-          : <View style={{ position: 'relative', height: '100%', width: WIDTH}}>
-            <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
-              <TouchableOpacity style={styles.leftAddressBox} onPress={() => navigate('LocationPage', {
-                callback: (data) => {
-                  this.setAddressInfosFun(data)
-                }
-              })}>
-                <Text style={{ color: '#fff', marginRight: 4 }}>{addressMsg && addressMsg.city}</Text>
-                <View style={styles.triangle}></View>
-              </TouchableOpacity>
-              <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
-                <Flex style={{ backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20 }}>
-                  <Image style={{ width: 14, height: 14, marginRight: 4 }} source={require("../../images/imageNew/one/search.png")} />
-                  <Text style={{ color: '#ccc' }}>搜索商品</Text>
-                </Flex>
-              </TouchableOpacity>
-
-            </Flex>
+              <Text style={{ width: 200, marginTop: 20, textAlign: 'center', color: '#666', fontSize: 14, lineHeight: 20 }}>该城市暂未开通信用租机业务，目前已开通广东广州市，请切换到相应地市试试...</Text>
+            </Flex>) :
             <ScrollView
               automaticallyAdjustContentInsets={false}
               showsHorizontalScrollIndicator={false}
@@ -147,12 +148,10 @@ class Home extends RentApp {
                       infinite
                       afterChange={this.onHorizontalSelectedIndexChange}
                     >
-                      {bannerList && this.renderBanner(bannerList)}
+                      {bannerList ? this.renderBanner(bannerList):<View></View>}
                     </Carousel>
                   )
               }
-
-
               <View style={[styles.navBox]}>
                 {navList && this.renderNavList(navList)}
               </View>
@@ -160,25 +159,21 @@ class Home extends RentApp {
                 <Text style={styles.listTitle}>推荐产品</Text>
                 {this.renderList(hotPhoneList)}
               </View>
-              <View style={{height: 60}}>
-              {/* 占位 */}
+              <View style={{ height: 60 }}>
+                {/* 占位 */}
               </View>
 
             </ScrollView>
-            <View style={{ position: 'absolute', bottom: 0, width: '100%' }}>
-              {/* <TabNavigator /> */}
-            </View>
-          </View>
-        }
-        
+          }
+        </View>
       </Flex>
-      
+
     )
   }
 
   renderBanner = (list) => {
     const { navigate } = this.props.navigation
-    return list.map((item, index) =>{ 
+    return list.map((item, index) => {
       let productId = item.linkUrl.match(/\?id=(\S*)/)
       productId = productId && productId[1];
 
@@ -186,11 +181,11 @@ class Home extends RentApp {
         <View
           key={item.id || index}
           style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
-        > 
-          <TouchableOpacity onPress={() => navigate('ProductDetail', { productId})}>
+        >
+          <TouchableOpacity onPress={() => navigate('ProductDetail', { productId })}>
             <Image resizeMode="stretch" style={{ width: WIDTH, height: BANNER_HEIGHT }} source={{ uri: `${HTTP_IMG}${item.imgPath}` }} />
           </TouchableOpacity>
-         
+
         </View>
       )
     }
@@ -202,12 +197,12 @@ class Home extends RentApp {
       <TouchableOpacity
         key={index}
         style={[styles.navItem]}
-        onPress={() => navigate('ProductListPage', { category : item.id })}
+        onPress={() => navigate('ProductListPage', { category: item.id })}
       >
-        <Image 
-          style={{ width: 49, height: 49 }} 
-          resizeMode="stretch" 
-          source={{ uri: `${HTTP_IMG}${item.imgPath}` }} 
+        <Image
+          style={{ width: 49, height: 49 }}
+          resizeMode="stretch"
+          source={{ uri: `${HTTP_IMG}${item.imgPath}` }}
         />
         <Text style={{ textAlign: 'center' }}>
           {item.navTitle}
@@ -221,12 +216,12 @@ const styles = StyleSheet.create({
   wrapper: {
     backgroundColor: '#fff',
   },
-  leftAddressBox:{
+  leftAddressBox: {
     alignItems: 'flex-end',
     // justifyContent: 'center',
     flexDirection: 'row'
   },
-  triangle:{
+  triangle: {
     width: 0,
     height: 0,
     borderWidth: 4,
@@ -275,7 +270,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => {
   const { hotMealList, hotPhoneList, bannerList, navList } = state.homeDataReducer
   return {
-    locationInfos: state.locationReducer.locationInfos, 
+    locationInfos: state.locationReducer.locationInfos,
     // homeData: state.homeDataReducer
     hotMealList,
     hotPhoneList,

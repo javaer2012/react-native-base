@@ -106,7 +106,7 @@ class BankCard extends RentApp {
                         </ImageBackground>
                         <WhiteSpace size={"md"}/>
 
-                        <ImageBackground style={{width: '100%', height: 179, borderRadius: 6, resizeMode: 'contain'}}
+                        <ImageBackground style={{width: '100%', height: 47, borderRadius: 6, resizeMode: 'contain'}}
                                          source={require('../images/bank/border.png')}>
                             <WingBlank size={"lg"}>
                                 <TouchableOpacity onPress={()=>this.props.navigation.navigate("AddBankCardPage")}>

@@ -10,6 +10,7 @@ import api from '../.././service/api'
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
 import data from '../../config'
+import { connect } from 'react-redux';
 const { authAppSecret } = data
 const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods } = api
 
@@ -50,8 +51,7 @@ const tabs = [
   // { title: '单产品套餐', sub: '2' },
 ];
 
-
-export default class ProductDetailPage extends RentApp {
+class ProductDetailPage extends RentApp {
   static navigationOptions = {
     title: "商品详情"
   }
@@ -95,12 +95,12 @@ export default class ProductDetailPage extends RentApp {
     // debugger
     const productId = this.props.navigation.getParam('productId');
     let user = await AsyncStorage.getItem('userInfo')
-    user = { ...JSON.parse(user) }
-    console.log(user, "====>缓存中读取的userInfo")
-    await this.setState({
-      userInfos: user,
-      productId
-    })
+    // user = { ...JSON.parse(user) }
+    // console.log(user, "====>缓存中读取的userInfo")
+    // await this.setState({
+    //   userInfos: user,
+    //   productId
+    // })
     try {
       await this.setState({ loading: true })
       const params = {
@@ -281,7 +281,7 @@ export default class ProductDetailPage extends RentApp {
 
   check = async () => {
     try {
-      const { userInfos } = this.state
+      const { userInfos } = this.props
       // var isBinding = userInfos.isBinding;
       var isCredited = userInfos.isCredited;
       // await AsyncStorage.multiSet([['userId', userInfo.userId], ['openId', userInfo.openId], ['isLoggedIn', '1']])
@@ -382,7 +382,6 @@ export default class ProductDetailPage extends RentApp {
     const { openId, provinceCode, cityCode, userId } = this
     const {
       productId,
-      userInfos,
       paymentInfo,
       capitalProdSelected,
       mealSelected,
@@ -393,13 +392,18 @@ export default class ProductDetailPage extends RentApp {
       selectedProductSkuDetail
     } = this.state
 
+    const {userInfos} = this.props
+
 
     //绑卡判断
     if (capitalProdSelected && capitalProdSelected.isCreditCard == 1 && userInfos.isCreditCard == 0) {
       //需要绑卡并且还没有绑卡
-      this.setState({
-        isShowBindCard: true
-      })
+      Alert.alert("提示","您还绑定银行卡，是否立即绑定?",[
+        {
+          text:"是", onPress:()=>{this.bindCardFun()}
+        },
+        {text:"否"}
+    ])
       return false
     }
 
@@ -720,12 +724,6 @@ export default class ProductDetailPage extends RentApp {
             </Flex>
           </Flex>
         </Modal>
-        {this.state.isShowBindCard?Alert.alert("提示","您还绑定银行卡，是否立即绑定?",[
-            {
-              text:"是", onPress:()=>{this.bindCardFun()}
-            },
-            {text:"否"}
-        ]):null}
 
         {this.state.isShowEasyModal ? Alert.alert("提示",`${EasyModalInfos.text}`, [
           {
@@ -751,6 +749,12 @@ export default class ProductDetailPage extends RentApp {
     )
   }
 }
+
+const stateToProps = state =>({
+  userInfos:state.my.userInfo
+})
+
+export default  connect(stateToProps)(ProductDetailPage)
 
 
 

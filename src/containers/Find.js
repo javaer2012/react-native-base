@@ -1,10 +1,12 @@
 import React from 'react';
-import { ScrollView, View, Text, FlatList, AsyncStorage, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, FlatList, AsyncStorage, Image, ImageBackground, TouchableOpacity ,Dimensions} from 'react-native';
 import { Flex, Icon, WhiteSpace, WingBlank, Toast, Carousel } from 'antd-mobile-rn';
 import RentApp from "../components/RentApp";
 import api from "../service/api";
 import { connect } from 'react-redux'
 import { NavigationEvents } from 'react-navigation'
+const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
+
 
 
 const imgUrl = "https://mobile2.lychee-info.cn/cps-rest/showImg?fileName="
@@ -222,7 +224,7 @@ class Find extends RentApp {
 
 
         return (
-            <View style={{ width: '100%' }}>
+            <Flex style={{flex: 1, width:WIDTH}}>
                 <NavigationEvents
                     onWillFocus={payload => this.props.dispatch({
                         type: "QUERY_FIND_LIST"
@@ -232,16 +234,14 @@ class Find extends RentApp {
                     onDidBlur={payload => console.log('did blur', payload)}
                 />
                 {find.length === 0 ?
-                    <Flex direction={"column"} justify={'center'} align={"center"}>
-                        <WhiteSpace size={"lg"} />
+                    (<Flex direction='column' justify='center' align='center' style={{ height: HEIGHT, width: WIDTH, backgroundColor: '#fff' }}>
+                        <Image resizeMode={"stretch"} style={{ width: 80, height: 60 }} source={require('../images/imageNew/one/gift.png')}></Image>
 
-                        <Image resizeMode={"stretch"} style={{ width: 153, height: 160 }} source={require('../images/imageNew/one/gift.png')} />
-                        <WhiteSpace size={"md"} />
-                        <Text style={{ width: 200,color:'gray'}}>该城市暂无发现内容，请切换城市后重试</Text>
-                    </Flex> :
+                        <Text style={{ width: 200, marginTop: 20, textAlign: 'center', color: '#666', fontSize: 14, lineHeight: 20 }}>该城市暂未开通信用租机业务，目前已开通广东广州市，请切换到相应地市试试...</Text>
+                    </Flex>) :
                     <FlatList data={find} renderItem={this.renderItem.bind(this)} style={{ width: '100%' }} />
                 }
-            </View>
+            </Flex>
         )
     }
 }

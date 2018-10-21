@@ -69,7 +69,6 @@ const HomeStack = createStackNavigator({
     Accept: Accept,  // 受理：crm信息回填
     UploadImg: UploadImg,
     Pay,
-    OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
     PayResult,
     LocationPage,
     AuthApplyPage: AuthApply, // 填写信用租机信息
@@ -151,6 +150,7 @@ const MyStack = createStackNavigator({
     AddBankCardPage: AddBankCard,
     CardInfoPage: CardInfo,
     OrderDetail, // 从WorkerEnter进入受理订单页面
+    OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
     
 }, {
         navigationOptions: {
