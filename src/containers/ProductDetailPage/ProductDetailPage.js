@@ -128,7 +128,7 @@ export default class ProductDetailPage extends RentApp {
   }
 
   handleDataFun = (data) => {
-    // console.log(JSON.stringify(data))
+    console.log(JSON.stringify(data))
     const {
       photoList, // 图片列表
       telecomProdList, // 电信套餐列表
@@ -160,7 +160,8 @@ export default class ProductDetailPage extends RentApp {
     }
     // capitalProdList
     const disposeCapitalProdList = capitalProdList.map((item, index) => {
-      let sum = (goodsBaseInfo.goodsPrice * (1 + item.monthFee * item.periods) + mealSelected.price).toFixed(2);      const monthPay = (sum / item.periods).toFixed(2);
+
+      let sum = (goodsBaseInfo.goodsPrice * (1 + item.monthFee * item.periods) + mealSelected && mealSelected.price).toFixed(2);      const monthPay = (sum / item.periods).toFixed(2);
       return { ...item, monthPay, sum }
     })
 
@@ -265,12 +266,16 @@ export default class ProductDetailPage extends RentApp {
     })
   }
 
-  capacityId_color_fun = (type, subSkuId) => {  // 选择内存和颜色的方法
-    if (this.state[type]) {
-      this.setState({ [type]: '' })
-    } else {
-      this.setState({ [type]: subSkuId })
-    }
+  capacityId_color_fun = async (type, subSkuId) => {  // 选择内存和颜色的方法
+    // debugger
+    // if (this.state[type]) {
+    //   await this.setState({ [type]: '' })
+    // } else {
+    //   await this.setState({ [type]: subSkuId })
+    // }
+    await this.setState({ [type]: subSkuId })
+
+    console.log(subSkuId,"!!!!!!!", type)
     this.selectedProductFun()
   }
 
@@ -373,7 +378,7 @@ export default class ProductDetailPage extends RentApp {
 
 
   // 下单支付
-  goToPayFun = async () => {
+  goToPayFun = () => {
     const { openId, provinceCode, cityCode, userId } = this
     const {
       productId,
@@ -432,7 +437,7 @@ export default class ProductDetailPage extends RentApp {
     const userInfoJson = JSON.stringify(_userInfo);
 
     var _goodsInfo = {
-      // goodsFirstAmount: 
+      goodsFirstAmount: 0,
       totalStageAmount: capitalProdSelected.sum,
       monthRate: capitalProdSelected.monthFee,
       periods: capitalProdSelected.periods,
@@ -490,6 +495,7 @@ export default class ProductDetailPage extends RentApp {
 
   selectedProductFun =()=>{
     const { skuDetailList, capacityId, colorId } = this.state
+    // debugger
     skuDetailList.filter((item) => {
       const unionId = JSON.parse(item.skuJsonStr).unionId
       if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1) {
@@ -532,7 +538,7 @@ export default class ProductDetailPage extends RentApp {
       loading,
       selectedProductSkuDetail
     } = this.state
-    if (!photoList) return false
+    if (!photoList) return <Flex></Flex>
     const { goodsName, goodsDesc, goodsDetailText, goodsPrice } = goodsBaseInfo || {}
     return (
       <Flex style={{ position: 'relative', width: '100%' }} direction="column">

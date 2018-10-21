@@ -3,7 +3,7 @@ import { put, takeEvery, call, select } from 'redux-saga/effects'
 import api from '../service/api'
 // getBannerAndListAsync
 
-const { getBannerAndNav, hotProducts } = api
+const { getBannerAndNav, hotProducts, isCityOpen } = api
 
 export function* getHotProductsAsync(action) {
   // debugger
@@ -35,5 +35,20 @@ export function* getBannerAndListAsync(action) {
     yield put({ type: 'GET_BANNER_AND_NAV_SUCCESS', response: response.data });
   } catch (error) {
     console.log('=======> ',error)
+  }
+}
+export function* isOpenAsync(action) {
+  try {
+    const params = yield select(state => ({
+      openId: state.app.openId,
+      provinceCode: state.locationReducer.locationInfos.provinceCode,
+      cityCode: state.locationReducer.locationInfos.cityCode,
+    }))
+   
+    const response = yield call(isCityOpen, params)
+    console.log(response, "FFFFFSSSSSS")
+    yield put({ type: 'IS_OPEN', playload: response.data });
+  } catch (error) {
+    console.log('=======> ', error)
   }
 }

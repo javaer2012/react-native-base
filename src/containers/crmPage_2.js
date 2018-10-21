@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ImageBackground, Image, TouchableOpacity, ActivityIndicator, AsyncStorage} from 'react-native'
+import { ScrollView, View,Text, StyleSheet, ImageBackground, Image, TouchableOpacity, ActivityIndicator, AsyncStorage} from 'react-native'
 import ImagePicker from "react-native-image-picker";
 import {Flex, WhiteSpace, WingBlank} from 'antd-mobile-rn'
 import RentApp from "../components/RentApp";
@@ -193,7 +193,7 @@ class CrmPage_2 extends RentApp {
 
     render() {
         return (
-            <View size={"md"} style={{backgroundColor: 'white', height: '100%'}}>
+            <ScrollView size={"md"} style={{backgroundColor: 'white', height: '100%'}}>
                 <WhiteSpace size={"xl"}/>
                 <Flex direction={"column"} justify={"start"} align={"center"}>
                     <Flex direction={"row"} align={"center"} justify={"center"}>
@@ -335,7 +335,7 @@ class CrmPage_2 extends RentApp {
                     }} onClick={this.confirm}>完成</Button>
 
                 </Flex>
-            </View>
+            </ScrollView>
         )
     }
 }

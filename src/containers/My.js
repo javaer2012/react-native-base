@@ -59,12 +59,7 @@ class My extends RentApp {
     static navigationOptions = {
         title: "我的"
     }
-    state = {
-        loading: false,
-        isLoggedIn: '0',
-    }
 
-    _state = {...this.state}
 
     constructor(props) {
         super(props)
@@ -130,7 +125,7 @@ class My extends RentApp {
                                     <Flex direction={"row"} justify={"around"} style={{width: 126, height: 45}}>
                                         <Button
                                             style={{backgroundColor: null}}
-                                            onClick={() => navigation.navigate('LoginPage')}>登录</Button>
+                                            onClick={() => navigation.replace('LoginPage')}>登录</Button>
                                     </Flex>
                                 </Flex> :
                                 <React.Fragment>
@@ -170,7 +165,7 @@ class My extends RentApp {
                                                             backgroundColor: null
                                                         }}
                                                                 onClick={() => navigation.navigate('ScorePage', {
-                                                                    score: _state.userScore ? userInfo.userScore : 0
+                                                                    score: userInfo.userScore ? userInfo.userScore : 0
                                                                 })}>晒晒我的信用分</Button>
                                                     </Flex>
                                                 </Flex.Item>

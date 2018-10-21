@@ -14,10 +14,25 @@ export function locationReducer(state = {}, action) {
             return Object.assign({}, state, {
                 locationInfos: action.locationInfos
             })
+        case 'IS_OPEN': 
+            return Object.assign({}, state, {
+                isOpen: action.playload.isOpen
+            })
         default:
             return state
     }
 }
+
+// export function (state = {}, action) {
+//     switch (action.type) {
+//         case 'SET_LOCATION':
+//             return Object.assign({}, state, {
+//                 locationInfos: action.locationInfos
+//             })
+//         default:
+//             return state
+//     }
+// }
 
 
 export function homeDataReducer(state = {}, action) {

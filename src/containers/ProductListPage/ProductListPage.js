@@ -33,12 +33,13 @@ export default class ProductListPage extends RentApp {
         maxPrice: false,
         minPrice: false,
         sortList: false,
+        keyWord: '',
     }
 
     async componentDidMount() {
         await this.getOpenIdAndUserId()
-        this.getData()
-        this.getCateList()
+        await this.getData()
+        await this.getCateList()
     }
 
     getData = async (otherParams) => {
@@ -49,11 +50,9 @@ export default class ProductListPage extends RentApp {
         })
       }
       const { pageNum, pageSize, products, isLoreMoreing, selected, maxPrice, minPrice} = this.state
-      if (isLoreMoreing === 'LoreMoreEmpty') return false
 
       const category = this.props.navigation.getParam('category');
-      const keyWord = this.props.navigation.getParam('keyWord');
-      
+      const { keyWord } = this.state
       await this.setState({ loading: true })
       try {
         const user = await AsyncStorage.multiGet(['userId', 'openId', 'isLogin', 'addressInfos'])
@@ -70,31 +69,32 @@ export default class ProductListPage extends RentApp {
         if (minPrice !== false) params.minPrice = minPrice
         if (maxPrice !== false)params.maxPrice = maxPrice
 
-        console.log(params, '=========> params')
 
         const rsp = await queryGoodsList(params)
-        console.log("Products:", rsp)
         const { data } = rsp || {}
-        console.log(data, '======>data')
 
         const { errcode, goodsList, totalPage } = data
-        if (errcode === 1 && goodsList.length) {
-          // const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
-          this.setState({
-            products: [...products, ...goodsList],
-            totalPage,
-            refreshing: false,
-            isLoreMoreing: 'LoreMoreing'
-          })
-        } else if (errcode === 1 && !goodsList.length) {
-          this.setState({
-            isLoreMoreing: 'LoreMoreEmpty'
-          })
-        } else if (errcode !== 1) {
-          this.showToast(data.errmsg)
+
+        if (errcode === 1) {
+            this.setState({
+                products: [...products, ...goodsList],
+                totalPage,
+                refreshing: false,
+                isLoreMoreing: 'LoreMoreing'
+            })
+        } 
+        if (!goodsList.length) {
+            this.setState({
+                isLoreMoreing: 'LoreMoreEmpty'
+            })   
         }
+
+
+        if (errcode !== 1) {
+            this.showToast(data.errmsg)
+        }
+
       } catch (e) {
-        console.log(e,"========>err")
       } finally {
         this.setState({ loading: false })
       }
@@ -102,20 +102,17 @@ export default class ProductListPage extends RentApp {
 
     async getCateList() {
         try {
-            console.log("Call api of List")
             const listRsp = await api.queryConditionList({
                 "provinceCode": this.provinceCode,
                 "cityCode": this.cityCode,
                 "category": '1'
             });
-            console.log(JSON.stringify(listRsp.data.cateList), '=====>listRsp')
             if (listRsp.data.errcode === 1) {
                 this.setState({
                     cateList: listRsp.data.cateList
                 })
             }
         } catch (e) {
-            console.log(e)
         }
     }
 
@@ -180,7 +177,6 @@ export default class ProductListPage extends RentApp {
     }
 
     onPriceChange = (value, type) => {
-      // console.log(value,"dddddddddd", type)
         this.setState({
             [type]: value
         })
@@ -235,7 +231,6 @@ export default class ProductListPage extends RentApp {
     await this.setState({ sortList: newSortList })
     const params = { pageNum: 1 }
     params.sortList = newSortList
-
     this.getData(params)
   }
 
@@ -249,10 +244,23 @@ export default class ProductListPage extends RentApp {
     this.getData(params)
   }
 
+    searchFun = () => { 
+        this.setState({
+            products:[],
+            pageNum: 1,
+        })
+        const { navigate } = this.props.navigation
+        navigate('SearchPage', {
+            callback: async (keyWord) => {
+                await this.setState({ keyWord, isLoreMoreing: 'LoreMoreing' })
+                await this.getData()
+            }
+        })
+    }
 
     render() {
-        // console.log("New", this.state)
-        let {products, pageNum, selected, cateList, maxPrice,minPrice, isLoreMoreing} = this.state
+        const { navigate } = this.props.navigation
+        let { products, pageNum, keyWord, selected, cateList, maxPrice, minPrice, isLoreMoreing} = this.state
         const searchBtnStyle = [{
             paddingHorizontal: 36,
             paddingVertical: 10
@@ -277,13 +285,15 @@ export default class ProductListPage extends RentApp {
                 drawerBackgroundColor="#ccc"
                 drawerWidth={328}
             >
-                {/* <View style={{ flex: 1, marginTop: 114, padding: 8, minHeight: 603, zIndex: 10 }}>
-          <Button onClick={() => this.drawer && this.drawer.openDrawer()}>
-            Open drawer
-                    </Button>
-          <WhiteSpace />
-        </View> */}
                 <Flex direction="column" align="stretch" style={{height: '100%'}}>
+                    <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
+                        <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => { this.searchFun() }}>
+                            <Flex style={{ backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20 }}>
+                                <Image style={{ width: 14, height: 14, marginRight: 4 }} source={require("../../images/imageNew/one/search.png")} />
+                                <Text style={{ color: '#ccc' }}>{keyWord || '搜索商品'}</Text>
+                            </Flex>
+                        </TouchableOpacity>
+                    </Flex>
                     <Flex direction='column' align="stretch" style={{
                         backgroundColor: '#fff',
                         paddingVertical: 6,
@@ -314,10 +324,8 @@ export default class ProductListPage extends RentApp {
                         extraData={this.state}
                         style={{height: '100%'}}
                         onEndReached={() => {
-                            if (isLoreMoreing !== 'LoreMoreEmpty') {
+                            if (isLoreMoreing === 'LoreMoreing') {
                                 this.loadMoreFun()
-                            } else if (isLoreMoreing == 'LoreMoreing') {
-                                console.log('LoreMoreing')
                             }
 
                         }}

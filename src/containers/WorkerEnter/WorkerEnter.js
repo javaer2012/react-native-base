@@ -51,18 +51,6 @@ export default class WorkerEnter extends RentApp {
     } else{
       return data
     }
-    // if (type === 1) {
-    //   console.log(data.orderList,"======>notDoOrderList")
-    //   this.setState({
-    //     notDoOrderList: data.orderList
-    //   })
-    // } else if (type === 2) {
-    //   console.log(data.orderList, "======>hasDoOrderList")
-    //   this.setState({
-    //     hasDoOrderList: data.orderList
-    //   })
-    // }
-    
   }
 
   searchFun = () => {

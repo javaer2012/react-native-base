@@ -29,6 +29,9 @@ class Home extends RentApp {
     loading: true,
   }
 
+  componentWillMount =() =>{
+  }
+
   async componentDidMount() {
     // this.subscription = DeviceEventEmitter.addListener('refreshDataHome', this.refreshData)
     // console.log(this.props, "======> this.props")
@@ -49,6 +52,10 @@ class Home extends RentApp {
   refreshData = () => {
     this.props.dispatch({type: 'home/GET_HOME_PRODUCTS'})
     this.props.dispatch({ type: 'home/GET_BANNER_AND_NAV' })
+    this.props.dispatch({
+      type: 'IS_OPEN_ASYNC',
+      // locationInfos: option
+    })
   }
 
   // 渲染热销商品
@@ -74,13 +81,12 @@ class Home extends RentApp {
       // await this.setState({
       //   addressMsg: data
       // })
-      
-      // this.refreshData()
       this.props.dispatch({
         type: 'SET_LOCATION',
         locationInfos: data
       })
       await this.setState({ loading: true })
+       this.refreshData()
       await AsyncStorage.setItem('addressInfos', JSON.stringify(data));
       
     } catch (error) {
@@ -92,14 +98,16 @@ class Home extends RentApp {
 
   render() {
     const { addressMsg } = this.state
-    const { hotPhoneList, bannerList, navList } =this.props
+    const { hotPhoneList, bannerList, navList, isOpen } =this.props
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     return (
       <Flex style={{flex: 1, width:WIDTH}}>
-        {!addressMsg.provinceCode 
-          ? (<Flex justify='center' align='center' style={{height:HEIGHT, width: WIDTH}}>
-            <Text style={{width: 90,textAlign: 'center', color: '#666', fontSize: 14,lineHeight: 20}}>该城市暂未开通信用租机业务，目前已开通江苏无锡市，请切换到相应地市试试...</Text>
+        {isOpen === '0'
+          ? (<Flex direction='column' justify='center' align='center' style={{height:HEIGHT, width: WIDTH, backgroundColor:'#fff'}}>
+            <Image style={{ width: 60, height: 60 }} source={require('../../images/imageNew/one/gift.png')}></Image>
+
+            <Text style={{width: 200, marginTop: 20,textAlign: 'center', color: '#666', fontSize: 14,lineHeight: 20}}>该城市暂未开通信用租机业务，目前已开通江苏无锡市，请切换到相应地市试试...</Text>
           </Flex>) 
           : <View style={{ position: 'relative', height: '100%', width: WIDTH}}>
             <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
@@ -265,7 +273,6 @@ const styles = StyleSheet.create({
   }
 });
 const mapStateToProps = state => {
-  console.log(state,"FFFF")
   const { hotMealList, hotPhoneList, bannerList, navList } = state.homeDataReducer
   return {
     locationInfos: state.locationReducer.locationInfos, 
@@ -273,11 +280,9 @@ const mapStateToProps = state => {
     hotMealList,
     hotPhoneList,
     bannerList,
-    navList
+    navList,
+    isOpen: state.locationReducer.isOpen
   }
 }
 
-
-// , mapDispatchToProps, mergeProps
 export default connect(mapStateToProps)(Home)
-// , mapDispatchToProps, mergeProps

@@ -10,13 +10,15 @@ import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import store from './src/store/store';
 import AppNavigator, { appNav } from './src/router';
-import { AsyncStorage, Platform, Linking, Alert } from 'react-native';
+import { AsyncStorage, Platform, Linking, Alert, NetInfo } from 'react-native';
 import api from './src/service/api'
 import config from './src/config';
 import DeviceInfo from 'react-native-device-info'
 import { areaDict } from './src/utils/city1.json'
 import { localCodeInfo } from './src/utils/city'
 import RentApp from "./src/components/RentApp";
+import { StackNavigator } from 'react-navigation';
+import NetworkFailPage from './src/containers/NetworkFailPage'
 
 
 
@@ -50,8 +52,19 @@ export default class App extends RentApp {
 
 
     componentWillMount() {
-        //AsyncStorage.clear()
-
+        // console.log(this.props,"mmmmm")
+        // //AsyncStorage.clear()
+        // const handleFirstConnectivityChange = (connectionInfo) => {
+        //     console.log('First change', connectionInfo);
+        //     if (connectionInfo.type === 'none') {
+        //         // this.showToast('网络似乎出了点问题')
+        //         this.props.navigation.replace('NetworkFailPage')
+        //     }
+        // }
+        // NetInfo.addEventListener(
+        //     'connectionChange',
+        //     handleFirstConnectivityChange
+        // );
         if (isFirstTime) {
             //标记首次首次启动
             markSuccess()
@@ -120,22 +133,22 @@ export default class App extends RentApp {
             .catch(err=>Alert.alert(err.toString()))
     }
 
-    isOpen = async (params) => {
-        try {
-            const rsp = await isCityOpen(params);
-            if (rsp.data.errcode == 1) {
-                AsyncStorage.setItem('isCityOpen', rsp.data.isOpen)
-            }
-            else {
-                // throw (1)
-                console.log("x!!!! 判断isOpen失败")
-            }
-            // console.log(rsp)
+    // isOpen = async (params) => {
+    //     try {
+    //         const rsp = await isCityOpen(params);
+    //         if (rsp.data.errcode == 1) {
+    //             AsyncStorage.setItem('isCityOpen', rsp.data.isOpen)
+    //         }
+    //         else {
+    //             // throw (1)
+    //             console.log("x!!!! 判断isOpen失败")
+    //         }
+    //         // console.log(rsp)
 
-        } catch (e) {
-            console.log("isOpen 函数错误 x!!!! 地址失败")
-        }
-    }
+    //     } catch (e) {
+    //         console.log("isOpen 函数错误 x!!!! 地址失败")
+    //     }
+    // }
 
     doUpdate = async (info) => {
 
@@ -163,8 +176,8 @@ export default class App extends RentApp {
             console.log("Start Retister User")
             console.log(DeviceInfo.getUniqueID())
 
-            await AsyncStorage.removeItem('openId');
-            await AsyncStorage.removeItem('userId');
+           // await AsyncStorage.removeItem('openId');
+           // await AsyncStorage.removeItem('userId');
 
             const openId = await AsyncStorage.getItem('openId');
             const userId = await AsyncStorage.getItem('userId');
@@ -251,13 +264,17 @@ export default class App extends RentApp {
                     store.dispatch({
                         type: 'SET_LOCATION',
                         locationInfos: option
+                    })  
+                    store.dispatch({
+                        type: 'IS_OPEN_ASYNC',
+                        // locationInfos: option
                     })
 
-                    this.isOpen({
-                        provinceCode: option["provinceCode"],
-                        cityCode: option["cityCode"],
-                        openId: config.authAppId
-                    })
+                    // this.isOpen({
+                    //     provinceCode: option["provinceCode"],
+                    //     cityCode: option["cityCode"],
+                    //     openId: config.authAppId
+                    // })
                     // }
                 } catch (error) {
                     this.showToast(error, 'setCrmCode 接口出错!!!!!!!!!!')

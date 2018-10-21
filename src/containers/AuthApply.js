@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity ,KeyboardAvoidingView} from 'react-native';
 import { WingBlank, WhiteSpace, Flex, InputItem, List, Checkbox, Toast, Picker } from 'antd-mobile-rn';
 import Button from '../components/common/Button';
 import Count from "../components/Count";
@@ -156,7 +156,8 @@ export default class AuthApply extends RentApp {
         } = this.state
 
         return (
-            <ScrollView style={{ backgroundColor: '#F5F5F9', height: '100%' }}>
+         <KeyboardAvoidingView>
+                <ScrollView style={{ backgroundColor: '#F5F5F9', height: '100%' }}>
                 <Flex direction={"column"} style={{ backgroundColor: '#F5F5F9' }}>
                     <Flex style={{ backgroundColor: 'white', width: '100%', height: 75 }}>
                         <Text style={styles.text}>请您填写个人真实信息，本资料仅做授权查询办理资格使用，绝不外泄！</Text>
@@ -205,7 +206,7 @@ export default class AuthApply extends RentApp {
 
                                 <Picker
                                     data={RELATION}
-                                    cols={3}
+                                    cols={1}
                                     value={familyRelation}
                                     onChange={(v) => this.setState({ familyRelation: v })}
                                     onPickerChange={(v) => this.setState({ familyRelation: v })}
@@ -257,6 +258,7 @@ export default class AuthApply extends RentApp {
                     </WingBlank>
                 </Flex>
             </ScrollView>
+         </KeyboardAvoidingView>
         )
     }
 }

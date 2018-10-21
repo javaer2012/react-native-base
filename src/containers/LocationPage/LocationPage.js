@@ -7,7 +7,7 @@ import letterPlaceJson from '../../utils/city1014.json'
 
 import { Flex, SearchBar } from 'antd-mobile-rn';
 import Color from '../../styles/var'
-import { NavigationActions } from 'react-navigation'
+// import { NavigationActions } from 'react-navigation'
 import RentApp from "../../components/RentApp";
 
 // const areaDictArr = Object.values(areaDict)
