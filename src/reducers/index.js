@@ -1,5 +1,6 @@
 import { combineReducers, createStore } from "redux";
 import * as home from './home'
+import * as education from './education'
 import {myPageReducer} from './myPage'
 import {appReducer} from "./appReducer";
 import {historyKey} from './historyKeys'
@@ -12,7 +13,8 @@ const rootReducers = combineReducers({
     historyKey,
     bankCard,
     find,
-    ...home
+    ...home,
+    ...education
 });
 
 

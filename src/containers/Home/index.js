@@ -5,8 +5,8 @@ import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
 import Color from '../../styles/var'
 import api from '../.././service/api'
-import { NavigationEvents } from 'react-navigation';
-import Spinner from 'react-native-loading-spinner-overlay';
+// import { NavigationEvents } from 'react-navigation';
+// import Spinner from 'react-native-loading-spinner-overlay';
 
 const {  getBannerAndNav, hotProducts, HTTP_IMG } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
@@ -29,47 +29,33 @@ class Home extends RentApp {
     loading: true,
   }
 
-  async componentDidMount() {
-    this.subscription = DeviceEventEmitter.addListener('refreshDataHome', this.refreshData)
-    console.log(this.props, "======> this.props")
-    // this.getBannerNavData()
+  componentWillMount =() =>{
   }
 
+  async componentDidMount() {
+    // this.subscription = DeviceEventEmitter.addListener('refreshDataHome', this.refreshData)
+    // console.log(this.props, "======> this.props")
+  }
 
   componentWillReceiveProps = async (nextProps) => {
-    const {
-      bannerList,
-      navList,
-      hotMealList,
-      hotPhoneList
-    } = nextProps.homeData
-
-    
-    const addressMsg = nextProps.locationInfos
-    if (!hotPhoneList || JSON.stringify(hotPhoneList) === "{}") {
-      this.props.dispatch({
-        type: 'home/GET_HOME_PRODUCTS',
-        params: addressMsg
+    const { locationInfos } = nextProps
+    if (locationInfos && locationInfos.provinceCode !== this.state.addressMsg.provinceCode) {
+      this.setState({
+        addressMsg: locationInfos
       })
+      this.props.dispatch({ type: 'HOME_GET_HOME_PRODUCTS', })
+      this.props.dispatch({ type: 'HOME_GET_BANNER_AND_NAV' })
     }
-    if (!bannerList) {
-      this.props.dispatch({
-        type: 'home/GET_BANNER_AND_NAV'
-      })
-    }
-
-    if (addressMsg) { this.setState({ addressMsg }) }
-    if (hotPhoneList) { this.setState({ hotPhoneList }) }
-    if (bannerList) { this.setState({ bannerList, navList }) }
-
-    console.log(addressMsg, "redux 中拿出locationInfos")
-  }
+    // console.log(addressMsg, "redux 中拿出locationInfos")
+  } 
 
   refreshData = () => {
-    const addressMsg = this.props.locationInfos
-    this.props.dispatch({type: 'home/GET_HOME_PRODUCTS', params: addressMsg
+    this.props.dispatch({type: 'home/GET_HOME_PRODUCTS'})
+    this.props.dispatch({ type: 'home/GET_BANNER_AND_NAV' })
+    this.props.dispatch({
+      type: 'IS_OPEN_ASYNC',
+      // locationInfos: option
     })
-    this.props.dispatch({ type: 'home/GET_BANNER_AND_NAV', })
   }
 
   // 渲染热销商品
@@ -92,27 +78,17 @@ class Home extends RentApp {
   }
   setAddressInfosFun = async (data) => {
     try {
-      await this.setState({
-        addressMsg: data
-      })
+      // await this.setState({
+      //   addressMsg: data
+      // })
       this.props.dispatch({
         type: 'SET_LOCATION',
         locationInfos: data
       })
       await this.setState({ loading: true })
+       this.refreshData()
       await AsyncStorage.setItem('addressInfos', JSON.stringify(data));
-      const { data: { bannerList, navList } } = await getBannerAndNav({})
-
-      const { data: { hotMealList, hotPhoneList } } = await hotProducts({
-        provinceCode: data.provinceCode,  // 测试用
-        cityCode: data.cityCode
-      })
-      this.setState({
-        bannerList,
-        navList,
-        hotPhoneList,
-        hotMealList,
-      })
+      
     } catch (error) {
       console.error(error)
     } finally {
@@ -121,18 +97,17 @@ class Home extends RentApp {
   }
 
   render() {
-    const { bannerList, navList, hotPhoneList, addressMsg } = this.state
+    const { addressMsg } = this.state
+    const { hotPhoneList, bannerList, navList, isOpen } =this.props
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
-    // if (addressMsg.provinceCode) {
-    //   // debugger
-    //   return <Text>1</Text> 
-    // } 
     return (
       <Flex style={{flex: 1, width:WIDTH}}>
-        {!addressMsg.provinceCode 
-          ? (<Flex justify='center' align='center' style={{height:HEIGHT, width: WIDTH}}>
-            <Text style={{width: 90,textAlign: 'center', color: '#666', fontSize: 14,lineHeight: 20}}>该城市暂未开通信用租机业务，目前已开通江苏无锡市，请切换到相应地市试试...</Text>
+        {isOpen === '0'
+          ? (<Flex direction='column' justify='center' align='center' style={{height:HEIGHT, width: WIDTH, backgroundColor:'#fff'}}>
+            <Image style={{ width: 60, height: 60 }} source={require('../../images/imageNew/one/gift.png')}></Image>
+
+            <Text style={{width: 200, marginTop: 20,textAlign: 'center', color: '#666', fontSize: 14,lineHeight: 20}}>该城市暂未开通信用租机业务，目前已开通江苏无锡市，请切换到相应地市试试...</Text>
           </Flex>) 
           : <View style={{ position: 'relative', height: '100%', width: WIDTH}}>
             <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
@@ -158,7 +133,7 @@ class Home extends RentApp {
               showsVerticalScrollIndicator={false}
             >
               {
-                bannerList.length === 1 ? (
+                (bannerList && bannerList.length) === 1 ? (
                   <View
                     style={[styles.containerHorizontal, { width: WIDTH, height: BANNER_HEIGHT }]}
                   >
@@ -298,13 +273,16 @@ const styles = StyleSheet.create({
   }
 });
 const mapStateToProps = state => {
+  const { hotMealList, hotPhoneList, bannerList, navList } = state.homeDataReducer
   return {
     locationInfos: state.locationReducer.locationInfos, 
-    homeData: state.homeDataReducer
+    // homeData: state.homeDataReducer
+    hotMealList,
+    hotPhoneList,
+    bannerList,
+    navList,
+    isOpen: state.locationReducer.isOpen
   }
 }
 
-
-// , mapDispatchToProps, mergeProps
 export default connect(mapStateToProps)(Home)
-// , mapDispatchToProps, mergeProps

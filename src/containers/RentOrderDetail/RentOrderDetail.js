@@ -38,6 +38,7 @@ export default class RentOrderDetail extends RentApp {
 
   goToPayFun = async () => {
     const { params, goodsInfo } = this.state
+    console.log(goodsInfo,"========>goodsInfo")
     try {
       const { data } = await commitOrder(params)
       console.log(data, "=========》data")
@@ -50,7 +51,7 @@ export default class RentOrderDetail extends RentApp {
         const { navigate } = this.props.navigation;
         setTimeout(() => {
           navigate('Pay', {
-            amount: goodsInfo.totalFirstAmount,
+            amount: goodsInfo.totalFirstAmount || goodsInfo.teleFirstAmount, 
             orderId: data.orderId,
             orderSn: data.orderSn,
             activeId: params.activeId

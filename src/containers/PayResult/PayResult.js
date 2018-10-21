@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity, ActivityIndicator, TextInput } from 'react-native'
 import { Flex, List, ImagePicker, Button, WhiteSpace, Result } from 'antd-mobile-rn';
+import { NavigationActions } from 'react-navigation'
 // import { orderInfo_mock } from '../../mock/ProductDetailPage'
 import Color from '../../styles/var'
 import Progress from '../../components/Progress'

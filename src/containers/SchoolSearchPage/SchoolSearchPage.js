@@ -5,7 +5,6 @@ import {
 import { areaDict } from '../../utils/city1.json'
 import { Flex, SearchBar } from 'antd-mobile-rn';
 import Color from '../../styles/var'
-import { NavigationActions } from 'react-navigation'
 import RentApp from "../../components/RentApp";
 import { schoolObjs } from '../../utils/school'
 import { cityObj, setAreaInfo } from '../../utils/areaSchool'

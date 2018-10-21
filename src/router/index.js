@@ -51,20 +51,25 @@ import OrderDetail from '../containers/OrderDetail/OrderDetail';
 import CrmPage_2 from '../containers/crmPage_2'
 import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
 import RentOrderDetail from '../containers/RentOrderDetail/RentOrderDetail'
+// import App from './App'
+// console.log(App,"!!!!")
+
+
 import { Image } from "react-native";
 import Color from "../styles/var";  // 确认订单
 
 
 const HomeStack = createStackNavigator({
-    Home: Home,
+    Home: Home || Education,
     SearchPage: Search, // 搜索页面
     ProductDetail: ProductDetailPage, //商品详情
     ProductParameterPage: ProductParameterPage,  // 商品参数详情
     ProductListPage: ProductListPage,
-    OrderDetail, // 从WorkerEnter进入受理订单页面
+    // OrderDetail, // 从WorkerEnter进入受理订单页面
     Accept: Accept,  // 受理：crm信息回填
     UploadImg: UploadImg,
     Pay,
+    OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
     PayResult,
     LocationPage,
     AuthApplyPage: AuthApply, // 填写信用租机信息
@@ -78,6 +83,7 @@ const HomeStack = createStackNavigator({
 
 }, {
         navigationOptions: {
+            // initialRouteName: "Pay",
             headerStyle: {
                 backgroundColor: '#06C1AE',
             },
@@ -115,13 +121,11 @@ const MyStack = createStackNavigator({
     MyOrderPage: MyOrders, // 昊天的
     PersonalInfoPage: PersonalInfo,  // 个人信息 学历驾驶证
     AuthApplyPage: AuthApply, // 填写信用租机信息
-
     TermPage: Term, // 信息条款说明
     DrivingPage: DrivingLicense, // 驾驶证件
     EducationPage: Education, // 学籍学历
     ScorePage: Score, // 晒晒分
     KnowScorePage: KnowScore, // 了解信用分
-    OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
     MyInstallmentPage: MyInstallmentPage, // 我的分期
     MyOrder: MyOrder, // 孟令禹 我的订单
     WorkerEnter: WorkerEnter, // 营业员入口
@@ -134,6 +138,7 @@ const MyStack = createStackNavigator({
     CardInfoPage: CardInfo,
     NegativeRecord,
     CrmPage_2,
+    LocationPage,
     SchoolSearchPage,
     RentOrderDetail,
     ProductDetail: ProductDetailPage, //商品详情

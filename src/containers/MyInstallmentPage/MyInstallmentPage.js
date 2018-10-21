@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, AsyncStorage } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, AsyncStorage, ScrollView } from 'react-native'
 import { Button, Toast } from 'antd-mobile-rn';
 import { bannerNav_mock, productList_mock } from '../../mock/ProductDetailPage'
 import { flexRow, mainGray } from '../../styles/common'
@@ -175,9 +175,12 @@ export default class MyInstallmentPage extends RentApp {
           </TouchableOpacity>
           
         </Flex>
-        <Flex direction="column" style={styles.cardBox}>
-          {(!!periodList && !!periodList.length) && this.renderListTest(periodList)}
-        </Flex>
+        <ScrollView>
+          <Flex direction="column" style={styles.cardBox}>
+            {(!!periodList && !!periodList.length) && this.renderListTest(periodList)}
+          </Flex>
+        </ScrollView>
+        
 
       </Flex>
     )
@@ -195,6 +198,7 @@ const styles = StyleSheet.create({
   },
   advance:{
     position: 'absolute',
+    zIndex: 5,
     height: advanceH,
     // lineHeight: advanceH,
     bottom: 0 - advanceH / 2,

@@ -43,3 +43,16 @@ export function* logout(action) {
     }
 
 }
+
+export function* setLocationAsync(action) {
+
+    try {
+        yield put({
+            type: 'SET_LOCATION',
+            payload: action.locationInfos
+        })
+    } catch (e) {
+
+    }
+
+}

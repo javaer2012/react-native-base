@@ -44,7 +44,7 @@ export default class Education extends RentApp {
             console.log(params)
             const rsp = await api.userInfo(params)
 
-            console.log(rsp)
+            console.log(JSON.stringify(rsp),"WWWWWWWW")
 
             const { data } = rsp
             if (data.errcode === 1) {
@@ -81,6 +81,7 @@ export default class Education extends RentApp {
                 this.setState({
                     ...rsp
                 })
+                console.log(rsp,"FRRRRR")
             }
         } catch (e) {
             console.log(e)

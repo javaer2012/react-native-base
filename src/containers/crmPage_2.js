@@ -38,7 +38,10 @@ class CrmPage_2 extends RentApp {
     }
 
     componentWillReceiveProps = (nextProps) => {
-        const { openId, userId } = nextProps
+        const { openId, userId, userInfo } = nextProps
+        this.setState({
+            userInfo
+        })
     }
 
 
@@ -63,7 +66,8 @@ class CrmPage_2 extends RentApp {
                 provinceCode = this.provinceCode;
             const staffInfo = {
                 terminalCode: fromAcceptDate.client,
-                staffNo: fromAcceptDate.staffNo,
+                // staffNo: fromAcceptDate.staffNo,
+                staffNo: userInfo.staffNo,
                 contractPhoneNo: fromAcceptDate.agreement,
                 crmOrderNo: '1'
             }
@@ -89,21 +93,21 @@ class CrmPage_2 extends RentApp {
             }
 
             const rsp = await staffCommitOrder(params)
-            console.log(rsp,"!!!!!!!!!!!!1")
-            if (errcode === 1 && goodsList.length) {
-                const { data, data: { errcode, goodsList, totalPage } } = rsp || {}
-                // const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
-                this.setState({
-                    products: [...products, ...goodsList],
-                    totalPage,
-                    refreshing: false,
-                    isLoreMoreing: 'LoreMoreing'
-                })
-            } else if (errcode === 1 && !goodsList.length) {
-                this.setState({
-                    isLoreMoreing: 'LoreMoreEmpty'
-                })
-            }
+            // console.log(rsp,"!!!!!!!!!!!!1")
+            // if (errcode === 1 && goodsList.length) {
+            //     const { data, data: { errcode, goodsList, totalPage } } = rsp || {}
+            //     // const isLoreMoreing = goodsList.length ? 'LoreMoreing' : 'LoreMoreEmpty';
+            //     this.setState({
+            //         products: [...products, ...goodsList],
+            //         totalPage,
+            //         refreshing: false,
+            //         isLoreMoreing: 'LoreMoreing'
+            //     })
+            // } else if (errcode === 1 && !goodsList.length) {
+            //     this.setState({
+            //         isLoreMoreing: 'LoreMoreEmpty'
+            //     })
+            // }
         } catch (e) {
             console.log(e,"errrrrrrr")
         } finally {
@@ -338,7 +342,8 @@ class CrmPage_2 extends RentApp {
 
 const mapStateToProps = state => ({
     openId: state.app.openId,
-    userId: state.app.userId
+    userId: state.app.userId,
+    userInfo: state.userInfo
 })
 
 export default connect(mapStateToProps)(CrmPage_2)

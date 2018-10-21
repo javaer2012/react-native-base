@@ -8,6 +8,7 @@ import api from '../.././service/api'
 import moment from 'moment'
 import RentApp from "../../components/RentApp";
 import Count from "../../components/Count";
+import { phoneCheck } from "../../utils/inputCheck";
 // import { userInfo } from 'os';
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const { payment, HTTP_IMG } = api
@@ -47,21 +48,24 @@ export default class Pay extends RentApp {
   }
 
   check=()=>{
-    const { phoneNumber, code } = this.state;
-    var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
-    // if (!myreg.test($poneInput.val())) {
-    //   return false;
-    // }
+    
+    const { phoneNumber, code, amount } = this.state;
+
+    if (!amount) {
+      return true
+    }
+
     if (!phoneNumber) {
       Toast.info("手机号不能为空")
       return
     } else if (!code) {
       Toast.info("验证码不能为空")
       return false
-    } else if (!myreg.test(phoneNumber.split(' ').join(''))) {
-      Toast.info("手机号格式有误")
-      return false
     } 
+    else if (!phoneCheck(phoneNumber)) {
+      Toast.info("请输入正确手机号", 1.5)
+      return false
+    }
     return true
   }
 
@@ -115,7 +119,11 @@ export default class Pay extends RentApp {
     }
   }
   _renderPay =()=>{
+    const amount = this.props.navigation.getParam('amount', 0);
     const { code } = this.state;
+    if (!amount) {
+      return false
+    }
     return (
       <Flex direction="column" align="stretch" style={{ backgroundColor: 'red' }}> 
         {/* <Flex direction="column" align="stretch" style={{backgroundColor :'#fff'}}> */}

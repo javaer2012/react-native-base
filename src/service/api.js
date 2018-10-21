@@ -142,12 +142,10 @@ export default {
     //是否开通扫码购
     isCityOpen(params) {
         params["sourceType"] = 3;
+        // const { provinceCode, cityCode } = params
         return new Promise((resolve, reject) => {
             getToken(token => {
-                axios.post(`${url}/index/isCityOpen`, qs.stringify({
-                    provinceCode: "610103",
-                    cityCode: "029"
-                }), {
+                axios.post(`${url}/index/isCityOpen`, qs.stringify(params), {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
                         'Authorization': 'Bearer ' + token

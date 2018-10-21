@@ -217,8 +217,9 @@ class Search extends RentApp {
         //await AsyncStorage.setItem('latestKeywords',JSON.stringify(latest))
 
         const keyWord = this.state.value
-        const { navigate } = this.props.navigation;
+        const { navigate, state } = this.props.navigation;
         navigate('ProductListPage', { keyWord: key || keyWord })
+        state.params && state.params.callback && state.params.callback(key || keyWord);
     }
 
 
