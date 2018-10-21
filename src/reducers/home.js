@@ -12,7 +12,8 @@ export function locationReducer(state = {}, action) {
     switch (action.type) {
         case 'SET_LOCATION':
             return Object.assign({}, state, {
-                locationInfos: action.locationInfos
+                locationInfos: action.locationInfos,
+                loading: false
             })
         case 'IS_OPEN': 
             return Object.assign({}, state, {
@@ -41,15 +42,18 @@ export function homeDataReducer(state = {}, action) {
             const  { hotMealList, hotPhoneList }  = action.response
             return Object.assign({}, state, {
                 hotMealList,
-                hotPhoneList
+                hotPhoneList,
+                loading: false
             })
         case 'GET_BANNER_AND_NAV_SUCCESS':
             const { navList, bannerList } = action.response
             return Object.assign({}, state, {
                 bannerList,
-                navList
+                navList,
+                loading: false
             })
         default:
+            
             return state
     }
 }

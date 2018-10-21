@@ -5,7 +5,6 @@ import * as historySaga from './historyKeys'
 import * as bankSaga from './bankCard'
 import * as findSaga from './find'
 import { takeEvery } from 'redux-saga/effects'
-
 console.log(homeSagas,"homeSagashomeSagas==>homeSagas")
 export default function* rootSagas() {
     yield takeEvery('APP_STATUS',appSaga.app)
