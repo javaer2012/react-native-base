@@ -9,6 +9,8 @@ import moment from 'moment'
 import RentApp from "../../components/RentApp";
 import Count from "../../components/Count";
 import { phoneCheck } from "../../utils/inputCheck";
+
+import {connect} from 'react-redux'
 // import { userInfo } from 'os';
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const { payment, HTTP_IMG } = api
@@ -20,8 +22,7 @@ const bgf = {
 // firstPay: 4265
 // orderId: "1a9cae5f179b478bb5d2894d641e53db"
 // orderSn: "201810012110058120796604"
-
-export default class Pay extends RentApp {
+class Pay extends RentApp {
   static navigationOptions = {
     title: "支付"
   }
@@ -104,6 +105,9 @@ export default class Pay extends RentApp {
       } else if (data.errcode === 1) {
         this.showToast(data.errmsg)
         const { navigate } = this.props.navigation;
+        this.props.dispatch({
+          type:'QUERY_ORDER_LIST'
+        })
         navigate('PayResult', {
             result: 'success',
             orderId: this.state.orderId
@@ -192,6 +196,8 @@ export default class Pay extends RentApp {
   }
 }
 
+
+export default connect(state=>state)(Pay)
 
 const styles = StyleSheet.create({
 });

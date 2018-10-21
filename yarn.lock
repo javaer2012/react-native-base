@@ -5448,9 +5448,9 @@ react-native-actionsheet@^2.4.2:
   version "2.4.2"
   resolved "http://registry.npm.taobao.org/react-native-actionsheet/download/react-native-actionsheet-2.4.2.tgz#6a00dd51a75ef2c8974312130e405af73191500f"
 
-react-native-baidu-map@^0.6.0:
-  version "0.6.0"
-  resolved "http://registry.npm.taobao.org/react-native-baidu-map/download/react-native-baidu-map-0.6.0.tgz#cb4937181e8e0cd2125d347a5b87ca13971647dd"
+react-native-barcodescanner@^3.1.1:
+  version "3.1.1"
+  resolved "http://registry.npm.taobao.org/react-native-barcodescanner/download/react-native-barcodescanner-3.1.1.tgz#99cdc4e89caac8ac6d5fd844fb6b72b9c4485928"
 
 react-native-camera-roll-picker@^1.2.1:
   version "1.2.3"
@@ -5540,6 +5540,10 @@ react-native-safe-area-view@^0.9.0:
   resolved "http://registry.npm.taobao.org/react-native-safe-area-view/download/react-native-safe-area-view-0.9.0.tgz#10ece2ecac70e7005a5b0b3f06c8833060e6d21f"
   dependencies:
     hoist-non-react-statics "^2.3.1"
+
+react-native-smart-barcode@^1.0.6:
+  version "1.0.6"
+  resolved "http://registry.npm.taobao.org/react-native-smart-barcode/download/react-native-smart-barcode-1.0.6.tgz#7411586c687ed25b6adf456f949b39699c63db5e"
 
 react-native-swipeout@^2.2.2:
   version "2.3.6"

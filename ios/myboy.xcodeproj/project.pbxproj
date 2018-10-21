@@ -43,6 +43,8 @@
 		841BC12921630B2C00EEEB46 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 841BC12821630B2C00EEEB46 /* libz.tbd */; };
 		841BC12B21630B3C00EEEB46 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 841BC12A21630B3C00EEEB46 /* libbz2.1.0.tbd */; };
 		846D727C214CE7040035E93F /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 846D7279214CE6C80035E93F /* libRNDeviceInfo.a */; };
+		849E56B2217CB38000DE0D5C /* libRCTBarcode.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 849E56B1217CB36400DE0D5C /* libRCTBarcode.a */; };
+		849E56B4217CB3C800DE0D5C /* raw in Resources */ = {isa = PBXBuildFile; fileRef = 849E56B3217CB3C800DE0D5C /* raw */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		C27AC50EF88848A989864821 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA014345D5554BA485037BE1 /* libRNImagePicker.a */; };
 		D26EBF2CEC7D4A68A0C1951B /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 54137976064647769B3F93B9 /* libBVLinearGradient.a */; };
@@ -343,6 +345,13 @@
 			remoteGlobalIDString = 014A3B5C1C6CF33500B6D375;
 			remoteInfo = RNImagePicker;
 		};
+		849E56B0217CB36400DE0D5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 849E56AC217CB36400DE0D5C /* RCTBarCode.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 9FCCD7581DAC8DA800025BFD;
+			remoteInfo = RCTBarcode;
+		};
 		84C9A3362145242900D91106 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CBE4C0D3A1AA40BAB8B805C8 /* RCTCamera.xcodeproj */;
@@ -407,6 +416,8 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		841BC12821630B2C00EEEB46 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		841BC12A21630B3C00EEEB46 /* libbz2.1.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.1.0.tbd; path = usr/lib/libbz2.1.0.tbd; sourceTree = SDKROOT; };
+		849E56AC217CB36400DE0D5C /* RCTBarCode.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBarCode.xcodeproj; path = "../node_modules/react-native-smart-barcode/ios/RCTBarcode/RCTBarCode.xcodeproj"; sourceTree = "<group>"; };
+		849E56B3217CB3C800DE0D5C /* raw */ = {isa = PBXFileReference; lastKnownFileType = folder; name = raw; path = "../node_modules/react-native-smart-barcode/ios/raw"; sourceTree = "<group>"; };
 		8E3DFB9D881244E7A81255AF /* libRNDeviceInfo-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNDeviceInfo-tvOS.a"; sourceTree = "<group>"; };
 		AC5B111DDFBF4C6CADC27D19 /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -427,6 +438,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				849E56B2217CB38000DE0D5C /* libRCTBarcode.a in Frameworks */,
 				841BC12B21630B3C00EEEB46 /* libbz2.1.0.tbd in Frameworks */,
 				841BC12921630B2C00EEEB46 /* libz.tbd in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
@@ -623,6 +635,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				849E56AC217CB36400DE0D5C /* RCTBarCode.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -656,6 +669,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				849E56B3217CB3C800DE0D5C /* raw */,
 				13B07FAE1A68108700A75B9A /* myboy */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* myboyTests */,
@@ -700,6 +714,14 @@
 			isa = PBXGroup;
 			children = (
 				846D72E62156378D0035E93F /* libRNImagePicker.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		849E56AD217CB36400DE0D5C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				849E56B1217CB36400DE0D5C /* libRCTBarcode.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -869,6 +891,10 @@
 				{
 					ProductGroup = 5E91572E1DD0AC6500FF2AA8 /* Products */;
 					ProjectRef = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
+				},
+				{
+					ProductGroup = 849E56AD217CB36400DE0D5C /* Products */;
+					ProjectRef = 849E56AC217CB36400DE0D5C /* RCTBarCode.xcodeproj */;
 				},
 				{
 					ProductGroup = ADBDB9201DFEBF0600ED6528 /* Products */;
@@ -1218,6 +1244,13 @@
 			remoteRef = 846D72E52156378D0035E93F /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		849E56B1217CB36400DE0D5C /* libRCTBarcode.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTBarcode.a;
+			remoteRef = 849E56B0217CB36400DE0D5C /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		84C9A3372145242900D91106 /* libRCTCamera.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1260,6 +1293,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				849E56B4217CB3C800DE0D5C /* raw in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);

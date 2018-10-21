@@ -7,9 +7,12 @@ import android.os.Bundle;
 
 import com.facebook.react.ReactActivity;
 
+
 public class MainActivity extends ReactActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){

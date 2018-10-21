@@ -17,10 +17,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.reactnative.modules.update.UpdateContext;
+import com.reactnativecomponent.barcode.RCTCapturePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
-  private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
+  private  ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
     protected String getJSBundleFile() {
       return UpdateContext.getBundleUrl(MainApplication.this);
@@ -38,7 +39,9 @@ public class MainApplication extends Application implements ReactApplication {
             new ImagePickerPackage(),
             new RNDeviceInfo(),
             new LinearGradientPackage(),
-            new RCTCameraPackage()
+            new RCTCameraPackage(),
+            new RCTCapturePackage()
+
       );
     }
 
@@ -47,6 +50,11 @@ public class MainApplication extends Application implements ReactApplication {
       return "index";
     }
   };
+
+  //添加以下代码
+  public void setReactNativeHost(ReactNativeHost reactNativeHost) {
+    mReactNativeHost = reactNativeHost;
+  }
 
   @Override
   public ReactNativeHost getReactNativeHost() {

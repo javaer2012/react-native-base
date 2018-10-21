@@ -35,6 +35,7 @@
     "react-native-image-picker": "^0.26.10",
     "react-native-linear-gradient": "^2.4.2",
     "react-native-loading-spinner-overlay": "^0.5.2",
+    "react-native-smart-barcode": "^1.0.6",
     "react-native-update": "5.x",
     "react-navigation": "^2.12.1",
     "react-redux": "^5.0.7",

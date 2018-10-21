@@ -6,6 +6,7 @@ import {appReducer} from "./appReducer";
 import {historyKey} from './historyKeys'
 import {bankCard} from './bankCard'
 import {find} from './find'
+import {orderReducer} from './orderList'
 
 const rootReducers = combineReducers({
     my:myPageReducer,
@@ -13,6 +14,7 @@ const rootReducers = combineReducers({
     historyKey,
     bankCard,
     find,
+    order:orderReducer,
     ...home,
     ...education
 });

@@ -57,6 +57,7 @@ import RentOrderDetail from '../containers/RentOrderDetail/RentOrderDetail'
 
 import { Image } from "react-native";
 import Color from "../styles/var";  // 确认订单
+import BarTest from '../containers/BarTest';
 
 
 const HomeStack = createStackNavigator({
@@ -79,7 +80,8 @@ const HomeStack = createStackNavigator({
     ChangePSWPage: ChangePSW,//银行卡解绑
     RentOrderDetail,
     OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
-
+    OrderDetail, // 从WorkerEnter进入受理订单页面,
+    Barcode:BarTest,
 }, {
         navigationOptions: {
             // initialRouteName: "Pay",

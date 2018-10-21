@@ -114,7 +114,10 @@ class Home extends RentApp {
               <Text style={{ color: '#fff', marginRight: 4 }}>{addressMsg && addressMsg.city}</Text>
               <View style={styles.triangle}></View>
             </TouchableOpacity>
-            <TouchableOpacity style={{ paddingLeft: 10, flex: 1, height: 27 }} onPress={() => navigate('SearchPage', {})}>
+            <TouchableOpacity
+              style={{ paddingLeft: 10, flex: 1, height: 27 }}
+              onPress={() => navigate('SearchPage', {})}
+            >
               <Flex style={{ backgroundColor: '#fff', flex: 1, borderRadius: 13, overflow: 'hidden', paddingLeft: 20 }}>
                 <Image style={{ width: 14, height: 14, marginRight: 4 }} source={require("../../images/imageNew/one/search.png")} />
                 <Text style={{ color: '#ccc' }}>搜索商品</Text>
@@ -123,7 +126,7 @@ class Home extends RentApp {
           </Flex>
           {/**Search head end */}
           {isOpen === '0' ?
-            (<Flex direction='column' justify='start' align='center' style={{paddingTop:100, height: HEIGHT, width: WIDTH, backgroundColor: '#fff' }}>
+            (<Flex direction='column' justify='start' align='center' style={{ paddingTop: 100, height: HEIGHT, width: WIDTH, backgroundColor: '#fff' }}>
               <Image resizeMode={"stretch"} style={{ width: 80, height: 60 }} source={require('../../images/imageNew/one/gift.png')}></Image>
 
               <Text style={{ width: 200, marginTop: 20, textAlign: 'center', color: '#666', fontSize: 14, lineHeight: 20 }}>该城市暂未开通信用租机业务，目前已开通广东广州市，请切换到相应地市试试...</Text>
@@ -148,7 +151,7 @@ class Home extends RentApp {
                       infinite
                       afterChange={this.onHorizontalSelectedIndexChange}
                     >
-                      {bannerList ? this.renderBanner(bannerList):<View></View>}
+                      {bannerList ? this.renderBanner(bannerList) : <View></View>}
                     </Carousel>
                   )
               }
