@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {Button, List,InputItem,Flex} from "antd-mobile-rn";
-import {ScrollView, Text, View, StyleSheet, TextInput,Image, TouchableOpacity} from "react-native";
+import React, { Component } from 'react';
+import { Button, List, InputItem, Flex } from "antd-mobile-rn";
+import { ScrollView, Text, View, StyleSheet, TextInput, Image, TouchableOpacity } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         width: 82,
         height: 15,
-        lineHeight:15,
+        lineHeight: 15,
         textAlign: "center",
         marginRight: 15
     },
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#EAEEEF',
         borderRadius: 3,
         textAlign: 'center',
-        fontSize:14
+        fontSize: 14
     },
     priceOption: {
         display: 'flex',
@@ -35,18 +35,6 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         minHeight: 603
-    },
-    opContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'flex-start',
-    },
-    opContainerLong: {
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        justifyContent: 'flex-start',
     },
     option: {
         width: 88,
@@ -82,42 +70,51 @@ const styles = StyleSheet.create({
         backgroundColor: '#EAEEEF',
         borderRadius: 3,
         marginTop: 11
+    },
+    header: {
+        minHeight: 44,
+        paddingLeft: 15,
+        borderBottomColor: '#E5E5E5',
+        borderBottomWidth: 1,
+        width: '100%'
+    },
+    content: {
+        paddingLeft: 15,
+        borderBottomColor: '#E5E5E5',
+        borderBottomWidth: 1,
+        width: '100%',
+        paddingVertical: 10
     }
 });
 
 //price input
 const PriceInput = (props) => {
-    const {maxPrice, minPrice, onChange} = props
+    const { maxPrice, minPrice, onChange } = props
 
     return (
-        <View>
-            <List.Item>
-                <Text style={{color: '#888888'}}>价格</Text>
-            </List.Item>
-            <List>
-                <List.Item style={styles.priceRow}>
-
-                    <Flex direction={"row"} align={"center"}>
-                        <Text style={styles.priceTag}>价格区间(元)</Text>
-                        <TextInput
-                            type={"number"}
-                            style={styles.priceInput}
-                            placeholder={'最低价'}
-                            value={minPrice}
-                            onChangeText={(text) => onChange(text, 'minPrice')}
-                        />
-                        <Text> - </Text>
-                        <TextInput
-                            type={"number"}
-                            style={styles.priceInput}
-                            placeholder={'最高价'}
-                            value={maxPrice}
-                            onChangeText={(text) => onChange(text, 'maxPrice')}
-                        />
-                    </Flex>
-                </List.Item>
-            </List>
-        </View>
+        <Flex direction={"column"} align={"start"}>
+            <Flex direction={"column"} justify={"center"} align={"start"} style={styles.header}>
+                <Text style={{ color: '#888888' }}>价格</Text>
+            </Flex>
+            <Flex direction={"row"} align={"center"} style={styles.content}>
+                <Text style={styles.priceTag}>价格区间(元)</Text>
+                <TextInput
+                    type={"number"}
+                    style={styles.priceInput}
+                    placeholder={'最低价'}
+                    value={minPrice}
+                    onChangeText={(text) => onChange(text, 'minPrice')}
+                />
+                <View style={{ width: 10, marginHorizontal: 3, borderWidth: 1, height: 1, borderColor: '#E5E5E5' }}></View>
+                <TextInput
+                    type={"number"}
+                    style={styles.priceInput}
+                    placeholder={'最高价'}
+                    value={maxPrice}
+                    onChangeText={(text) => onChange(text, 'maxPrice')}
+                />
+            </Flex>
+        </Flex>
     )
 }
 
@@ -125,7 +122,7 @@ const SelectItem = (cateId, onSelect, id, selected, subName) => {
     const targetSelected = selected.includes(id)
 
     return (
-        <TouchableOpacity key={id} style={{position: 'relative'}} onPress={() => onSelect(id)}>
+        <TouchableOpacity key={id} style={{ position: 'relative' }} onPress={() => onSelect(id)}>
             <View
                 style={cateId === "" ? styles.longOption : styles.option}>
                 <Text
@@ -135,7 +132,7 @@ const SelectItem = (cateId, onSelect, id, selected, subName) => {
                         height: 33,
                         lineHeight: 33,
                         fontSize: 14,
-                        color: targetSelected ? '#DD2727' : 'black'
+                        color: targetSelected ? '#DD2727' : '#282828'
                     }}>
                     {subName}</Text>
             </View>
@@ -148,104 +145,6 @@ const renderSubContent = (cateId, subId, subName, selected, onSelect) => {
 
     let component = null;
     switch (subName) {
-        // case "小米":
-        //     component = (
-        //        SelectItem( <ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/mi.png')}>
-        //        </ImageBackground>,onSelect,subId,selected)
-        //     );
-        //     break;
-        // case "华为":
-        //     component = (
-        //         SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/huawei.png')}>
-        //         </ImageBackground>,onSelect,subId,selected)
-        //     );
-        //     break;
-        // case "酷派":
-        //     component = (
-        //        SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/coolpad.png')}>
-        //        </ImageBackground>,onSelect,subId,selected)
-        //     );
-        //     break;
-        // case "三星":
-        //     component = (
-        //         SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/samsung.png')}>
-        //         </ImageBackground>,onSelect,subId,selected)
-        //     );
-        //     break;
-        // case "iphone":
-        //     component = (
-        //         SelectItem( <ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/iphone.png')}>
-        //         </ImageBackground>,onSelect,subId,selected)
-        //     );
-        //     break;
-        // case "360":
-        //     component = (
-        //         SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/360.png')}>
-        //
-        //         </ImageBackground>,onSelect,subId,selected)
-        //     );
-        //     break;
-        // case "荣耀":
-        //     component = (
-        //        SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/honor.png')}>
-        //
-        //        </ImageBackground>,onSelect,subId,selected)
-        //     );
-        //     break;
-        // case "锤子":
-        //     component = (
-        //        SelectItem( <ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/T.png')}>
-        //
-        //        </ImageBackground>,onSelect,subId,selected)
-        //     );            break;
-        // case "VIVO":
-        //     component = (
-        //        SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/vivo.png')}>
-        //
-        //        </ImageBackground>,onSelect,subId,selected)
-        //     );            break;
-        // case "OPPO":
-        //     component = (
-        //        SelectItem( <ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/OPPO.png')}>
-        //
-        //        </ImageBackground>,onSelect,subId,selected)
-        //     );            break;
-        // case "Sony":
-        //     component = (
-        //         SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/sony.png')}>
-        //
-        //         </ImageBackground>,onSelect,subId,selected)
-        //     );            break;
-        // case "联想":
-        //     component = (
-        //        SelectItem( <ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/lenovo.png')}>
-        //
-        //        </ImageBackground>,onSelect,subId,selected)
-        //     );            break;
-        // case "诺基亚":
-        //     component = (
-        //         SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/nokia.png')}>
-        //
-        //         </ImageBackground>,onSelect,subId,selected)
-        //     );            break;
-        // case "中兴":
-        //     component = (
-        //         SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/zte.png')}>
-        //
-        //         </ImageBackground>,onSelect,subId,selected)
-        //     );            break;
-        // case "魅族":
-        //     component = (
-        //         SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/meizu.png')}>
-        //
-        //         </ImageBackground>,onSelect,subId,selected)
-        //     );            break;
-        // case "美图":
-        //     component = (
-        //         SelectItem(<ImageBackground style={styles.imgOp} source={require('../../images/imageNew/one/brand/meitu.png')}>
-        //
-        //         </ImageBackground>,onSelect,subId,selected)
-        //     );            break; 8044413bbd154e7e89522c8cca0262ea
         default:
             component = (
                 SelectItem(cateId, onSelect, subId, selected, subName)
@@ -256,7 +155,7 @@ const renderSubContent = (cateId, subId, subName, selected, onSelect) => {
 
 //categories
 const CateContent = (props) => {
-    const {source, selected, onSelect, maxPrice, minPrice, onChange} = props;
+    const { source, selected, onSelect, maxPrice, minPrice, onChange } = props;
 
     const list = source.map((category, index) => {
         const subContent = category.subCateList.map((subCate, subIndex) => {
@@ -264,23 +163,18 @@ const CateContent = (props) => {
         })
         return (
             <View key={index}>
-                <List.Item key={category.cateId}>
-                    <Text style={{color: '#888888'}}>{category.cateName}</Text>
-                </List.Item>
-                <List>
-                    <List.Item>
-                        <View
-                            style={category.cateId === "8044413bbd154e7e89522c8cca0262ea" ? styles.opContainerLong : styles.opContainer}>
-                            {subContent}
-                        </View>
-                    </List.Item>
-                </List>
+                <Flex key={category.cateId} direction={"column"} justify={"center"} align={"start"} style={styles.header}>
+                    <Text style={{ color: '#888888' }}>{category.cateName}</Text>
+                </Flex>
+                <Flex style={{paddingLeft:20}} direction={"row"} justify={"start"} wrap={"wrap"} >
+                    {subContent}
+                </Flex>
             </View>
         )
     })
     return (
         <View>
-            <PriceInput maxPrice={maxPrice} minPrice={minPrice} onChange={onChange}/>
+            <PriceInput maxPrice={maxPrice} minPrice={minPrice} onChange={onChange} />
             {list}
         </View>
     )
@@ -292,12 +186,12 @@ export default class Sidebar extends Component {
 
     render() {
 
-        const {onReset, onConfirm, onSelect, selected, source, maxPrice, minPrice, onChange} = this.props
+        const { onReset, onConfirm, onSelect, selected, source, maxPrice, minPrice, onChange } = this.props
 
         return (
             <View style={[styles.container]}>
                 <ScrollView>
-                    <List  style={{marginBottom: 65}}>
+                    <View style={{ marginBottom: 65 }}>
                         <CateContent
                             source={source}
                             selected={selected}
@@ -306,7 +200,7 @@ export default class Sidebar extends Component {
                             minPrice={minPrice}
                             onChange={onChange}
                         />
-                    </List>
+                    </View>
                 </ScrollView>
                 <View style={{
                     position: 'absolute',
@@ -315,24 +209,18 @@ export default class Sidebar extends Component {
                     flexDirection: 'row',
                     justifyContent: 'flex-start'
                 }}>
-                    <Flex direction={"row"} style={{width:'100%',height:50}}>
+                    <Flex direction={"row"} style={{ width: '100%', height: 50 }}>
                         <Flex.Item>
                             <TouchableOpacity onPress={onReset}>
-                                <Text style={{color: '#F5475F',height:50,lineHeight:50, fontSize: 15,textAlign:'center',backgroundColor: '#FFE4E4'}}>重置</Text>
+                                <Text style={{ color: '#F5475F', height: 50, lineHeight: 50, fontSize: 15, textAlign: 'center', backgroundColor: '#FFE4E4' }}>重置</Text>
                             </TouchableOpacity>
                         </Flex.Item>
                         <Flex.Item>
                             <TouchableOpacity onPress={onConfirm}>
-                                <Text style={{color: 'white', height:50,lineHeight:50,fontSize: 15,textAlign:'center',backgroundColor: '#F5475F'}}>完成</Text>
+                                <Text style={{ color: 'white', height: 50, lineHeight: 50, fontSize: 15, textAlign: 'center', backgroundColor: '#F5475F' }}>完成</Text>
                             </TouchableOpacity>
                         </Flex.Item>
                     </Flex>
-                    {/*<Button style={{width: 166, height: 50, backgroundColor: '#FFE4E4'}} onClick={onReset}>*/}
-                        {/*<Text style={{color: '#F5475F', fontSize: 15}}>重置</Text>*/}
-                    {/*</Button>*/}
-                    {/*<Button style={{width: 164, height: 50, backgroundColor: '#F5475F'}} onClick={onConfirm}>*/}
-                        {/*<Text style={{color: 'white', fontSize: 15}}>完成</Text>*/}
-                    {/*</Button>*/}
                 </View>
             </View>
         )
