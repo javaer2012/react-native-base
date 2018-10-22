@@ -102,7 +102,7 @@ class ProductDetailPage extends RentApp {
     //   productId
     // })
     try {
-      await this.setState({ loading: true })
+      await this.setState({ loading: true, productId })
       const params = {
         provinceCode: this.provinceCode,
         cityCode: this.cityCode,

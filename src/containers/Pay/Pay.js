@@ -35,8 +35,16 @@ class Pay extends RentApp {
     code:'', //验证码
     phoneNumber:'',
     orderId:'',
+    showTime:true
   }
-
+  componentWillMount(){
+    const fromPage = this.props.navigation.getParam('fromPage');
+    if (fromPage === 'MyInstallmentPage') {
+      this.setState({
+        showTime: false
+      })
+    }
+  }
   async componentDidMount() {
     const  pastDueTime = await AsyncStorage.getItem('pastDueTime')
     const passDueTime = moment(+pastDueTime).format("hh:mm")
@@ -163,14 +171,19 @@ class Pay extends RentApp {
 
   render() {
     // const { navigate } = this.props.navigation;
-    const { passDueTime, animating, amount } = this.state
+    const { passDueTime, animating, amount, showTime } = this.state
     return (
       <Flex direction="column" align="stretch" style={{ backgroundColor: '#f6f6f6', flex: 1 }}>
-        <Flex style={{ width: '100%',  backgroundColor: '#f6f6f6', paddingHorizontal: 10, paddingVertical: 17}}>
-          <Text>
-            订单已提交，订单将于<Text>{passDueTime}</Text>关闭，请在规定时间内支付
-          </Text>
-        </Flex>
+        {
+          !!showTime && (
+            <Flex style={{ width: '100%', backgroundColor: '#f6f6f6', paddingHorizontal: 10, paddingVertical: 17 }}>
+              <Text>
+                订单已提交，订单将于<Text>{passDueTime}</Text>关闭，请在规定时间内支付
+              </Text>
+            </Flex>
+          )
+        }
+        
         
         <Flex justify="between" style={{width: '100%', paddingVertical: 20, paddingHorizontal: 10, backgroundColor: '#fff'}}>
           <Text style={{fontSize: 15}}>

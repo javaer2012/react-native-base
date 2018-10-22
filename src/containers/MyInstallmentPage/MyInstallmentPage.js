@@ -47,7 +47,8 @@ export default class MyInstallmentPage extends RentApp {
       orderId: stageId,
       orderSn,
       activeId,
-      payType: '3'
+      payType: '3',
+      fromPage: 'MyInstallmentPage'
     })
   }
   
@@ -67,7 +68,7 @@ export default class MyInstallmentPage extends RentApp {
         // 343164f313df40098c2e48d0a193de20
       }
       const { data } = await myStageList(params)
-      console.log(data,"datadatadatadatadata")
+      console.log(JSON.stringify(data) ,"datadatadatadatadata")
       if (data.errcode !== 1 && data.errmsg) Toast.info(data.errmsg);
       this.setState({
         periodList: data.periodList,
@@ -94,7 +95,8 @@ export default class MyInstallmentPage extends RentApp {
         orderId: item.detailId,
         orderSn,
         activeId,
-        payType: '2'
+        payType: '2',
+        fromPage: 'MyInstallmentPage'
       })
     }
     

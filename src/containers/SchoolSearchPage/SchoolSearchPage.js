@@ -170,7 +170,7 @@ export default class SchoolSearchPage extends RentApp {
   render(){
     const { schoolObjs, searchSchoolObjs, searchText } = this.state
     return (      
-      <View style={{flex: 1, paddingBottom: 40 }}>
+      <View style={{flex: 1 }}>
         {this.renderSectionHeader()}
         <ScrollView 
           ref={listView => this._listView = listView}
