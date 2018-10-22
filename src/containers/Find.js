@@ -148,7 +148,7 @@ class Find extends RentApp {
                 <WhiteSpace size={"md"} />
                 <WingBlank size={"md"}>
                     <Flex direction={"row"} justify={"around"}>
-                        <Text style={{ width: 216 }}>{content.leftText}</Text>
+                        <Text style={{ width: 216,color: '#010101',fontSize:15 }}>{content.leftText}</Text>
                         <Image resizeMode={"stretch"} style={{ width: 120, height: 70 }}
                             source={{ uri: `${imgUrl}/${content.imagePath}` }}></Image>
                     </Flex>
@@ -178,7 +178,7 @@ class Find extends RentApp {
                                             return <ImageBackground resizeMode={"contain"}
                                                 style={{ width: 115, height: 70, position: 'relative' }}
                                                 source={{ uri: `${imgUrl}/${item.imagePath}` }}>
-                                                <Text style={{ color: 'white', position: 'absolute', right: 10, bottom: 5 }}>{`${imageList.length} 图`}</Text>
+                                                <Text style={{ color: '#010101',fontSize:15, position: 'absolute', right: 10, bottom: 5 }}>{`${imageList.length} 图`}</Text>
                                             </ImageBackground>
                                         }
                                         return (
@@ -224,7 +224,7 @@ class Find extends RentApp {
 
 
         return (
-            <Flex style={{flex: 1, width:WIDTH}}>
+            <Flex style={{height:'100%'}}>
                 <NavigationEvents
                     onWillFocus={payload => this.props.dispatch({
                         type: "QUERY_FIND_LIST"
@@ -234,7 +234,7 @@ class Find extends RentApp {
                     onDidBlur={payload => console.log('did blur', payload)}
                 />
                 {find.length === 0 ?
-                    (<Flex direction='column' justify='center' align='center' style={{ height: HEIGHT, width: WIDTH, backgroundColor: '#fff' }}>
+                    (<Flex direction='column' justify='center' align='center' style={{height:'100%', width: WIDTH, backgroundColor: '#fff' }}>
                         <Image resizeMode={"stretch"} style={{ width: 80, height: 60 }} source={require('../images/imageNew/one/gift.png')}></Image>
 
                         <Text style={{ width: 200, marginTop: 20, textAlign: 'center', color: '#666', fontSize: 14, lineHeight: 20 }}>该城市暂未开通信用租机业务，目前已开通广东广州市，请切换到相应地市试试...</Text>

@@ -50,7 +50,7 @@ export default class PersonalInfo extends Component{
                 <WhiteSpace size={"lg"}/>
                 <List renderHeader={
                     <View>
-                        <Text style={{marginLeft:5}}>基本信息</Text>
+                        <Text style={{marginLeft:5,fontSize:10,color:'#989898'}}>基本信息</Text>
                         <WhiteSpace size={"md"}/>
                     </View>
                 }>
@@ -60,7 +60,7 @@ export default class PersonalInfo extends Component{
 
                 <WhiteSpace size={"xl"}/>
                 <WingBlank size={"md"}>
-                    <Text>您的个人信息以严格的认证标准进行保护，未经您的授权不会对任何第三方提供。</Text>
+                    <Text style={{fontSize:10,color:'#989898'}}>您的个人信息以严格的认证标准进行保护，未经您的授权不会对任何第三方提供。</Text>
 
                 </WingBlank>
             </View>

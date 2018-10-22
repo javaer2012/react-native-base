@@ -274,7 +274,7 @@ class My extends RentApp {
                     </Flex.Item>
                 </Flex>
 
-                <WhiteSpace size={'sm'}/>
+                <WhiteSpace size={'md'}/>
 
                 <View style={{backgroundColor: 'white'}}>
                     <WingBlank size={"sm"}>
@@ -292,7 +292,7 @@ class My extends RentApp {
                                         <Image style={{width: 30, height: 30}}
                                                source={require('../images/my/personalInfo.png')}/>
                                         <WhiteSpace size={"sm"}/>
-                                        <Text>个人信息</Text>
+                                        <Text style={{color:"#282828"}}>个人信息</Text>
                                         <WhiteSpace size={"sm"}/>
                                     </Flex>
                                 </TouchableOpacity>
@@ -305,7 +305,7 @@ class My extends RentApp {
                                         <Image style={{width: 30, height: 30}}
                                                source={require('../images/my/bad.png')}/>
                                         <WhiteSpace size={"sm"}/>
-                                        <Text>负面记录</Text>
+                                        <Text style={{color:"#282828"}}>负面记录</Text>
                                         <WhiteSpace size={"sm"}/>
                                         {
                                             isLoggedIn === '0' && isLoggedIn === null && userInfo.negativeCount !== undefined && userInfo.isCredited === 1 &&
@@ -322,7 +322,7 @@ class My extends RentApp {
                                         <Image style={{width: 30, height: 30}}
                                                source={require('../images/my/authCheck.png')}/>
                                         <WhiteSpace size={"sm"}/>
-                                        <Text>信用互查</Text>
+                                        <Text style={{color:"#282828"}}>信用互查</Text>
                                         <WhiteSpace size={"sm"}/>
                                     </Flex>
                                 </TouchableOpacity>
@@ -335,7 +335,7 @@ class My extends RentApp {
                                         <Image style={{width: 30, height: 30}}
                                                source={require('../images/my/order.png')}/>
                                         <WhiteSpace size={"sm"}/>
-                                        <Text>我的订单</Text>
+                                        <Text style={{color:"#282828"}}>我的订单</Text>
                                         <WhiteSpace size={"sm"}/>
                                     </Flex>
                                 </TouchableOpacity>
@@ -348,7 +348,7 @@ class My extends RentApp {
                                         <Image style={{width: 30, height: 30}}
                                                source={require('../images/myCard.png')}/>
                                         <WhiteSpace size={"sm"}/>
-                                        <Text>我的银行卡</Text>
+                                        <Text style={{color:"#282828"}}>我的银行卡</Text>
                                         <WhiteSpace size={"sm"}/>
                                     </Flex>
                                 </TouchableOpacity>
@@ -358,7 +358,7 @@ class My extends RentApp {
 
                     </WingBlank>
                 </View>
-                <WhiteSpace size={"sm"}/>
+                <WhiteSpace size={"md"}/>
 
                 <List style={{backgroundColor: 'white'}} renderHeader={
                     <TouchableOpacity onPress={() => this.navigateWithLogin('ProductListPage')}>
@@ -381,7 +381,7 @@ class My extends RentApp {
                     </TouchableOpacity>
                 }></List>
 
-                <WhiteSpace size={"sm"}/>
+                <WhiteSpace size={"md"}/>
 
                 {userInfo.isStaff === 1 ? <List style={{backgroundColor: 'white'}} renderHeader={
                         <TouchableOpacity onPress={() => this.navigateWithLogin('WorkerEnter')}>
