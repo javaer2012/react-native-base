@@ -17,17 +17,14 @@ import { connect } from 'react-redux'
 
 class Home extends RentApp {
 
-  static navigationOptions = {
+  static navigationOptions = ({navigation})=>({
     title: '首页',
-    headerLeft: (  //定义导航栏右侧的按钮
-      <Button
-        style={{ fontSize: 12, color: '#fff' }}
-        containerStyle={{ marginRight: 10, height: 30, width: 50, overflow: 'hidden', borderRadius: 4, backgroundColor: '#343434', borderColor: '#b2b2b2', borderWidth: 1, justifyContent: 'center' }}
-        onPress={() => contact()}
-      >
-        二维码
-      </Button>),
-    }
+    headerLeft: (
+      <TouchableOpacity onPress={()=>navigation.navigate('Barcode')}>
+        <Image style={{width:30,height:30,marginLeft:5}} source={require('../../images/bar.png')}/>
+      </TouchableOpacity>
+    )
+    })
 
   state = {
     bannerList: [],
@@ -37,7 +34,7 @@ class Home extends RentApp {
     pickerValue: [],
     loading: true,
   }
-
+  
   async componentDidMount() {
   }
 
@@ -124,11 +121,7 @@ class Home extends RentApp {
         style={{ flex: 1, width: WIDTH }}>
         <View style={{ position: 'relative', height: '100%', width: WIDTH }}>
           {/**Search head start */}
-          <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
-           <TouchableOpacity onPress={()=>navigate('Barcode')}>
-             <Text>[]</Text>
-           </TouchableOpacity>
-           
+          <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}> 
             <TouchableOpacity style={styles.leftAddressBox} onPress={() => navigate('LocationPage', {
               callback: (data) => {
                 this.setAddressInfosFun(data)
