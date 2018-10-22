@@ -125,6 +125,10 @@ class Home extends RentApp {
         <View style={{ position: 'relative', height: '100%', width: WIDTH }}>
           {/**Search head start */}
           <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
+           <TouchableOpacity onPress={()=>navigate('Barcode')}>
+             <Text>[]</Text>
+           </TouchableOpacity>
+           
             <TouchableOpacity style={styles.leftAddressBox} onPress={() => navigate('LocationPage', {
               callback: (data) => {
                 this.setAddressInfosFun(data)
