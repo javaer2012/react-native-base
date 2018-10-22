@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, List,InputItem,Flex} from "antd-mobile-rn";
-import {ScrollView, Text, View, StyleSheet, Image, TouchableOpacity} from "react-native";
+import {ScrollView, Text, View, StyleSheet, TextInput,Image, TouchableOpacity} from "react-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
         height: 25,
         backgroundColor: '#EAEEEF',
         borderRadius: 3,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontSize:14
     },
     priceOption: {
         display: 'flex',
@@ -98,20 +99,20 @@ const PriceInput = (props) => {
 
                     <Flex direction={"row"} align={"center"}>
                         <Text style={styles.priceTag}>价格区间(元)</Text>
-                        <InputItem
+                        <TextInput
                             type={"number"}
                             style={styles.priceInput}
                             placeholder={'最低价'}
                             value={minPrice}
-                            onChange={(text) => onChange(text, 'minPrice')}
+                            onChangeText={(text) => onChange(text, 'minPrice')}
                         />
                         <Text> - </Text>
-                        <InputItem
+                        <TextInput
                             type={"number"}
                             style={styles.priceInput}
                             placeholder={'最高价'}
                             value={maxPrice}
-                            onChange={(text) => onChange(text, 'maxPrice')}
+                            onChangeText={(text) => onChange(text, 'maxPrice')}
                         />
                     </Flex>
                 </List.Item>
