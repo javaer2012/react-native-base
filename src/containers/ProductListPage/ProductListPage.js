@@ -34,6 +34,7 @@ export default class ProductListPage extends RentApp {
         minPrice: false,
         sortList: false,
         keyWord: '',
+        priceSortType:'',
     }
 
     async componentDidMount() {
@@ -135,7 +136,7 @@ export default class ProductListPage extends RentApp {
             >
                 <ProudcuItem imageStyle={{ width: 100, height: 100 }} data={item}>
                     <Button onClick={() => navigate('ProductDetail', { productId: item.id })}
-                        style={{ width: 80, backgroundColor: Color.mainPink }} size='small'>
+                        style={{ width: 80, backgroundColor: Color.mainPink, borderWidth: 0 }} size='small'>
                         <Text style={{ color: '#fff' }}>去租机</Text>
                     </Button>
                 </ProudcuItem>
@@ -228,7 +229,7 @@ export default class ProductListPage extends RentApp {
             }
         }
         newSortList = JSON.stringify(newSortList)
-        await this.setState({ sortList: newSortList })
+        await this.setState({ sortList: newSortList, selectedSortType: 2 })
         const params = { pageNum: 1 }
         params.sortList = newSortList
         this.getData(params)
@@ -239,6 +240,7 @@ export default class ProductListPage extends RentApp {
         await this.setState({
             products: [],
             sortList: false,
+            selectedSortType:1
         })
         const params = { pageNum: 1 }
         this.getData(params)
@@ -260,11 +262,18 @@ export default class ProductListPage extends RentApp {
 
     render() {
         const { navigate } = this.props.navigation
-        let { products, pageNum, keyWord, selected, cateList, maxPrice, minPrice, isLoreMoreing } = this.state
+        let { products, pageNum, keyWord, sortList, selected, selectedSortType, cateList, maxPrice, minPrice, isLoreMoreing, priceSortType } = this.state
         const searchBtnStyle = [{
             paddingHorizontal: 36,
             paddingVertical: 10
         }]
+        
+        let _sortList = []
+        if (sortList) {
+            
+            _sortList = JSON.parse(sortList)
+        }
+        console.log(sortList, "s")
 
         return (
             <Drawer
@@ -305,7 +314,7 @@ export default class ProductListPage extends RentApp {
                     }}>
                         <Flex direction="row" justify="around" align="stretch">
                             <TouchableOpacity onPress={() => this.tuiJian()} style={[searchBtnStyle]}>
-                                <Text style={{ color: selected === 1 ? Color.mainPink : '#333' }}>推荐</Text>
+                                <Text style={{ color: selectedSortType === 1 ? Color.mainPink : '#333' }}>推荐</Text>
                             </TouchableOpacity>
                             <TouchableOpacity
                                 onPress={this.sortFun}
@@ -314,10 +323,31 @@ export default class ProductListPage extends RentApp {
                                     borderRightWidth: 1,
                                     borderColor: '#eee'
                                 }]}>
-                                <Text style={{ color: selected === 2 ? Color.mainPink : '#333' }}>价格</Text>
+                                <Flex>
+                                    <Text style={{ color: selectedSortType === 2 ? Color.mainPink : '#333' }}>价格</Text>
+                                    <Flex direction='column' align='center' style={{marginLeft: 4}}>
+                                        <Flex style={[styles.priceTopIcon, { borderBottomColor: _sortList[0] && _sortList[0].sortType === 'asc' ? '#F5475F': '#282828' }]}></Flex>
+                                        <Flex style={[styles.priceBottomIcon, { borderTopColor: _sortList[0] && _sortList[0].sortType === 'desc' ? '#F5475F' : '#282828' }]}></Flex>
+                                    </Flex>
+                                </Flex>
                             </TouchableOpacity>
-                            <TouchableOpacity style={[searchBtnStyle]} onPress={() => this.drawer.openDrawer()}>
-                                <Text style={{ color: selected === 3 ? Color.mainPink : '#333' }}>筛选</Text>
+                            <TouchableOpacity style={[searchBtnStyle]} onPress={() => {
+                                this.setState({
+                                    selectedSortType: 3
+                                })
+                                this.drawer.openDrawer()
+                            }}>
+                                <Flex>
+                                    <Text style={{ color: selectedSortType === 3 ? Color.mainPink : '#333' }}>筛选</Text>
+                                    <Flex direction='column' align='center' style={{ marginLeft: 4 }}>
+                                        {
+                                            selectedSortType === 3 
+                                            ? (<Image style={{width:16, height: 16}}source={require('../../images/shaixuan.png')} />)
+                                            : (<Image style={{ width: 16, height: 16 }} source={require('../../images/shaixuan.png')} />)
+                                        }   
+                                        
+                                    </Flex>
+                                </Flex>
                             </TouchableOpacity>
                         </Flex>
                     </Flex>
@@ -378,7 +408,28 @@ export default class ProductListPage extends RentApp {
 }
 
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    priceTopIcon:{
+        width: 0,
+        height: 0,
+        borderWidth: 4,
+        borderTopColor: '#fff',
+        borderBottomColor: '#F5475F',
+        borderLeftColor: '#fff',
+        borderRightColor: '#fff',
+        marginBottom: 1
+    },
+    priceBottomIcon:{
+        width: 0,
+        height: 0,
+        borderWidth: 4,
+        borderTopColor: '#F5475F',
+        borderBottomColor: '#fff',
+        borderLeftColor: '#fff',
+        borderRightColor: '#fff',
+        marginTop: 1
+    }
+});
 
 
 

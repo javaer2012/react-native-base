@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity, ScrollView, Alert, Dimensions, AsyncStorage, WebView } from 'react-native'
-import { Carousel, Flex, Tabs, Modal, Button } from 'antd-mobile-rn';
+import { Carousel, Flex, Tabs, Modal, Button, WhiteSpace } from 'antd-mobile-rn';
 import { flexRow, contentPadding, mainGray, mainPink } from '../../styles/common'
 import Color from '../../styles/var'
 import Collect from '../../components/Collect'
@@ -22,12 +22,12 @@ const storageItem = ({ data, itemData, onPress, subSkuId }) => {
     borderRadius: 3,
     marginBottom: 1,
     borderWidth: 1,
-    borderColor: '#f2f2f2',
+    borderColor: '#E5E5E5',
     marginHorizontal: 6
   }]
   const textStyle = [{
     textAlign: 'center',
-    color: Color.mainPink,
+    color: '#282828',
   }]
   if (subSkuId === itemData.subSkuId) {
     boxStyle.push({
@@ -565,9 +565,9 @@ class ProductDetailPage extends RentApp {
           </View>
           <View style={styles.contentContainer}>
             <View style={styles.infoStyle}>
-              <Text style={[]}>{goodsName} {goodsDesc}</Text>
+              <Text style={[{ color: '#282828'}]}>{goodsName} {goodsDesc}</Text>
               <View style={styles.btnBox}>
-                <Text style={[{ color: Color.mainPink }, { fontWeight: '600' }]}>￥ {selectedProductSkuDetail.shopPrice || goodsPrice}</Text>
+                <Text style={[{ color: Color.mainPink }, { fontWeight: '600', fontSize: 14 }]}>￥ {selectedProductSkuDetail.shopPrice || goodsPrice}</Text>
                 <View>
                   <Collect
                     onTollectCollect={this.toggleCollectFun}
@@ -576,6 +576,7 @@ class ProductDetailPage extends RentApp {
                 </View>
               </View>
             </View>
+            <WhiteSpace />
             <View style={[styles.canSelectedBox]}>
               <View style={[flexRow, styles.blockTitle]}>
                 <Text style={{
@@ -607,22 +608,24 @@ class ProductDetailPage extends RentApp {
               </View>
             </View>
           }
-            <Flex style={{ backgroundColor: '#fff', ...styles.blockTitle}} direction='row' align='center'>
+            <WhiteSpace  />
+            {/* <Flex style={{ backgroundColor: '#fff', ...styles.blockTitle}} direction='row' align='center'>
               <Text style={{
                 color: '#888',
                 marginRight: 10
               }}>数量</Text>
               <Text style={{ color: Color.mainPink }}>1</Text>
-              {/* <NumberSelect
+              <NumberSelect
                 _onPress={(count) => {
                   this.setState({
                     count: count
                   }, () => { console.log(count, "ffff") })
                 }}
-              ></NumberSelect> */}
+              ></NumberSelect>
             </Flex>
+            <WhiteSpace /> */}
             <TouchableOpacity onPress={this.togglePackageFun.bind(this, true)}>
-              <Flex style={[styles.blockTitle, { backgroundColor: '#fff', marginBottom: 1, }]} direction='row' justify='between' align='center' >
+              <Flex style={[styles.blockTitle, { backgroundColor: '#fff' }]} direction='row' justify='between' align='center' >
                 <Flex.Item style={{ flex: 0}}>
                   <Text>套餐</Text>
                 </Flex.Item>
@@ -634,7 +637,8 @@ class ProductDetailPage extends RentApp {
                 </Flex.Item>
               </Flex>
             </TouchableOpacity>
-            <TouchableOpacity style={{ marginBottom: 10 }} onPress={this.toggleCapitalFun.bind(this, true)}>
+            <WhiteSpace />
+            <TouchableOpacity onPress={this.toggleCapitalFun.bind(this, true)}>
               <Flex style={[styles.blockTitle, { backgroundColor: '#fff' }]} direction='row' justify='between' align='center' >
                 <Flex.Item style={{ flex: 0}}>
                   <Text>分期</Text>
@@ -647,13 +651,14 @@ class ProductDetailPage extends RentApp {
                 </Flex.Item>
               </Flex>
             </TouchableOpacity>
-            <Flex style={[{ backgroundColor: '#f2f2f2', height: 20 }, styles.basePadding]}>
-              {/* <TouchableOpacity onPress={this.toggleDetailInfosFun.bind(this, true)}>
+            {/* <Flex style={[{ backgroundColor: '#f2f2f2', height: 20 }, styles.basePadding]}>
+              <TouchableOpacity onPress={this.toggleDetailInfosFun.bind(this, true)}>
                 <Flex direction="row" justify='between' align="center">
                   <Text>产品参数</Text>
                 </Flex>
-              </TouchableOpacity> */}
-            </Flex>
+              </TouchableOpacity>
+            </Flex> */}
+            <WhiteSpace />
             <Flex direction='column' align='stretch' style={{ backgroundColor: '#fff' }}>
               <View style={{paddingVertical: 10, alignItems:'flex-start', }}>
                 <Text style={{paddingLeft: 15}}>图文详情</Text>
@@ -796,13 +801,13 @@ const styles = StyleSheet.create({
 
   },
   contentContainer: {
-
+    backgroundColor: '#f2f2f2'
   },
   infoStyle: {
     backgroundColor: '#fff',
     ...contentPadding,
     paddingVertical: 20,
-    marginBottom: 12
+    // marginBottom: 12
 
   },
   canSelectedBox: {

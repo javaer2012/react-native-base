@@ -103,7 +103,7 @@ class MyOrders extends RentApp {
         }
         return <List
             key={item.orderId}
-            renderHeader={() => <Text style={{ height: 46, lineHeight: 46, fontSize: 15, paddingHorizontal: 15 }}>{`订单流水号:${item.orderSn}`}</Text>}
+            renderHeader={() => <Text style={{ color:'#282828',height: 46, lineHeight: 46, fontSize: 15, paddingHorizontal: 15 }}>{`订单流水号:${item.orderSn}`}</Text>}
             style={{ backgroundColor: 'white', borderRadius: 4, marginBottom: 15 }}>
             <Item>
                 <TouchableOpacity onPress={() => this.props.navigation.navigate('OrderInfo', {
@@ -173,8 +173,8 @@ class MyOrders extends RentApp {
                 立即支付
             </Item> : null}
 
-            {item.payStatus === 2 ? <Item arrow={"horizontal"} onClick={() => this.onFootClick(item)}>
-                查看我的分期
+            {item.payStatus === 2 ? <Item style={{color:'#E9E8E8',fontSize:12}} arrow={"horizontal"} onClick={() => this.onFootClick(item)}>
+                    <Text style={{color:'#989898',fontSize:12}}>查看我的分期</Text>
             </Item> : null}
 
 

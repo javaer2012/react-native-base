@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   priceStyle:{
+    fontSize: 18,
     color: Color.mainPink,
   }
 })

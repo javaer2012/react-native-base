@@ -19,23 +19,21 @@ class Home extends RentApp {
 
   static navigationOptions = {
     title: '首页',
-    headerLeft: (  //定义导航栏右侧的按钮
-      <Button
-        style={{ fontSize: 12, color: '#fff' }}
-        containerStyle={{ marginRight: 10, height: 30, width: 50, overflow: 'hidden', borderRadius: 4, backgroundColor: '#343434', borderColor: '#b2b2b2', borderWidth: 1, justifyContent: 'center' }}
+    headerLeft: (
+      <TouchableOpacity onPress={() => navigation.navigate('Barcode')}>
+        <Image style={{ width: 30, height: 30, marginLeft: 5 }} source={require('../../images/bar.png')} />
+      </TouchableOpacity>
+    ),
+    headerRight: (  //定义导航栏右侧的按钮
+      <TouchableOpacity
+        style={{ fontSize: 12, color: '#fff', marginRight: 10 }}
+        containerStyle={{ height: 30, width: 50, overflow: 'hidden', borderRadius: 4, backgroundColor: '#343434', borderColor: '#b2b2b2', borderWidth: 1, justifyContent: 'center' }}
         onPress={() => contact()}
       >
-        二维码
-      </Button>),
-      headerRight: (  //定义导航栏右侧的按钮
-      <Text
-        style={{ fontSize: 12, color: '#fff' }}
-        containerStyle={{ marginRight: 10, height: 30, width: 50, overflow: 'hidden', borderRadius: 4, backgroundColor: '#343434', borderColor: '#b2b2b2', borderWidth: 1, justifyContent: 'center' }}
-        onPress={() => contact()}
-      >
-          <Image source={ require('../../images/home/icon_share.png')} />
-      </Text>),
-    }
+        <Image source={require('../../images/home/icon_share.png')} />
+      </TouchableOpacity>
+    )
+  }
 
   state = {
     bannerList: [],
@@ -88,7 +86,7 @@ class Home extends RentApp {
           <ProudcuItem data={item}>
             <Button
               onClick={() => navigate('ProductDetail', { productId: item.id })}
-              style={{ width: 66, backgroundColor: Color.mainPink }} size='small'>
+              style={{ width: 66, backgroundColor: Color.mainPink, borderWidth: 0 }} size='small'>
               <Text style={{ color: '#fff' }}>去租机</Text>
             </Button>
           </ProudcuItem>
@@ -133,9 +131,9 @@ class Home extends RentApp {
         <View style={{ position: 'relative', height: '100%', width: WIDTH }}>
           {/**Search head start */}
           <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
-           <TouchableOpacity onPress={()=>navigate('Barcode')}>
+           {/* <TouchableOpacity onPress={()=>navigate('Barcode')}>
              <Text>[]</Text>
-           </TouchableOpacity>
+           </TouchableOpacity> */}
            
             <TouchableOpacity style={styles.leftAddressBox} onPress={() => navigate('LocationPage', {
               callback: (data) => {
@@ -235,10 +233,10 @@ class Home extends RentApp {
       >
         <Image
           style={{ width: 49, height: 49 }}
-          resizeMode="stretch"
+          resizeMode="contain"
           source={{ uri: `${HTTP_IMG}${item.imgPath}` }}
         />
-        <Text style={{ textAlign: 'center' }}>
+        <Text style={{ textAlign: 'center', color: '#565656' }}>
           {item.navTitle}
         </Text>
       </TouchableOpacity>))
@@ -253,7 +251,8 @@ const styles = StyleSheet.create({
   leftAddressBox: {
     alignItems: 'flex-end',
     // justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginLeft: 10
   },
   triangle: {
     width: 0,
@@ -298,6 +297,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 15,
     padding: 20,
+    color: '#282828',
     backgroundColor: '#fff'
   }
 });

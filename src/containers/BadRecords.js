@@ -93,7 +93,7 @@ export default class BadRecords extends RentApp {
                 {this.state.list.length === 0? <Flex direction={"column"} justify={"center"}>
                     <WhiteSpace size={"xl"}/>
                     <WhiteSpace size={"xl"}/>
-                    <Image style={{width: 175, height: 200, resizeMode: "stretch"}}
+                    <Image style={{width: 153, height: 160, resizeMode: "stretch"}}
                            source={require('../images/imageNew/one/record-img.png')}/>
                     <WhiteSpace size={"xl"}/>
                     <Text >你没有负面行为，很赞！</Text>
