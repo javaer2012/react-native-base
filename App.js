@@ -54,17 +54,14 @@ export default class App extends RentApp {
     componentWillMount() {
         // console.log(this.props,"mmmmm")
         // //AsyncStorage.clear()
-        // const handleFirstConnectivityChange = (connectionInfo) => {
-        //     console.log('First change', connectionInfo);
-        //     if (connectionInfo.type === 'none') {
-        //         // this.showToast('网络似乎出了点问题')
-        //         this.props.navigation.replace('NetworkFailPage')
-        //     }
-        // }
-        // NetInfo.addEventListener(
-        //     'connectionChange',
-        //     handleFirstConnectivityChange
-        // );
+        const handleFirstConnectivityChange = (connectionInfo) => {
+            console.log('First change', connectionInfo);
+            store.dispatch({ type: 'NET_FAIL', status: connectionInfo.type === 'none' ? 0 : 1 })  //  0、1 区分有无网络
+        }
+        NetInfo.addEventListener(
+            'connectionChange',
+            handleFirstConnectivityChange
+        );
         if (isFirstTime) {
             //标记首次首次启动
             markSuccess()

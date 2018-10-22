@@ -8,6 +8,28 @@ import {bankCard} from './bankCard'
 import {find} from './find'
 import {orderReducer} from './orderList'
 
+
+// const common = (state = { cardInfo: {} }, action) => {
+//     switch (action.type) {
+//         case "LOADING_STATUS":
+//             return Object.assign({}, { ...state, loading: { ...action.data } })
+//         default:
+//             return state
+//     }
+// }
+
+function common(state = {}, action) {
+    switch (action.type) {
+        case 'CHANGE_LOADING':
+            return Object.assign({}, state, {
+                loading: action.data
+            })
+        default:
+            return state
+    }
+}
+
+
 const rootReducers = combineReducers({
     my:myPageReducer,
     app:appReducer,
@@ -15,6 +37,7 @@ const rootReducers = combineReducers({
     bankCard,
     find,
     order:orderReducer,
+    common,
     ...home,
     ...education
 });

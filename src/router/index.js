@@ -51,6 +51,7 @@ import OrderDetail from '../containers/OrderDetail/OrderDetail';
 import CrmPage_2 from '../containers/crmPage_2'
 import SchoolSearchPage from '../containers/SchoolSearchPage/SchoolSearchPage'
 import RentOrderDetail from '../containers/RentOrderDetail/RentOrderDetail'
+import Provinces from '../containers/Provinces'
 // import App from './App'
 // console.log(App,"!!!!")
 
@@ -61,7 +62,7 @@ import BarTest from '../containers/BarTest';
 
 
 const HomeStack = createStackNavigator({
-    Home: Home || Education,
+    Home,
     SearchPage: Search, // 搜索页面
     ProductDetail: ProductDetailPage, //商品详情
     ProductParameterPage: ProductParameterPage,  // 商品参数详情
@@ -139,6 +140,7 @@ const MyStack = createStackNavigator({
     CardInfoPage: CardInfo,
     NegativeRecord,
     CrmPage_2,
+    Provinces, // 选择学校时候需要选择省份
     LocationPage,
     SchoolSearchPage,
     RentOrderDetail,

@@ -7,7 +7,6 @@ import * as findSaga from './find'
 import * as orderSaga from './orderList'
 
 import { takeEvery } from 'redux-saga/effects'
-
 console.log(homeSagas,"homeSagashomeSagas==>homeSagas")
 export default function* rootSagas() {
     yield takeEvery('APP_STATUS',appSaga.app)

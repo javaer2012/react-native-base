@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, Image, TouchableOpacity, TouchableHighlight, ScrollView, AsyncStorage, Dimensions, DeviceEventEmitter } from 'react-native'
+import { Text, View, StyleSheet, Image, TouchableOpacity, RefreshControl, TouchableHighlight, ScrollView, AsyncStorage, Dimensions, DeviceEventEmitter, Alert } from 'react-native'
 import { Button, Carousel, List, Flex } from 'antd-mobile-rn';
 import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
@@ -29,12 +29,7 @@ class Home extends RentApp {
     loading: true,
   }
 
-  componentWillMount = () => {
-  }
-
   async componentDidMount() {
-    // this.subscription = DeviceEventEmitter.addListener('refreshDataHome', this.refreshData)
-    // console.log(this.props, "======> this.props")
   }
 
   componentWillReceiveProps = async (nextProps) => {
@@ -43,16 +38,24 @@ class Home extends RentApp {
       this.setState({
         addressMsg: locationInfos
       })
+      
       this.props.dispatch({ type: 'HOME_GET_HOME_PRODUCTS', })
       this.props.dispatch({ type: 'HOME_GET_BANNER_AND_NAV' })
+    }
+    if (nextProps.netStatus == 0){
+      this.showToast('网络似乎出现问题，请下拉重试')
+    }
+    if ((nextProps.netStatus !== this.props.netStatus) && this.props.netStatus == 0) {
+      // this.getData()
     }
     // console.log(addressMsg, "redux 中拿出locationInfos")
   }
 
   refreshData = () => {
-    this.props.dispatch({ type: 'home/GET_HOME_PRODUCTS' })
-    this.props.dispatch({ type: 'home/GET_BANNER_AND_NAV' })
-    this.props.dispatch({
+    this.props.dispatch({ type: 'CHANGE_LOADING', data: true })
+    this.props.dispatch({ type: 'HOME_GET_HOME_PRODUCTS', })
+    this.props.dispatch({ type: 'HOME_GET_BANNER_AND_NAV' })
+    this.props.dispatch({ 
       type: 'IS_OPEN_ASYNC',
       // locationInfos: option
     })
@@ -95,14 +98,21 @@ class Home extends RentApp {
       await this.setState({ loading: false })
     }
   }
-
+ 
   render() {
     const { addressMsg } = this.state
     const { hotPhoneList, bannerList, navList, isOpen } = this.props
     const { navigate } = this.props.navigation;
     const { params } = this.props.navigation.state;
     return (
-      <Flex style={{ flex: 1, width: WIDTH }}>
+      <ScrollView 
+        refreshControl={
+          <RefreshControl
+            refreshing={this.props.loading}
+            onRefresh={this.refreshData}
+          />
+        }
+        style={{ flex: 1, width: WIDTH }}>
         <View style={{ position: 'relative', height: '100%', width: WIDTH }}>
           {/**Search head start */}
           <Flex direction="row" align="center" style={{ marginTop: 0, padding: 10, backgroundColor: '#06C1AE' }}>
@@ -169,7 +179,7 @@ class Home extends RentApp {
             </ScrollView>
           }
         </View>
-      </Flex>
+      </ScrollView>
 
     )
   }
@@ -272,6 +282,8 @@ const styles = StyleSheet.create({
 });
 const mapStateToProps = state => {
   const { hotMealList, hotPhoneList, bannerList, navList } = state.homeDataReducer
+  const { netStatus } = state.app
+  const { loading } = state.common
   return {
     locationInfos: state.locationReducer.locationInfos,
     // homeData: state.homeDataReducer
@@ -279,7 +291,9 @@ const mapStateToProps = state => {
     hotPhoneList,
     bannerList,
     navList,
-    isOpen: state.locationReducer.isOpen
+    isOpen: state.locationReducer.isOpen,
+    netStatus,
+    loading
   }
 }
 
