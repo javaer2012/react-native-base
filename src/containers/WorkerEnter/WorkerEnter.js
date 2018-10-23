@@ -109,13 +109,13 @@ export default class WorkerEnter extends RentApp {
     return (
         <ScrollView style={{ flex: 1, height: HEIGHT - 90 }}>
           <Flex style={{ flexGrow: 1, height: '100%', position: 'relative',  }} direction="column" align="stretch">
-              <Tabs tabs={tabs} initialPage={0}>
+          <Tabs tabBarUnderlineStyle style={{borderBottomWidth: 0,borderColor:'#f2f2f2'}} tabs={tabs} initialPage={0}>
                 {(!!notDoOrderList && !!notDoOrderList.length)
                   ? (
                     <Flex direction="column" align="stretch">
                       <Flex direction="column" align="stretch">
                         <SearchBar
-                          // style={{ border: 'none' }}
+                          style={{ borderColor: '#E9E8E8' }}
                           showCancelButton={false}
                           onSubmit={this.searchFun}
                           defaultValue="初始值" placeholder="搜索所有订单" />
