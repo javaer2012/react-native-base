@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, Image, TouchableOpacity, RefreshControl, TouchableHighlight, ScrollView, AsyncStorage, Dimensions, DeviceEventEmitter, Alert } from 'react-native'
-import { Button, Carousel, List, Flex } from 'antd-mobile-rn';
+import { Button, Carousel, List, Flex ,Toast} from 'antd-mobile-rn';
 import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
 import Color from '../../styles/var'
@@ -17,7 +17,7 @@ import { connect } from 'react-redux'
 
 class Home extends RentApp {
 
-  static navigationOptions = {
+  static navigationOptions =({navigation})=>({
     title: '首页',
     headerLeft: (
       <TouchableOpacity onPress={() => navigation.navigate('Barcode')}>
@@ -28,12 +28,12 @@ class Home extends RentApp {
       <TouchableOpacity
         style={{ fontSize: 12, color: '#fff', marginRight: 10 }}
         containerStyle={{ height: 30, width: 50, overflow: 'hidden', borderRadius: 4, backgroundColor: '#343434', borderColor: '#b2b2b2', borderWidth: 1, justifyContent: 'center' }}
-        onPress={() => contact()}
+        onPress={() => Toast.info("敬请期待",1.5)}
       >
         <Image source={require('../../images/home/icon_share.png')} />
       </TouchableOpacity>
     )
-  }
+  })
 
   state = {
     bannerList: [],
