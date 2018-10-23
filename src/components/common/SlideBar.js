@@ -75,13 +75,13 @@ const styles = StyleSheet.create({
         minHeight: 44,
         paddingLeft: 15,
         borderBottomColor: '#E5E5E5',
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         width: '100%'
     },
     content: {
         paddingLeft: 15,
         borderBottomColor: '#E5E5E5',
-        borderBottomWidth: 1,
+        borderBottomWidth: 0.5,
         width: '100%',
         paddingVertical: 10
     }

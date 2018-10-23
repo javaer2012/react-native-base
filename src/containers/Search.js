@@ -232,7 +232,7 @@ class Search extends RentApp {
         return (
             <View style={{ width: '100%', backgroundColor: 'white' }}>
 
-                <SearchBar style={{ width: '100%', backgroundColor: 'white', color: 'black' }}
+                <SearchBar style={{ width: '100%', backgroundColor: 'white', color: 'black', borderColor: '#E8E8ED' }}
                     value={this.state.value}
                     onChange={(value) => this.setState({ value })}
                     onSubmit={() => this.searchGoodsFun()} 
