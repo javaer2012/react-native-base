@@ -14,7 +14,6 @@
     "clean:a": "cd android && ./gradlew clean"
   },
   "dependencies": {
-    "antd-mobile-demo-data": "^0.2.0",
     "antd-mobile-rn": "^2.2.1",
     "axios": "^0.18.0",
     "install": "^0.12.1",

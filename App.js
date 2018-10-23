@@ -223,7 +223,6 @@ export default class App extends RentApp {
         var city;
         try {
             const {data} = await AmapRegeo(lat, lon)
-            console.log(data,"datadatadatadatadatadata")
             let {
                 status,
                 infocode,

@@ -140,6 +140,7 @@ export default class SchoolSearchPage extends RentApp {
         lastTop = lastTop + 80
         lastLetter = item.initial
         this.letterArr.push(item.initial)
+        
         return (
           <Flex key={index} direction="column" align='stretch' style={{ flex: 1 }}>
             <Flex style={styles.letterBoxStyle}><Text style={{ color: '#808080' }}>{item.initial}</Text></Flex>

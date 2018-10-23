@@ -4,6 +4,7 @@ import {List, Picker, WingBlank, WhiteSpace, Flex,Toast} from 'antd-mobile-rn';
 import Button from "../components/common/Button";
 import api from "../service/api";
 import RentApp from "../components/RentApp";
+import { areaObjs } from '../utils/areaSchool'
 
 const STATUS = [
     {
@@ -21,7 +22,8 @@ export default class Education extends RentApp {
         title: "学籍学历"
     }
     state = {
-        cityId: ''
+        cityId: '',
+        cityName:'',
     }
 
     componentDidMount(){
@@ -30,8 +32,6 @@ export default class Education extends RentApp {
 
     async initData(){
         try{
-
-
             const user = await AsyncStorage.multiGet(['userId', 'openId', 'isBinding', 'addressInfos'])
 
             const params = {
@@ -74,7 +74,7 @@ export default class Education extends RentApp {
                     })
 
                 }
-
+                console.log(rsp,"=========>rsp")
                 this.setState({
                     ...rsp
                 })
@@ -153,6 +153,7 @@ export default class Education extends RentApp {
         }
     }
 
+    // 选择后设置当前省份
     setCityIdFun = (data) => {
         console.log("CitySchool:", data)
         const { selectedProvince } = data
@@ -162,23 +163,6 @@ export default class Education extends RentApp {
             cityId: province.id,
             cityName: province.province
         })
-
-        // cityObj.forEach(element => {
-        //     // id: "17"
-        //     // initial: "J"
-        //     // province: "江西省"
-        //     // short: "jiangxisheng"
-        //     // shorter: "jxs"
-
-
-        //     // if (data.crmProvName.indexOf(element.province) !== -1) {
-        //     //     console.log(element)
-        //     //     this.setState({
-        //     //         cityId: element.id,
-        //     //         cityName: data.city
-        //     //     })
-        //     // }
-        // });
     }
 
     setSchoolFun = (data) => {
@@ -192,12 +176,23 @@ export default class Education extends RentApp {
     }
 
     selectSchool = ()=>{
+        let cityId = ""
         if(!this.state.cityId){
-            Toast.info("请先选择城市",1.5)
-            return
+            // 根据服务器返回的省份名字找到对应的城市Id，然后去
+            if (this.state.cityName) {
+                // areaObjs.filter(item => item.)
+                areaObjs.forEach(item => {
+                    if (item.province === this.state.cityName ) {
+                        cityId = item.id
+                    }
+                })
+            } else {
+                Toast.info("请先选择城市", 1.5)
+                return
+            }
         }
         this.props.navigation.navigate("SchoolSearchPage", {
-            cityId: this.state.cityId,
+            cityId: this.state.cityId || cityId,
             callback: (data) => this.setSchoolFun(data)
         })
     }

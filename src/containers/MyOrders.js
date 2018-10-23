@@ -4,6 +4,7 @@ import { List, InputItem, Toast, WingBlank, WhiteSpace, Flex } from 'antd-mobile
 import api, { HTTP_IMG } from "../service/api";
 import RentApp from "../components/RentApp";
 import { connect } from 'react-redux'
+import { newCardStyle } from '../antdStyle'
 
 const Item = List.Item
 
@@ -105,8 +106,10 @@ class MyOrders extends RentApp {
             key={item.orderId}
             renderHeader={() => <Text style={{ color:'#282828',height: 46, lineHeight: 46, fontSize: 15, paddingHorizontal: 15 }}>{`订单流水号:${item.orderSn}`}</Text>}
             style={{ backgroundColor: 'white', borderRadius: 4, marginBottom: 15 }}>
-            <Item>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('OrderInfo', {
+            <Item underlayColor="#FFF">
+                <TouchableOpacity 
+                    underlayColor="#FFF"
+                    onPress={() => this.props.navigation.navigate('OrderInfo', {
                     orderId: item.orderId,
                     orderSn: item.orderSn
                 })}>

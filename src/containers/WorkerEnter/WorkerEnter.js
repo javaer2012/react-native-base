@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, Alert, Dimensions } from 'react-native';
 import { Flex, List, Card, WhiteSpace, WingBlank, Tabs, SearchBar } from 'antd-mobile-rn';
 import api from '../.././service/api'
+import {newTabsStyle} from '../../antdStyle'
 // const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
-
 const { HTTP_IMG, orderList: orderList_ajax } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
@@ -109,7 +109,7 @@ export default class WorkerEnter extends RentApp {
     return (
         <ScrollView style={{ flex: 1, height: HEIGHT - 90 }}>
           <Flex style={{ flexGrow: 1, height: '100%', position: 'relative',  }} direction="column" align="stretch">
-          <Tabs tabBarUnderlineStyle style={{borderBottomWidth: 0,borderColor:'#f2f2f2'}} tabs={tabs} initialPage={0}>
+          <Tabs styles={newTabsStyle}  tabBarUnderlineStyle style={{borderBottomWidth: 0,borderColor:'#f2f2f2'}} tabs={tabs} initialPage={0}>
                 {(!!notDoOrderList && !!notDoOrderList.length)
                   ? (
                     <Flex direction="column" align="stretch">
