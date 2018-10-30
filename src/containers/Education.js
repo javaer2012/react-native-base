@@ -204,12 +204,12 @@ export default class Education extends RentApp {
 
         console.log(this.state)
         return (
-            <View>
+            <View style={{backgroundColor:'#FFFFFF',height:'100%'}}>
                 <Flex direction={"row"} justify={"center"}
-                      style={{backgroundColor: 'white', height: 80, paddingLeft: 15}}>
-                    <WhiteSpace size={"lg"}/>
-                    <Text>信息保护中</Text>
-                    <WhiteSpace size={"lg"}/>
+                      style={{backgroundColor: 'white',height:40, paddingLeft: 15}}>
+                    <WhiteSpace size={"md"}/>
+                    <Text style={{color:'#989898'}}>信息保护中</Text>
+                    <WhiteSpace size={"xs"}/>
                 </Flex>
                 <WhiteSpace size={"lg"}/>
                 <List>
@@ -242,8 +242,8 @@ export default class Education extends RentApp {
                 <WhiteSpace size={"xl"}/>
                 <WingBlank size={"md"}>
                     <Flex direction={"column"} justify={"start"} align={"center"}>
-                        <Text style={{textAlign: 'center'}}>请确认您的个人信息真实有效</Text>
-                        <Text style={{textAlign: 'center'}}>上传虚假信息将对你的信用产生负面影响</Text>
+                        <Text style={{textAlign: 'center',color:'#989898'}}>请确认您的个人信息真实有效</Text>
+                        <Text style={{textAlign: 'center',color:'#989898'}}>上传虚假信息将对你的信用产生负面影响</Text>
                     </Flex>
 
                 </WingBlank>

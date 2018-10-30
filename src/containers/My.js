@@ -124,8 +124,8 @@ class My extends RentApp {
                                     <WhiteSpace size={"xl"}/>
                                     <Flex direction={"row"} justify={"around"} style={{width: 126, height: 45}}>
                                         <Button
-                                            style={{backgroundColor: null}}
-                                            onClick={() => navigation.replace('LoginPage')}>登录</Button>
+                                            style={{backgroundColor: null,borderWidth: 1,borderColor: 'white',}}
+                                            onClick={() => navigation.navigate('LoginPage')}>登录</Button>
                                     </Flex>
                                 </Flex> :
                                 <React.Fragment>
@@ -146,7 +146,9 @@ class My extends RentApp {
                                                             height: 27,
                                                             lineHeight: 27,
                                                             fontSize: 12,
-                                                            backgroundColor: null
+                                                            backgroundColor: null,
+                                                            borderColor: 'white',
+                                                            borderWidth:1
                                                         }}
                                                         onClick={() => this.logout()}>
                                                         注销
@@ -162,7 +164,8 @@ class My extends RentApp {
                                                             height: 27,
                                                             lineHeight: 27,
                                                             fontSize: 12,
-                                                            backgroundColor: null
+                                                            backgroundColor: null,borderColor: 'white',
+                                                            borderWidth:1
                                                         }}
                                                                 onClick={() => navigation.navigate('ScorePage', {
                                                                     score: userInfo.userScore ? userInfo.userScore : 0
@@ -176,7 +179,9 @@ class My extends RentApp {
                                                             height: 27,
                                                             lineHeight: 27,
                                                             fontSize: 12,
-                                                            backgroundColor: null
+                                                            backgroundColor: null,
+                                                            borderColor: 'white',
+                                                            borderWidth:1
                                                         }}
                                                                 onClick={() => navigation.navigate('KnowScorePage', {
                                                                     score: userInfo.userScore ? userInfo.userScore : 0

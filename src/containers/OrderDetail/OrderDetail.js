@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Image, ScrollView, StyleSheet, Text, View, TouchableOpacity, TouchableHighlight, AsyncStorage } from 'react-native';
-import { Flex, List, WhiteSpace, WingBlank } from 'antd-mobile-rn';
+import { Flex, List, WhiteSpace, WingBlank,Toast } from 'antd-mobile-rn';
 // import Button from '../../components/common/Button'
 import Card from './components/Card'
 import api from '../.././service/api'
@@ -121,6 +121,9 @@ export default class OrderDetail extends RentApp {
           contractMealInfo,
           goodsInfo 
         })
+      } else{
+        Toast.info(data.errmsg,1.5)
+        setTimeout(()=>this.props.navigation.popToTop(),1800)
       }
 
       console.log(JSON.stringify(rsp), '=========>getData res')

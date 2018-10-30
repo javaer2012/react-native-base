@@ -6,7 +6,7 @@ const Button = props =>{
 
     const click = props.onClick || null;
     const defaultStyle = {width:126,height:45,
-        borderRadius:3,borderWidth: 1,lineHeight:45,borderColor:'white', backgroundColor: '#06C1AE',
+        borderRadius:5,lineHeight:45, backgroundColor: '#06C1AE',
         textAlign: "center",color:'white'},
         cusStyle = props.style || {};
 

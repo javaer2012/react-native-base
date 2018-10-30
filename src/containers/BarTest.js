@@ -7,7 +7,8 @@ import {
     Alert
 } from 'react-native';
 import Barcode from 'react-native-smart-barcode'
-
+import {NavigationEvents} from 'react-navigation'
+import {Toast} from 'antd-mobile-rn'
 export default class BarTest extends Component {
 
     static navigationOptions = {
@@ -22,21 +23,22 @@ export default class BarTest extends Component {
     }
     componentDidMount() {
         //启动定时器
-        this.timer = setTimeout(
-            () => this.setState({viewAppear: true}),
-            250
-        );
+        // this.timer = setTimeout(
+        //     () => this.setState({viewAppear: true}),
+        //     250
+        // );
     }
     //组件销毁生命周期
     componentWillUnmount() {
         //清楚定时器
-        this.timer && clearTimeout(this.timer);
+        //this.timer && clearTimeout(this.timer);
     }
 
     _onBarCodeRead = (e) => {
         // console.log(`e.nativeEvent.data.type = ${e.nativeEvent.data.type}, e.nativeEvent.data.code = ${e.nativeEvent.data.code}`)
         this._stopScan();
 
+       try{
         console.log(e.nativeEvent.data.code)
 
         const {orderId,orderSn} = JSON.parse(e.nativeEvent.data.code)
@@ -48,6 +50,9 @@ export default class BarTest extends Component {
         } else {
             this.props.navigation.navigate("OrderDetail",{orderId,orderSn})
         }
+       } catch(e){
+           Toast.info("二维码错误，请重试",1.5)
+       }
         
     };
 
@@ -61,6 +66,21 @@ export default class BarTest extends Component {
     render() {
         return (
             <View style={{flex: 1}}>
+            <NavigationEvents
+                    onWillFocus={payload => {
+                        console.log("will focus")
+                        this.timer = setTimeout(
+                            () => this.setState({viewAppear: true}),
+                            250
+                        );
+                    }}
+                    onDidFocus={payload => console.log('did focus', payload)}
+                    onWillBlur={payload => {
+                        console.log('will blur', payload)
+                        this.timer && clearTimeout(this.timer);
+                    }}
+                    onDidBlur={payload => console.log('did blur', payload)}
+                />
                 {this.state.viewAppear ?
                     <Barcode style={{flex: 1,}} ref={component => this._barCode = component}
                              onBarCodeRead={this._onBarCodeRead}/>

@@ -124,13 +124,16 @@ class MyOrders extends RentApp {
                         <WingBlank size={"md"}>
                             <Flex direction={"column"} justify={"start"} align={"start"}>
                                 <WhiteSpace size={"sm"} />
-                                <Text numberOfLines={2} style={{ width: 241 }}>{`${item.goodsName}`}</Text>
+                                <Text numberOfLines={2} style={{ width: 241,fontSize:18 }}>{`${item.goodsName}`}</Text>
                                 <WhiteSpace size={"sm"} />
 
-                                {goosSku.skuJson.map((item, index) => <Text key={index}>{`${item.pSkuName}:${item.cSkuName}`}</Text>)}
+                                {goosSku.skuJson.map((item, index) => {
+                                    let color = {color:'#989898'};
+                                   return <Text style={color} key={index}>{`${item.pSkuName}:${item.cSkuName}`}</Text>}
+                                )}
                                 <WhiteSpace size={"sm"} />
 
-                                <Text>{`价格:￥${item.goodsPrice}`}</Text>
+                                <Text style={{color:"#E75B89"}}>{`价格:￥${item.goodsPrice}`}</Text>
                                 <WhiteSpace size={"sm"} />
 
                                 <View style={{ borderBottomWidth: 1, borderBottomColor: '#E9E8E8', width: '100%' }}></View>
