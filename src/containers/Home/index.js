@@ -236,11 +236,11 @@ class Home extends RentApp {
         onPress={() => navigate('ProductListPage', { category: item.id })}
       >
         <Image
-          style={{ width: 49, height: 49 }}
+          style={{ width: 50, height: 50 }}
           resizeMode="contain"
           source={{ uri: `${HTTP_IMG}${item.imgPath}` }}
         />
-        <Text style={{ textAlign: 'center', color: '#565656' }}>
+        <Text style={{ textAlign: 'center', color: '#565656', fontSize: 15 }}>
           {item.navTitle}
         </Text>
       </TouchableOpacity>))
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
   navBox: {
     ...flexRow,
     justifyContent: 'space-around',
-    paddingVertical: 30,
+    paddingVertical: 15,
     backgroundColor: '#fff'
   },
   navItem: {
@@ -300,8 +300,8 @@ const styles = StyleSheet.create({
   listTitle: {
     textAlign: 'center',
     fontSize: 15,
-    padding: 20,
-    color: '#282828',
+    padding: 15,
+    color: '#565656',
     backgroundColor: '#fff'
   }
 });

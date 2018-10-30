@@ -237,11 +237,12 @@ class Search extends RentApp {
         return (
             <View style={{ width: '100%', backgroundColor: 'white' }}>
 
-                <SearchBar style={{ width: '100%', backgroundColor: 'white', color: 'black', borderColor: '#E8E8ED' }}
+                <SearchBar style={{ width: '100%', backgroundColor: 'white', color: 'black', borderColor: '#E8E8ED', marginVertical: 6 }}
+                    cancelText="搜索"
                     value={this.state.value}
                     onChange={(value) => this.setState({ value })}
                     onSubmit={() => this.searchGoodsFun(this.state.keyWord)} 
-                    onCancel={()=>this.setState({value:''})}/>
+                    onCancel={() => this.searchGoodsFun(this.state.keyWord)} />
 
                 {this.state.products.length === 0 ? <View>
                     {this.props.historyKeys.length > 0 ? <WingBlank size={"md"} style={{ backgroundColor: 'white' }}>

@@ -98,11 +98,10 @@ export default class OrderDetail extends RentApp {
         orderId,
         cityCode: this.cityCode,
         provinceCode: this.provinceCode,
-        staffNo: 3123123 || user.staffNo
+        staffNo: user.staffNo
       }
       console.log(params, '=======》 params')
       const { data } = await staffOrderDetail(params)
-      console.log(JSON.stringify(data), "ggggggggggggggggggggggggggggggggggggg")
       if (data.errcode === 1) {
         const { 
           // orderUserInfo: userInfo, 
