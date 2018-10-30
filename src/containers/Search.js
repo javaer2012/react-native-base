@@ -221,8 +221,13 @@ class Search extends RentApp {
 
         const keyWord = this.state.value
         const { navigate, state } = this.props.navigation;
-        navigate('ProductListPage', { keyWord: key || keyWord })
-        state.params && state.params.callback && state.params.callback(key || keyWord);
+
+        this.props.dispatch({
+            type:'SET_SEARCH_KEYWORD',
+            payload:key 
+        })
+        navigate('ProductListPage', { keyWord: key  })
+        //state.params && state.params.callback && state.params.callback(key);
     }
 
 
@@ -236,9 +241,8 @@ class Search extends RentApp {
                     cancelText="搜索"
                     value={this.state.value}
                     onChange={(value) => this.setState({ value })}
-                    onSubmit={() => this.searchGoodsFun()} 
-                    onCancel={() => this.searchGoodsFun()} 
-                />
+                    onSubmit={() => this.searchGoodsFun(this.state.keyWord)} 
+                    onCancel={() => this.searchGoodsFun(this.state.keyWord)} />
 
                 {this.state.products.length === 0 ? <View>
                     {this.props.historyKeys.length > 0 ? <WingBlank size={"md"} style={{ backgroundColor: 'white' }}>

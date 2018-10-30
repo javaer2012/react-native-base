@@ -7,6 +7,8 @@ import {historyKey} from './historyKeys'
 import {bankCard} from './bankCard'
 import {find} from './find'
 import {orderReducer} from './orderList'
+import {search} from './search'
+
 
 
 // const common = (state = { cardInfo: {} }, action) => {
@@ -38,6 +40,7 @@ const rootReducers = combineReducers({
     find,
     order:orderReducer,
     common,
+    search,
     ...home,
     ...education
 });

@@ -14,9 +14,10 @@ import Sidebar from '../../components/common/SlideBar'
 
 const { queryGoodsList, HTTP_IMG } = api
 import Spinner from 'react-native-loading-spinner-overlay';
+import { connect } from 'react-redux';
 // import throttle from '../../utils/throttle'
 
-export default class ProductListPage extends RentApp {
+class ProductListPage extends RentApp {
     static navigationOptions = {
         title: "商品列表"
     }
@@ -43,6 +44,12 @@ export default class ProductListPage extends RentApp {
         await this.getCateList()
     }
 
+    async componentWillReceiveProps(nextProps){
+        if(nextProps.keyWord !== this.props.keyWord){
+            await this.getData()
+        }
+    }
+
     getData = async (otherParams) => {
         if (otherParams) {
             await this.setState({
@@ -53,7 +60,7 @@ export default class ProductListPage extends RentApp {
         const { pageNum, pageSize, products, isLoreMoreing, selected, maxPrice, minPrice } = this.state
 
         const category = this.props.navigation.getParam('category');
-        const { keyWord } = this.state
+        const { keyWord } = this.props
         await this.setState({ loading: true })
         try {
             const user = await AsyncStorage.multiGet(['userId', 'openId', 'isLogin', 'addressInfos'])
@@ -254,15 +261,18 @@ export default class ProductListPage extends RentApp {
         const { navigate } = this.props.navigation
         navigate('SearchPage', {
             callback: async (keyWord) => {
-                await this.setState({ keyWord, isLoreMoreing: 'LoreMoreing' })
-                await this.getData()
+                this.setState({ keyWord, isLoreMoreing: 'LoreMoreing' },async ()=>{
+                    await this.getData()
+                })
+               
             }
         })
     }
 
     render() {
-        const { navigate } = this.props.navigation
-        let { products, pageNum, keyWord, sortList, selected, selectedSortType, cateList, maxPrice, minPrice, isLoreMoreing, priceSortType } = this.state
+        const { navigate } = this.props.navigation,
+        {keyWord} = this.props
+        let { products, pageNum, sortList, selected, selectedSortType, cateList, maxPrice, minPrice, isLoreMoreing, priceSortType } = this.state
         const searchBtnStyle = [{
             paddingHorizontal: 36,
             paddingVertical: 10
@@ -406,6 +416,12 @@ export default class ProductListPage extends RentApp {
 
     }
 }
+
+const mapStateToProps = state =>({
+    keyWord:state.search.keyword
+})
+
+export default connect(mapStateToProps)(ProductListPage)
 
 
 const styles = StyleSheet.create({
