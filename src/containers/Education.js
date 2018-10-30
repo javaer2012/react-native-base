@@ -205,10 +205,11 @@ export default class Education extends RentApp {
         console.log(this.state)
         return (
             <View style={{backgroundColor:'#FFFFFF',height:'100%'}}>
+                <WhiteSpace size={"lg"} />
                 <Flex direction={"row"} justify={"center"}
                       style={{backgroundColor: 'white',height:40, paddingLeft: 15}}>
                     <WhiteSpace size={"md"}/>
-                    <Text style={{color:'#989898'}}>信息保护中</Text>
+                    <Text style={{ color:'#989898', fontSize: 14}}>信息保护中</Text>
                     <WhiteSpace size={"xs"}/>
                 </Flex>
                 <WhiteSpace size={"lg"}/>
@@ -255,7 +256,9 @@ export default class Education extends RentApp {
                         width: 355,
                         height: 36,
                         lineHeight: 36,
-                        color: "white"
+                        color: "white",
+                        borderRaduis: 4,
+                        overflow: 'hidden'
                     }}
                             onClick={this.submit}
                     >完成</Button>

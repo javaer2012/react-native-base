@@ -109,7 +109,7 @@ class Login extends RentApp {
 
 
                     <WhiteSpace size={"xl"}/>
-                    <List style={{borderWidth: 1, borderColor: '#D2D2D2'}}>
+                    <List style={{borderWidth: 0.5, borderColor: '#e5e5e5', borderRadius: 5, overflow: 'hidden'}}>
                         <InputItem type="text" value={username}
                                    style={{fontSize: 40}}
                                    onChange={(username) => this.setState({username})}

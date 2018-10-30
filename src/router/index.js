@@ -88,6 +88,7 @@ const HomeStack = createStackNavigator({
             // initialRouteName: "Pay",
             headerStyle: {
                 backgroundColor: '#06C1AE',
+                borderBottomWidth: 0
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -104,6 +105,7 @@ const FindStack = createStackNavigator({
         navigationOptions: {
             headerStyle: {
                 backgroundColor: '#06C1AE',
+                borderBottomWidth: 0
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -160,6 +162,7 @@ const MyStack = createStackNavigator({
         navigationOptions: {
             headerStyle: {
                 backgroundColor: '#06C1AE',
+                borderBottomWidth: 0
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
@@ -177,6 +180,7 @@ HomeStack.navigationOptions = ({ navigation }) => {
     return {
         headerStyle: {
             backgroundColor: '#06C1AE',
+            borderBottomWidth: 0
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -195,6 +199,7 @@ FindStack.navigationOptions = ({ navigation }) => {
     return {
         headerStyle: {
             backgroundColor: '#06C1AE',
+            borderBottomWidth: 0
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -213,6 +218,7 @@ MyStack.navigationOptions = ({ navigation }) => {
     return {
         headerStyle: {
             backgroundColor: '#06C1AE',
+            borderBottomWidth: 0
         },
         headerTintColor: '#fff',
         headerTitleStyle: {

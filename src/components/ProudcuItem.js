@@ -26,11 +26,11 @@ export default ({ data, children, imageStyle }) => {
         }} source={{ uri: `${HTTP_IMG}${data.imgPath || data.goodsImgPath}` }} />
 
       <View style={styles.contentBox}>
-        <Text style={{ flexWrap: 'wrap', width: WIDTH - 40 - ( imageStyle ? imageStyle.width : 50) }}>
+        <Text style={{ flexWrap: 'wrap', fontSize: 18, width: WIDTH - 40 - ( imageStyle ? imageStyle.width : 50) }}>
           {data.phoneName || data.goodsName}
-          <Text style={{ flexWrap: 'wrap', width: WIDTH - 40 - ( imageStyle ? imageStyle.width : 50) }}>{data.phoneDesc}</Text>
+          <Text style={{ flexWrap: 'wrap', fontSize: 18, width: WIDTH - 40 - ( imageStyle ? imageStyle.width : 50) }}>{data.phoneDesc}</Text>
         </Text>
-        {data.goodsDesc && <Text style={{ flexWrap: 'wrap', width: WIDTH - 40 - (imageStyle ? imageStyle.width : 50)  }}>{data.goodsDesc}</Text>}
+        {data.goodsDesc && <Text style={{ flexWrap: 'wrap',fontSize: 18, width: WIDTH - 40 - (imageStyle ? imageStyle.width : 50)  }}>{data.goodsDesc}</Text>}
 
         <View style={[flexRowBet, styles.btnBox]}>
           <Text style={styles.priceStyle}>￥ {data.price}</Text>
