@@ -221,8 +221,13 @@ class Search extends RentApp {
 
         const keyWord = this.state.value
         const { navigate, state } = this.props.navigation;
-        navigate('ProductListPage', { keyWord: key || keyWord })
-        state.params && state.params.callback && state.params.callback(key || keyWord);
+
+        this.props.dispatch({
+            type:'SET_SEARCH_KEYWORD',
+            payload:key 
+        })
+        navigate('ProductListPage', { keyWord: key  })
+        //state.params && state.params.callback && state.params.callback(key);
     }
 
 
@@ -235,7 +240,7 @@ class Search extends RentApp {
                 <SearchBar style={{ width: '100%', backgroundColor: 'white', color: 'black', borderColor: '#E8E8ED' }}
                     value={this.state.value}
                     onChange={(value) => this.setState({ value })}
-                    onSubmit={() => this.searchGoodsFun()} 
+                    onSubmit={() => this.searchGoodsFun(this.state.keyWord)} 
                     onCancel={()=>this.setState({value:''})}/>
 
                 {this.state.products.length === 0 ? <View>
