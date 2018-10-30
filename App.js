@@ -19,6 +19,7 @@ import { localCodeInfo } from './src/utils/city'
 import RentApp from "./src/components/RentApp";
 import { StackNavigator } from 'react-navigation';
 import NetworkFailPage from './src/containers/NetworkFailPage'
+import { LocaleProvider } from 'antd-mobile-rn'
 
 
 
@@ -34,9 +35,9 @@ import {
 
 import _updateConfig from './update.json';
 
-const {appKey} = _updateConfig[Platform.OS];
+const { appKey } = _updateConfig[Platform.OS];
 // this.registerUser();
-const {AmapRegeo, registerUser, isCityOpen, setCrmCode} = api
+const { AmapRegeo, registerUser, isCityOpen, setCrmCode } = api
 
 export default class App extends RentApp {
 
@@ -65,11 +66,11 @@ export default class App extends RentApp {
         if (isFirstTime) {
             //标记首次首次启动
             markSuccess()
-        } else if(isRolledBack){
+        } else if (isRolledBack) {
             Alert.alert("更新失败，回滚到上一个可用版本")
         }
 
-        store.dispatch({type:'APP_STATUS'})
+        store.dispatch({ type: 'APP_STATUS' })
 
         this.getOpenIdAndUserId()
         this.beginWatch()
@@ -77,20 +78,20 @@ export default class App extends RentApp {
         this.searchKeyWord()
     }
 
-    searchKeyWord = async () =>{
+    searchKeyWord = async () => {
         try {
 
             const keyword = await AsyncStorage.getItem('historyKeys')
-            if(keyword){
+            if (keyword) {
                 const historyKeys = JSON.parse(keyword)
                 store.dispatch({
-                    type:"INIT_HISTORY_KEYS",
-                    payload:historyKeys
+                    type: "INIT_HISTORY_KEYS",
+                    payload: historyKeys
                 })
             } else {
                 store.dispatch({
-                    type:"INIT_HISTORY_KEYS",
-                    payload:[]
+                    type: "INIT_HISTORY_KEYS",
+                    payload: []
                 })
             }
 
@@ -99,11 +100,11 @@ export default class App extends RentApp {
         }
     }
 
-    checkUpdate = ()=>{
+    checkUpdate = () => {
 
 
         checkUpdate(appKey)
-            .then(info=>{
+            .then(info => {
 
                 if (info.expired) {
                     Alert.alert('提示', '您的应用版本已更新,请前往应用商店下载新的版本', [
@@ -123,11 +124,11 @@ export default class App extends RentApp {
                                 this.doUpdate(info)
                             }
                         },
-                        {text: '否',},
+                        { text: '否', },
                     ]);
                 }
             })
-            .catch(err=>Alert.alert(err.toString()))
+            .catch(err => Alert.alert(err.toString()))
     }
 
     // isOpen = async (params) => {
@@ -150,14 +151,14 @@ export default class App extends RentApp {
     doUpdate = async (info) => {
 
         downloadUpdate(info)
-            .then(download=>{
+            .then(download => {
                 Alert.alert('提示', '下载完毕,是否重启应用?', [
                     {
                         text: '是', onPress: () => {
                             switchVersion(download);
                         }
                     },
-                    {text: '否',},
+                    { text: '否', },
                     {
                         text: '下次启动时', onPress: () => {
                             switchVersionLater(download);
@@ -173,8 +174,8 @@ export default class App extends RentApp {
             console.log("Start Retister User")
             console.log(DeviceInfo.getUniqueID())
 
-           // await AsyncStorage.removeItem('openId');
-           // await AsyncStorage.removeItem('userId');
+            // await AsyncStorage.removeItem('openId');
+            // await AsyncStorage.removeItem('userId');
 
             const openId = await AsyncStorage.getItem('openId');
             const userId = await AsyncStorage.getItem('userId');
@@ -191,12 +192,12 @@ export default class App extends RentApp {
                 const register = await registerUser(params);
 
                 console.log(register)
-                const {data} = register;
+                const { data } = register;
                 if (data.errcode === 1) {
-                    const {openId, userId} = data;
+                    const { openId, userId } = data;
                     store.dispatch({
-                        type:"OPEN_ID_USER_ID",
-                        payload:{
+                        type: "OPEN_ID_USER_ID",
+                        payload: {
                             openId,
                             userId
                         }
@@ -206,8 +207,8 @@ export default class App extends RentApp {
                 console.log(register)
             } else {
                 store.dispatch({
-                    type:"OPEN_ID_USER_ID",
-                    payload:{
+                    type: "OPEN_ID_USER_ID",
+                    payload: {
                         openId,
                         userId
                     }
@@ -222,7 +223,7 @@ export default class App extends RentApp {
     getCityFun = async (lat, lon) => {
         var city;
         try {
-            const {data} = await AmapRegeo(lat, lon)
+            const { data } = await AmapRegeo(lat, lon)
             let {
                 status,
                 infocode,
@@ -252,7 +253,7 @@ export default class App extends RentApp {
                         }
                     }
 
-                    console.log("register:",option)
+                    console.log("register:", option)
                     this.registerUser(option)
 
                     await AsyncStorage.setItem('addressInfos', JSON.stringify(option));
@@ -260,7 +261,7 @@ export default class App extends RentApp {
                     store.dispatch({
                         type: 'SET_LOCATION',
                         locationInfos: option
-                    })  
+                    })
                     store.dispatch({
                         type: 'IS_OPEN_ASYNC',
                         // locationInfos: option
@@ -283,43 +284,45 @@ export default class App extends RentApp {
     }
 
     beginWatch = async () => {
-       // await AsyncStorage.clear()
+        // await AsyncStorage.clear()
         // const value1 = await AsyncStorage.getItem('Test')
         // console.log("Test1", value1)
-      try{
-          if (Platform.OS === 'ios') {
-              navigator.geolocation.getCurrentPosition(
-                  ({ coords }) => {
-                      console.log(coords)
-                      const { latitude, longitude } = coords
-                      this.getCityFun(latitude, longitude)
-                      // var initialPosition = JSON.stringify(position);
-                      // this.setState({ initialPosition });
-                  },
-                  (error) => console.log(error.message),
-                  { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-              )
-          } else {
-              const { data, status } = await api.AmapIpGeoCode()
-              if (data.status === '1') {
-                const { rectangle } = data
-                  const harfData = rectangle.split(';')
-                  const arr = [...harfData[0].split(','), ...harfData[1].split(',') ] 
-                  const latitude = (+arr[1] + +arr[3]) / 2
-                  const longitude = (+arr[0] + +arr[2]) / 2
-                  this.getCityFun(latitude, longitude)
-              }
-          }
-      } catch (e) {
-          console.log(e.message)
-      }
+        try {
+            if (Platform.OS === 'ios') {
+                navigator.geolocation.getCurrentPosition(
+                    ({ coords }) => {
+                        console.log(coords)
+                        const { latitude, longitude } = coords
+                        this.getCityFun(latitude, longitude)
+                        // var initialPosition = JSON.stringify(position);
+                        // this.setState({ initialPosition });
+                    },
+                    (error) => console.log(error.message),
+                    { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+                )
+            } else {
+                const { data, status } = await api.AmapIpGeoCode()
+                if (data.status === '1') {
+                    const { rectangle } = data
+                    const harfData = rectangle.split(';')
+                    const arr = [...harfData[0].split(','), ...harfData[1].split(',')]
+                    const latitude = (+arr[1] + +arr[3]) / 2
+                    const longitude = (+arr[0] + +arr[2]) / 2
+                    this.getCityFun(latitude, longitude)
+                }
+            }
+        } catch (e) {
+            console.log(e.message)
+        }
     }
 
     render() {
         return (
-            <Provider store={store}>
-                <AppNavigator></AppNavigator>
-            </Provider>
+            <LocaleProvider>
+                <Provider store={store}>
+                    <AppNavigator></AppNavigator>
+                </Provider>
+            </LocaleProvider>
 
         );
     }
