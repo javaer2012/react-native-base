@@ -62,7 +62,7 @@ import BarTest from '../containers/BarTest';
 
 
 const HomeStack = createStackNavigator({
-    SearchPage: Search, // 搜索页面
+    // SearchPage: Search, // 搜索页面
     Home,
     SearchPage: Search, // 搜索页面
     ProductDetail: ProductDetailPage, //商品详情

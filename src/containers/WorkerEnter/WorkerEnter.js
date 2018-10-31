@@ -5,6 +5,9 @@ import api from '../.././service/api'
 import {newTabsStyle} from '../../antdStyle'
 // const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 import RentApp from "../../components/RentApp";
+import CSearch from '../../components/common/CTextInput'
+
+
 const { HTTP_IMG, orderList: orderList_ajax } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 
@@ -16,8 +19,11 @@ export default class WorkerEnter extends RentApp {
     // orderList:[],
     notDoOrderList:[],
     hasDoOrderList:[],
+    searchNotDoOrderList:[], 
+    searchHasDoOrderList:[],
     pageNum: 1,
-    pageSize: 10
+    pageSize: 10,
+    value:''
   }
 
   async componentDidMount() {
@@ -53,43 +59,91 @@ export default class WorkerEnter extends RentApp {
     }
   }
 
-  searchFun = () => {
+  searchFun = (type) => {
+    const { notDoOrderList, hasDoOrderList, value } = this.state
+    if (type == 1) {  // 未受理
+      const filterArr = notDoOrderList.filter(item => {
+        const text = Object.values(item).filter(i => typeof i === 'string').join('')
+        return text.indexOf(value) !== -1
+      })
 
+      this.setState({
+        // notDoOrderList: filterArr
+        searchNotDoOrderList: filterArr
+      })
+    } else if (type == 2) { // 已受理
+      const filterArr = hasDoOrderList.filter(item => {
+        const text = Object.values(item).filter(i => typeof i === 'string').join('')
+        return text.indexOf(value) !== -1
+      })
+
+      this.setState({
+        // hasDoOrderList: filterArr
+        searchHasDoOrderList: filterArr
+      })
+    }
   }
-  renderOrders = (list, type) => {
-    return list.map((item, index) => {
-      const { 
+  renderOrders = (type) => {
+    let { notDoOrderList, searchNotDoOrderList, searchHasDoOrderList, hasDoOrderList, value } = this.state
+    if (value === '') {
+        searchNotDoOrderList= notDoOrderList
+        searchHasDoOrderList= hasDoOrderList
+    }
+    renderList = (list) => {
+      return list.map((item, index) => {
+        const {
         orderId,
-        orderSn,
-        orderType,
-        userName,
-        idCardNo,
-        phoneNo,
-        orderTime,
-        handleTime
+          orderSn,
+          orderType,
+          userName,
+          idCardNo,
+          phoneNo,
+          orderTime,
+          handleTime
       } = item
-      const { navigate } = this.props.navigation;
+        const { navigate } = this.props.navigation;
+        return (
+          <TouchableOpacity
+            key={index}
+            style={{ marginBottom: 10, backgroundColor: '#fff', paddingBottom: 20 }}
+            onPress={() => {
+              if (type == 2) return
+              navigate('OrderDetail', {
+                orderId,
+              })
+            }}
+          >
+            <Flex style={styles.orderBox} direction="column" align="start">
+              <View style={styles.title}>
+                <Text>订单流水号：{orderSn}</Text>
+              </View>
+              <Text style={styles.textBase}>用户姓名：{userName}</Text>
+              <Text style={styles.textBase}>身份证号：{idCardNo}</Text>
+              <Text style={styles.textBase}>电话号码：{phoneNo}</Text>
+              <Text style={styles.textBase}>状态：{type === 1 && '未受理'}{type === 2 && '已受理'}</Text>
+              <Text style={styles.textBase}>下单时间：{orderTime}</Text>
+            </Flex>
+          </TouchableOpacity>
+        )
+      }) 
+    }
+
+    if (type === 1) {
       return (
-        <TouchableOpacity 
-          key={index}  
-          style={{marginBottom: 10, backgroundColor: '#fff', paddingBottom: 20}} 
-          onPress={() => navigate('OrderDetail', {
-            orderId,
-          })}
-        >
-          <Flex style={styles.orderBox}direction="column" align="start">
-            <View style={styles.title}>
-              <Text>订单流水号：{orderSn}</Text>
-            </View>
-            <Text style={styles.textBase}>用户姓名：{userName}</Text>
-            <Text style={styles.textBase}>身份证号：{idCardNo}</Text>
-            <Text style={styles.textBase}>电话号码：{phoneNo}</Text>
-            <Text style={styles.textBase}>状态：{type === 1 && '未受理'}{type === 2 && '已受理'}</Text>
-            <Text style={styles.textBase}>下单时间：{orderTime}</Text>
-          </Flex>
-        </TouchableOpacity>
+        <ScrollView style={{ height: HEIGHT - 140 }}>
+          {renderList(searchNotDoOrderList)}
+        </ScrollView>
       )
-    })
+    } else if (type === 2) {
+      return (
+        <ScrollView style={{ height: HEIGHT - 140 }}>
+          {renderList(searchHasDoOrderList)}
+        </ScrollView>
+      )
+    }
+    
+
+
   }
 
   render() {
@@ -110,19 +164,21 @@ export default class WorkerEnter extends RentApp {
         <ScrollView style={{ flex: 1, height: HEIGHT - 90 }}>
           <Flex style={{ flexGrow: 1, height: '100%', position: 'relative',  }} direction="column" align="stretch">
           <Tabs styles={newTabsStyle}  tabBarUnderlineStyle style={{borderBottomWidth: 0,borderColor:'#f2f2f2'}} tabs={tabs} initialPage={0}>
+          {/* 未受理 */}
                 {(!!notDoOrderList && !!notDoOrderList.length)
                   ? (
-                    <Flex direction="column" align="stretch">
-                      <Flex direction="column" align="stretch">
-                        <SearchBar
+                <Flex style={{ flex: 1 }}  direction="column" align="stretch">
+                      <Flex  direction="column" align="stretch">
+                        <CSearch
                           style={{ borderColor: '#E9E8E8' }}
+                          value={this.state.value}
+                          onChange={(value) => this.setState({ value })}
                           showCancelButton={false}
-                          onSubmit={this.searchFun}
-                          defaultValue="初始值" placeholder="搜索所有订单" />
+                          onSubmit={this.searchFun.bind(this, 1)}
+                          placeholder="搜索未受理订单" />
                       </Flex>
-                      <ScrollView>
-                        {this.renderOrders(notDoOrderList, 1)}
-                      </ScrollView>
+                      {this.renderOrders(1)}
+
                     </Flex>
                   ) 
                   : (
@@ -134,17 +190,17 @@ export default class WorkerEnter extends RentApp {
 
                 {(!!hasDoOrderList && !!hasDoOrderList.length)
                   ? (
-                    <Flex direction="column" align="stretch">
+                <Flex style={{ flex: 1 }}  direction="column" align="stretch">
                       <Flex direction="column" align="stretch">
-                        <SearchBar
+                        <CSearch
                           // style={{ border: 'none' }}
+                          value={this.state.value}
+                          onChange={(value) => this.setState({ value })}
                           showCancelButton={false}
-                          onSubmit={this.searchFun}
-                          defaultValue="初始值" placeholder="搜索所有订单" />
+                          onSubmit={this.searchFun.bind(this, 2)}
+                           placeholder="搜索已受理订单" />
                       </Flex>
-                      <ScrollView>
-                        {this.renderOrders(hasDoOrderList, 2)}
-                      </ScrollView>
+                      {this.renderOrders(2)}
                     </Flex>
                   )
                   : (

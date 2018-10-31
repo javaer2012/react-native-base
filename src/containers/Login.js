@@ -75,10 +75,15 @@ class Login extends RentApp {
 
                 const fromPage = this.props.navigation.getParam('fromPageName', "MyPage")
                 const fromPageParams = this.props.navigation.getParam('fromPageParams', {})
-
-                this.props.navigation.replace(fromPage, {
-                    ...fromPageParams
-                })
+                if (fromPage === 'ProductDetail') {
+                    this.props.navigation.goBack();
+                    
+                } else{
+                    this.props.navigation.replace(fromPage, {
+                        ...fromPageParams
+                    })
+                }
+                
 
 
             } else {
