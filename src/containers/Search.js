@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, FlatList, AsyncStorage, StyleSheet, TouchableOpacity } from 'react-native';
-import { Flex, WhiteSpace, WingBlank, SearchBar } from 'antd-mobile-rn';
+import { View, Text, FlatList, Image, AsyncStorage, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { Flex, WhiteSpace, WingBlank, SearchBar, InputItem } from 'antd-mobile-rn';
 import api from "../service/api";
 import ProudcuItem from "../components/ProudcuItem";
 import RentApp from "../components/RentApp";
 import { connect } from 'react-redux'
+import CSearch from '../components/common/CTextInput'
 
 
 const styles = StyleSheet.create({
@@ -15,6 +16,17 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         marginVertical: 5,
         marginHorizontal: 5
+    },
+    input: {
+        borderRadius: 5,
+        backgroundColor: 'white',
+        borderColor: '#E8E8ED',
+        borderWidth: 0.5,
+        height: 28,
+        fontSize: 14,
+        paddingLeft: 5,
+        paddingRight: 35,
+        marginVertical: 6
     }
 })
 
@@ -210,24 +222,36 @@ class Search extends RentApp {
         latest.forEach(item => {
             if (item.name === this.state.value) dupplicate = true
         })
-        if(this.state.value){
+        if (this.state.value) {
             this.props.dispatch({
                 type: "ADD_HISTORY_KEYS",
                 payload: this.state.value
             })
         }
-        
+
         //await AsyncStorage.setItem('latestKeywords',JSON.stringify(latest))
 
         const keyWord = this.state.value
         const { navigate, state } = this.props.navigation;
 
         this.props.dispatch({
-            type:'SET_SEARCH_KEYWORD',
-            payload:key 
+            type: 'SET_SEARCH_KEYWORD',
+            payload: keyWord
         })
-        navigate('ProductListPage', { keyWord: key  })
+        navigate('ProductListPage', { keyWord })
         //state.params && state.params.callback && state.params.callback(key);
+    }
+
+
+    searchTag = async tag =>{
+
+        console.log(tag)
+        this.props.dispatch({
+            type: 'SET_SEARCH_KEYWORD',
+            payload: tag
+        })
+
+        this.props.navigation.navigate('ProductListPage')
     }
 
 
@@ -237,12 +261,12 @@ class Search extends RentApp {
         return (
             <View style={{ width: '100%', backgroundColor: 'white' }}>
 
-                <SearchBar style={{ width: '100%', backgroundColor: 'white', color: 'black', borderColor: '#E8E8ED', marginVertical: 6 }}
+                <CSearch style={{ width: '100%', backgroundColor: 'white', color: 'black', borderColor: '#E8E8ED', marginVertical: 6 }}
                     cancelText="搜索"
                     value={this.state.value}
                     onChange={(value) => this.setState({ value })}
-                    onSubmit={() => this.searchGoodsFun(this.state.keyWord)} 
-                    onCancel={() => this.searchGoodsFun(this.state.keyWord)} />
+                    onSubmit={() => this.searchGoodsFun(this.state.value)}
+                    onCancel={() => this.searchGoodsFun(this.state.value)} />
 
                 {this.state.products.length === 0 ? <View>
                     {this.props.historyKeys.length > 0 ? <WingBlank size={"md"} style={{ backgroundColor: 'white' }}>
@@ -252,7 +276,7 @@ class Search extends RentApp {
 
                         <Flex direction={"row"} justify={"start"} wrap={"wrap"}>
                             {Array.from(this.props.historyKeys).reverse().map((item, index) =>
-                                <TouchableOpacity key={index} onPress={() => this.searchGoodsFun(item)}>
+                                <TouchableOpacity key={index} onPress={() => this.searchTag(item)}>
                                     <Text key={index} style={styles.tag}>{item}</Text>
                                 </TouchableOpacity>
                             )}
@@ -269,7 +293,7 @@ class Search extends RentApp {
 
                         <Flex direction={"row"} justify={"start"} wrap={"wrap"}>
                             {this.state.keywords.map((item, index) =>
-                                <TouchableOpacity key={index} onPress={() => this.searchGoodsFun(item.key_name)}>
+                                <TouchableOpacity key={index} onPress={() => this.searchTag(item.key_name)}>
                                     <Text key={index} style={styles.tag}>{item.key_name}</Text>
                                 </TouchableOpacity>
                             )}
