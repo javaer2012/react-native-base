@@ -46,7 +46,8 @@ class ProductListPage extends RentApp {
 
     async componentWillReceiveProps(nextProps){
         if(nextProps.keyWord !== this.props.keyWord){
-            await this.getData()
+            // await this.getData()
+            await this.getData({ pageNum: 1, products: [] })
         }
     }
 
@@ -254,15 +255,15 @@ class ProductListPage extends RentApp {
     }
 
     searchFun = () => {
-        this.setState({
-            products: [],
-            pageNum: 1,
-        })
+        // this.setState({
+        //     products: [],
+        //     pageNum: 1,
+        // })
         const { navigate } = this.props.navigation
         navigate('SearchPage', {
             callback: async (keyWord) => {
                 this.setState({ keyWord, isLoreMoreing: 'LoreMoreing' },async ()=>{
-                    await this.getData()
+                    await this.getData({ pageNum: 1, products:[]})
                 })
                
             }

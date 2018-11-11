@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import pinyin from 'pinyin'
 import {
   View, Image, TouchableOpacity, Modal, ScrollView, AsyncStorage, Text, FlatList, TextInput, Dimensions, StyleSheet, Alert
 } from 'react-native';
@@ -59,7 +60,7 @@ export default class List extends RentApp {
     const renderCitys = (cityInfo) => {
       const citys = []
       cityInfo.filter((item, index) => {
-        if (searchText && item.city !== searchText) return false
+        if (searchText && (item.city !== searchText && pinyin(item.city, { style: pinyin.STYLE_NORMAL }).join('').indexOf(`${searchText}`.toLocaleLowerCase()) === -1  ) ) return false
         const CITY = (
           <TouchableOpacity
             key={index}
