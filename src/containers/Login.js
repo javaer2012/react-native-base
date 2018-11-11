@@ -38,7 +38,7 @@ class Login extends RentApp {
         }
 
         if (!phoneCheck(this.state.username)) {
-            Toast.info("请输入大陆手机号", 1.5)
+            Toast.info("请输入手机号", 1.5)
             return
         }
 
@@ -46,6 +46,12 @@ class Login extends RentApp {
             Toast.info("密码8位以上，包含数字、大小写和特殊字符", 1.5)
             return
         }
+
+        if(!this.state.code){
+            Toast.info("请输入验证码", 1.5)
+            return
+        }
+        
         try {
             const {username, password, code} = this.state;
             const params = {

@@ -31,7 +31,7 @@ export default class ForgetPSW extends RentApp {
             }
 
             if (!phoneCheck(this.state.username)) {
-                Toast.info("请输入大陆手机号", 1.5)
+                Toast.info("请输入手机号", 1.5)
                 return
             }
 

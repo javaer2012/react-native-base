@@ -23,6 +23,7 @@ export default class RentOrderDetail extends RentApp {
     userInfos:{}, 
     goodsInfo:{},
     goodsBaseInfo:{},
+    selectedProductSkuDetail:{},
   }
 
   async componentDidMount() {
@@ -32,8 +33,10 @@ export default class RentOrderDetail extends RentApp {
     const userInfos = this.props.navigation.getParam('userInfos');
     const goodsInfo = this.props.navigation.getParam('goodsInfo');
     const goodsBaseInfo = this.props.navigation.getParam('goodsBaseInfo');
+    const selectedProductSkuDetail = this.props.navigation.getParam('selectedProductSkuDetail');
     
-    this.setState({ params, userInfos, goodsInfo, goodsBaseInfo })
+    
+    this.setState({ params, userInfos, goodsInfo, goodsBaseInfo, selectedProductSkuDetail })
   }
 
   goToPayFun = async () => {
@@ -82,14 +85,23 @@ export default class RentOrderDetail extends RentApp {
             <Text style={styles.title}>租机信息</Text>
           </Flex>
           <Flex style={{ backgroundColor: '#fff' }}>
-            <ProudcuItem data={{
+            <ProudcuItem 
+              data={{
               // "id": "1",
               "imgPath": goodsBaseInfo.goodsImagePath,
               "phoneName": goodsBaseInfo.goodsName,
+              infos:(
+                <Flex style={{paddingVertical: 2}} direction='column' align='start'>
+                  <Text style={styles.textStyle}>颜色：{goodsInfo.color}</Text>
+                  <Text style={styles.textStyle}>内存：{goodsInfo.storage}</Text>
+                  <Text style={styles.textStyle}>套餐：{goodsInfo.mealName}</Text>
+                </Flex>
+              ),
               // "phoneDesc": "全网通4G+64G 双卡双待手机 金色",
-              "price": goodsBaseInfo.goodsPrice,
+              // "price": goodsInfo.totalStageAmount,
               // "linkUrl": "/pages/productDetail/productDetail"
-            }} />
+            }}>
+            </ProudcuItem>
           </Flex>
         </Flex>
         <Flex direction="column" style={[styles.canBuyBox]}>
@@ -121,6 +133,7 @@ const styles = StyleSheet.create({
     ...bgf,
     marginBottom: 1
   },
+  textStyle:{  fontSize: 12, color: '#888'},
   mainContentBox: {
     backgroundColor: '#fff',
     ...contentPadding,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity, KeyboardAvoidingView, Platform } from 'react-native';
 import { WingBlank, WhiteSpace, Flex, InputItem, List, Checkbox, Toast, Picker } from 'antd-mobile-rn';
 import Button from '../components/common/Button';
 import Count from "../components/Count";
@@ -155,112 +155,134 @@ export default class AuthApply extends RentApp {
             verifyCode
         } = this.state
 
-        return (
-            <KeyboardAvoidingView>
-                <ScrollView style={{ backgroundColor: '#F5F5F9', height: '100%' }}>
-                    <Flex direction={"column"} style={{ backgroundColor: '#F5F5F9' }}>
-                        <Flex style={{ backgroundColor: 'white', width: '100%', height: 75 }}>
-                            <Text style={styles.text}>请您填写个人真实信息，本资料仅做授权查询办理资格使用，绝不外泄！</Text>
-
-                            <WhiteSpace size={"xl"} />
-                        </Flex>
-                        <WhiteSpace size={"md"} />
-
-                        <WingBlank size={"sm"} style={{ width: '100%' }}>
-                            <Flex direction={"column"} style={{ width: '100%', marginVertical: 5 }}>
-
-                                <List
-                                    style={{ width: '100%' }}
-                                    renderHeader={<View>
-                                        <WingBlank size={"md"}>
-                                            <Text>基本信息</Text>
-                                            <WhiteSpace size={"sm"} />
-                                        </WingBlank>
-                                    </View>}
-                                >
-                                    <InputItem id={"userName"} placeholder={"本人真实姓名"}
-                                        ref={input => this.userName = input}
-                                        clear
-                                        onChange={(userName) => this.setState({ userName })}>姓名</InputItem>
-                                    <InputItem placeholder={"仅中国大陆身份证"} type={"number"}
-                                        value={idCardNo}
-                                        onChange={(idCardNo) => this.setState({ idCardNo })}>身份证</InputItem>
-                                    <InputItem placeholder={"您的手机号"} type={"phone"} value={phoneNo}
-                                        onChange={(phoneNo) => this.setState({ phoneNo })}>手机号</InputItem>
-                                    <InputItem placeholder={"手机验证码"} type={"number"} value={verifyCode}
-                                        onChange={(verifyCode) => this.setState({ verifyCode })}
-                                        extra={
-                                            <Count username={phoneNo} />
-                                        }>验证码</InputItem>
-                                </List>
-
-                                <WhiteSpace size={"md"} />
-
-                                <List style={{ width: '100%' }}
-                                    renderHeader={<View>
-                                        <WingBlank size={"md"}>
-                                            <Text>家族信息</Text>
-                                            <WhiteSpace size={"sm"} />
-                                        </WingBlank>
-                                    </View>}
-                                >
-
-                                    <Picker
-                                        data={RELATION}
-                                        cols={1}
-                                        value={familyRelation}
-                                        onChange={(v) => this.setState({ familyRelation: v })}
-                                        onPickerChange={(v) => this.setState({ familyRelation: v })}
-                                        onOk={(v) => this.setState({ familyRelation: v })}
-                                    >
-                                        <List.Item arrow={"down"}>亲属关系</List.Item>
-                                    </Picker>
-                                    {/*<InputItem placeholder={"请选择与直系亲属关系"} value={familyRelation}*/}
-                                    {/*onChange={(familyRelation) => this.setState({familyRelation})}>亲属关系</InputItem>*/}
-                                    <InputItem placeholder={"直系亲属姓名"} ref={input => this.familyName = input}
-                                        clear
-                                        onChange={(familyName) => this.setState({ familyName })}>亲属姓名</InputItem>
-                                    <InputItem placeholder={"直系亲属电话"} type={"phone"} value={familyPhone}
-                                        onChange={(familyPhone) => this.setState({ familyPhone })}>亲属电话</InputItem>
-                                    <InputItem placeholder={"家庭住址"} ref={input=>this.familyAddress=input}
-                                        onChange={(familyAddress) => this.setState({ familyAddress })}>家庭地址</InputItem>
-                                    <WhiteSpace size={"md"} />
-                                    <Checkbox style={{ marginLeft: 12, color: 'pink' }} value={this.state.checked}
-                                        onChange={() => this.setState({
-                                            checked: !this.state.checked
-                                        })}>
-                                        <Flex direction={"row"} wrap={"wrap"}>
-                                            <Text style={{ fontSize: 15 }}>请阅读并勾选</Text>
-                                            <TouchableOpacity onPress={() => navigation.navigate("TermPage")}>
-                                                <Text style={{ color: '#F5475F', fontSize: 15 }}>《隐私条款和数据授权协议》</Text>
-                                            </TouchableOpacity>
-                                            <Text style={{ fontSize: 15 }}>协议</Text>
-                                        </Flex>
-                                    </Checkbox>
-                                    <WhiteSpace size={"md"} />
-                                </List>
-                                <WhiteSpace size={"lg"} />
-
-                                <WingBlank size={"md"}>
-                                    <Flex direction={"row"} style={{ width: '100%' }} justify={"center"}>
+        let allInput = userName &&
+            idCardNo &&
+            phoneNo &&
+            familyRelation.length > 0 &&
+            familyName &&
+            familyPhone &&
+            familyAddress &&
+            verifyCode
 
 
-                                        <Button style={{
-                                            width: '100%',
-                                            height: 45,
-                                            lineHeight: 45,
-                                            color: '#989898',
-                                            backgroundColor: '#CBCBCB'
-                                        }}
-                                            onClick={this.onSubmit.bind(this)}>提交</Button>
-                                    </Flex>
-                                </WingBlank>
+        const ScrollViewContent = (
+            <ScrollView style={{ backgroundColor: '#F5F5F9', height: '100%' }}>
+                <Flex direction={"column"} style={{ backgroundColor: '#F5F5F9' }}>
+                    <Flex style={{ backgroundColor: 'white', width: '100%', height: 75 }}>
+                        <Text style={styles.text}>请您填写个人真实信息，本资料仅做授权查询办理资格使用，绝不外泄！</Text>
 
-                            </Flex>
-                        </WingBlank>
+                        <WhiteSpace size={"xl"} />
                     </Flex>
-                </ScrollView>
-            </KeyboardAvoidingView>
+                    <WhiteSpace size={"md"} />
+
+                    <WingBlank size={"sm"} style={{ width: '100%' }}>
+                        <Flex direction={"column"} style={{ width: '100%', marginVertical: 5 }}>
+
+                            <List
+                                style={{ width: '100%' }}
+                                renderHeader={<View>
+                                    <WingBlank size={"md"}>
+                                        <Text>基本信息</Text>
+                                        <WhiteSpace size={"sm"} />
+                                    </WingBlank>
+                                </View>}
+                            >
+                                <InputItem id={"userName"} placeholder={"本人真实姓名"}
+                                    ref={input => this.userName = input}
+                                    clear
+                                    onChange={(userName) => this.setState({ userName })}>姓名</InputItem>
+                                <InputItem placeholder={"仅中国大陆身份证"} type={"number"}
+                                    value={idCardNo}
+                                    onChange={(idCardNo) => this.setState({ idCardNo })}>身份证</InputItem>
+                                <InputItem placeholder={"您的手机号"} type={"phone"} value={phoneNo}
+                                    onChange={(phoneNo) => this.setState({ phoneNo })}>手机号</InputItem>
+                                <InputItem placeholder={"手机验证码"} type={"number"} value={verifyCode}
+                                    onChange={(verifyCode) => this.setState({ verifyCode })}
+                                    extra={
+                                        <Count username={phoneNo} />
+                                    }>验证码</InputItem>
+                            </List>
+
+                            <WhiteSpace size={"md"} />
+
+                            <List style={{ width: '100%' }}
+                                renderHeader={<View>
+                                    <WingBlank size={"md"}>
+                                        <Text>家族信息</Text>
+                                        <WhiteSpace size={"sm"} />
+                                    </WingBlank>
+                                </View>}
+                            >
+
+                                <Picker
+                                    data={RELATION}
+                                    cols={1}
+                                    value={familyRelation}
+                                    onChange={(v) => this.setState({ familyRelation: v })}
+                                    onPickerChange={(v) => this.setState({ familyRelation: v })}
+                                    onOk={(v) => this.setState({ familyRelation: v })}
+                                >
+                                    <List.Item arrow={"down"}>亲属关系</List.Item>
+                                </Picker>
+                                {/*<InputItem placeholder={"请选择与直系亲属关系"} value={familyRelation}*/}
+                                {/*onChange={(familyRelation) => this.setState({familyRelation})}>亲属关系</InputItem>*/}
+                                <InputItem placeholder={"直系亲属姓名"} ref={input => this.familyName = input}
+                                    clear
+                                    onChange={(familyName) => this.setState({ familyName })}>亲属姓名</InputItem>
+                                <InputItem placeholder={"直系亲属电话"} type={"phone"} value={familyPhone}
+                                    onChange={(familyPhone) => this.setState({ familyPhone })}>亲属电话</InputItem>
+                                <InputItem placeholder={"家庭住址"} ref={input => this.familyAddress = input}
+                                    onChange={(familyAddress) => this.setState({ familyAddress })}>家庭地址</InputItem>
+                                <WhiteSpace size={"md"} />
+                                <Checkbox style={{ marginLeft: 12, color: 'pink' }} value={this.state.checked}
+                                    onChange={() => this.setState({
+                                        checked: !this.state.checked
+                                    })}>
+                                    <Flex direction={"row"} wrap={"wrap"}>
+                                        <Text style={{ fontSize: 15 }}>请阅读并勾选</Text>
+                                        <TouchableOpacity onPress={() => navigation.navigate("TermPage")}>
+                                            <Text style={{ color: '#F5475F', fontSize: 15 }}>《隐私条款和数据授权协议》</Text>
+                                        </TouchableOpacity>
+                                        <Text style={{ fontSize: 15 }}>协议</Text>
+                                    </Flex>
+                                </Checkbox>
+                                <WhiteSpace size={"md"} />
+                            </List>
+                            <WhiteSpace size={"lg"} />
+
+                            <WingBlank size={"md"}>
+                                <Flex direction={"row"} style={{ width: '100%' }} justify={"center"}>
+
+
+                                    <Button style={{
+                                        width: '100%',
+                                        height: 45,
+                                        lineHeight: 45,
+                                        color: '#989898',
+                                        backgroundColor: allInput?'#06C1AE':'#CBCBCB',
+                                        color:'white'
+                                    }}
+                                        onClick={this.onSubmit.bind(this)}>提交</Button>
+                                </Flex>
+                            </WingBlank>
+
+                        </Flex>
+                    </WingBlank>
+                </Flex>
+            </ScrollView>
+        )
+
+        return (
+            <View>
+                {Platform.OS === 'ios' ?
+                    <KeyboardAvoidingView keyboardVerticalOffset={50} behavior={'padding'}>
+                        {ScrollViewContent}
+                    </KeyboardAvoidingView> :
+                    <KeyboardAvoidingView>
+                        {ScrollViewContent}
+                    </KeyboardAvoidingView>
+                }
+            </View>
         )
     }
 }

@@ -5,7 +5,7 @@ export const idCardCheck = id =>{
 }
 
 export const phoneCheck = phone =>{
-    const phoneReg = /^1[3|4|5|8|7][0-9]\d{4,8}$/
+    const phoneReg = /^1[3|4|5|8|7][0-9]\d{8}$/
     return phoneReg.test(phone.split(' ').join(''))
 }
 
