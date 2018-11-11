@@ -51,7 +51,7 @@ class Login extends RentApp {
             Toast.info("请输入验证码", 1.5)
             return
         }
-        
+
         try {
             const {username, password, code} = this.state;
             const params = {
@@ -81,14 +81,16 @@ class Login extends RentApp {
 
                 const fromPage = this.props.navigation.getParam('fromPageName', "MyPage")
                 const fromPageParams = this.props.navigation.getParam('fromPageParams', {})
-                if (fromPage === 'ProductDetail') {
-                    this.props.navigation.goBack();
+                this.props.navigation.goBack();
+               
+                // if (fromPage === 'ProductDetail') {
+                //     this.props.navigation.goBack();
                     
-                } else{
-                    this.props.navigation.replace(fromPage, {
-                        ...fromPageParams
-                    })
-                }
+                // } else{
+                //     this.props.navigation.replace(fromPage, {
+                //         ...fromPageParams
+                //     })
+                // }
                 
 
 
