@@ -102,7 +102,10 @@ export default class List extends RentApp {
   // render ringht index Letters
   renderLetters(letter, index) {
     return (
-      <TouchableOpacity key={index} activeOpacity={0.6} onPress={() => { this.scrollTo(index) }}>
+      <TouchableOpacity key={index} activeOpacity={0.6} onPress={() => { 
+        this.showToast(`当前选择：${letter}`)
+        this.scrollTo(index)
+       }}>
         <View style={styles.letter}>
           <Text style={styles.letterText}>{letter}</Text>
         </View>

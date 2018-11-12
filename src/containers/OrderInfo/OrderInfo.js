@@ -107,7 +107,7 @@ export default class OrderInfo extends RentApp {
             source={{ uri: `${HTTP_IMG}${qrCodePath}` }}
           />
           <Text style={{ marginTop: 10 }}>
-            凭此二维码到营业厅按理业务
+            凭此二维码到营业厅办理业务
               </Text>
         </Flex>
         
@@ -129,7 +129,14 @@ export default class OrderInfo extends RentApp {
               "imgPath": goodsInfo.goodsImagePath,
               "phoneName": goodsInfo.goodsName,
               // "phoneDesc": "全网通4G+64G 双卡双待手机 金色",
-              "price": goodsInfo.goodsPrice,
+              // "price": goodsInfo.goodsPrice,s
+              infos: (
+                <Flex style={{ paddingVertical: 2 }} direction='column' align='start'>
+                  <Text style={styles.textStyle}>颜色：{goodsInfo.color}</Text>
+                  <Text style={styles.textStyle}>内存：{goodsInfo.storage}</Text>
+                  <Text style={styles.textStyle}>套餐：{goodsInfo.mealName}</Text>
+                </Flex>
+              ),
               // "linkUrl": "/pages/productDetail/productDetail"
             }} />
           </Flex>
@@ -154,6 +161,7 @@ export default class OrderInfo extends RentApp {
 
 
 const styles = StyleSheet.create({
+  textStyle: { fontSize: 12, color: '#888' },
   title:{
     
   },

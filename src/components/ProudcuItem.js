@@ -28,22 +28,27 @@ export default ({ data, children, imageStyle }) => {
         }} source={{ uri: `${HTTP_IMG}${data.imgPath || data.goodsImgPath}` }} />
 
       <Flex direction='column' justify='between' align='stretch' style={styles.contentBox}>
-        <Flex style={{flex: 1,}}>
+        <Flex style={{ flex: 1, flexWrap: 'wrap',}}>
           <Text style={{ flexWrap: 'wrap', fontSize: 18, width: WIDTH - 40 - ( imageStyle ? imageStyle.width : 50) }}>
             {data.phoneName || data.goodsName}
-            <Text style={{ flexWrap: 'wrap', fontSize: 18, width: WIDTH - 40 - ( imageStyle ? imageStyle.width : 50) }}>{data.phoneDesc}</Text>
+            <Text numberOfLines={1} ellipsizeMode='tail' style={{ flexWrap: 'wrap', fontSize: 18, width: WIDTH - 40 - ( imageStyle ? imageStyle.width : 50) }}>{data.phoneDesc}</Text>
           </Text>
-          {data.goodsDesc && <Text style={{ flexWrap: 'wrap',fontSize: 18, width: WIDTH - 40 - (imageStyle ? imageStyle.width : 50)  }}>{data.goodsDesc}</Text>}
+          {data.goodsDesc && <Text style={{ flexWrap: 'wrap', fontSize: 18, width: WIDTH - 40 - (imageStyle ? imageStyle.width : 50) }} numberOfLines={1} ellipsizeMode='tail' >{data.goodsDesc}</Text>}
         </Flex>
         <Flex style={{flex: 1}}>
           {data.infos}
         </Flex>
-        <Flex justify='between'  style={{ flex: 1, alignItems:'stretch', width: '100%' }}>
-          <Text style={styles.priceStyle}>￥ {data.price}</Text>
-          <View>
-            {children}
-          </View>
-        </Flex>
+        {
+          !!data.price && (
+            <Flex justify='between' style={{ flex: 1, alignItems: 'stretch', width: '100%' }}>
+              <Text style={styles.priceStyle}>￥ {data.price}</Text>
+              <View>
+                {children}
+              </View>
+            </Flex>
+          )
+        }
+        
       </Flex>
        
     </View>
@@ -56,7 +61,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
     backgroundColor: '#fff',
     ...contentPadding,
-    paddingVertical: 10,
+    paddingVertical: 8,
     marginBottom: 1
   },
   contentBox:{

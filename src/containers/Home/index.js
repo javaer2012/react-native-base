@@ -50,7 +50,12 @@ class Home extends RentApp {
 
   async componentDidMount() {
   }
-
+  componentWillUnmount = () => {
+    this.props.dispatch({
+      type: 'SET_SEARCH_KEYWORD',
+      payload: ''
+    })
+  }
   componentWillReceiveProps = async (nextProps) => {
     const { locationInfos } = nextProps
     if (locationInfos && locationInfos.provinceCode !== this.state.addressMsg.provinceCode) {

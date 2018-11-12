@@ -5,6 +5,8 @@ import ProudcuItem from '../../components/ProudcuItem'
 import { contentPadding } from '../../styles/common'
 import Color from '../../styles/var'
 import api from '../.././service/api'
+// import { NavigationActions } from 'react-navigation'
+
 import RentApp from "../../components/RentApp";
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
 const { HTTP_IMG, commitOrder } = api
@@ -87,8 +89,7 @@ export default class RentOrderDetail extends RentApp {
           <Flex style={{ backgroundColor: '#fff' }}>
             <ProudcuItem 
               data={{
-              // "id": "1",
-              "imgPath": goodsBaseInfo.goodsImagePath,
+              "imgPath": goodsBaseInfo.goodsImgPath,
               "phoneName": goodsBaseInfo.goodsName,
               infos:(
                 <Flex style={{paddingVertical: 2}} direction='column' align='start'>

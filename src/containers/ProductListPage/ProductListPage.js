@@ -51,6 +51,13 @@ class ProductListPage extends RentApp {
         }
     }
 
+    componentWillUnmount = () => {
+        this.props.dispatch({
+            type: 'SET_SEARCH_KEYWORD',
+            payload: ''
+        })
+    }
+
     getData = async (otherParams) => {
         if (otherParams) {
             await this.setState({

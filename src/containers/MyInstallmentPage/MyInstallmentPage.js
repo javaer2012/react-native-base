@@ -164,18 +164,19 @@ export default class MyInstallmentPage extends RentApp {
     const { noRepayAmount, periodList, loading } = this.state
     return (
       <Flex direction="column" align="stretch">
-        <Flex style={styles.totalMoneyStyle} direction="column" justify="center">
-          <Text style={[styles.textBase]}>全部待还(元)</Text>
-          <Text style={[styles.textBase, {
-            fontSize: 24,
-            fontWeight: '600',
-          }]}>{noRepayAmount}</Text>
+        <Flex align='start' justify='center' style={styles.topBox}>
+          <Flex style={styles.totalMoneyStyle} direction="column" justify="center">
+            <Text style={[styles.textBase]}>全部待还(元)</Text>
+            <Text style={[styles.textBase, {
+              fontSize: 24,
+              fontWeight: '600',
+            }]}>{noRepayAmount}</Text>
+          </Flex>
           <TouchableOpacity style={[styles.advance]} onPress={() => this.advanceReimbursement()}>
             <Text>
               提前还款
             </Text>
           </TouchableOpacity>
-          
         </Flex>
         <ScrollView>
           <Flex direction="column" style={styles.cardBox}>
@@ -197,13 +198,19 @@ const styles = StyleSheet.create({
     padding: 30,
     overflow: 'visible',
     backgroundColor: '#2FCBC3',
+    height: 130
+  },
+  topBox:{
+    position: 'relative',
+    height: 150
   },
   advance:{
     position: 'absolute',
     zIndex: 5,
     height: advanceH,
+    
     // lineHeight: advanceH,
-    bottom: 0 - advanceH / 2,
+    bottom: 0,
     // paddingVertical: 7,
     alignItems: 'center',
     justifyContent: 'center',

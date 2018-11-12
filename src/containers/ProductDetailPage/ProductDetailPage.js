@@ -305,7 +305,7 @@ class ProductDetailPage extends RentApp {
     } = this.state
 
     const { userInfos } = this.props
-
+    // debugger
 
     //绑卡判断
     if (capitalProdSelected && capitalProdSelected.isCreditCard == 1 && userInfos.isCreditCard == 0) {
@@ -593,7 +593,7 @@ class ProductDetailPage extends RentApp {
                 <WebView
                   originWhitelist={['*']}
                   style={{ width: WIDTH, height: 100 }}
-                  source={{ html: goodsDetailText }}
+                  source={{ html: goodsDetailText, baseUrl: '' }}
                 />
               </View>
             </Flex>
