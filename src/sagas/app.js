@@ -40,8 +40,11 @@ export function* logout(action) {
         yield put({
             type:'CLEAR_LOGGEDIN'
         })
+        const userInfo = yield AsyncStorage.getItem('userInfo')
+        console.log("UserInfo",userInfo)
         yield put({
-            type:'USER_INFO'
+            type:'SET_USERINFO',
+            payload:userInfo
         })
     } catch (e) {
 

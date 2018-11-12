@@ -533,7 +533,7 @@ class My extends RentApp {
 
                 <WhiteSpace size={"md"} />
 
-                {userInfo.isStaff === 1 ? <List style={{ backgroundColor: 'white' }} renderHeader={
+                {userInfo.isStaff === 1 && this.props.isLoggedIn === '1'? <List style={{ backgroundColor: 'white' }} renderHeader={
                     <TouchableOpacity onPress={() => this.navigateWithLogin('WorkerEnter')}>
                         <WhiteSpace size={"sm"} />
                         <Flex direction={"row"}>
