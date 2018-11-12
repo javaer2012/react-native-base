@@ -24,6 +24,8 @@ const styles = StyleSheet.create({
     priceInput: {
         width: 82,
         height: 25,
+        lineHeight:25,
+        padding:0,
         backgroundColor: '#EAEEEF',
         borderRadius: 3,
         textAlign: 'center',
@@ -98,13 +100,14 @@ const PriceInput = (props) => {
             </Flex>
             <Flex direction={"row"} align={"center"} style={styles.content}>
                 <Text style={styles.priceTag}>价格区间(元)</Text>
-                <TextInput
+                <TextInput style={styles.priceInput} placeholder="你好" />
+                {/* <TextInput
                     type={"number"}
                     style={styles.priceInput}
                     placeholder={'最低价'}
                     value={minPrice}
                     onChangeText={(text) => onChange(text, 'minPrice')}
-                />
+                /> */}
                 <View style={{ width: 10, marginHorizontal: 3, borderWidth: 1, height: 1, borderColor: '#E5E5E5' }}></View>
                 <TextInput
                     type={"number"}
@@ -166,7 +169,7 @@ const CateContent = (props) => {
                 <Flex key={category.cateId} direction={"column"} justify={"center"} align={"start"} style={styles.header}>
                     <Text style={{ color: '#888888' }}>{category.cateName}</Text>
                 </Flex>
-                <Flex style={{paddingLeft:20}} direction={"row"} justify={"start"} wrap={"wrap"} >
+                <Flex style={{ paddingLeft: 20 }} direction={"row"} justify={"start"} wrap={"wrap"} >
                     {subContent}
                 </Flex>
             </View>
