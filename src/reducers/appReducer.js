@@ -7,7 +7,7 @@ export const appReducer = (state = { isLoggedIn: '0' }, action) => {
         case "OPEN_ID_USER_ID":
             return Object.assign({}, { ...state }, { ...action.payload })
         case "CLEAR_LOGGEDIN":
-            return Object.assign({}, { ...state, isLoggedIn: '0' })
+            return Object.assign({}, { ...state, isLoggedIn: '0' ,userInfo:{}})
         case "NET_FAIL":
             return Object.assign({}, { ...state, netStatus: action.status })
         default:
