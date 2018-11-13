@@ -187,7 +187,7 @@ class ProductDetailPage extends RentApp {
   prodCapitalProdMessage = (capitalProdItem) => {
     const { mealSelected, goodsBaseInfo, selectedProductSkuDetail } = this.state
     if (!selectedProductSkuDetail.shopPrice) {
-      this.showToast('请选择商品')
+      // this.showToast('请选择商品')
       return {}
     }
     let sum = ((selectedProductSkuDetail.shopPrice) * (1 + capitalProdItem.monthFee * capitalProdItem.periods) + mealSelected.price).toFixed(2); 
@@ -223,6 +223,11 @@ class ProductDetailPage extends RentApp {
           }
         })
         return false;
+      }
+      const { selectedProductSkuDetail } = this.state
+      if (!selectedProductSkuDetail.shopPrice) {
+        this.showToast('请选择内存和颜色')
+        return false
       }
       return true
     } catch (error) {
@@ -421,11 +426,10 @@ class ProductDetailPage extends RentApp {
   capacityId_color_fun = async (type, subSkuId) => {  // 选择内存和颜色的方法
     await this.setState({ [type]: subSkuId })
     // capacityId
-    const { colorId , capacityId } = this.state
-    if (colorId && capacityId) {
-      this.selectedProductFun()
-      this.setState({ capitalProdSelected: {} })
-    }
+    // const { colorId , capacityId } = this.state
+
+    this.selectedProductFun()  // 去确定唯一商品
+    this.setState({ capitalProdSelected: {} })
   }
 
   selectMealFun = (data) => {
@@ -438,9 +442,14 @@ class ProductDetailPage extends RentApp {
     const { skuDetailList, capacityId, colorId } = this.state
     skuDetailList.filter((item) => {
       const unionId = JSON.parse(item.skuJsonStr).unionId
-      if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1) {
-        // goodsSkuId = item.skuId
-        this.setState({ selectedProductSkuDetail: item })
+      if (unionId.indexOf('_') !== -1) { // 有 _ 时候说明是颜色和内存共同确定一个商品
+        if (unionId.indexOf(capacityId) !== -1 && unionId.indexOf(colorId) !== -1) {
+          this.setState({ selectedProductSkuDetail: item })
+        }
+      } else {
+        if (unionId.indexOf(capacityId) !== -1 || unionId.indexOf(colorId) !== -1) {
+          this.setState({ selectedProductSkuDetail: item })
+        }
       }
     })
   }
@@ -602,7 +611,8 @@ class ProductDetailPage extends RentApp {
         <View style={[styles.paybarStyle]}>
           <PayBar
             goToPay={this.goToPayFun}
-            data={mealSelected.initPayment || 0} />
+            data={ 0} />
+            {/* mealSelected.initPayment || 0 */}
         </View>
         <Modal
           popup
@@ -631,7 +641,6 @@ class ProductDetailPage extends RentApp {
             </Tabs>
           </Flex>
         </Modal>
-        {console.log(capitalProdSelected,"===> capitalProdSelected")}
         <Modal
           popup
           maskClosable={true}
