@@ -74,7 +74,13 @@ lodash, moment, axois 之类的基础库是功能性支撑库。各个组件的�
 
  ## 代码结构
 
+ ### App.js
 
+ App.js 是项目的逻辑入口，app.js中主要包含了热更新检查，地址检查，网络状况检查注册，将localStorage数据同步至redux,以及用户注册判断（业务api registerUser）
+
+### My.js 
+我的页面，主要根据mine/index拿回来的数据以及登录状态渲染页面，其中，登录且授信时展示的canvas依赖第三方组件支持，canvas源码由立趣提供。
+其他页面，比如登录，授信等页面能够改变我的页面的显示状态，需要在这些页面中显示的dispatch 一个MYPAGE_INITd的action,触发saga重新拿数据更新页面（RN导航组件没有react的生命周期）
 
  ## 打包
 
