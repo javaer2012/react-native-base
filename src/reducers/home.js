@@ -1,13 +1,5 @@
-// const home = (state = {},action)=>{
-//     case 'SET_LOCATION'
 
-
-//     return state;
-// }
-
-// export default home;
-
-
+// 地址相关reducer
 export function locationReducer(state = {}, action) {
     switch (action.type) {
         case 'SET_LOCATION':

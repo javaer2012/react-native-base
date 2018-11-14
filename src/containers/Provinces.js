@@ -10,7 +10,6 @@ const { width, height } = Dimensions.get('window')
 const SECTIONHEIGHT = 30, ROWHEIGHT = 40
 
 let city = []//城市的数组
-var totalheight = [];//每个字母对应的城市和字母的总高度
 var that = null
 var totalNumber = 10;//总条数的数据
 var searchHeight = 35;//搜索框高度

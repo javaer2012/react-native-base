@@ -9,8 +9,8 @@
 - react-navigation:导航组件
 - antd-mobile-rn:组件库
 
-如果React不熟悉，或者redux不熟悉，请参考官方文档。saga是我们使用的熟悉的中间件，可以根据喜好替换成thunk之类的。
-其余功能性框架，如react-native-smart-barcode, react-native-canvas 等，都是由于RN原生缺少相应的功能组件或api。
+如果React不熟悉，或者redux不熟悉，请参考官方文档。saga是我们使用的熟悉的中间件（用于数据流管理，可不使用），可以根据喜好替换成thunk之类的。
+其余功能性框架，如react-native-smart-barcode, react-native-canvas 等，都是由于RN原生缺少相应的功能组件或api，依赖第三方包可查看package.json文件。
 lodash, moment, axois 之类的基础库是功能性支撑库。各个组件的官方文档都还比较详细，建议去看一下。
 
 
@@ -123,10 +123,36 @@ import PropTypes from 'prop-types'
  - RCTCapturePackage.java 注释掉 41行
  详情可以去这个库的github看。
 
- 
-  
+ ## antd 
+- 组件库会涉及到样式覆盖（项目中src/antdStyle文件用于样式覆盖，theme文件用于定制主题颜色） 参考
+    - https://github.com/ant-design/antd-mobile-samples/tree/master/rn-custom-ui#antd-mobile-with-rn-custom-ui
+    - https://github.com/ant-design/ant-design-mobile/pull/1629
 
- 
+### RentApp 
+
+- RentApp 是在react Component上包了一层，增加部分全局方法。
 
 
-     
+### redux 中数据含义(reducer通常按照页面名称划分)
+- app
+    - OPEN_ID_USER_ID // 将 openId, userId存入redux
+    - SET_LOCATION //  设置全局地址信息
+    - IS_OPEN_ASYNC // 判断城市是否开放
+    - CHANGE_LOADING // 改变loading状态
+    - APP_STATUS
+- 首页
+    - SET_SEARCH_KEYWORD // 设置筛选商品(首页、商品列表顶部搜索栏)的关键字
+    - HOME_GET_HOME_PRODUCTS //获取首页热销商品
+    - HOME_GET_BANNER_AND_NAV // 获取导航条和滚动banner数据
+- 搜索页
+    - ADD_HISTORY_KEYS // 设置搜索历史
+    - SET_SEARCH_KEYWORD // 设置搜索关键字
+- 发现页
+    - QUERY_FIND_LIST // 获取发现页面数据
+
+
+## 注意事项
+
+- 由于部分原因，前期部分数据没走redux，而是走的缓存传递数据，搜关键字 AsyncStorage，即可查到，后期建议统一走redux。
+- 地址部分，现在逻辑：首页选择地址：从city1014中拿出按照**市**排序好的城市信息，选中一个去 city1.json 中拿到对应的crm地址信息。
+- 选择学校： 从 utils/areaSchool 中拿出按照**省**排序好的城市信息，选中一个去utils/school的schoolObjs中找到对应的学校

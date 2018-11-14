@@ -27,7 +27,6 @@ import KnowScore from "../containers/KnowScore";
 import ProductParameterPage from '../containers/ProductParameterPage/ProductParameterPage'
 import OrderInfo from '../containers/OrderInfo/OrderInfo'
 import MyInstallmentPage from '../containers/MyInstallmentPage/MyInstallmentPage'
-import MyOrder from '../containers/MyOrder/MyOrder'
 import WorkerEnter from '../containers/WorkerEnter/WorkerEnter'
 import WorkerOrder from '../containers/WorkerOrder/WorkerOrder'
 
@@ -68,12 +67,11 @@ const HomeStack = createStackNavigator({
     ProductDetail: ProductDetailPage, //商品详情
     ProductParameterPage: ProductParameterPage,  // 商品参数详情
     ProductListPage: ProductListPage,
-    // OrderDetail, // 从WorkerEnter进入受理订单页面
     Accept: Accept,  // 受理：crm信息回填
     UploadImg: UploadImg,
     Pay,
     PayResult,
-    LocationPage,
+    LocationPage, //  选择地址页面
     AuthApplyPage: AuthApply, // 填写信用租机信息
     LoginPage: Login,
     BackCardPage: BankCard,
@@ -123,7 +121,7 @@ const MyStack = createStackNavigator({
     ChangePSWPage: ChangePSW,//银行卡解绑
     BadRecordPage: BadRecords,  // 负面记录
     AuthRecordPage: AuthRecords, // 授信纪录
-    MyOrderPage: MyOrders, // 昊天的
+    MyOrderPage: MyOrders, // 
     PersonalInfoPage: PersonalInfo,  // 个人信息 学历驾驶证
     AuthApplyPage: AuthApply, // 填写信用租机信息
     TermPage: Term, // 信息条款说明
@@ -132,7 +130,6 @@ const MyStack = createStackNavigator({
     ScorePage: Score, // 晒晒分
     KnowScorePage: KnowScore, // 了解信用分
     MyInstallmentPage: MyInstallmentPage, // 我的分期
-    MyOrder: MyOrder, // 孟令禹 我的订单
     WorkerEnter: WorkerEnter, // 营业员入口
     WorkerOrder: WorkerOrder, // 啥都没有
     WaitPage: Wait,
@@ -142,11 +139,11 @@ const MyStack = createStackNavigator({
     MyCollectionsPage: MyCollections,
     CardInfoPage: CardInfo,
     NegativeRecord,
-    CrmPage_2,
+    CrmPage_2, // 填写回执单第二步
     Provinces, // 选择学校时候需要选择省份
-    LocationPage,
-    SchoolSearchPage,
-    RentOrderDetail,
+    LocationPage, //  选择地址页面
+    SchoolSearchPage, //  选择学校页面
+    RentOrderDetail, // 商品详情 -> 下单 -> 租赁订单详情
     ProductDetail: ProductDetailPage, //商品详情
     ProductParameterPage: ProductParameterPage,  // 商品参数详情
     ProductListPage: ProductListPage,

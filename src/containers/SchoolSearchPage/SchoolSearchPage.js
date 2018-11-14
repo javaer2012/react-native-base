@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import {
   View, Image, TouchableOpacity, Modal, ScrollView, AsyncStorage, Text, FlatList, TextInput, Dimensions, StyleSheet, Alert
 } from 'react-native';
-import { areaDict } from '../../utils/city1.json'
 import { Flex, SearchBar } from 'antd-mobile-rn';
 import Color from '../../styles/var'
 import RentApp from "../../components/RentApp";
 import { schoolObjs } from '../../utils/school'
-import { cityObj, setAreaInfo } from '../../utils/areaSchool'
+import { cityObj } from '../../utils/areaSchool'
 import _ from 'lodash';
 const { width, height } = Dimensions.get('window')
 const SECTIONHEIGHT = 30, ROWHEIGHT = 40

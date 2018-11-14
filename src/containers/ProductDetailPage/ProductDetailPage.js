@@ -14,6 +14,7 @@ import { connect } from 'react-redux';
 const { authAppSecret } = data
 const { queryGoodsDetail, HTTP_IMG, commitOrder, collectGoods } = api
 
+// 内存和颜色的通用组件
 const storageItem = ({ data, itemData, onPress, subSkuId }) => {
   const boxStyle = [{
     paddingVertical: 3,
@@ -44,6 +45,8 @@ const storageItem = ({ data, itemData, onPress, subSkuId }) => {
     </View>
   )
 }
+
+// SelectedListHoc 为高阶，包一层为了增加其单选功能
 const SelectedColorList = SelectedListHoc(storageItem)
 const SelectedROMList = SelectedListHoc(storageItem)
 
@@ -69,15 +72,14 @@ class ProductDetailPage extends RentApp {
     isShowPackage: false, // 套餐窗口的展示
     isShowCapital: false, // 分期窗口
     productId: '',  // 产品id
-    collectStatus: 0,
+    collectStatus: 0, // 收藏状态
     userInfos: {}, // 用户信息
     capacityId: '', // 已选择的内存skuId
     colorId: '', // 已选择的颜色skuId
-    isShowBindCard: false,
-    isShowEasyModal: false,
-    EasyModalInfos: {},
+    isShowEasyModal: false,  // 控制字绑卡、登录、弹窗的显示
+    EasyModalInfos: {}, //  控制字绑卡、登录、弹窗的内容
     loading: false,
-    skuGroupList:[]
+    skuGroupList:[]  // 确定商品唯一
   }
 
   async componentDidMount() {

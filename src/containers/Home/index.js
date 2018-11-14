@@ -5,8 +5,6 @@ import ProudcuItem from '../../components/ProudcuItem'
 import { flexRow } from '../../styles/common'
 import Color from '../../styles/var'
 import api from '../.././service/api'
-// import { NavigationEvents } from 'react-navigation';
-// import Spinner from 'react-native-loading-spinner-overlay';
 
 const { getBannerAndNav, hotProducts, HTTP_IMG } = api
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window');
@@ -19,7 +17,7 @@ class Home extends RentApp {
 
   static navigationOptions =({navigation})=>({
     title: '首页',
-    headerLeft: (
+    headerLeft: (  // 导航栏左侧功能
       <TouchableOpacity onPress={() => navigation.navigate('Barcode')}>
         <Image style={{ width: 30, height: 30, marginLeft: 5 }} source={require('../../images/bar.png')} />
       </TouchableOpacity>
@@ -36,21 +34,14 @@ class Home extends RentApp {
   })
 
   state = {
-    bannerList: [],
-    hotPhoneList: [],
-    addressMsg: {},
-    value: [],
-    pickerValue: [],
+    bannerList: [],   // 滚动广告列表
+    hotPhoneList: [],  
+    addressMsg: {},  //  地址信息
     loading: true,
   }
 
-  shareFun = () => {
-    this.showToast("暂未开通，敬请期待")
-  }
-
-  async componentDidMount() {
-  }
   componentWillUnmount = () => {
+    // 把全局的搜索关键字置空
     this.props.dispatch({
       type: 'SET_SEARCH_KEYWORD',
       payload: ''
@@ -69,10 +60,6 @@ class Home extends RentApp {
     if (nextProps.netStatus == 0){
       this.showToast('网络似乎出现问题，请下拉重试')
     }
-    if ((nextProps.netStatus !== this.props.netStatus) && this.props.netStatus == 0) {
-      // this.getData()
-    }
-    // console.log(addressMsg, "redux 中拿出locationInfos")
   }
 
   refreshData = () => {
