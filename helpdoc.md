@@ -73,8 +73,14 @@ lodash, moment, axois 之类的基础库是功能性支撑库。各个组件的�
  以上命令为个人添加，可自行删除或增加，不影响功能。
 
  ## 代码结构
- 
 
+ ### App.js
+
+ App.js 是项目的逻辑入口，app.js中主要包含了热更新检查，地址检查，网络状况检查注册，将localStorage数据同步至redux,以及用户注册判断（业务api registerUser）
+
+### My.js 
+我的页面，主要根据mine/index拿回来的数据以及登录状态渲染页面，其中，登录且授信时展示的canvas依赖第三方组件支持，canvas源码由立趣提供。
+其他页面，比如登录，授信等页面能够改变我的页面的显示状态，需要在这些页面中显示的dispatch 一个MYPAGE_INITd的action,触发saga重新拿数据更新页面（RN导航组件没有react的生命周期）
 
  ## 打包
 
@@ -93,7 +99,12 @@ lodash, moment, axois 之类的基础库是功能性支撑库。各个组件的�
  热更新使用pushy提供的server, 需要去注册账号，并将信息填在update.json中，具体的首次配置请参看
  https://update.reactnative.cn/home
 
- 后续如修改了js的代码，只需要运行yarn push:ios/ yarn push:a 即可推送热更新代码
+ 基本步骤为
+ 1. 注册账号
+ 2. 获取ios和android的appkey和appid，记录在update.json中
+ 3. 用pushy的命令行注册
+ 4. 首次需要上传apk和ipa到响应的项目
+ 5. 后续如修改了js的代码，只需要运行yarn push:ios/ yarn push:a 即可推送热更新代码
 
  ## 注意事项
 
@@ -119,16 +130,17 @@ import {
 
 import PropTypes from 'prop-types'
 ```
+```
 
  - RCTCapturePackage.java 注释掉 41行
  详情可以去这个库的github看。
 
- ## antd 
-- 组件库会涉及到样式覆盖（项目中src/antdStyle文件用于样式覆盖，theme文件用于定制主题颜色） 参考
+## antd 
+- 组件库会涉及到样式覆盖参考
     - https://github.com/ant-design/antd-mobile-samples/tree/master/rn-custom-ui#antd-mobile-with-rn-custom-ui
     - https://github.com/ant-design/ant-design-mobile/pull/1629
 
-### RentApp 
+## RentApp 
 
 - RentApp 是在react Component上包了一层，增加部分全局方法。
 
@@ -154,5 +166,7 @@ import PropTypes from 'prop-types'
 ## 注意事项
 
 - 由于部分原因，前期部分数据没走redux，而是走的缓存传递数据，搜关键字 AsyncStorage，即可查到，后期建议统一走redux。
+
+### 地址部分
 - 地址部分，现在逻辑：首页选择地址：从city1014中拿出按照**市**排序好的城市信息，选中一个去 city1.json 中拿到对应的crm地址信息。
 - 选择学校： 从 utils/areaSchool 中拿出按照**省**排序好的城市信息，选中一个去utils/school的schoolObjs中找到对应的学校

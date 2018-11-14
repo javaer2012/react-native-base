@@ -73,15 +73,15 @@ const HomeStack = createStackNavigator({
     PayResult,
     LocationPage, //  选择地址页面
     AuthApplyPage: AuthApply, // 填写信用租机信息
-    LoginPage: Login,
-    BackCardPage: BankCard,
-    AddBankCardPage: AddBankCard,
-    CardInfoPage: CardInfo,
+    LoginPage: Login,//登录页
+    BackCardPage: BankCard,//银行卡信息
+    AddBankCardPage: AddBankCard,//添加银行卡页
+    CardInfoPage: CardInfo,//填写银行卡信息
     ChangePSWPage: ChangePSW,//银行卡解绑
     RentOrderDetail,
     OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
     OrderDetail, // 从WorkerEnter进入受理订单页面,
-    Barcode:BarTest,
+    Barcode:BarTest,//二维码扫码
 }, {
         navigationOptions: {
             // initialRouteName: "Pay",
@@ -97,8 +97,8 @@ const HomeStack = createStackNavigator({
     })
 
 const FindStack = createStackNavigator({
-    FindPage: Find,
-    FindDetailPage: FindDetail,
+    FindPage: Find,//发现
+    FindDetailPage: FindDetail,//发现详情
 
 }, {
         navigationOptions: {
@@ -114,14 +114,14 @@ const FindStack = createStackNavigator({
     })
 
 const MyStack = createStackNavigator({
-    MyPage: My,
-    LoginPage: Login,
-    RegisterPage: Register,
-    ForgetPSWPage: ForgetPSW,
+    MyPage: My,//我的页面
+    LoginPage: Login,//登录页
+    RegisterPage: Register,//注册页
+    ForgetPSWPage: ForgetPSW,//忘记密码
     ChangePSWPage: ChangePSW,//银行卡解绑
     BadRecordPage: BadRecords,  // 负面记录
     AuthRecordPage: AuthRecords, // 授信纪录
-    MyOrderPage: MyOrders, // 
+    MyOrderPage: MyOrders, // 我的订单
     PersonalInfoPage: PersonalInfo,  // 个人信息 学历驾驶证
     AuthApplyPage: AuthApply, // 填写信用租机信息
     TermPage: Term, // 信息条款说明
@@ -132,14 +132,14 @@ const MyStack = createStackNavigator({
     MyInstallmentPage: MyInstallmentPage, // 我的分期
     WorkerEnter: WorkerEnter, // 营业员入口
     WorkerOrder: WorkerOrder, // 啥都没有
-    WaitPage: Wait,
-    AuthSuccessPage: AuthSuccess,
-    BackCardPage: BankCard,
-    AddBankCardPage: AddBankCard,
-    MyCollectionsPage: MyCollections,
-    CardInfoPage: CardInfo,
-    NegativeRecord,
-    CrmPage_2, // 填写回执单第二步
+    WaitPage: Wait,//授信等待
+    AuthSuccessPage: AuthSuccess,//授信成功
+    BackCardPage: BankCard,//银行卡 
+    AddBankCardPage: AddBankCard,//添加银行卡
+    MyCollectionsPage: MyCollections,//我的收藏
+    CardInfoPage: CardInfo,//银行卡信息
+    NegativeRecord,//负面记录
+    CrmPage_2,//crm图片上传
     Provinces, // 选择学校时候需要选择省份
     LocationPage, //  选择地址页面
     SchoolSearchPage, //  选择学校页面
@@ -149,10 +149,6 @@ const MyStack = createStackNavigator({
     ProductListPage: ProductListPage,
     Pay,
     PayResult,
-    LoginPage: Login,
-    BackCardPage: BankCard,
-    AddBankCardPage: AddBankCard,
-    CardInfoPage: CardInfo,
     OrderDetail, // 从WorkerEnter进入受理订单页面
     OrderInfo: OrderInfo,  // 租机信息 （凭此二维码....）
     

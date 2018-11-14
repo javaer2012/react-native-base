@@ -78,6 +78,7 @@ export default class App extends RentApp {
         this.searchKeyWord()
     }
 
+    //初始化搜索关键字
     searchKeyWord = async () => {
         try {
 
@@ -99,7 +100,7 @@ export default class App extends RentApp {
 
         }
     }
-
+    //检查热更新
     checkUpdate = () => {
 
 
@@ -148,6 +149,7 @@ export default class App extends RentApp {
     //     }
     // }
 
+    //热更新下载
     doUpdate = async (info) => {
 
         downloadUpdate(info)
@@ -168,6 +170,7 @@ export default class App extends RentApp {
             })
     }
 
+    //注册用户
     registerUser = async (option) => {
         try {
             // await AsyncStorage.clear()
@@ -177,6 +180,7 @@ export default class App extends RentApp {
             // await AsyncStorage.removeItem('openId');
             // await AsyncStorage.removeItem('userId');
 
+            //获取存在localstorage的数据
             const openId = await AsyncStorage.getItem('openId');
             const userId = await AsyncStorage.getItem('userId');
 
@@ -195,6 +199,8 @@ export default class App extends RentApp {
                 const { data } = register;
                 if (data.errcode === 1) {
                     const { openId, userId } = data;
+
+                    //同步数据至redux,并更新storage
                     store.dispatch({
                         type: "OPEN_ID_USER_ID",
                         payload: {
@@ -220,6 +226,7 @@ export default class App extends RentApp {
         }
     }
 
+    //地理定位
     getCityFun = async (lat, lon) => {
         var city;
         try {
