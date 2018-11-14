@@ -73,7 +73,7 @@ lodash, moment, axois 之类的基础库是功能性支撑库。各个组件的�
  以上命令为个人添加，可自行删除或增加，不影响功能。
 
  ## 代码结构
- 
+
 
 
  ## 打包
@@ -93,7 +93,12 @@ lodash, moment, axois 之类的基础库是功能性支撑库。各个组件的�
  热更新使用pushy提供的server, 需要去注册账号，并将信息填在update.json中，具体的首次配置请参看
  https://update.reactnative.cn/home
 
- 后续如修改了js的代码，只需要运行yarn push:ios/ yarn push:a 即可推送热更新代码
+ 基本步骤为
+ 1. 注册账号
+ 2. 获取ios和android的appkey和appid，记录在update.json中
+ 3. 用pushy的命令行注册
+ 4. 首次需要上传apk和ipa到响应的项目
+ 5. 后续如修改了js的代码，只需要运行yarn push:ios/ yarn push:a 即可推送热更新代码
 
  ## 注意事项
 
