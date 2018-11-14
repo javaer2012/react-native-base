@@ -72,25 +72,30 @@ export default class Accept extends Component {
     }
     return (
       <Flex direction="column" style={{backgroundColor: '#fff', flex: 1}}>
-        {/* <Flex style={{marginTop: 16}}>
-          <Progress data={data} />
-        </Flex> */}
         <WhiteSpace size={"xl"} />
-        <Flex direction={"row"} align={"center"} justify={"center"}>
-
-          <View style={styles.circle}>
-            <Text style={styles.text}>1</Text>
-          </View>
+        <Flex style={styles.progressBox} direction={"row"} align="start" justify={"between"}>
+          <Flex direction='column'>
+            <View style={styles.circle}>
+              <Text style={styles.text}>1</Text>
+            </View>
+            <Flex>
+              <Text style={{ color: '#3487FF', fontSize: 10, marginTop: 5}}>填写信息</Text>
+            </Flex>
+          </Flex>
 
           <View style={styles.line}></View>
 
-          <View style={styles.circle2}>
-            <Text style={styles.text2}>2</Text>
-          </View>
-
+          <Flex direction='column'>
+            <View style={styles.circle2}>
+              <Text style={styles.text}>2</Text>
+            </View>
+            <Flex>
+              <Text style={{ color: '#ccc', fontSize: 10, marginTop: 5 }}>上传照片并协议</Text>
+            </Flex>
+          </Flex>
         </Flex>
         <WhiteSpace size={"xl"} />
-        <Flex  style={{marginTop: 80, width: '100%', backgroundColor: '#fff'}}>
+        <Flex  style={{marginTop: 20, width: '100%', backgroundColor: '#fff'}}>
           <Flex direction="column" style={{ flex: 1, borderColor: '#fff', paddingHorizontal: 20 }}>
             <Flex  style={[inputBoxStyle]}>
               <Text style={[labelStyle,{marginRight: 10}]}>合约号码</Text>
@@ -137,10 +142,11 @@ export default class Accept extends Component {
 
 
 const styles = StyleSheet.create({
+  progressBox:{ width: 200, position: 'relative' },
   circle: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#3487FF' },
   circle2: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#ccc' },
   text: { textAlign: 'center', height: 36, lineHeight: 36, fontSize: 20, color: 'white' },
   text2: { textAlign: 'center', height: 36, lineHeight: 36, fontSize: 20, color: 'white' },
-  line: { width: 100, height: 2, backgroundColor: '#ccc', marginHorizontal: 5 },
+  line: { width: 100, height: 2, backgroundColor: '#ccc', marginHorizontal: 5, marginTop: 18, position: 'absolute', marginLeft: 43 },
   camera: { width: 35, height: 35 }
 })
