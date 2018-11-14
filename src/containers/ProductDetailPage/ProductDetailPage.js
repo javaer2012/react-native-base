@@ -398,7 +398,7 @@ class ProductDetailPage extends RentApp {
     const { skuJsonStr } = selectedProductSkuDetail
     const { skuJson, shopPrice } = JSON.parse(skuJsonStr)
     // debugger
-    const color = skuJson[1].cSkuName
+    const color = skuJson[1] && skuJson[1].cSkuName
     const storage = skuJson[0].cSkuName
 
     this.props.navigation.navigate('RentOrderDetail', {

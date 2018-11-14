@@ -11,10 +11,13 @@ import api from "../service/api";
 const { staffCommitOrder } = api
 
 const styles = StyleSheet.create({
-    circle: {width: 36, height: 36, borderRadius: 18, backgroundColor: '#3487FF'},
+    progressBox: { width: 200, position: 'relative' },
     text: {textAlign: 'center', height: 36, lineHeight: 36, fontSize: 20, color: 'white'},
-    line: {width: 100, height: 2, backgroundColor: '#3487FF', marginHorizontal: 5},
-    camera: {width: 35, height: 35}
+    line: { width: 100, height: 2, backgroundColor: '#3487FF', marginHorizontal: 5, marginTop: 18, position: 'absolute', marginLeft: 43 },
+    camera: {width: 35, height: 35},
+    circle: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#3487FF' },
+    circle2: { width: 36, height: 36, borderRadius: 18, backgroundColor: '#3487FF' },
+    text2: { textAlign: 'center', height: 36, lineHeight: 36, fontSize: 20, color: 'white' },
 })
 
 const data = [
@@ -196,11 +199,27 @@ class CrmPage_2 extends RentApp {
             <ScrollView size={"md"} style={{backgroundColor: 'white', height: '100%'}}>
                 <WhiteSpace size={"xl"}/>
                 <Flex direction={"column"} justify={"start"} align={"center"}>
-                    <Flex direction={"row"} align={"center"} justify={"center"}>
-                        <Progress data={data}/>
+                    <Flex style={styles.progressBox} direction={"row"} align="start" justify={"between"}>
+                        <Flex direction='column'>
+                            <View style={styles.circle}>
+                                <Text style={styles.text}>1</Text>
+                            </View>
+                            <Flex>
+                                <Text style={{ color: '#3487FF', fontSize: 10, marginTop: 5 }}>填写信息</Text>
+                            </Flex>
+                        </Flex>
 
+                        <View style={styles.line}></View>
+
+                        <Flex direction='column'>
+                            <View style={styles.circle2}>
+                                <Text style={styles.text}>2</Text>
+                            </View>
+                            <Flex>
+                                <Text style={{ color: '#3487FF', fontSize: 10, marginTop: 5 }}>上传照片并协议</Text>
+                            </Flex>
+                        </Flex>
                     </Flex>
-                    <WhiteSpace size={"md"}/>
 
                     <Flex direction={"row"} justify={"around"} style={{width: '100%',marginTop:80}}>
 
@@ -317,7 +336,6 @@ class CrmPage_2 extends RentApp {
                 </Flex>
                 <WhiteSpace size={"xl"}/>
                 <View>
-
                     <Text style={{marginHorizontal: 20, color: '#F5475F', fontSize: 10}}>签署协议</Text>
                 </View>
                 <WhiteSpace size={"xl"}/>
