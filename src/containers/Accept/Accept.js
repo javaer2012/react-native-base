@@ -37,7 +37,6 @@ export default class Accept extends Component {
   }
 
   render() {
-    // const { navigate } = this.props.navigation;
     const { agreement, crm, client } = this.state
     var options = {};
     

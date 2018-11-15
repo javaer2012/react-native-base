@@ -11,18 +11,19 @@ export default class RentApp extends Component{
         this.showToast = this.showToast
         this.getOpenIdAndUserId = this.getOpenIdAndUserId
     }
-    GO_BACK(data) {
+    
+    GO_BACK(data) { // 后退功能，如果有callback，则传递data到callback
         const { navigate, goBack, state } = this.props.navigation;
         // debugger
         state.params && state.params.callback && state.params.callback(data);
         this.props.navigation.goBack();
     }
 
-    showToast(data){
+    showToast(data){ // 阴影提示
         Toast.info(data, 1.5,null , false);
     }
     
-    async getOpenIdAndUserId(){
+    async getOpenIdAndUserId(){  //  获取openId和UserId，后期建议走redux 而不是缓存
         try{
             const ids = await AsyncStorage.multiGet(['openId','userId','addressInfos'])
             this.openId = ids[0][1]

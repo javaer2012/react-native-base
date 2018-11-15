@@ -16,5 +16,6 @@ const createStoreWithMiddleware = applyMiddleware(...middleWares)(createStore)
 const store = createStoreWithMiddleware(rootReducer)
 
 sagaMiddleware.run(rootSagas)
+console.log(JSON.stringify(store.getState()),"111111111111111")
 
 export default store

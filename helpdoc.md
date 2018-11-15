@@ -142,10 +142,10 @@ import PropTypes from 'prop-types'
 
 ## RentApp 
 
-- RentApp 是在react Component上包了一层，增加部分全局方法。
+- RentApp 是在react Component上包了一层，增加部分全局方法，详情见components/RentApp.js 注释。
 
 
-### redux 中数据含义(reducer通常按照页面名称划分)
+## redux 中action数据含义
 - app
     - OPEN_ID_USER_ID // 将 openId, userId存入redux
     - SET_LOCATION //  设置全局地址信息
@@ -162,10 +162,13 @@ import PropTypes from 'prop-types'
 - 发现页
     - QUERY_FIND_LIST // 获取发现页面数据
 
-
 ## 注意事项
 
 - 由于部分原因，前期部分数据没走redux，而是走的缓存传递数据，搜关键字 AsyncStorage，即可查到，后期建议统一走redux。
+
+- 导航部分，由于后退功能，页面不会重新走生命周期，所以要用callback形式进行某些操作。(全局搜：callback: (data) => this.setSchoolFun(data)，可见示例)
+
+- 页面中调用 this.openId时候，注意时机、由于存取缓存是异步，初始化页面调用this.openId，需要settimeout(建议后期优化是改成redux中获取)
 
 ### 地址部分
 - 地址部分，现在逻辑：首页选择地址：从city1014中拿出按照**市**排序好的城市信息，选中一个去 city1.json 中拿到对应的crm地址信息。
